@@ -8,4 +8,25 @@
     <UseWPF>true</UseWPF>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Folder Include="Data\Enemy\" />
+    <Folder Include="Data\Target\" />
+    <Folder Include="Data\User\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Config\Config.Designer.cs">
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Config.settings</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Config\Config.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Config.Designer.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+
 </Project>
