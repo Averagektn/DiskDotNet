@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace Disk.Visual.Interface
 {
-    interface IDrawable
+    internal interface IMovable
     {
-        void Draw();
+        void Move(bool moveTop, bool moveRight, bool moveBottom, bool moveLeft);
     }
 }
