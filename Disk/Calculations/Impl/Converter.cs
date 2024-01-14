@@ -2,97 +2,74 @@
 
 namespace Disk.Calculations
 {
-    class Converter
+    class Converter(int screenWidth, int screenHeight, float maxAngleX, float maxAngleY)
     {
-        private readonly Point ScreenSize;
-        private readonly Point LogSize;
-        private readonly PointF AngleSize;
+        private readonly Point ScreenSize = new(screenWidth, screenHeight);
+        private readonly Point LogSize = new(screenWidth, screenHeight);
+        private readonly PointF AngleSize = new(maxAngleX * 2, maxAngleY * 2);
 
-        private readonly PointF MaxAngle;
-        private readonly Point MaxLogCoord;
-
-        public Converter(int screenWidth, int screenHeight, float maxAngleX, float maxAngleY)
-        {
-            ScreenSize = new(screenWidth, screenHeight);
-            LogSize = new(screenWidth, screenHeight);
-            AngleSize = new(maxAngleX * 2, maxAngleY * 2);
-            MaxAngle = new(maxAngleX, maxAngleY);
-            MaxLogCoord = new(screenWidth, screenHeight);
-        }
+        private readonly PointF MaxAngle = new(maxAngleX, maxAngleY);
+        private readonly Point MaxLogCoord = new(screenWidth / 2, screenHeight / 2);
 
         // Window
-        public int ToWndCoordX(float angle)
+        private int ToWndCoordX(float angle)
         {
-            throw new NotImplementedException();
+            angle = -angle + MaxAngle.X;
+
+            return (int)Math.Round(angle * ScreenSize.X / AngleSize.X);
         }
 
-        public int ToWndCoordY(float angle)
+        private int ToWndCoordY(float angle)
         {
-            throw new NotImplementedException();
+            angle = -angle + MaxAngle.Y;
+
+            return (int)Math.Round(angle * ScreenSize.Y / AngleSize.Y);
         }
 
-        public int ToWndCoordX(int logCoord)
+        private int ToWndCoordX(int logCoord)
         {
-            throw new NotImplementedException();
+            return logCoord + MaxLogCoord.X;    
         }
 
-        public int ToWndCoordY(int logCoord)
+        private int ToWndCoordY(int logCoord)
         {
-            throw new NotImplementedException();
+            return MaxLogCoord.Y - logCoord;
         }
 
         public static Point ToWndCoord(string str)
         {
-            throw new NotImplementedException();
+            var coords = str.Split(' ');
+
+            return new(int.Parse(coords[0]), int.Parse(coords[1]));
         }
 
-        public Point ToWndCoord(PointF angles)
+        public Point ToWndCoord(PointF anglePoint)
         {
-            throw new NotImplementedException();
+            return new(ToWndCoordX(anglePoint.X), ToWndCoordY(anglePoint.Y));
         }
 
         public Point ToWndCoord(Point logPoint)
         {
-            throw new NotImplementedException();
-        }
-
-        public Point ToWndCoord_FromLogCoordString(string str)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Point ToWndCoord_FromAngleString(string str)
-        {
-            throw new NotImplementedException();
-        }
-
-        public float ToWndCoord_FromRadian(float radian)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Point ToWndCoord_FromRadian(PointF radian)
-        {
-            throw new NotImplementedException();
+            return new(ToWndCoordX(logPoint.X), ToWndCoordY(logPoint.Y));
         }
 
         // ANGLES
-        public float ToAngleX_FromWnd(int wndCoord)
+        private float ToAngleX_FromWnd(int wndCoord)
         {
             throw new NotImplementedException();
         }
 
-        public float ToAngleY_FromWnd(int wndCoord)
+        private float ToAngleY_FromWnd(int wndCoord)
         {
             throw new NotImplementedException();
         }
 
-        public float ToAngleX_FromLog(int logCoord)
+        private float ToAngleX_FromLog(int logCoord)
         {
             throw new NotImplementedException();
         }
 
-        public float ToAngleY_FromLog(int logCoord)
+        private float ToAngleY_FromLog(int logCoord)
         {
             throw new NotImplementedException();
         }
@@ -112,17 +89,7 @@ namespace Disk.Calculations
             throw new NotImplementedException();
         }
 
-        public PointF ToAngle_FromLogCoordString(string str)
-        {
-            throw new NotImplementedException();
-        }
-
-        public PointF ToAngle_FromCoordString(string str)
-        {
-            throw new NotImplementedException();
-        }
-
-        public static float ToAngle_FromRadian(float radian)
+        private static float ToAngle_FromRadian(float radian)
         {
             throw new NotImplementedException();
         }
@@ -133,22 +100,22 @@ namespace Disk.Calculations
         }
 
         // Logical
-        public int ToLogCoordX(int coord)
+        private int ToLogCoordX(int coord)
         {
             throw new NotImplementedException();
         }
 
-        public int ToLogCoordY(int coord)
+        private int ToLogCoordY(int coord)
         {
             throw new NotImplementedException();
         }
 
-        public int ToLogCoordX_FromAngle(float angle)
+        private int ToLogCoordX_FromAngle(float angle)
         {
             throw new NotImplementedException();
         }
 
-        public int ToLogCoordY_FromAngle(float angle)
+        private int ToLogCoordY_FromAngle(float angle)
         {
             throw new NotImplementedException();
         }
@@ -168,29 +135,7 @@ namespace Disk.Calculations
             throw new NotImplementedException();
         }
 
-        public Point ToLogCoord_FromCoordString(string str)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Point ToLogCoord_FromAngleString(string str)
-        {
-            throw new NotImplementedException();
-        }
-
-        public float ToLogCoord_FromRadian(float radian)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Point ToLogCoord_FromRadian(PointF radian)
-        {
-            throw new NotImplementedException();
-        }
-
-
         // Other
-
         public static float ToRadian_FromAngle(float angle)
         {
             throw new NotImplementedException();
