@@ -1,7 +1,9 @@
-﻿namespace Disk.Visual.Interface
+﻿using System.Windows.Shapes;
+
+namespace Disk.Visual.Interface
 {
     interface IDrawable
     {
-        void Draw();
+        Shape Draw();
     }
 }

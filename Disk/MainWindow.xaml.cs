@@ -1,4 +1,6 @@
-﻿using System.Windows;
+﻿using Disk.Visual;
+using Disk.Visual.Interface;
+using System.Windows;
 
 namespace Disk
 {
@@ -7,6 +9,9 @@ namespace Disk
     /// </summary>
     public partial class MainWindow : Window
     {
+        private List<IDrawable> Drawings = [];
+        private List<IScalable> Scalings = [];
+
         public MainWindow()
         {
             InitializeComponent();
