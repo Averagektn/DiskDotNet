@@ -33,5 +33,10 @@ namespace Disk.Data
         {
             throw new NotImplementedException();
         }
+
+        public void LogLn(PointF point)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

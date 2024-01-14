@@ -2,6 +2,7 @@
 
 namespace Disk.Data
 {
+    // make enumerable
     class FileReader : IDataSource
     {
         public FileReader()
