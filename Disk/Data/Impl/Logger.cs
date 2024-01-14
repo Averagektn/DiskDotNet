@@ -4,7 +4,7 @@ namespace Disk.Data
 {
     class Logger : ILogger
     {
-        public Logger()
+        public Logger(string filename, char separator)
         {
 
         }

@@ -5,9 +5,24 @@ namespace Disk.Data
     // make enumerable
     class FileReader : IDataSource
     {
-        public FileReader()
+        public FileReader(string filename)
         {
 
+        }
+
+        public IEnumerator<Point> GetEnumerator_Point()
+        {
+            throw new NotImplementedException();
+        }
+
+        public IEnumerator<PointF> GetEnumerator_PointF()
+        {
+            throw new NotImplementedException();
+        }
+
+        public string ReadLn()
+        {
+            throw new NotImplementedException();
         }
 
         public Point GetXY()
