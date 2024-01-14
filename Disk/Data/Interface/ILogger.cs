@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Drawing;
 
 namespace Disk.Data
 {
@@ -14,6 +9,6 @@ namespace Disk.Data
         void Log(PointF point);
         void LogLn(Point point);
         void LogLn(string message);
-        void LogLn(Point point);
+        void LogLn(PointF point);
     }
 }
