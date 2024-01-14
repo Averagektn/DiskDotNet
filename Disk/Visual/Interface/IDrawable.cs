@@ -1,9 +1,9 @@
-﻿using System.Windows.Shapes;
+﻿using System.Windows.Markup;
 
 namespace Disk.Visual.Interface
 {
     interface IDrawable
     {
-        Shape Draw();
+        void Draw(IAddChild addChild);
     }
 }

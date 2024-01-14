@@ -1,5 +1,6 @@
 ﻿using Disk.Visual.Interface;
 using System.Drawing;
+using System.Windows.Markup;
 
 namespace Disk.Visual
 {
@@ -7,7 +8,7 @@ namespace Disk.Visual
     {
         public Point CurrSize => throw new NotImplementedException();
 
-        public void Draw()
+        public void Draw(IAddChild addChild)
         {
             throw new NotImplementedException();
         }

@@ -1,16 +1,17 @@
 ﻿using System.Drawing;
+using System.Windows.Media;
 
 namespace Disk.Visual
 {
-    class User : Circle
+    class User(Point center, int radius, int speed, Brush color, Point iniSize) : Circle(center, radius, speed, color, iniSize)
     {
-        public User(Point center, int radius, int speed) : base(center, radius, speed)
-        {
-        }
+        public event Action<object>? OnShot;
 
-        public void Shot()
+        public Point Shot()
         {
+            OnShot?.Invoke(Center);
 
+            return Center;
         }
     }
 }
