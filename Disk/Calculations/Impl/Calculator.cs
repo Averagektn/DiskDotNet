@@ -1,12 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Disk.Calculations
+﻿namespace Disk.Calculations
 {
     class Calculator
     {
+        public int MathExp()
+        {
+            throw new NotImplementedException();
+        }
+
+        public int StandartDeviation()
+        {
+            throw new NotImplementedException();
+        }
+
+        public int Dispersion()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

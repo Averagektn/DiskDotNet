@@ -1,12 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Drawing;
 
 namespace Disk.Visual
 {
-    class User
+    class User : Circle
     {
+        public User(Point center, int radius, int speed) : base(center, radius, speed)
+        {
+        }
+
+        public void Shot()
+        {
+
+        }
     }
 }
