@@ -1,17 +1,22 @@
-﻿using System.Drawing;
+﻿using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Markup;
 using System.Windows.Media;
 using System.Windows.Shapes;
+using Point = System.Drawing.Point;
 
 namespace Disk.Visual
 {
     class Circle : IFigure
     {
         private readonly Ellipse Figure;
+
         public Point Center { get; protected set; }
+
         protected int Radius;
+
         private const float DIAGONAL_CORRECTION = 1.41f;
+
         protected int Speed;
         public int X => Center.X;
 
@@ -24,6 +29,7 @@ namespace Disk.Visual
         public int Bottom => Center.Y + Radius;
 
         public int Left => Center.X - Radius;
+
         private Point IniSize { get; set; }
 
         private Point CurrSize { get; set; }
@@ -40,7 +46,8 @@ namespace Disk.Visual
             {
                 Width = radius * 2,
                 Height = radius * 2,
-                Fill = color  
+                Fill = color,
+                Margin = new Thickness(Left, Top, 0, 0)
             };
         }
 
@@ -57,6 +64,8 @@ namespace Disk.Visual
                 addChild.AddChild(Figure);
                 isDrawn = true;
             }
+
+            Figure.Margin = new Thickness(Left, Top, 0, 0);
         }
 
         public void Move(bool moveTop, bool moveRight, bool moveBottom, bool moveLeft)
@@ -119,8 +128,7 @@ namespace Disk.Visual
             Radius = (int)Math.Round(Radius * (coeffX + coeffY) / 2);
             Center = new((int)Math.Round(Center.X * coeffX), (int)Math.Round(Center.Y * coeffY));
 
-            Canvas.SetLeft(Figure, Left);
-            Canvas.SetTop(Figure, Top);
+            Figure.Margin = new Thickness(Left, Top, 0, 0);
         }
     }
 }

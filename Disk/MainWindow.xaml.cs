@@ -1,6 +1,8 @@
 ﻿using Disk.Visual;
 using Disk.Visual.Interface;
 using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Media;
 
 namespace Disk
 {

@@ -5,9 +5,11 @@ namespace Disk.Calculations
     class Converter(int screenWidth, int screenHeight, float maxAngleX, float maxAngleY)
     {
         private readonly Point ScreenSize = new(screenWidth, screenHeight);
+
         private readonly PointF AngleSize = new(maxAngleX * 2, maxAngleY * 2);
 
         private readonly PointF MaxAngle = new(maxAngleX, maxAngleY);
+
         private readonly Point MaxLogCoord = new(screenWidth / 2, screenHeight / 2);
 
         // Window
