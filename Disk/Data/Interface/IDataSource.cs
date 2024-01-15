@@ -1,9 +1,11 @@
 ﻿using System.Drawing;
+using System.Windows.Media.Media3D;
 
-namespace Disk.Data
+namespace Disk.Data.Interface
 {
-    interface IDataSource
+    internal interface IDataSource
     {
+        Point3D GetXYZ();
         Point GetXY();
         Point GetYZ();
         Point GetXZ();

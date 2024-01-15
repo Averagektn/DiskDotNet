@@ -1,9 +1,11 @@
-﻿using System.Drawing;
+﻿using Disk.Data.Interface;
+using System.Drawing;
+using System.Windows.Media.Media3D;
 
 namespace Disk.Data
 {
     // make enumerable
-    class FileReader : IDataSource
+    class FileReader : IDataSourceF, IDataSource
     {
         private static List<FileReader> Files = [];
         public readonly string Filename;
@@ -72,6 +74,41 @@ namespace Disk.Data
         }
 
         public Point GetZY()
+        {
+            throw new NotImplementedException();
+        }
+
+        PointF IDataSourceF.GetXY()
+        {
+            throw new NotImplementedException();
+        }
+
+        PointF IDataSourceF.GetYZ()
+        {
+            throw new NotImplementedException();
+        }
+
+        PointF IDataSourceF.GetXZ()
+        {
+            throw new NotImplementedException();
+        }
+
+        PointF IDataSourceF.GetYX()
+        {
+            throw new NotImplementedException();
+        }
+
+        PointF IDataSourceF.GetZY()
+        {
+            throw new NotImplementedException();
+        }
+
+        PointF IDataSourceF.GetZX()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Point3D GetXYZ()
         {
             throw new NotImplementedException();
         }

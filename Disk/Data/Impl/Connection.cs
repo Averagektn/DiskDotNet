@@ -1,10 +1,11 @@
 ﻿using System.Drawing;
 using System.Net;
 using System.Net.Sockets;
+using System.Windows.Media.Media3D;
 
 namespace Disk.Data
 {
-    class Connection : IDataSource, IDisposable
+    class Connection : IDataSourceF, IDisposable
     {
         private readonly Logger Log;
 
@@ -63,34 +64,58 @@ namespace Disk.Data
             conn?.Dispose();
         }
 
-        public Point GetXY()
+        public Point3D GetXYZ()
         {
-            throw new NotImplementedException();
+            var coords = new byte[12];
+            Socket.Receive(coords);
+
+            float x = BitConverter.ToSingle(coords, 0);
+            float y = BitConverter.ToSingle(coords, 4);
+            float z = BitConverter.ToSingle(coords, 8);
+
+            return new(x, y, z);
         }
 
-        public Point GetXZ()
+        public PointF GetXY()
         {
-            throw new NotImplementedException();
+            var data = GetXYZ();
+
+            return new((float)data.X, (float)data.Y);
         }
 
-        public Point GetYX()
+        public PointF GetXZ()
         {
-            throw new NotImplementedException();
+            var data = GetXYZ();
+
+            return new((float)data.X, (float)data.Z);
         }
 
-        public Point GetYZ()
+        public PointF GetYX()
         {
-            throw new NotImplementedException();
+            var data = GetXYZ();
+
+            return new((float)data.Y, (float)data.X);
         }
 
-        public Point GetZX()
+        public PointF GetYZ()
         {
-            throw new NotImplementedException();
+            var data = GetXYZ();
+
+            return new((float)data.Y, (float)data.Z);
         }
 
-        public Point GetZY()
+        public PointF GetZX()
         {
-            throw new NotImplementedException();
+            var data = GetXYZ();
+
+            return new((float)data.Z, (float)data.X);
+        }
+
+        public PointF GetZY()
+        {
+            var data = GetXYZ();
+
+            return new((float)data.Z, (float)data.Y);
         }
 
         public void Dispose()
