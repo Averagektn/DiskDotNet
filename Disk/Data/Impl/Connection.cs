@@ -1,33 +1,39 @@
-﻿using System.ComponentModel;
-using System.Drawing;
+﻿using System.Drawing;
 using System.Net;
 
 namespace Disk.Data
 {
     class Connection : IDataSource
     {
-        private static List<Connection> connnections = [];
-        private IPAddress IP;
-        private int Port;
-        private Connection(IPAddress ip, int port)
+        private static List<Connection> Connnections = [];
+        public IPAddress IP;
+        public int Port;
+        private Connection(IPAddress ip, int port, object handshake)
         {
             IP = ip;
             Port = port;
             // Establish connection
         }
 
-        public static Connection GetConnection(IPAddress ip, int port)
+        public static Connection GetConnection(IPAddress ip, int port, object handshake)
         {
-            var conn = connnections.FirstOrDefault(c => c.IP.Equals(ip) && c.Port == port);
+            var conn = Connnections.FirstOrDefault(c => c.IP.Equals(ip) && c.Port == port);
 
             if (conn is null)
             {
-                var c = new Connection(ip, port);   
-                connnections.Add(c);
+                var c = new Connection(ip, port, handshake);
+
+                Connnections.Add(c);
+
                 return c;
             }
 
             return conn;
+        }
+
+        public static void CloseConnection(IPAddress ip, int port)
+        {
+
         }
 
         public Point GetXY()

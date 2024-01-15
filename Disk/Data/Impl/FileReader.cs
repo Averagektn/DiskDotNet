@@ -5,7 +5,28 @@ namespace Disk.Data
     // make enumerable
     class FileReader : IDataSource
     {
-        public FileReader(string filename)
+        private static List<FileReader> Files = [];
+        public readonly string Filename;
+
+        private FileReader(string filename)
+        {
+            Filename = filename;
+        }
+
+        public static FileReader Open(string filename)
+        {
+            var reader = Files.FirstOrDefault(f => f.Filename == filename);
+
+            if (reader is null)
+            {
+                reader = new FileReader(filename);
+                Files.Add(reader);    
+            }
+
+            return reader;
+        }
+
+        public static void Close(string filename)
         {
 
         }
