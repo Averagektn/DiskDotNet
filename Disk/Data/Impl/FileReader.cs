@@ -19,7 +19,7 @@ namespace Disk.Data
 
             if (reader is null)
             {
-                reader = new FileReader(filename);
+                reader = new(filename);
                 Files.Add(reader);    
             }
 

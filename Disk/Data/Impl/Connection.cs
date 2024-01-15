@@ -5,7 +5,7 @@ namespace Disk.Data
 {
     class Connection : IDataSource
     {
-        private static List<Connection> Connnections = [];
+        private static List<Connection> Connections = [];
         public IPAddress IP;
         public int Port;
         private Connection(IPAddress ip, int port, object handshake)
@@ -17,21 +17,26 @@ namespace Disk.Data
 
         public static Connection GetConnection(IPAddress ip, int port, object handshake)
         {
-            var conn = Connnections.FirstOrDefault(c => c.IP.Equals(ip) && c.Port == port);
+            var conn = Connections.FirstOrDefault(c => c.IP.Equals(ip) && c.Port == port);
 
             if (conn is null)
             {
-                var c = new Connection(ip, port, handshake);
+                conn = new(ip, port, handshake);
 
-                Connnections.Add(c);
-
-                return c;
+                Connections.Add(conn);
             }
 
             return conn;
         }
 
         public static void CloseConnection(IPAddress ip, int port)
+        {
+            var conn = Connections.FirstOrDefault(c => c.IP.Equals(ip) && c.Port == port);
+
+            conn?.Close();
+        }
+
+        private void Close()
         {
 
         }
