@@ -1,14 +1,9 @@
-﻿using System.Drawing;
-
-namespace Disk.Data
+﻿namespace Disk.Data
 {
-    interface ILogger
+    interface ILogger<DataType> 
     {
-        void Log(Point point);
-        void Log(string message);
-        void Log(PointF point);
-        void LogLn(Point point);
-        void LogLn(string message);
-        void LogLn(PointF point);
+        void Log(DataType data);
+
+        void LogLn(DataType data);
     }
 }

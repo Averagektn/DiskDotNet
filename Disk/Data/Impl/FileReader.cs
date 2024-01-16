@@ -1,28 +1,30 @@
 ﻿using Disk.Data.Interface;
-using System.Drawing;
 using System.Windows.Media.Media3D;
 
 namespace Disk.Data
 {
-    // make enumerable
-    class FileReader : IDataSourceF, IDataSource
+    class FileReader<PointType> : IDataSource<Point3D, PointType>
     {
-        private static List<FileReader> Files = [];
+        private static readonly List<FileReader<PointType>> Files = [];
+
         public readonly string Filename;
 
-        private FileReader(string filename)
+        public readonly string Separator;
+
+        private FileReader(string filename, string separator)
         {
             Filename = filename;
+            Separator = separator;
         }
 
-        public static FileReader Open(string filename)
+        public static FileReader<PointType> Open(string filename, string separator)
         {
             var reader = Files.FirstOrDefault(f => f.Filename == filename);
 
             if (reader is null)
             {
-                reader = new(filename);
-                Files.Add(reader);    
+                reader = new(filename, separator);
+                Files.Add(reader);
             }
 
             return reader;
@@ -33,12 +35,12 @@ namespace Disk.Data
 
         }
 
-        public IEnumerator<Point> GetEnumerator_Point()
+        public IEnumerator<Point3D> GetEnumerator_Point3D()
         {
             throw new NotImplementedException();
         }
 
-        public IEnumerator<PointF> GetEnumerator_PointF()
+        public IEnumerator<PointType> GetEnumerator()
         {
             throw new NotImplementedException();
         }
@@ -48,67 +50,37 @@ namespace Disk.Data
             throw new NotImplementedException();
         }
 
-        public Point GetXY()
-        {
-            throw new NotImplementedException();
-        }
-
-        public Point GetXZ()
-        {
-            throw new NotImplementedException();
-        }
-
-        public Point GetYX()
-        {
-            throw new NotImplementedException();
-        }
-
-        public Point GetYZ()
-        {
-            throw new NotImplementedException();
-        }
-
-        public Point GetZX()
-        {
-            throw new NotImplementedException();
-        }
-
-        public Point GetZY()
-        {
-            throw new NotImplementedException();
-        }
-
-        PointF IDataSourceF.GetXY()
-        {
-            throw new NotImplementedException();
-        }
-
-        PointF IDataSourceF.GetYZ()
-        {
-            throw new NotImplementedException();
-        }
-
-        PointF IDataSourceF.GetXZ()
-        {
-            throw new NotImplementedException();
-        }
-
-        PointF IDataSourceF.GetYX()
-        {
-            throw new NotImplementedException();
-        }
-
-        PointF IDataSourceF.GetZY()
-        {
-            throw new NotImplementedException();
-        }
-
-        PointF IDataSourceF.GetZX()
-        {
-            throw new NotImplementedException();
-        }
-
         public Point3D GetXYZ()
+        {
+            throw new NotImplementedException();
+        }
+
+        public PointType GetXY()
+        {
+            throw new NotImplementedException();
+        }
+
+        public PointType GetYZ()
+        {
+            throw new NotImplementedException();
+        }
+
+        public PointType GetXZ()
+        {
+            throw new NotImplementedException();
+        }
+
+        public PointType GetYX()
+        {
+            throw new NotImplementedException();
+        }
+
+        public PointType GetZY()
+        {
+            throw new NotImplementedException();
+        }
+
+        public PointType GetZX()
         {
             throw new NotImplementedException();
         }

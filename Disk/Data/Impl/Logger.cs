@@ -1,25 +1,23 @@
-﻿using System.Drawing;
-
-namespace Disk.Data
+﻿namespace Disk.Data
 {
-    class Logger : ILogger
+    class Logger<DataType> : ILogger<DataType>
     {
-        private static List<Logger> Loggers = [];
-        public readonly char Separator;
+        private static readonly List<Logger<DataType>> Loggers = [];
+
         public readonly string Filename;
-        private Logger(string filename, char separator)
+
+        private Logger(string filename)
         {
             Filename = filename;
-            Separator = separator;
         }
 
-        public static Logger GetLogger(string filename, char separator)
+        public static Logger<DataType> GetLogger(string filename)
         {
             var logger = Loggers.FirstOrDefault(s => s.Filename == filename);
 
             if (logger is null)
             {
-                logger = new(filename, separator);
+                logger = new(filename);
 
                 Loggers.Add(logger);
             }
@@ -32,34 +30,14 @@ namespace Disk.Data
 
         }
 
-        public void Log(Point point)
+        public void Log(DataType data)
         {
-            throw new NotImplementedException();
+            var str = data?.ToString();
         }
 
-        public void Log(string message)
+        public void LogLn(DataType data)
         {
-            throw new NotImplementedException();
-        }
-
-        public void Log(PointF point)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void LogLn(Point point)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void LogLn(string message)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void LogLn(PointF point)
-        {
-            throw new NotImplementedException();
+            var str = data?.ToString();
         }
     }
 }

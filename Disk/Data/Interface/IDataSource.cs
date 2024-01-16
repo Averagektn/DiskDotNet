@@ -1,16 +1,13 @@
-﻿using System.Drawing;
-using System.Windows.Media.Media3D;
-
-namespace Disk.Data.Interface
+﻿namespace Disk.Data.Interface
 {
-    internal interface IDataSource
+    internal interface IDataSource<TriplePoint, DoublePoint>
     {
-        Point3D GetXYZ();
-        Point GetXY();
-        Point GetYZ();
-        Point GetXZ();
-        Point GetYX();
-        Point GetZY();
-        Point GetZX();
+        TriplePoint GetXYZ();
+        DoublePoint GetXY();
+        DoublePoint GetYZ();
+        DoublePoint GetXZ();
+        DoublePoint GetYX();
+        DoublePoint GetZY();
+        DoublePoint GetZX();
     }
 }

@@ -1,13 +1,14 @@
-﻿using System.Drawing;
+﻿using Disk.Data.Interface;
+using System.Drawing;
 using System.Net;
 using System.Net.Sockets;
 using System.Windows.Media.Media3D;
 
 namespace Disk.Data
 {
-    class Connection : IDataSourceF, IDisposable
+    class Connection : IDataSource<Point3D, PointF>, IDisposable
     {
-        private readonly Logger Log;
+        private readonly Logger<Point3D> Log3D;
 
         private static readonly List<Connection> Connections = [];
 
@@ -19,7 +20,7 @@ namespace Disk.Data
 
         private Connection(IPAddress ip, int port)
         {
-            Log = Logger.GetLogger("Connection/Connection.log", ' ');
+            Log3D = Logger<Point3D>.GetLogger("Connection/Connection.log");
             IP = ip;
             Port = port;
             Socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
