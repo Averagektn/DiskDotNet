@@ -4,6 +4,6 @@ namespace Disk.Visual
 {
     interface IScalable
     {
-        void Scale(Point newSize);
+        void Scale(Size newSize);
     }
 }

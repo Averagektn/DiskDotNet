@@ -1,9 +1,11 @@
-﻿using System.Windows;
+﻿using Disk.Data.Impl;
+using System.Drawing;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Markup;
 using System.Windows.Media;
 using System.Windows.Shapes;
-using Point = System.Drawing.Point;
+using Size = System.Drawing.Size;
 
 namespace Disk.Visual
 {
@@ -11,7 +13,7 @@ namespace Disk.Visual
     {
         private readonly Ellipse Figure;
 
-        public Point Center { get; protected set; }
+        public Point2D Center { get; protected set; }
 
         protected int Radius;
 
@@ -30,13 +32,13 @@ namespace Disk.Visual
 
         public int Left => Center.X - Radius;
 
-        private Point IniSize { get; set; }
+        private Size IniSize { get; set; }
 
-        private Point CurrSize { get; set; }
+        private Size CurrSize { get; set; }
 
         private bool isDrawn = false;
 
-        public Circle(Point center, int radius, int speed, Brush color)
+        public Circle(Point2D center, int radius, int speed, Brush color)
         {
             Center = center;
             Radius = radius;
@@ -51,7 +53,7 @@ namespace Disk.Visual
             };
         }
 
-        public Circle(Point center, int radius, int speed, Brush color, Point iniSize) : this(center, radius, speed, color)
+        public Circle(Point2D center, int radius, int speed, Brush color, Size iniSize) : this(center, radius, speed, color)
         {
             CurrSize = iniSize;
             IniSize = iniSize;
@@ -100,7 +102,7 @@ namespace Disk.Visual
             {
                 xSpeed = 0;
             }
-            if (Right >= CurrSize.X && xSpeed > 0)
+            if (Right >= CurrSize.Width && xSpeed > 0)
             {
                 xSpeed = 0;
             }
@@ -108,7 +110,7 @@ namespace Disk.Visual
             {
                 ySpeed = 0;
             }
-            if (Bottom >= CurrSize.Y && ySpeed > 0)
+            if (Bottom >= CurrSize.Height && ySpeed > 0)
             {
                 ySpeed = 0;
             }
@@ -119,10 +121,10 @@ namespace Disk.Visual
             Canvas.SetTop(Figure, Top);
         }
 
-        public void Scale(Point newSize)
+        public void Scale(Size newSize)
         {
-            float coeffX = (float)newSize.X / IniSize.X;
-            float coeffY = (float)newSize.Y / IniSize.Y;
+            float coeffX = (float)newSize.Width / IniSize.Width;
+            float coeffY = (float)newSize.Height / IniSize.Height;
 
             Speed = (int)Math.Round(Speed * (coeffX + coeffY) / 2);
             Radius = (int)Math.Round(Radius * (coeffX + coeffY) / 2);

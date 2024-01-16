@@ -2,39 +2,65 @@
 
 namespace Disk.Calculations
 {
-    class Converter(int screenWidth, int screenHeight, float maxAngleX, float maxAngleY)
+    class Converter
     {
-        private readonly Point ScreenSize = new(screenWidth, screenHeight);
+        private readonly Size ScreenSize;
 
-        private readonly PointF AngleSize = new(maxAngleX * 2, maxAngleY * 2);
+        private readonly SizeF AngleSize;
 
-        private readonly PointF MaxAngle = new(maxAngleX, maxAngleY);
+        private readonly SizeF MaxAngle;
 
-        private readonly Point MaxLogCoord = new(screenWidth / 2, screenHeight / 2);
+        private readonly Size MaxLogCoord;
+
+        public Converter(int screenWidth, int screenHeight, float angleWidth, float angleHeight)
+        {
+            ScreenSize = new(screenWidth, screenHeight);
+            AngleSize = new(angleWidth, angleHeight);
+            MaxAngle = new(angleWidth / 2, angleHeight / 2);
+            MaxLogCoord = new(screenWidth / 2, screenHeight / 2);
+        }
+
+        public Converter(Point screenSize, PointF angleSize)
+        {
+            ScreenSize = new(screenSize);
+            MaxLogCoord = new(screenSize.X / 2, screenSize.Y / 2);
+
+            AngleSize = new(angleSize);
+            MaxAngle = new(angleSize.X / 2, angleSize.Y / 2);
+        }
+
+        public Converter(Size screenSize, SizeF angleSize)  
+        {
+            ScreenSize = screenSize;
+            MaxLogCoord = new(screenSize.Width / 2, screenSize.Height / 2);
+
+            AngleSize = angleSize;
+            MaxAngle = new(angleSize.Width / 2, angleSize.Height / 2);
+        }
 
         // Window
         private int ToWndCoordX(float angle)
         {
-            angle = -angle + MaxAngle.X;
+            angle = -angle + MaxAngle.Width;
 
-            return (int)Math.Round(angle * ScreenSize.X / AngleSize.X);
+            return (int)Math.Round(angle * ScreenSize.Width / AngleSize.Width);
         }
 
         private int ToWndCoordY(float angle)
         {
-            angle = -angle + MaxAngle.Y;
+            angle = -angle + MaxAngle.Height;
 
-            return (int)Math.Round(angle * ScreenSize.Y / AngleSize.Y);
+            return (int)Math.Round(angle * ScreenSize.Height / AngleSize.Height);
         }
 
         private int ToWndCoordX(int logCoord)
         {
-            return logCoord + MaxLogCoord.X;    
+            return logCoord + MaxLogCoord.Width;    
         }
 
         private int ToWndCoordY(int logCoord)
         {
-            return MaxLogCoord.Y - logCoord;
+            return MaxLogCoord.Height - logCoord;
         }
 
         public static Point ToWndCoord(string str, char separator)
@@ -57,12 +83,12 @@ namespace Disk.Calculations
         // Logical
         private int ToLogCoordX(int coord)
         {
-            return coord + MaxLogCoord.X;
+            return coord + MaxLogCoord.Width;
         }
 
         private int ToLogCoordY(int coord)
         {
-            return MaxLogCoord.Y - coord;
+            return MaxLogCoord.Height - coord;
         }
 
         private int ToLogCoordX(float angle)
@@ -95,22 +121,22 @@ namespace Disk.Calculations
         // ANGLES
         private float ToAngleX_FromWnd(int wndCoord)
         {
-            return ToLogCoordX(wndCoord) * AngleSize.X / ScreenSize.X;
+            return ToLogCoordX(wndCoord) * AngleSize.Width / ScreenSize.Width;
         }
 
         private float ToAngleY_FromWnd(int wndCoord)
         {
-            return ToLogCoordY(wndCoord) * AngleSize.Y / ScreenSize.Y;
+            return ToLogCoordY(wndCoord) * AngleSize.Height / ScreenSize.Height;
         }
 
         private float ToAngleX_FromLog(int logCoord)
         {
-            return ToAngleX_FromWnd(logCoord + MaxLogCoord.X);
+            return ToAngleX_FromWnd(logCoord + MaxLogCoord.Width);
         }
 
         private float ToAngleY_FromLog(int logCoord)
         {
-            return ToAngleY_FromWnd(logCoord + MaxLogCoord.Y);
+            return ToAngleY_FromWnd(logCoord + MaxLogCoord.Height);
         }
 
         public static PointF ToAngle(string str, char separator)

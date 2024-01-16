@@ -6,14 +6,14 @@ namespace Disk.Visual
 {
     class Axis : IDrawable, IScalable
     {
-        public Point CurrSize => throw new NotImplementedException();
+        public Size CurrSize => throw new NotImplementedException();
 
         public void Draw(IAddChild addChild)
         {
             throw new NotImplementedException();
         }
 
-        public void Scale(Point newSize)
+        public void Scale(Size newSize)
         {
             throw new NotImplementedException();
         }

@@ -1,30 +1,25 @@
-﻿using System.Drawing;
+﻿using Disk.Data.Impl;
 
 namespace Disk.Calculations
 {
     class Classifier
     {
-        public IEnumerable<IEnumerable<Point>> Classify(IEnumerable<Point> dataset)
+        public IEnumerable<IEnumerable<Point2D>> Classify(IEnumerable<Point2D> dataset)
         {
             throw new NotImplementedException();
         }
 
-        public IEnumerable<IEnumerable<Point>> Classify(IEnumerator<Point> dataset)
+        public IEnumerable<IEnumerable<Point2DF>> Classify(IEnumerable<Point2DF> dataset)
         {
             throw new NotImplementedException();
         }
 
-        public IEnumerable<IEnumerable<PointF>> Classify(IEnumerable<PointF> dataset)
+        public IEnumerable<IEnumerable<Point3D>> Classify(IEnumerable<Point3D> dataset)
         {
             throw new NotImplementedException();
         }
 
-        public IEnumerable<IEnumerable<PointF>> Classify(IEnumerator<PointF> dataset)
-        {
-            throw new NotImplementedException();
-        }
-
-        private static float GetDistance()
+        public IEnumerable<IEnumerable<Point3DF>> Classify(IEnumerable<Point3DF> dataset)
         {
             throw new NotImplementedException();
         }

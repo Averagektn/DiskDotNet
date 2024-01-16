@@ -1,12 +1,11 @@
-﻿using Disk.Data.Interface;
-using System.Drawing;
+﻿using Disk.Data.Impl;
+using Disk.Data.Interface;
 using System.Net;
 using System.Net.Sockets;
-using System.Windows.Media.Media3D;
 
 namespace Disk.Data
 {
-    class Connection : IDataSource<Point3D, PointF>, IDisposable
+    class Connection : IDataSource<Point3DF, Point2DF, float>, IDisposable
     {
         private readonly Logger<Point3D> Log3D;
 
@@ -65,7 +64,7 @@ namespace Disk.Data
             conn?.Dispose();
         }
 
-        public Point3D GetXYZ()
+        public Point3DF GetXYZ()
         {
             var coords = new byte[12];
             Socket.Receive(coords);
@@ -77,42 +76,42 @@ namespace Disk.Data
             return new(x, y, z);
         }
 
-        public PointF GetXY()
+        public Point2DF GetXY()
         {
             var data = GetXYZ();
 
             return new((float)data.X, (float)data.Y);
         }
 
-        public PointF GetXZ()
+        public Point2DF GetXZ()
         {
             var data = GetXYZ();
 
             return new((float)data.X, (float)data.Z);
         }
 
-        public PointF GetYX()
+        public Point2DF GetYX()
         {
             var data = GetXYZ();
 
             return new((float)data.Y, (float)data.X);
         }
 
-        public PointF GetYZ()
+        public Point2DF GetYZ()
         {
             var data = GetXYZ();
 
             return new((float)data.Y, (float)data.Z);
         }
 
-        public PointF GetZX()
+        public Point2DF GetZX()
         {
             var data = GetXYZ();
 
             return new((float)data.Z, (float)data.X);
         }
 
-        public PointF GetZY()
+        public Point2DF GetZY()
         {
             var data = GetXYZ();
 

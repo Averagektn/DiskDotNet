@@ -1,9 +1,6 @@
-﻿using Disk.Data;
-using Disk.Visual;
+﻿using Disk.Visual;
 using Disk.Visual.Interface;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Media;
 
 namespace Disk
 {
@@ -12,8 +9,8 @@ namespace Disk
     /// </summary>
     public partial class MainWindow : Window
     {
-        private List<IDrawable> Drawings = [];
-        private List<IScalable> Scalings = [];
+        private readonly List<IDrawable> Drawings = [];
+        private readonly List<IScalable> Scalings = [];
 
         public MainWindow()
         {
