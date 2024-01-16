@@ -1,6 +1,9 @@
-﻿using Disk.Visual;
+﻿using Disk.Data;
+using Disk.Data.Impl;
+using Disk.Visual;
 using Disk.Visual.Interface;
 using System.Windows;
+using Point3D = Disk.Data.Impl.Point3D;
 
 namespace Disk
 {

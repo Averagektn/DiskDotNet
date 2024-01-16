@@ -2,7 +2,7 @@
 {
     internal interface IDataSource<TriplePoint, DoublePoint, CoordType>
         where TriplePoint :
-            IPoint<CoordType>
+            IPoint2D<CoordType>
         where CoordType :
             IComparable,
             IFormattable,
@@ -10,12 +10,12 @@
             IComparable<CoordType>,
             IEquatable<CoordType>
     {
-        TriplePoint GetXYZ();
-        DoublePoint GetXY();
-        DoublePoint GetYZ();
-        DoublePoint GetXZ();
-        DoublePoint GetYX();
-        DoublePoint GetZY();
-        DoublePoint GetZX();
+        TriplePoint? GetXYZ();
+        DoublePoint? GetXY();
+        DoublePoint? GetYZ();
+        DoublePoint? GetXZ();
+        DoublePoint? GetYX();
+        DoublePoint? GetZY();
+        DoublePoint? GetZX();
     }
 }

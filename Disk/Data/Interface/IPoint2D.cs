@@ -1,13 +1,13 @@
 ﻿namespace Disk.Data.Interface
 {
-    internal interface IPoint<CoordType> where CoordType :
+    internal interface IPoint2D<CoordType> where CoordType :
         IComparable, 
         IFormattable, 
         IConvertible, 
         IComparable<CoordType>, 
         IEquatable<CoordType>
     {
-        public CoordType X { get; }
-        public CoordType Y { get; }
+        public CoordType X { get; set; }
+        public CoordType Y { get; set; }
     }
 }

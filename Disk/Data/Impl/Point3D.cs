@@ -1,8 +1,18 @@
-﻿namespace Disk.Data.Impl
+﻿using Disk.Data.Interface;
+
+namespace Disk.Data.Impl
 {
-    internal class Point3D(int x, int y, int z) : Point2D(x, y)
+    internal class Point3D : Point2D, IPoint3D<int>
     {
-        public int Z { get; } = z;
+        public Point3D() : base() 
+        {
+            Z = 0;
+        }
+        public Point3D(int x, int y, int z) : base(x, y)
+        {
+            Z = z;
+        }
+        public int Z { get; set; };
 
         public static double GetDistance(Point3D p)
         {

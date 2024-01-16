@@ -2,10 +2,21 @@
 
 namespace Disk.Data.Impl
 {
-    internal class Point2D(int x, int y) : IPoint<int>
+    internal class Point2D: IPoint2D<int>
     {
-        public int X { get; } = x;
-        public int Y { get; } = y;
+        public Point2D()
+        {
+            X = 0;
+            Y = 0;
+        }
+
+        public Point2D(int x, int y)
+        {
+            X = x; 
+            Y = y;
+        }
+        public int X { get; set; }
+        public int Y { get; set; }
 
         public static double GetDistance(Point2D p)
         {

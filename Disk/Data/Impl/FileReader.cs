@@ -1,17 +1,19 @@
 ﻿using Disk.Data.Interface;
 using System.Collections;
+using System.IO;
 
 namespace Disk.Data
 {
-    // idatasource
-    // ienumerable
     class FileReader<PointType3D, PointType2D, CoordType> :
         IEnumerable<PointType3D>,
-        IDataSource<PointType3D, PointType2D, CoordType>
+        IDataSource<PointType3D, PointType2D, CoordType>,
+        IDisposable
         where PointType3D :
-            IPoint<CoordType>
+            IPoint3D<CoordType>,
+            new()
         where PointType2D :
-            IPoint<CoordType>
+            IPoint2D<CoordType>,
+            new()
         where CoordType :
             IComparable,
             IFormattable,
@@ -25,10 +27,14 @@ namespace Disk.Data
 
         public readonly char Separator;
 
+        private readonly StreamReader Reader;
+
         private FileReader(string filename, char separator)
         {
             Filename = filename;
             Separator = separator;
+
+            Reader = new(filename);
         }
 
         public static FileReader<PointType3D, PointType2D, CoordType> Open(string filename, char separator)
@@ -44,49 +50,145 @@ namespace Disk.Data
             return reader;
         }
 
-        public static void Close(string filename)
+        public void Dispose()
         {
-
+            Reader.Close();
         }
 
-        public string ReadLn()
+        public string? ReadLn()
         {
-            throw new NotImplementedException();
+            return Reader.ReadLine();
         }
 
-        public PointType3D GetXYZ()
+        public PointType3D? GetXYZ()
         {
-            throw new NotImplementedException();
+            var str = Reader.ReadLine();
+            PointType3D? res = default;
+
+            if (str is not null)
+            {
+                var data = str.Split(Separator);
+
+                if (data.Length == 3)
+                {
+                    res = new()
+                    {
+                        X = (CoordType)Convert.ChangeType(data[0], typeof(CoordType)),
+                        Y = (CoordType)Convert.ChangeType(data[1], typeof(CoordType)),
+                        Z = (CoordType)Convert.ChangeType(data[2], typeof(CoordType))
+                    };
+                }
+            }
+
+            return res;
         }
 
-        public PointType2D GetXY()
+        public PointType2D? GetXY()
         {
-            throw new NotImplementedException();
+            var point3D = GetXYZ();
+
+            PointType2D? res = default;
+
+            if (point3D is not null)
+            {
+                res = new PointType2D
+                {
+                    X = point3D.X,
+                    Y = point3D.Y
+                };
+            }
+
+            return res;
         }
 
-        public PointType2D GetYZ()
+        public PointType2D? GetYZ()
         {
-            throw new NotImplementedException();
+            var point3D = GetXYZ();
+
+            PointType2D? res = default;
+
+            if (point3D is not null)
+            {
+                res = new PointType2D
+                {
+                    X = point3D.Y,
+                    Y = point3D.Z
+                };
+            }
+
+            return res;
         }
 
-        public PointType2D GetXZ()
+        public PointType2D? GetXZ()
         {
-            throw new NotImplementedException();
+            var point3D = GetXYZ();
+
+            PointType2D? res = default;
+
+            if (point3D is not null)
+            {
+                res = new PointType2D
+                {
+                    X = point3D.X,
+                    Y = point3D.Z
+                };
+            }
+
+            return res;
         }
 
-        public PointType2D GetYX()
+        public PointType2D? GetYX()
         {
-            throw new NotImplementedException();
+            var point3D = GetXYZ();
+
+            PointType2D? res = default;
+
+            if (point3D is not null)
+            {
+                res = new PointType2D
+                {
+                    X = point3D.Y,
+                    Y = point3D.X
+                };
+            }
+
+            return res;
         }
 
-        public PointType2D GetZY()
+        public PointType2D? GetZY()
         {
-            throw new NotImplementedException();
+            var point3D = GetXYZ();
+
+            PointType2D? res = default;
+
+            if (point3D is not null)
+            {
+                res = new PointType2D
+                {
+                    X = point3D.Z,
+                    Y = point3D.Y
+                };
+            }
+
+            return res;
         }
 
-        public PointType2D GetZX()
+        public PointType2D? GetZX()
         {
-            throw new NotImplementedException();
+            var point3D = GetXYZ();
+
+            PointType2D? res = default;
+
+            if (point3D is not null)
+            {
+                res = new PointType2D
+                {
+                    X = point3D.Z,
+                    Y = point3D.X
+                };
+            }
+
+            return res;
         }
 
         public IEnumerator<PointType3D> GetEnumerator()

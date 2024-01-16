@@ -1,5 +1,4 @@
 ﻿using Disk.Data.Impl;
-using System.Drawing;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Markup;
