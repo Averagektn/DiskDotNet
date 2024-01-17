@@ -1,6 +1,6 @@
 ﻿namespace Disk.Data
 {
-    class Logger<DataType> : ILogger<DataType>
+    class Logger<DataType> : ILogger<DataType>, IDisposable
     {
         private static readonly List<Logger<DataType>> Loggers = [];
 
@@ -25,9 +25,10 @@
             return logger;
         }
 
-        public static void Close(string filename)
+        // close, remove from list
+        public void Dispose()
         {
-
+            throw new NotImplementedException();
         }
 
         public void Log(DataType data)

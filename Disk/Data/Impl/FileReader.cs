@@ -1,4 +1,5 @@
-﻿using Disk.Data.Interface;
+﻿using Disk.Data.Impl;
+using Disk.Data.Interface;
 using System.Collections;
 using System.IO;
 
@@ -9,17 +10,13 @@ namespace Disk.Data
         IDataSource<PointType3D, PointType2D, CoordType>,
         IDisposable
         where PointType3D :
-            IPoint3D<CoordType>,
+            Point3D<CoordType>,
             new()
         where PointType2D :
-            IPoint2D<CoordType>,
+            Point2D<CoordType>,
             new()
         where CoordType :
-            IComparable,
-            IFormattable,
-            IConvertible,
-            IComparable<CoordType>,
-            IEquatable<CoordType>
+            new()
     {
         private static readonly List<FileReader<PointType3D, PointType2D, CoordType>> Files = [];
 
@@ -50,6 +47,7 @@ namespace Disk.Data
             return reader;
         }
 
+        // remove from list
         public void Dispose()
         {
             Reader.Close();
@@ -71,7 +69,7 @@ namespace Disk.Data
 
                 if (data.Length == 3)
                 {
-                    res = new()
+                    res = new PointType3D
                     {
                         X = (CoordType)Convert.ChangeType(data[0], typeof(CoordType)),
                         Y = (CoordType)Convert.ChangeType(data[1], typeof(CoordType)),

@@ -1,14 +1,14 @@
-﻿namespace Disk.Data.Interface
+﻿using Disk.Data.Impl;
+
+namespace Disk.Data.Interface
 {
     internal interface IDataSource<TriplePoint, DoublePoint, CoordType>
         where TriplePoint :
-            IPoint2D<CoordType>
-        where CoordType :
-            IComparable,
-            IFormattable,
-            IConvertible,
-            IComparable<CoordType>,
-            IEquatable<CoordType>
+            Point3D<CoordType>
+        where DoublePoint : 
+            Point2D<CoordType>
+        where CoordType:
+            new()
     {
         TriplePoint? GetXYZ();
         DoublePoint? GetXY();

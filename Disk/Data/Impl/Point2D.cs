@@ -1,27 +1,28 @@
-﻿using Disk.Data.Interface;
-
-namespace Disk.Data.Impl
+﻿namespace Disk.Data.Impl
 {
-    internal class Point2D: IPoint2D<int>
+    internal class Point2D<CoordType> where CoordType : new()
     {
-        public Point2D()
-        {
-            X = 0;
-            Y = 0;
-        }
+        public CoordType X {  get; set; }
 
-        public Point2D(int x, int y)
+        public CoordType Y { get; set; }
+
+        public Point2D(CoordType x, CoordType y)
         {
-            X = x; 
+            X = x;
             Y = y;
         }
-        public int X { get; set; }
-        public int Y { get; set; }
 
-        public static double GetDistance(Point2D p)
+        public Point2D() 
+        {
+            X = new();
+            Y = new();
+        }
+
+        public static double GetDistance(Point2D<CoordType> p)
         {
             throw new NotImplementedException();
         }
+
         public override string ToString()
         {
             return $"{X};{Y}";

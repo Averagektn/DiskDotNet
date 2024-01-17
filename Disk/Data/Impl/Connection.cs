@@ -5,9 +5,9 @@ using System.Net.Sockets;
 
 namespace Disk.Data
 {
-    class Connection : IDataSource<Point3DF, Point2DF, float>, IDisposable
+    class Connection : IDataSource<Point3D<float>, Point2D<float>, float>, IDisposable
     {
-        private readonly Logger<Point3D> Log3D;
+        private readonly Logger<Point3D<float>> Log3D;
 
         private static readonly List<Connection> Connections = [];
 
@@ -19,7 +19,7 @@ namespace Disk.Data
 
         private Connection(IPAddress ip, int port)
         {
-            Log3D = Logger<Point3D>.GetLogger("Connection/Connection.log");
+            Log3D = Logger<Point3D<float>>.GetLogger("Connection/Connection.log");
             IP = ip;
             Port = port;
             Socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
@@ -64,7 +64,7 @@ namespace Disk.Data
             conn?.Dispose();
         }
 
-        public Point3DF GetXYZ()
+        public Point3D<float> GetXYZ()
         {
             var coords = new byte[12];
             Socket.Receive(coords);
@@ -76,48 +76,49 @@ namespace Disk.Data
             return new(x, y, z);
         }
 
-        public Point2DF GetXY()
+        public Point2D<float> GetXY()
         {
             var data = GetXYZ();
 
             return new((float)data.X, (float)data.Y);
         }
 
-        public Point2DF GetXZ()
+        public Point2D<float> GetXZ()
         {
             var data = GetXYZ();
 
             return new((float)data.X, (float)data.Z);
         }
 
-        public Point2DF GetYX()
+        public Point2D<float> GetYX()
         {
             var data = GetXYZ();
 
             return new((float)data.Y, (float)data.X);
         }
 
-        public Point2DF GetYZ()
+        public Point2D<float> GetYZ()
         {
             var data = GetXYZ();
 
             return new((float)data.Y, (float)data.Z);
         }
 
-        public Point2DF GetZX()
+        public Point2D<float> GetZX()
         {
             var data = GetXYZ();
 
             return new((float)data.Z, (float)data.X);
         }
 
-        public Point2DF GetZY()
+        public Point2D<float> GetZY()
         {
             var data = GetXYZ();
 
             return new((float)data.Z, (float)data.Y);
         }
 
+        // remove from list
         public void Dispose()
         {
             Socket.Close();
