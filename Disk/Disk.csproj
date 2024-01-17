@@ -9,6 +9,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Folder Include="Calculations\Interface\" />
     <Folder Include="Data\Enemy\" />
     <Folder Include="Data\Target\" />
     <Folder Include="Data\User\" />

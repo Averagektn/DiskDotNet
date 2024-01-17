@@ -1,6 +1,5 @@
 ﻿using Disk.Data.Impl;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Markup;
 using System.Windows.Media;
 using System.Windows.Shapes;
@@ -12,16 +11,13 @@ namespace Disk.Visual
     {
         private readonly Ellipse Figure;
 
-        public Point2D Center { get; protected set; }
+        public Point2D<int> Center { get; protected set; }
 
         protected int Radius;
 
         private const float DIAGONAL_CORRECTION = 1.41f;
 
         protected int Speed;
-        public int X => Center.X;
-
-        public int Y => Center.Y;
 
         public int Right => Center.X + Radius;
 
@@ -37,7 +33,7 @@ namespace Disk.Visual
 
         private bool isDrawn = false;
 
-        public Circle(Point2D center, int radius, int speed, Brush color)
+        public Circle(Point2D<int> center, int radius, int speed, Brush color)
         {
             Center = center;
             Radius = radius;
@@ -52,7 +48,7 @@ namespace Disk.Visual
             };
         }
 
-        public Circle(Point2D center, int radius, int speed, Brush color, Size iniSize) : this(center, radius, speed, color)
+        public Circle(Point2D<int> center, int radius, int speed, Brush color, Size iniSize) : this(center, radius, speed, color)
         {
             CurrSize = iniSize;
             IniSize = iniSize;
@@ -116,8 +112,7 @@ namespace Disk.Visual
 
             Center = new(Center.X + xSpeed, Center.Y + ySpeed);
 
-            Canvas.SetLeft(Figure, Left);
-            Canvas.SetTop(Figure, Top);
+            Figure.Margin = new Thickness(Left, Top, 0, 0);
         }
 
         public void Scale(Size newSize)
