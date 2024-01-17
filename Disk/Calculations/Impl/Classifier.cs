@@ -2,24 +2,14 @@
 
 namespace Disk.Calculations
 {
-    class Classifier
+    static class Classifier<CoordType> where CoordType : new()
     {
-        public IEnumerable<IEnumerable<Point2D>> Classify(IEnumerable<Point2D> dataset)
+        public static IEnumerable<IEnumerable<Point2D<CoordType>>> Classify(IEnumerable<Point2D<CoordType>> dataset)
         {
             throw new NotImplementedException();
         }
 
-        public IEnumerable<IEnumerable<Point2DF>> Classify(IEnumerable<Point2DF> dataset)
-        {
-            throw new NotImplementedException();
-        }
-
-        public IEnumerable<IEnumerable<Point3D>> Classify(IEnumerable<Point3D> dataset)
-        {
-            throw new NotImplementedException();
-        }
-
-        public IEnumerable<IEnumerable<Point3DF>> Classify(IEnumerable<Point3DF> dataset)
+        public static IEnumerable<IEnumerable<Point3D<CoordType>>> Classify(IEnumerable<Point3D<CoordType>> dataset)
         {
             throw new NotImplementedException();
         }

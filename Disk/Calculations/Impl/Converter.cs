@@ -1,7 +1,9 @@
-﻿using System.Drawing;
+﻿using Disk.Data.Impl;
+using System.Drawing;
 
 namespace Disk.Calculations
 {
+    // REWORK
     class Converter
     {
         private readonly Size ScreenSize;
@@ -29,7 +31,7 @@ namespace Disk.Calculations
             MaxAngle = new(angleSize.X / 2, angleSize.Y / 2);
         }
 
-        public Converter(Size screenSize, SizeF angleSize)  
+        public Converter(Size screenSize, SizeF angleSize)
         {
             ScreenSize = screenSize;
             MaxLogCoord = new(screenSize.Width / 2, screenSize.Height / 2);
@@ -55,7 +57,7 @@ namespace Disk.Calculations
 
         private int ToWndCoordX(int logCoord)
         {
-            return logCoord + MaxLogCoord.Width;    
+            return logCoord + MaxLogCoord.Width;
         }
 
         private int ToWndCoordY(int logCoord)
@@ -63,19 +65,19 @@ namespace Disk.Calculations
             return MaxLogCoord.Height - logCoord;
         }
 
-        public static Point ToWndCoord(string str, char separator)
+        public static Point2D<int> ToWndCoord(string str, char separator)
         {
             var coords = str.Split(separator);
 
             return new(int.Parse(coords[0]), int.Parse(coords[1]));
         }
 
-        public Point ToWndCoord(PointF anglePoint)
+        public Point2D<int> ToWndCoord(PointF anglePoint)
         {
             return new(ToWndCoordX(anglePoint.X), ToWndCoordY(anglePoint.Y));
         }
 
-        public Point ToWndCoord(Point logPoint)
+        public Point2D<int> ToWndCoord(Point logPoint)
         {
             return new(ToWndCoordX(logPoint.X), ToWndCoordY(logPoint.Y));
         }
@@ -101,17 +103,17 @@ namespace Disk.Calculations
             return ToLogCoordY(ToWndCoordY(angle));
         }
 
-        public Point ToLogCoord(PointF point)
+        public Point2D<int> ToLogCoord(PointF point)
         {
             return new(ToLogCoordX(point.X), ToLogCoordY(point.Y));
         }
 
-        public Point ToLogCoord(Point point)
+        public Point2D<int> ToLogCoord(Point point)
         {
             return new(ToLogCoordX(point.X), ToLogCoordY(point.Y));
         }
 
-        public static Point ToLogCoord(string str, char separator)
+        public static Point2D<int> ToLogCoord(string str, char separator)
         {
             var coords = str.Split(separator);
 
@@ -145,7 +147,7 @@ namespace Disk.Calculations
 
             return new(float.Parse(coords[0]), float.Parse(coords[1]));
         }
-        
+
         public PointF ToAngle_FromWnd(Point point)
         {
             return new(ToAngleX_FromWnd(point.X), ToAngleY_FromWnd(point.Y));
