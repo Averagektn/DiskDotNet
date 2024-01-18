@@ -1,23 +1,16 @@
 ﻿using Disk.Data.Impl;
+using Disk.Visual.Interface;
 using System.Windows;
 using System.Windows.Markup;
 using System.Windows.Media;
 using System.Windows.Shapes;
 using Size = System.Drawing.Size;
 
-namespace Disk.Visual
+namespace Disk.Visual.Impl
 {
     class Circle : IFigure
     {
-        private readonly Ellipse Figure;
-
         public Point2D<int> Center { get; protected set; }
-
-        protected int Radius;
-
-        private const float DIAGONAL_CORRECTION = 1.41f;
-
-        protected int Speed;
 
         public int Right => Center.X + Radius;
 
@@ -26,6 +19,14 @@ namespace Disk.Visual
         public int Bottom => Center.Y + Radius;
 
         public int Left => Center.X - Radius;
+
+        protected int Radius;
+
+        protected int Speed;
+
+        private readonly Ellipse Figure;
+
+        private const float DIAGONAL_CORRECTION = 1.41f;
 
         private Size IniSize { get; set; }
 
@@ -73,7 +74,7 @@ namespace Disk.Visual
 
             if ((moveTop || moveBottom) && (moveRight || moveLeft))
             {
-                speed = (int)Math.Round((float)speed / DIAGONAL_CORRECTION);
+                speed = (int)Math.Round(speed / DIAGONAL_CORRECTION);
             }
 
             if (moveTop)

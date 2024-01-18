@@ -1,5 +1,4 @@
-﻿using Disk.Visual;
-using Disk.Visual.Interface;
+﻿using Disk.Visual.Interface;
 using System.Windows;
 
 namespace Disk

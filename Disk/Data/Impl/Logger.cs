@@ -1,4 +1,6 @@
-﻿namespace Disk.Data
+﻿using Disk.Data.Interface;
+
+namespace Disk.Data.Impl
 {
     class Logger<DataType> : ILogger<DataType>, IDisposable
     {

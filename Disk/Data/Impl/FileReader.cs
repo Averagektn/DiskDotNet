@@ -53,11 +53,8 @@ namespace Disk.Data
             Reader.Close();
         }
 
-        public string? ReadLn()
-        {
-            return Reader.ReadLine();
-        }
-
+        public string? ReadLn() => Reader.ReadLine();
+        
         public PointType3D? GetXYZ()
         {
             var str = Reader.ReadLine();

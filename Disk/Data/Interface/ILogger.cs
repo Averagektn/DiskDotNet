@@ -1,6 +1,6 @@
-﻿namespace Disk.Data
+﻿namespace Disk.Data.Interface
 {
-    interface ILogger<DataType> 
+    interface ILogger<DataType>
     {
         void Log(DataType data);
 

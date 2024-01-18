@@ -2,16 +2,20 @@
 using System.Drawing;
 using System.Windows.Media;
 
-namespace Disk.Visual
+namespace Disk.Visual.Impl
 {
     class Target(Point2D<int> center, int radius, int speed, Brush color, Size iniSize) : Circle(center, radius, speed, color, iniSize)
     {
-        public bool Contains(Point2D<int> shot)
-        {
-            double distance = Math.Sqrt(Math.Pow((shot.X - Center.X) / Radius, 2) + 
-                Math.Pow((shot.Y - Center.Y) / Radius, 2));
+        public event Action<Point2D<int>>? OnShot;
 
-            return distance <= 1.0f;
+        public Point2D<int> Shot()
+        {
+            OnShot?.Invoke(Center);
+
+            return Center;
         }
+
+        public bool Contains(Point2D<int> p)
+            => Math.Sqrt(Math.Pow((p.X - Center.X) / Radius, 2) + Math.Pow((p.Y - Center.Y) / Radius, 2)) <= 1.0f;
     }
 }

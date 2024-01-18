@@ -1,6 +1,6 @@
 ﻿using System.Drawing;
 
-namespace Disk.Visual
+namespace Disk.Visual.Interface
 {
     interface IScalable
     {

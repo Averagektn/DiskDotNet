@@ -1,6 +1,6 @@
 ﻿using Disk.Data.Impl;
 
-namespace Disk.Calculations
+namespace Disk.Calculations.Impl
 {
     static class Classifier<CoordType> where CoordType : new()
     {

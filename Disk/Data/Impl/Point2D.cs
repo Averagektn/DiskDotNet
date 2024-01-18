@@ -2,7 +2,7 @@
 {
     internal class Point2D<CoordType> where CoordType : new()
     {
-        public CoordType X {  get; set; }
+        public CoordType X { get; set; }
 
         public CoordType Y { get; set; }
 
@@ -12,7 +12,7 @@
             Y = y;
         }
 
-        public Point2D() 
+        public Point2D()
         {
             X = new();
             Y = new();
@@ -23,9 +23,6 @@
             throw new NotImplementedException();
         }
 
-        public override string ToString()
-        {
-            return $"{X};{Y}";
-        }
+        public override string ToString() => $"{X};{Y}";
     }
 }

@@ -5,9 +5,9 @@ namespace Disk.Data.Interface
     internal interface IDataSource<TriplePoint, DoublePoint, CoordType>
         where TriplePoint :
             Point3D<CoordType>
-        where DoublePoint : 
+        where DoublePoint :
             Point2D<CoordType>
-        where CoordType:
+        where CoordType :
             new()
     {
         TriplePoint? GetXYZ();

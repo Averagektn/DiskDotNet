@@ -2,11 +2,11 @@
 using System.Drawing;
 using System.Windows.Markup;
 
-namespace Disk.Visual
+namespace Disk.Visual.Impl
 {
     class Axis : IDrawable, IScalable
     {
-        public Size CurrSize => throw new NotImplementedException();
+        public Size CurrSize { get; protected set; }
 
         public void Draw(IAddChild addChild)
         {
