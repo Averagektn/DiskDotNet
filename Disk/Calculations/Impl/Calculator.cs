@@ -2,11 +2,11 @@
 {
     static class Calculator
     {
-        public static double MathExp(IEnumerable<double> dataset) => dataset.Average();
+        public static float MathExp(IEnumerable<float> dataset) => dataset.Average();
 
-        public static double StandartDeviation(IEnumerable<double> dataset) => Math.Sqrt(Dispersion(dataset));
+        public static float StandartDeviation(IEnumerable<float> dataset) => (float)Math.Sqrt(Dispersion(dataset));
 
-        public static double Dispersion(IEnumerable<double> dataset)
-            => dataset.Sum(x => Math.Pow(x - MathExp(dataset), 2)) / dataset.Count();
+        public static float Dispersion(IEnumerable<float> dataset)
+            => (float)dataset.Sum(x => Math.Pow(x - MathExp(dataset), 2)) / dataset.Count();
     }
 }
