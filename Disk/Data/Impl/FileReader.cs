@@ -1,12 +1,9 @@
-﻿using Disk.Data.Impl;
-using Disk.Data.Interface;
-using System.Collections;
+﻿using Disk.Data.Interface;
 using System.IO;
 
-namespace Disk.Data
+namespace Disk.Data.Impl
 {
     class FileReader<PointType3D, PointType2D, CoordType> :
-        IEnumerable<PointType3D>,
         IDataSource<PointType3D, PointType2D, CoordType>,
         IDisposable
         where PointType3D :
@@ -47,14 +44,15 @@ namespace Disk.Data
             return reader;
         }
 
-        // remove from list
         public void Dispose()
         {
+            Files.Remove(this);
+
             Reader.Close();
         }
 
         public string? ReadLn() => Reader.ReadLine();
-        
+
         public PointType3D? GetXYZ()
         {
             var str = Reader.ReadLine();
@@ -186,14 +184,44 @@ namespace Disk.Data
             return res;
         }
 
-        public IEnumerator<PointType3D> GetEnumerator()
+        public IEnumerable<PointType2D?> Get2DPoints(bool isX = true, bool isY = true, bool isZ = false,
+            bool isStraightforward = true)
         {
-            throw new NotImplementedException();
+            if (isStraightforward)
+            {
+                if (isX && isY)
+                {
+                    yield return GetXY();
+                }
+                if (isY && isZ)
+                {
+                    yield return GetYZ();
+                }
+                if (isX && isZ)
+                {
+                    yield return GetXZ();
+                }
+            }
+            else
+            {
+                if (isX && isY)
+                {
+                    yield return GetYX();
+                }
+                if (isY && isZ)
+                {
+                    yield return GetZY();
+                }
+                if (isX && isZ)
+                {
+                    yield return GetZX();
+                }
+            }
         }
 
-        IEnumerator IEnumerable.GetEnumerator()
+        public IEnumerable<PointType3D?> Get3DPoints()
         {
-            throw new NotImplementedException();
+            yield return GetXYZ();
         }
     }
 }

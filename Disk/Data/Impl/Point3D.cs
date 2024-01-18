@@ -20,5 +20,7 @@
         }
 
         public override string ToString() => $"{X};{Y};{Z}";
+
+        public Point2D<CoordType> To2D() => new(X, Y);
     }
 }
