@@ -1,6 +1,6 @@
 ﻿namespace Disk.Data.Impl
 {
-    internal class Point2D<CoordType> where CoordType : new()
+    internal class Point2D<CoordType> where CoordType : IConvertible, new()
     {
         public CoordType X { get; set; }
 
@@ -18,10 +18,11 @@
             Y = new();
         }
 
-        public static double GetDistance(Point2D<CoordType> p)
-        {
-            throw new NotImplementedException();
-        }
+        public static double GetDistance(Point2D<CoordType> p, IFormatProvider formatProvider)
+            => Math.Sqrt(
+                Math.Pow(p.X.ToDouble(formatProvider), 2) + 
+                Math.Pow(p.Y.ToDouble(formatProvider), 2)
+                );
 
         public override string ToString() => $"{X};{Y}";
     }
