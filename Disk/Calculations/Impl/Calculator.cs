@@ -1,20 +1,12 @@
 ﻿namespace Disk.Calculations.Impl
 {
-    static class Calculator<CoordType>
+    static class Calculator
     {
-        public static CoordType MathExp(IEnumerable<CoordType> dataset)
-        {
-            throw new NotImplementedException();
-        }
+        public static double MathExp(IEnumerable<double> dataset) => dataset.Average();
 
-        public static CoordType StandartDeviation(IEnumerable<CoordType> dataset)
-        {
-            throw new NotImplementedException();
-        }
+        public static double StandartDeviation(IEnumerable<double> dataset) => Math.Sqrt(Dispersion(dataset));
 
-        public static CoordType Dispersion(IEnumerable<CoordType> dataset)
-        {
-            throw new NotImplementedException();
-        }
+        public static double Dispersion(IEnumerable<double> dataset)
+            => dataset.Sum(x => Math.Pow(x - MathExp(dataset), 2)) / dataset.Count();
     }
 }

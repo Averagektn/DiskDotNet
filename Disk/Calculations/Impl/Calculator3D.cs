@@ -2,38 +2,27 @@
 
 namespace Disk.Calculations.Impl
 {
-    internal static class Calculator3D<PointType, CoordType>
-        where PointType :
-            Point3D<CoordType>,
-            new()
-        where CoordType :
-            new()
+    internal static class Calculator3D
     {
-        public static PointType MathExp(IEnumerable<PointType> dataset)
-        {
-            var x = Calculator<CoordType>.MathExp(dataset.Select(p => p.X));
-            var y = Calculator<CoordType>.MathExp(dataset.Select(p => p.Y));
-            var z = Calculator<CoordType>.MathExp(dataset.Select(p => p.Z));
+        public static Point3D<double> MathExp(IEnumerable<Point3D<double>> dataset) => new
+            (
+                Calculator.MathExp(dataset.Select(p => p.X)), 
+                Calculator.MathExp(dataset.Select(p => p.Y)), 
+                Calculator.MathExp(dataset.Select(p => p.Z))
+            );
 
-            return new PointType { X = x, Y = y, Z = z };
-        }
+        public static Point3D<double> StandartDeviation(IEnumerable<Point3D<double>> dataset) => new
+            (
+                Calculator.StandartDeviation(dataset.Select(p => p.X)),
+                Calculator.StandartDeviation(dataset.Select(p => p.Y)),
+                Calculator.StandartDeviation(dataset.Select(p => p.Z))
+            );
 
-        public static PointType StandartDeviation(IEnumerable<PointType> dataset)
-        {
-            var x = Calculator<CoordType>.StandartDeviation(dataset.Select(p => p.X));
-            var y = Calculator<CoordType>.StandartDeviation(dataset.Select(p => p.Y));
-            var z = Calculator<CoordType>.StandartDeviation(dataset.Select(p => p.Z));
-
-            return new PointType { X = x, Y = y, Z = z };
-        }
-
-        public static PointType Dispersion(IEnumerable<PointType> dataset)
-        {
-            var x = Calculator<CoordType>.Dispersion(dataset.Select(p => p.X));
-            var y = Calculator<CoordType>.Dispersion(dataset.Select(p => p.Y));
-            var z = Calculator<CoordType>.Dispersion(dataset.Select(p => p.Z));
-
-            return new PointType { X = x, Y = y, Z = z };
-        }
+        public static Point3D<double> Dispersion(IEnumerable<Point3D<double>> dataset) => new
+            (
+                Calculator.Dispersion(dataset.Select(p => p.X)),
+                Calculator.Dispersion(dataset.Select(p => p.Y)),
+                Calculator.Dispersion(dataset.Select(p => p.Z))
+            );
     }
 }

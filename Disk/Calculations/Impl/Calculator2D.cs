@@ -2,35 +2,24 @@
 
 namespace Disk.Calculations.Impl
 {
-    static class Calculator2D<PointType, CoordType>
-        where PointType :
-            Point2D<CoordType>,
-            new()
-        where CoordType :
-            new()
+    static class Calculator2D
     {
-        public static PointType MathExp(IEnumerable<PointType> dataset)
-        {
-            var x = Calculator<CoordType>.MathExp(dataset.Select(p => p.X));
-            var y = Calculator<CoordType>.MathExp(dataset.Select(p => p.Y));
+        public static Point2D<double> MathExp(IEnumerable<Point2D<double>> dataset) => new
+            (
+                Calculator.MathExp(dataset.Select(p => p.X)),
+                Calculator.MathExp(dataset.Select(p => p.Y))
+            );
 
-            return new PointType { X = x, Y = y };
-        }
+        public static Point2D<double> StandartDeviation(IEnumerable<Point2D<double>> dataset) => new
+            (
+                Calculator.StandartDeviation(dataset.Select(p => p.X)),
+                Calculator.StandartDeviation(dataset.Select(p => p.Y))
+            );
 
-        public static PointType StandartDeviation(IEnumerable<PointType> dataset)
-        {
-            var x = Calculator<CoordType>.StandartDeviation(dataset.Select(p => p.X));
-            var y = Calculator<CoordType>.StandartDeviation(dataset.Select(p => p.Y));
-
-            return new PointType { X = x, Y = y };
-        }
-
-        public static PointType Dispersion(IEnumerable<PointType> dataset)
-        {
-            var x = Calculator<CoordType>.Dispersion(dataset.Select(p => p.X));
-            var y = Calculator<CoordType>.Dispersion(dataset.Select(p => p.Y));
-
-            return new PointType { X = x, Y = y };
-        }
+        public static Point2D<double> Dispersion(IEnumerable<Point2D<double>> dataset) => new
+            (
+                Calculator.Dispersion(dataset.Select(p => p.X)),
+                Calculator.Dispersion(dataset.Select(p => p.Y))
+            );
     }
 }
