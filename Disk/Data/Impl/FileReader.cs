@@ -13,6 +13,7 @@ namespace Disk.Data.Impl
             Point2D<CoordType>,
             new()
         where CoordType :
+            IConvertible,
             new()
     {
         private static readonly List<FileReader<PointType3D, PointType2D, CoordType>> Files = [];

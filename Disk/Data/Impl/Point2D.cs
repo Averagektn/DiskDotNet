@@ -18,7 +18,7 @@
             Y = new();
         }
 
-        public static double GetDistance(Point2D<CoordType> p, IFormatProvider formatProvider)
+        public static double GetDistance(Point2D<CoordType> p, IFormatProvider? formatProvider = null)
             => Math.Sqrt(
                 Math.Pow(p.X.ToDouble(formatProvider), 2) + 
                 Math.Pow(p.Y.ToDouble(formatProvider), 2)

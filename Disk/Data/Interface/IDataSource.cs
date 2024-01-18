@@ -8,6 +8,7 @@ namespace Disk.Data.Interface
         where DoublePoint :
             Point2D<CoordType>
         where CoordType :
+            IConvertible,
             new()
     {
         TriplePoint? GetXYZ();
