@@ -55,7 +55,7 @@ namespace Disk.Visual.Impl
             IniSize = iniSize;
         }
 
-        public void Draw(IAddChild addChild)
+        public virtual void Draw(IAddChild addChild)
         {
             if (!isDrawn)
             {
