@@ -185,44 +185,58 @@ namespace Disk.Data.Impl
             return res;
         }
 
-        public IEnumerable<PointType2D?> Get2DPoints(bool isX = true, bool isY = true, bool isZ = false,
+        public IEnumerable<PointType2D> Get2DPoints(bool isX = true, bool isY = true, bool isZ = false,
             bool isStraightforward = true)
         {
+            PointType2D? p = null;
+
             if (isStraightforward)
             {
                 if (isX && isY)
                 {
-                    yield return GetXY();
+                    p = GetXY();
                 }
                 if (isY && isZ)
                 {
-                    yield return GetYZ();
+                    p = GetYZ();
                 }
                 if (isX && isZ)
                 {
-                    yield return GetXZ();
+                    p = GetXZ();
                 }
             }
             else
             {
                 if (isX && isY)
                 {
-                    yield return GetYX();
+                    p = GetYX();
                 }
                 if (isY && isZ)
                 {
-                    yield return GetZY();
+                    p = GetZY();
                 }
                 if (isX && isZ)
                 {
-                    yield return GetZX();
+                    p = GetZX();
                 }
             }
+
+            if (p is not null)
+            {
+                yield return p;
+            }
+            yield break;
         }
 
-        public IEnumerable<PointType3D?> Get3DPoints()
+        public IEnumerable<PointType3D> Get3DPoints()
         {
-            yield return GetXYZ();
+            PointType3D? p = GetXYZ();
+            
+            if (p is not null)
+            {
+                yield return p;
+            }
+            yield break;
         }
     }
 }

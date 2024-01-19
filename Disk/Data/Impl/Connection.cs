@@ -10,7 +10,7 @@ namespace Disk.Data.Impl
 
         public int Port { get; private set; }
 
-        private readonly Logger<Point3D<float>> Log3D;
+        private readonly Logger Log3D;
 
         private static readonly List<Connection> Connections = [];
 
@@ -18,7 +18,7 @@ namespace Disk.Data.Impl
 
         private Connection(IPAddress ip, int port)
         {
-            Log3D = Logger<Point3D<float>>.GetLogger("Connection/Connection.log");
+            Log3D = Logger.GetLogger("Connection/Connection.log");
 
             IP = ip;
             Port = port;
@@ -114,9 +114,10 @@ namespace Disk.Data.Impl
             return new((float)data.Z, (float)data.Y);
         }
 
-        // remove from list
         public void Dispose()
         {
+            Connections.Remove(this);
+
             Socket.Close();
         }
     }

@@ -1,19 +1,22 @@
 ﻿using Disk.Data.Interface;
+using System.IO;
 
 namespace Disk.Data.Impl
 {
-    class Logger<DataType> : ILogger<DataType>, IDisposable
+    class Logger : ILogger, IDisposable
     {
-        private static readonly List<Logger<DataType>> Loggers = [];
+        private readonly StreamWriter Writer;
+        private static readonly List<Logger> Loggers = [];
 
         public readonly string Filename;
 
         private Logger(string filename)
         {
             Filename = filename;
+            Writer = new(filename);
         }
 
-        public static Logger<DataType> GetLogger(string filename)
+        public static Logger GetLogger(string filename)
         {
             var logger = Loggers.FirstOrDefault(s => s.Filename == filename);
 
@@ -27,20 +30,31 @@ namespace Disk.Data.Impl
             return logger;
         }
 
-        // close, remove from list
         public void Dispose()
         {
-            throw new NotImplementedException();
+            Loggers.Remove(this);
+
+            Writer.Close();
         }
 
-        public void Log(DataType data)
+        public void Log(object? data)
         {
-            var str = data?.ToString();
+            Writer.Write(data?.ToString());
         }
 
-        public void LogLn(DataType data)
+        public async Task LogAsync(object? data)
         {
-            var str = data?.ToString();
+            await Writer.WriteAsync(data?.ToString());
+        }
+
+        public void LogLn(object? data)
+        {
+            Writer.WriteLine(data?.ToString());
+        }
+
+        public async Task LogLnAsync(object? data)
+        {
+            await Writer.WriteLineAsync(data?.ToString());
         }
     }
 }

@@ -1,9 +1,13 @@
 ﻿namespace Disk.Data.Interface
 {
-    interface ILogger<DataType>
+    interface ILogger
     {
-        void Log(DataType data);
+        void Log(object? data);
 
-        void LogLn(DataType data);
+        void LogLn(object? data);
+
+        Task LogAsync(object? data);
+
+        Task LogLnAsync(object? data);
     }
 }
