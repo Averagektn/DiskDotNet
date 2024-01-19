@@ -2,15 +2,22 @@
 
 namespace Disk.Calculations.Impl
 {
-    // KAverage, 4 parts
-    static class Classifier<CoordType> where CoordType : new()
+    static class Classifier<CoordType> where CoordType : IConvertible, new()
     {
-        public static IEnumerable<IEnumerable<Point2D<float>>> Classify(IEnumerable<Point2D<float>> dataset, int classesCount)
+        public static IEnumerable<IEnumerable<Point2D<CoordType>>> Classify(IEnumerable<Point2D<CoordType>> dataset, 
+            int classesCount)
         {
             throw new NotImplementedException();
         }
 
-        public static IEnumerable<IEnumerable<Point3D<float>>> Classify(IEnumerable<Point3D<float>> dataset, int classesCount)
+        public static IEnumerable<IEnumerable<Point3D<CoordType>>> Classify(IEnumerable<Point3D<CoordType>> dataset, 
+            int classesCount)
+        {
+            throw new NotImplementedException();
+        }
+
+        public static IEnumerable<IEnumerable<PolarPoint<CoordType>>> Classify(IEnumerable<PolarPoint<CoordType>> dataset, 
+            int classesCount)
         {
             throw new NotImplementedException();
         }
