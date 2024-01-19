@@ -148,5 +148,10 @@ namespace Disk.Calculations.Impl
 
         public static Point3D<float> ToRadian_FromAngle(Point3D<float> angle)
             => new(ToRadian_FromAngle(angle.X), ToRadian_FromAngle(angle.Y), ToRadian_FromAngle(angle.Z));
+
+        public static Point2D<float> ToPolar(Point2D<int> angle)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

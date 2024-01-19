@@ -2,7 +2,7 @@
 
 namespace Disk.Data.Interface
 {
-    internal interface IDataSource<TriplePoint, DoublePoint, CoordType>
+    interface IDataSource<TriplePoint, DoublePoint, CoordType>
         where TriplePoint :
             Point3D<CoordType>
         where DoublePoint :

@@ -2,7 +2,7 @@
 
 namespace Disk.Calculations.Impl
 {
-    internal static class Calculator3D
+    static class Calculator3D
     {
         public static Point3D<float> MathExp(IEnumerable<Point3D<float>> dataset) => new
             (

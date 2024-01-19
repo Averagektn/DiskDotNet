@@ -1,10 +1,15 @@
 ﻿namespace Disk.Data.Impl
 {
-    internal class Point3D<CoordType> : Point2D<CoordType> where CoordType : IConvertible, new()
+    class Point3D<CoordType> : Point2D<CoordType> where CoordType : IConvertible, new()
     {
         public CoordType Z { get; set; }
+        public double ZDbl
+        {
+            get => Z.ToDouble(FormatProvider);
+        }
 
-        public Point3D(CoordType x, CoordType y, CoordType z) : base(x, y)
+        public Point3D(CoordType x, CoordType y, CoordType z, IFormatProvider? formatProvider = null) : 
+            base(x, y, formatProvider)
         {
             Z = z;
         }
@@ -14,12 +19,21 @@
             Z = new();
         }
 
-        public static double GetDistance(Point3D<CoordType> p, IFormatProvider? formatProvider = null)
-            => Math.Sqrt(
-                Math.Pow(p.X.ToDouble(formatProvider), 2) + 
-                Math.Pow(p.Y.ToDouble(formatProvider), 2) + 
-                Math.Pow(p.Z.ToDouble(formatProvider), 2)
-               );
+        public double GetDistance(Point3D<CoordType> p)
+            => Math.Sqrt
+            (
+                Math.Pow(XDbl - p.XDbl, 2) +
+                Math.Pow(YDbl - p.YDbl, 2) +
+                Math.Pow(ZDbl - p.ZDbl, 2)
+            );
+
+        public static double GetDistance(Point3D<CoordType> p1, Point3D<CoordType> p2, IFormatProvider? formatProvider = null)
+            => Math.Sqrt
+            (
+                Math.Pow(p1.XDbl - p2.XDbl, 2) + 
+                Math.Pow(p1.YDbl - p2.YDbl, 2) + 
+                Math.Pow(p1.ZDbl - p2.ZDbl, 2)
+            );
 
         public override string ToString() => $"{X};{Y};{Z}";
 
