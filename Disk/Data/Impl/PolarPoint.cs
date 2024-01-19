@@ -34,6 +34,10 @@
             Y = p.Y;
         }
 
+        public PolarPoint(CoordType x, CoordType y, IFormatProvider? formatProvider = null) : base(x, y, formatProvider) { }
+
+        public PolarPoint() : base() { }
+
         public static double GetDistance(PolarPoint<CoordType> p1, PolarPoint<CoordType> p2,
             IFormatProvider? formatProvider = null)
             => Math.Sqrt
