@@ -41,15 +41,18 @@ namespace Disk.Calculations.Impl
         public static IEnumerable<IEnumerable<PolarPoint<CoordType>>> Classify(IEnumerable<PolarPoint<CoordType>> dataset,
             int classesCount)
         {
+            double fullAngle = 360.0;
             var res = new List<List<PolarPoint<CoordType>>>(classesCount);
-            var centers = GetInitialCenters(dataset, res, classesCount);
-            bool isCounting = true;
+            var angleStep = fullAngle / classesCount;
 
-            while (isCounting)
+            for (int i = 0; i < classesCount; i++)
             {
-                Separate(dataset, centers, res);
+                res.Add([]);
+            }
 
-                isCounting = GenerateNewCenters2D(centers, res);
+            for (int i = 0; i < dataset.Count(); i++)
+            {
+                res[(int)(dataset.ElementAt(i).Angle / angleStep)].Add(dataset.ElementAt(i));
             }
 
             return res;
