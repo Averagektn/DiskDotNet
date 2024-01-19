@@ -1,6 +1,6 @@
 ﻿namespace Disk.Data.Impl
 {
-    class Point3D<CoordType> : Point2D<CoordType> where CoordType : IConvertible, new()
+    class Point3D<CoordType> : Point2D<CoordType>, IEquatable<Point3D<CoordType>> where CoordType : IConvertible, new()
     {
         public CoordType Z { get; set; }
         public double ZDbl
@@ -38,5 +38,12 @@
         public override string ToString() => $"{X};{Y};{Z}";
 
         public Point2D<CoordType> To2D() => new(X, Y);
+
+        public bool Equals(Point3D<CoordType>? other)
+            => other is not null && XDbl.Equals(other.XDbl) && YDbl.Equals(other.YDbl) && ZDbl.Equals(other.ZDbl);
+
+        public override bool Equals(object? obj) => Equals(obj as Point3D<CoordType>);
+
+        public override int GetHashCode() => (int)(Math.Pow(XDbl, YDbl) * ZDbl);
     }
 }
