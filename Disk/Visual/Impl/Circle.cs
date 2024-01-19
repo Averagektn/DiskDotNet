@@ -20,8 +20,7 @@ namespace Disk.Visual.Impl
         private readonly Ellipse Figure;
 
         protected int Radius;
-        protected int Speed;
-
+        
         private const float DIAGONAL_CORRECTION = 1.41f;
 
         private readonly Point2D<int> IniCenter;
@@ -34,6 +33,8 @@ namespace Disk.Visual.Impl
         private Size CurrSize { get; set; }
 
         private bool isDrawn = false;
+
+        private int Speed;
 
         public Circle(Point2D<int> center, int radius, int speed, Brush color)
         {
@@ -137,6 +138,16 @@ namespace Disk.Visual.Impl
             Figure.Height = Radius * 2;
 
             Figure.Margin = new(Left, Top, 0, 0);
+        }
+
+        public void Move(Point2D<int> center)
+        {
+            if (center.X <= CurrSize.Width && center.Y <= CurrSize.Height && center.X > 0 && center.Y > 0)
+            {
+                Center = center;
+
+                Figure.Margin = new(Left, Top, 0, 0);
+            }
         }
     }
 }

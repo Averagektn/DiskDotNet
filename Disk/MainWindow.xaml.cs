@@ -11,6 +11,10 @@ namespace Disk
     /// </summary>
     public partial class MainWindow : Window
     {
+        private readonly Timer ShotTimer;
+        private readonly Timer MoveTimer;
+        private readonly Timer TargetTimer;
+
         private bool MoveUp;
         private bool MoveDown;
         private bool MoveLeft;
