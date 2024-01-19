@@ -16,11 +16,10 @@ namespace Disk.Data.Impl
             IConvertible,
             new()
     {
-        private static readonly List<FileReader<PointType3D, PointType2D, CoordType>> Files = [];
-
         public readonly string Filename;
-
         public readonly char Separator;
+
+        private static readonly List<FileReader<PointType3D, PointType2D, CoordType>> Files = [];
 
         private readonly StreamReader Reader;
 
@@ -231,7 +230,7 @@ namespace Disk.Data.Impl
         public IEnumerable<PointType3D> Get3DPoints()
         {
             PointType3D? p = GetXYZ();
-            
+
             if (p is not null)
             {
                 yield return p;

@@ -7,11 +7,8 @@ namespace Disk.Calculations.Impl
     class Converter
     {
         private readonly Size ScreenSize;
-
         private readonly SizeF AngleSize;
-
         private readonly SizeF MaxAngle;
-
         private readonly Size MaxLogCoord;
 
         public Converter(int screenWidth, int screenHeight, float angleWidth, float angleHeight)
@@ -73,7 +70,8 @@ namespace Disk.Calculations.Impl
             return new(int.Parse(coords[0]), int.Parse(coords[1]), int.Parse(coords[2]));
         }
 
-        public Point2D<int> ToWndCoord(Point2D<float> anglePoint) => new(ToWndCoordX(anglePoint.X), ToWndCoordY(anglePoint.Y));
+        public Point2D<int> ToWndCoord(Point2D<float> anglePoint)
+            => new(ToWndCoordX(anglePoint.X), ToWndCoordY(anglePoint.Y));
 
         public Point2D<int> ToWndCoord(Point2D<int> logPoint) => new(ToWndCoordX(logPoint.X), ToWndCoordY(logPoint.Y));
 
@@ -127,7 +125,8 @@ namespace Disk.Calculations.Impl
             return new(float.Parse(coords[0]), float.Parse(coords[1]), float.Parse(coords[2]));
         }
 
-        public Point2D<float> ToAngle_FromWnd(Point2D<int> point) => new(ToAngleX_FromWnd(point.X), ToAngleY_FromWnd(point.Y));
+        public Point2D<float> ToAngle_FromWnd(Point2D<int> point)
+            => new(ToAngleX_FromWnd(point.X), ToAngleY_FromWnd(point.Y));
 
         public Point2D<float> ToAngle_FromLog(Point2D<int> logPoint)
             => new(ToAngleX_FromLog(logPoint.X), ToAngleY_FromLog(logPoint.Y));
@@ -148,10 +147,5 @@ namespace Disk.Calculations.Impl
 
         public static Point3D<float> ToRadian_FromAngle(Point3D<float> angle)
             => new(ToRadian_FromAngle(angle.X), ToRadian_FromAngle(angle.Y), ToRadian_FromAngle(angle.Z));
-
-        public static Point2D<float> ToPolar(Point2D<int> angle)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

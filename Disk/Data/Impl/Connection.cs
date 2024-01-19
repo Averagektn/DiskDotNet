@@ -6,19 +6,16 @@ namespace Disk.Data.Impl
 {
     class Connection : IDataSource<Point3D<float>, Point2D<float>, float>, IDisposable
     {
-        public IPAddress IP { get; private set; }
-
-        public int Port { get; private set; }
-
-        private readonly Logger Log3D;
+        public readonly IPAddress IP;
+        public readonly int Port;
 
         private static readonly List<Connection> Connections = [];
-
+        private readonly Logger Logger;
         private readonly Socket Socket;
 
         private Connection(IPAddress ip, int port)
         {
-            Log3D = Logger.GetLogger("Connection/Connection.log");
+            Logger = Logger.GetLogger("Connection/Connection.log");
 
             IP = ip;
             Port = port;
@@ -59,17 +56,21 @@ namespace Disk.Data.Impl
             return conn;
         }
 
-        // log
         public Point3D<float> GetXYZ()
         {
             var coords = new byte[12];
+
             Socket.Receive(coords);
 
             float x = BitConverter.ToSingle(coords, 0);
             float y = BitConverter.ToSingle(coords, 4);
             float z = BitConverter.ToSingle(coords, 8);
 
-            return new(x, y, z);
+            var p = new Point3D<float>(x, y, z);
+
+            Logger.LogLn(p);
+
+            return p;
         }
 
         public Point2D<float> GetXY()

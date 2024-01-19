@@ -55,7 +55,7 @@ namespace Disk.Calculations.Impl
             return res;
         }
 
-        private static List<T> GetInitialCenters<T>(IEnumerable<T> dataset, IEnumerable<IEnumerable<T>> classification, 
+        private static List<T> GetInitialCenters<T>(IEnumerable<T> dataset, IEnumerable<IEnumerable<T>> classification,
             int classesCount)
         {
             var res = new List<List<T>>(classesCount);
@@ -84,9 +84,9 @@ namespace Disk.Calculations.Impl
             return centers;
         }
 
-        private static bool GenerateNewCenters2D<T>(IEnumerable<T> centers, IEnumerable<IEnumerable<T>> classification) 
-            where T : 
-                Point2D<CoordType>, 
+        private static bool GenerateNewCenters2D<T>(IEnumerable<T> centers, IEnumerable<IEnumerable<T>> classification)
+            where T :
+                Point2D<CoordType>,
                 new()
         {
             bool isCounting = false;

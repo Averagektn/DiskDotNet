@@ -12,11 +12,17 @@ namespace Disk.Data.Interface
             new()
     {
         TriplePoint? GetXYZ();
+
         DoublePoint? GetXY();
+        
         DoublePoint? GetYZ();
+        
         DoublePoint? GetXZ();
+        
         DoublePoint? GetYX();
+        
         DoublePoint? GetZY();
+        
         DoublePoint? GetZX();
     }
 }

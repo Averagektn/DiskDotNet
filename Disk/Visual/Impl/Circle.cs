@@ -13,23 +13,18 @@ namespace Disk.Visual.Impl
         public Point2D<int> Center { get; protected set; }
 
         public int Right => Center.X + Radius;
-
         public int Top => Center.Y - Radius;
-
         public int Bottom => Center.Y + Radius;
-
         public int Left => Center.X - Radius;
 
+        protected readonly Ellipse Figure;
+
         protected int Radius;
-
         protected int Speed;
-
-        private readonly Ellipse Figure;
 
         private const float DIAGONAL_CORRECTION = 1.41f;
 
         private Size IniSize { get; set; }
-
         private Size CurrSize { get; set; }
 
         private bool isDrawn = false;

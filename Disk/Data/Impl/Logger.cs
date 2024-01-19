@@ -5,10 +5,11 @@ namespace Disk.Data.Impl
 {
     class Logger : ILogger, IDisposable
     {
-        private readonly StreamWriter Writer;
+        public readonly string Filename;
+
         private static readonly List<Logger> Loggers = [];
 
-        public readonly string Filename;
+        private readonly StreamWriter Writer;
 
         private Logger(string filename)
         {
@@ -37,24 +38,12 @@ namespace Disk.Data.Impl
             Writer.Close();
         }
 
-        public void Log(object? data)
-        {
-            Writer.Write(data?.ToString());
-        }
+        public void Log(object? data) => Writer.Write(data?.ToString());
 
-        public async Task LogAsync(object? data)
-        {
-            await Writer.WriteAsync(data?.ToString());
-        }
+        public async Task LogAsync(object? data) => await Writer.WriteAsync(data?.ToString());
 
-        public void LogLn(object? data)
-        {
-            Writer.WriteLine(data?.ToString());
-        }
+        public void LogLn(object? data) => Writer.WriteLine(data?.ToString());
 
-        public async Task LogLnAsync(object? data)
-        {
-            await Writer.WriteLineAsync(data?.ToString());
-        }
+        public async Task LogLnAsync(object? data) => await Writer.WriteLineAsync(data?.ToString());
     }
 }

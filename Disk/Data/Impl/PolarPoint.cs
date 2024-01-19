@@ -28,11 +28,7 @@
             Y = (CoordType)Convert.ChangeType(radius * Math.Sin(angleRad), typeof(CoordType));
         }
 
-        public PolarPoint(Point2D<CoordType> p)
-        {
-            X = p.X; 
-            Y = p.Y;
-        }
+        public PolarPoint(Point2D<CoordType> p) : base(p.X, p.Y) { }
 
         public PolarPoint(CoordType x, CoordType y, IFormatProvider? formatProvider = null) : base(x, y, formatProvider) { }
 
