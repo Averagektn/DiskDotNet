@@ -1,5 +1,5 @@
 ﻿using Disk.Visual.Interface;
-using System.Drawing;
+using System.Windows;
 using System.Windows.Markup;
 
 namespace Disk.Visual.Impl

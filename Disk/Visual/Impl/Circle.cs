@@ -4,7 +4,7 @@ using System.Windows;
 using System.Windows.Markup;
 using System.Windows.Media;
 using System.Windows.Shapes;
-using Size = System.Drawing.Size;
+using Size = System.Windows.Size;
 
 namespace Disk.Visual.Impl
 {
@@ -113,8 +113,8 @@ namespace Disk.Visual.Impl
 
         public void Scale(Size newSize)
         {
-            float coeffX = (float)newSize.Width / IniSize.Width;
-            float coeffY = (float)newSize.Height / IniSize.Height;
+            double coeffX = (double)newSize.Width / IniSize.Width;
+            double coeffY = (double)newSize.Height / IniSize.Height;
 
             Speed = (int)Math.Round(Speed * (coeffX + coeffY) / 2);
             Radius = (int)Math.Round(Radius * (coeffX + coeffY) / 2);
