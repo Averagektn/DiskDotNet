@@ -8,69 +8,14 @@ namespace Disk.Calculations.Impl
             int classesCount)
         {
             var res = new List<List<Point2D<CoordType>>>(classesCount);
-            var centers = new List<Point2D<CoordType>>(classesCount);
-            var random = new Random();
-
-            for (int i = 0; i < classesCount; i++)
-            {
-                res.Add([]);
-            }
-
-            for (int i = 0; i < classesCount; i++)
-            {
-                var p = dataset.ElementAt(random.Next(classesCount));
-
-                if (!centers.Contains(p))
-                {
-                    centers.Add(p);
-                    res[i].Add(p);
-                }
-                else
-                {
-                    i--;
-                }
-            }
-
+            var centers = GetInitialCenters(dataset, res, classesCount);
             bool isCounting = true;
 
             while (isCounting)
             {
-                for (int i = 0; i < dataset.Count(); i++)
-                {
-                    int classId = 0;
-                    var prevDistance = centers[classId].GetDistance(dataset.ElementAt(i));
+                Separate(dataset, centers, res);
 
-                    for (int j = 1; j < classesCount; j++)
-                    {
-                        var currDistance = centers[j].GetDistance(dataset.ElementAt(i));
-
-                        if (currDistance < prevDistance)
-                        {
-                            prevDistance = currDistance;
-                            classId = j;
-                        }
-                    }
-
-                    res[classId].Add(dataset.ElementAt(i));
-                }
-
-                isCounting = false;
-
-                for (int i = 0; i < classesCount; i++)
-                {
-                    var avgX = (CoordType)Convert.ChangeType(res[i].Average(p => p.XDbl), typeof(CoordType));
-                    var avgY = (CoordType)Convert.ChangeType(res[i].Average(p => p.YDbl), typeof(CoordType));
-                    var newCenter = new Point2D<CoordType>(avgX, avgY);
-
-                    if (!newCenter.Equals(centers.ElementAt(i)))
-                    {
-                        isCounting = true;
-                        centers[i] = newCenter;
-                    }
-
-                    res[i].Clear();
-                }
-
+                isCounting = GenerateNewCenters2D(centers, res);
             }
 
             return res;
@@ -80,69 +25,14 @@ namespace Disk.Calculations.Impl
             int classesCount)
         {
             var res = new List<List<Point3D<CoordType>>>(classesCount);
-            var centers = new List<Point3D<CoordType>>(classesCount);
-            var random = new Random();
-
-            for (int i = 0; i < classesCount; i++)
-            {
-                res.Add([]);
-            }
-
-            for (int i = 0; i < classesCount; i++)
-            {
-                var p = dataset.ElementAt(random.Next(classesCount));
-
-                if (!centers.Contains(p))
-                {
-                    centers.Add(p);
-                    res[i].Add(p);
-                }
-                else
-                {
-                    i--;
-                }
-            }
-
+            var centers = GetInitialCenters(dataset, res, classesCount);
             bool isCounting = true;
 
             while (isCounting)
             {
-                for (int i = 0; i < dataset.Count(); i++)
-                {
-                    int classId = 0;
-                    var prevDistance = centers[classId].GetDistance(dataset.ElementAt(i));
+                Separate(dataset, centers, res);
 
-                    for (int j = 1; j < classesCount; j++)
-                    {
-                        var currDistance = centers[j].GetDistance(dataset.ElementAt(i));
-
-                        if (currDistance < prevDistance)
-                        {
-                            prevDistance = currDistance;
-                            classId = j;
-                        }
-                    }
-
-                    res[classId].Add(dataset.ElementAt(i));
-                }
-
-                isCounting = false;
-
-                for (int i = 0; i < classesCount; i++)
-                {
-                    var avgX = (CoordType)Convert.ChangeType(res[i].Average(p => p.XDbl), typeof(CoordType));
-                    var avgY = (CoordType)Convert.ChangeType(res[i].Average(p => p.YDbl), typeof(CoordType));
-                    var avgZ = (CoordType)Convert.ChangeType(res[i].Average(p => p.ZDbl), typeof(CoordType));
-                    var newCenter = new Point3D<CoordType>(avgX, avgY, avgZ);
-
-                    if (!newCenter.Equals(centers.ElementAt(i)))
-                    {
-                        isCounting = true;
-                        centers[i] = newCenter;
-                    }
-
-                    res[i].Clear();
-                }
+                isCounting = GenerateNewCenters3D(centers, res);
             }
 
             return res;
@@ -152,13 +42,25 @@ namespace Disk.Calculations.Impl
             int classesCount)
         {
             var res = new List<List<PolarPoint<CoordType>>>(classesCount);
-            var centers = new List<PolarPoint<CoordType>>(classesCount);
-            var random = new Random();
+            var centers = GetInitialCenters(dataset, res, classesCount);
+            bool isCounting = true;
 
-            for (int i = 0; i < classesCount; i++)
+            while (isCounting)
             {
-                res.Add([]);
+                Separate(dataset, centers, res);
+
+                isCounting = GenerateNewCenters2D(centers, res);
             }
+
+            return res;
+        }
+
+        private static List<T> GetInitialCenters<T>(IEnumerable<T> dataset, IEnumerable<IEnumerable<T>> classification, 
+            int classesCount)
+        {
+            var res = new List<List<T>>(classesCount);
+            var centers = new List<T>(classesCount);
+            var random = new Random();
 
             for (int i = 0; i < classesCount; i++)
             {
@@ -166,8 +68,10 @@ namespace Disk.Calculations.Impl
 
                 if (!centers.Contains(p))
                 {
-                    centers.Add(p);
+                    res.Add([]);
                     res[i].Add(p);
+
+                    centers.Add(p);
                 }
                 else
                 {
@@ -175,48 +79,83 @@ namespace Disk.Calculations.Impl
                 }
             }
 
-            bool isCounting = true;
+            classification = res;
 
-            while (isCounting)
+            return centers;
+        }
+
+        private static bool GenerateNewCenters2D<T>(IEnumerable<T> centers, IEnumerable<IEnumerable<T>> classification) 
+            where T : 
+                Point2D<CoordType>, 
+                new()
+        {
+            bool isCounting = false;
+
+            for (int i = 0; i < centers.Count(); i++)
             {
-                for (int i = 0; i < dataset.Count(); i++)
+                var avgX = (CoordType)Convert.ChangeType(classification.ElementAt(i).Average(p => p.XDbl), typeof(CoordType));
+                var avgY = (CoordType)Convert.ChangeType(classification.ElementAt(i).Average(p => p.YDbl), typeof(CoordType));
+                var newCenter = new T { X = avgX, Y = avgY };
+
+                if (!newCenter.Equals(centers.ElementAt(i)))
                 {
-                    int classId = 0;
-                    var prevDistance = centers[classId].GetDistance(dataset.ElementAt(i));
-
-                    for (int j = 1; j < classesCount; j++)
-                    {
-                        var currDistance = centers[j].GetDistance(dataset.ElementAt(i));
-
-                        if (currDistance < prevDistance)
-                        {
-                            prevDistance = currDistance;
-                            classId = j;
-                        }
-                    }
-
-                    res[classId].Add(dataset.ElementAt(i));
+                    isCounting = true;
+                    centers.ToList()[i] = newCenter;
                 }
 
-                isCounting = false;
-
-                for (int i = 0; i < classesCount; i++)
-                {
-                    var avgX = (CoordType)Convert.ChangeType(res[i].Average(p => p.XDbl), typeof(CoordType));
-                    var avgY = (CoordType)Convert.ChangeType(res[i].Average(p => p.YDbl), typeof(CoordType));
-                    var newCenter = new PolarPoint<CoordType>(avgX, avgY);
-
-                    if (!newCenter.Equals(centers.ElementAt(i)))
-                    {
-                        isCounting = true;
-                        centers[i] = newCenter;
-                    }
-
-                    res[i].Clear();
-                }
+                classification.ToList()[i].ToList().Clear();
             }
 
-            return res;
+            return isCounting;
+        }
+
+        private static bool GenerateNewCenters3D<T>(IEnumerable<T> centers, IEnumerable<IEnumerable<T>> classification)
+            where T :
+                Point3D<CoordType>,
+                new()
+        {
+            bool isCounting = false;
+
+            for (int i = 0; i < centers.Count(); i++)
+            {
+                var avgX = (CoordType)Convert.ChangeType(classification.ElementAt(i).Average(p => p.XDbl), typeof(CoordType));
+                var avgY = (CoordType)Convert.ChangeType(classification.ElementAt(i).Average(p => p.YDbl), typeof(CoordType));
+                var avgZ = (CoordType)Convert.ChangeType(classification.ElementAt(i).Average(p => p.ZDbl), typeof(CoordType));
+                var newCenter = new T { X = avgX, Y = avgY, Z = avgZ };
+
+                if (!newCenter.Equals(centers.ElementAt(i)))
+                {
+                    isCounting = true;
+                    centers.ToList()[i] = newCenter;
+                }
+
+                classification.ToList()[i].ToList().Clear();
+            }
+
+            return isCounting;
+        }
+
+        private static void Separate<T>(IEnumerable<T> dataset, IEnumerable<T> centers,
+            IEnumerable<IEnumerable<T>> classification) where T : Point2D<CoordType>
+        {
+            for (int i = 0; i < dataset.Count(); i++)
+            {
+                int classId = 0;
+                var prevDistance = centers.ElementAt(classId).GetDistance(dataset.ElementAt(i));
+
+                for (int j = 1; j < centers.Count(); j++)
+                {
+                    var currDistance = centers.ElementAt(j).GetDistance(dataset.ElementAt(i));
+
+                    if (currDistance < prevDistance)
+                    {
+                        prevDistance = currDistance;
+                        classId = j;
+                    }
+                }
+
+                classification.ElementAt(classId).ToList().Add(dataset.ElementAt(i));
+            }
         }
     }
 }
