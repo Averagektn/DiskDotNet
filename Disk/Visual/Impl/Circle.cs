@@ -17,20 +17,30 @@ namespace Disk.Visual.Impl
         public int Bottom => Center.Y + Radius;
         public int Left => Center.X - Radius;
 
-        protected readonly Ellipse Figure;
+        private readonly Ellipse Figure;
 
         protected int Radius;
         protected int Speed;
 
         private const float DIAGONAL_CORRECTION = 1.41f;
 
-        private Size IniSize { get; set; }
+        private readonly Point2D<int> IniCenter;
+
+        private readonly Size IniSize;
+
+        private readonly int IniSpeed;
+        private readonly int IniRadius;
+        
         private Size CurrSize { get; set; }
 
         private bool isDrawn = false;
 
         public Circle(Point2D<int> center, int radius, int speed, Brush color)
         {
+            IniCenter = center;
+            IniRadius = radius;
+            IniSpeed = speed;
+
             Center = center;
             Radius = radius;
             Speed = speed;
@@ -40,11 +50,14 @@ namespace Disk.Visual.Impl
                 Width = radius * 2,
                 Height = radius * 2,
                 Fill = color,
-                Margin = new Thickness(Left, Top, 0, 0)
+                HorizontalAlignment = HorizontalAlignment.Left,
+                VerticalAlignment = VerticalAlignment.Top,
+                Margin = new(Left, Top, 0, 0)
             };
         }
 
-        public Circle(Point2D<int> center, int radius, int speed, Brush color, Size iniSize) : this(center, radius, speed, color)
+        public Circle(Point2D<int> center, int radius, int speed, Brush color, Size iniSize) : 
+            this(center, radius, speed, color)
         {
             CurrSize = iniSize;
             IniSize = iniSize;
@@ -58,7 +71,7 @@ namespace Disk.Visual.Impl
                 isDrawn = true;
             }
 
-            Figure.Margin = new Thickness(Left, Top, 0, 0);
+            Figure.Margin = new(Left, Top, 0, 0);
         }
 
         public void Move(bool moveTop, bool moveRight, bool moveBottom, bool moveLeft)
@@ -108,7 +121,7 @@ namespace Disk.Visual.Impl
 
             Center = new(Center.X + xSpeed, Center.Y + ySpeed);
 
-            Figure.Margin = new Thickness(Left, Top, 0, 0);
+            Figure.Margin = new(Left, Top, 0, 0);
         }
 
         public void Scale(Size newSize)
@@ -116,11 +129,14 @@ namespace Disk.Visual.Impl
             double coeffX = (double)newSize.Width / IniSize.Width;
             double coeffY = (double)newSize.Height / IniSize.Height;
 
-            Speed = (int)Math.Round(Speed * (coeffX + coeffY) / 2);
-            Radius = (int)Math.Round(Radius * (coeffX + coeffY) / 2);
-            Center = new((int)Math.Round(Center.X * coeffX), (int)Math.Round(Center.Y * coeffY));
+            Speed = (int)Math.Round(IniSpeed * (coeffX + coeffY) / 2);
+            Radius = (int)Math.Round(IniRadius * (coeffX + coeffY) / 2);
+            Center = new((int)Math.Round(IniCenter.X * coeffX), (int)Math.Round(IniCenter.Y * coeffY));
 
-            Figure.Margin = new Thickness(Left, Top, 0, 0);
+            Figure.Width = Radius * 2;
+            Figure.Height = Radius * 2;
+
+            Figure.Margin = new(Left, Top, 0, 0);
         }
     }
 }
