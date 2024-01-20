@@ -48,6 +48,18 @@ namespace Disk
         private Graph? Graph;
         private Enemy? Enemy;
 
+        private readonly Logger UserLogWnd = Logger.GetLogger("userWND.log");
+        private readonly Logger UserLogCen = Logger.GetLogger("userCEN.log");
+        private readonly Logger UserLogAng = Logger.GetLogger("userANG.log");
+
+        private readonly Logger EnemyLogWnd = Logger.GetLogger("enemyWND.log");
+        private readonly Logger EnemyLogCen = Logger.GetLogger("enemyCEN.log");
+        private readonly Logger EnemyLogAng = Logger.GetLogger("enemyANG.log");
+
+/*        private readonly FileReader<int> TargetReader = FileReader<int>.Open("target.txt", ';');
+        private readonly FileReader<float> UserPathReader = FileReader<float>.Open("userANG.log", ';');
+        private readonly FileReader<float> EnemyPathReader = FileReader<float>.Open("enemyANG.log", ';');*/
+
         private Point3DF CurrentPos;
 
         private Converter? Converter;
@@ -108,8 +120,12 @@ namespace Disk
                 RenderSize, Brushes.Black);
             YAxis = new Axis(new((int)RenderSize.Width / 2, 0), new((int)RenderSize.Width / 2, (int)RenderSize.Height),
                 RenderSize, Brushes.Black);
+
             User = new(new((int)RenderSize.Width / 2, (int)RenderSize.Height / 2), 5, 5, Brushes.Green, RenderSize);
+            User.OnShot += UserLogWnd.LogLn;
+
             Enemy = new(new((int)RenderSize.Width / 2 - 20, (int)RenderSize.Height / 2 - 100), 3, 4, Brushes.Red, RenderSize);
+            Enemy.OnShot += UserLogWnd.LogLn;
 
             Converter = new(RenderSize, new(20.0f, 20.0f));
 

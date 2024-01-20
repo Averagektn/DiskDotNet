@@ -2,27 +2,23 @@
 
 namespace Disk.Data.Interface
 {
-    interface IDataSource<TriplePoint, DoublePoint, CoordType>
-        where TriplePoint :
-            Point3D<CoordType>
-        where DoublePoint :
-            Point2D<CoordType>
+    interface IDataSource<CoordType>
         where CoordType :
             IConvertible,
             new()
     {
-        TriplePoint? GetXYZ();
+        Point3D<CoordType>? GetXYZ();
 
-        DoublePoint? GetXY();
+        Point2D<CoordType>? GetXY();
 
-        DoublePoint? GetYZ();
+        Point2D<CoordType>? GetYZ();
 
-        DoublePoint? GetXZ();
+        Point2D<CoordType>? GetXZ();
 
-        DoublePoint? GetYX();
+        Point2D<CoordType>? GetYX();
 
-        DoublePoint? GetZY();
+        Point2D<CoordType>? GetZY();
 
-        DoublePoint? GetZX();
+        Point2D<CoordType>? GetZX();
     }
 }

@@ -4,7 +4,7 @@ using System.Net.Sockets;
 
 namespace Disk.Data.Impl
 {
-    class Connection : IDataSource<Point3D<float>, Point2D<float>, float>, IDisposable
+    class Connection : IDataSource<float>, IDisposable
     {
         public readonly IPAddress IP;
         public readonly int Port;

@@ -3,15 +3,9 @@ using System.IO;
 
 namespace Disk.Data.Impl
 {
-    class FileReader<PointType3D, PointType2D, CoordType> :
-        IDataSource<PointType3D, PointType2D, CoordType>,
+    class FileReader<CoordType> :
+        IDataSource<CoordType>,
         IDisposable
-        where PointType3D :
-            Point3D<CoordType>,
-            new()
-        where PointType2D :
-            Point2D<CoordType>,
-            new()
         where CoordType :
             IConvertible,
             new()
@@ -19,7 +13,7 @@ namespace Disk.Data.Impl
         public readonly string Filename;
         public readonly char Separator;
 
-        private static readonly List<FileReader<PointType3D, PointType2D, CoordType>> Files = [];
+        private static readonly List<FileReader<CoordType>> Files = [];
 
         private readonly StreamReader Reader;
 
@@ -28,10 +22,15 @@ namespace Disk.Data.Impl
             Filename = filename;
             Separator = separator;
 
+            if (!File.Exists(filename))
+            {
+                File.Create(filename);
+            }
+
             Reader = new(filename);
         }
 
-        public static FileReader<PointType3D, PointType2D, CoordType> Open(string filename, char separator)
+        public static FileReader<CoordType> Open(string filename, char separator)
         {
             var reader = Files.FirstOrDefault(f => f.Filename == filename);
 
@@ -53,10 +52,10 @@ namespace Disk.Data.Impl
 
         public string? ReadLn() => Reader.ReadLine();
 
-        public PointType3D? GetXYZ()
+        public Point3D<CoordType>? GetXYZ()
         {
             var str = Reader.ReadLine();
-            PointType3D? res = default;
+            Point3D<CoordType>? res = null;
 
             if (str is not null)
             {
@@ -64,130 +63,105 @@ namespace Disk.Data.Impl
 
                 if (data.Length == 3)
                 {
-                    res = new PointType3D
-                    {
-                        X = (CoordType)Convert.ChangeType(data[0], typeof(CoordType)),
-                        Y = (CoordType)Convert.ChangeType(data[1], typeof(CoordType)),
-                        Z = (CoordType)Convert.ChangeType(data[2], typeof(CoordType))
-                    };
+                    res = new Point3D<CoordType>(
+                        (CoordType)Convert.ChangeType(data[0], typeof(CoordType)), 
+                        (CoordType)Convert.ChangeType(data[0], typeof(CoordType)), 
+                        (CoordType)Convert.ChangeType(data[0], typeof(CoordType))
+                        );
                 }
             }
 
             return res;
         }
 
-        public PointType2D? GetXY()
+        public Point2D<CoordType>? GetXY()
         {
             var point3D = GetXYZ();
 
-            PointType2D? res = default;
+            Point2D<CoordType>? res = null;
 
             if (point3D is not null)
             {
-                res = new PointType2D
-                {
-                    X = point3D.X,
-                    Y = point3D.Y
-                };
+                res = new(point3D.X, point3D.Y);
             }
 
             return res;
         }
 
-        public PointType2D? GetYZ()
+        public Point2D<CoordType>? GetYZ()
         {
             var point3D = GetXYZ();
 
-            PointType2D? res = default;
+            Point2D<CoordType>? res = null;
 
             if (point3D is not null)
             {
-                res = new PointType2D
-                {
-                    X = point3D.Y,
-                    Y = point3D.Z
-                };
+                res = new(point3D.Y, point3D.Z);
             }
 
             return res;
         }
 
-        public PointType2D? GetXZ()
+        public Point2D<CoordType>? GetXZ()
         {
             var point3D = GetXYZ();
 
-            PointType2D? res = default;
+            Point2D<CoordType>? res = null;
 
             if (point3D is not null)
             {
-                res = new PointType2D
-                {
-                    X = point3D.X,
-                    Y = point3D.Z
-                };
+                res = new(point3D.X, point3D.Z);
             }
 
             return res;
         }
 
-        public PointType2D? GetYX()
+        public Point2D<CoordType>? GetYX()
         {
             var point3D = GetXYZ();
 
-            PointType2D? res = default;
+            Point2D<CoordType>? res = null;
 
             if (point3D is not null)
             {
-                res = new PointType2D
-                {
-                    X = point3D.Y,
-                    Y = point3D.X
-                };
+                res = new(point3D.Y, point3D.X);
             }
 
             return res;
         }
 
-        public PointType2D? GetZY()
+        public Point2D<CoordType>? GetZY()
         {
             var point3D = GetXYZ();
 
-            PointType2D? res = default;
+            Point2D<CoordType>? res = null;
 
             if (point3D is not null)
             {
-                res = new PointType2D
-                {
-                    X = point3D.Z,
-                    Y = point3D.Y
-                };
+                res = new(point3D.Z, point3D.Y);
             }
 
             return res;
         }
 
-        public PointType2D? GetZX()
+        public Point2D<CoordType>? GetZX()
         {
             var point3D = GetXYZ();
 
-            PointType2D? res = default;
+            Point2D<CoordType>? res = null;
 
             if (point3D is not null)
             {
-                res = new PointType2D
-                {
-                    X = point3D.Z,
-                    Y = point3D.X
-                };
+                res = new(point3D.Z, point3D.X);
             }
 
             return res;
         }
 
-        public IEnumerable<PointType2D> Get2DPoints(bool isX = true, bool isY = true, bool isZ = false,
+        public IEnumerable<Point2D<CoordType>> Get2DPoints(bool isX = true, bool isY = true, bool isZ = false,
             bool isStraightforward = true)
         {
-            PointType2D? p = null;
+            Point2D<CoordType>? p = null;
 
             if (isStraightforward)
             {
@@ -227,9 +201,9 @@ namespace Disk.Data.Impl
             yield break;
         }
 
-        public IEnumerable<PointType3D> Get3DPoints()
+        public IEnumerable<Point3D<CoordType>> Get3DPoints()
         {
-            PointType3D? p = GetXYZ();
+            var p = GetXYZ();
 
             if (p is not null)
             {
