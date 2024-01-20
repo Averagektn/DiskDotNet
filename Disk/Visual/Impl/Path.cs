@@ -3,6 +3,7 @@ using Disk.Data.Impl;
 using Disk.Visual.Interface;
 using System.Drawing;
 using System.Windows.Markup;
+using System.Windows.Media;
 using System.Windows.Shapes;
 using Size = System.Windows.Size;
 
@@ -18,7 +19,7 @@ namespace Disk.Visual.Impl
         
         private Converter Converter;
 
-        public Path(IEnumerable<Point2D<float>> points, Size currSize, SizeF angleSize)
+        public Path(IEnumerable<Point2D<float>> points, Size currSize, SizeF angleSize, Brush color)
         {
             AngleSize = angleSize;
 
@@ -26,7 +27,10 @@ namespace Disk.Visual.Impl
 
             Points = points;
 
-            Polyline = new Polyline();
+            Polyline = new Polyline()
+            {
+                Stroke = color
+            };
 
             foreach (var point in Points)
             {

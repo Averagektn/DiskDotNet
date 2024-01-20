@@ -1,4 +1,6 @@
-﻿using Disk.Visual.Impl;
+﻿using Disk.Calculations.Impl;
+using Disk.Data.Impl;
+using Disk.Visual.Impl;
 using Disk.Visual.Interface;
 using System.Windows;
 using System.Windows.Input;
@@ -15,6 +17,8 @@ namespace Disk
         private readonly Timer MoveTimer;
         private readonly Timer TargetTimer;
 
+        private readonly Thread NetworkThread;
+
         private bool MoveUp;
         private bool MoveDown;
         private bool MoveLeft;
@@ -26,8 +30,10 @@ namespace Disk
         private Axis? XAxis;
         private Axis? YAxis;
         private User? User;
-        private readonly Target? Target;
-
+        private Target? Target;
+        private Path? Path;
+        private Graph? Graph;
+        private Enemy? Enemy;
 
         public MainWindow()
         {
