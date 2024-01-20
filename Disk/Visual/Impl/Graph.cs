@@ -22,7 +22,7 @@ namespace Disk.Visual.Impl
         {
             SegmentsNum = segmentsNum;
 
-            Radius = (int)Math.Min(currSize.Width / 2, currSize.Height / 2);
+            Radius = (int)(Math.Min(currSize.Width / 2, currSize.Height / 2) * 0.9);
 
             Frequency = GetFrequency(Classifier<float>.Classify(points, segmentsNum));
 
@@ -41,7 +41,8 @@ namespace Disk.Visual.Impl
 
         public void Scale(Size newSize)
         {
-            Radius = (int)Math.Min(newSize.Width, newSize.Height);
+            Radius = (int)(Math.Min(newSize.Width, newSize.Height) * 0.9);
+
             Polygon.Points.Clear();
 
             FillPolygon();
@@ -53,6 +54,7 @@ namespace Disk.Visual.Impl
             var maxFrequency = Frequency.Max();
 
             int i = 0;
+
             for (var angle = angleStep / 2; angle < 360.0; angle += angleStep, i++)
             {
                 var radius = Radius * (double)maxFrequency / Frequency.ElementAt(i);

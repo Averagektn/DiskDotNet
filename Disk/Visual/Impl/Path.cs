@@ -16,7 +16,7 @@ namespace Disk.Visual.Impl
         private readonly SizeF AngleSize;
 
         private readonly IEnumerable<Point2D<float>> Points;
-        
+
         private Converter Converter;
 
         public Path(IEnumerable<Point2D<float>> points, Size currSize, SizeF angleSize, Brush color)

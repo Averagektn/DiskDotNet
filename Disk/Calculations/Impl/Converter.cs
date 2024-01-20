@@ -1,6 +1,5 @@
 ﻿using Disk.Data.Impl;
 using System.Drawing;
-using System.Windows;
 using Point = System.Windows.Point;
 using Size = System.Windows.Size;
 
