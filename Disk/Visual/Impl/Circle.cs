@@ -21,8 +21,6 @@ namespace Disk.Visual.Impl
 
         private readonly Ellipse Figure;
 
-        private readonly Point2D<int> IniCenter;
-
         private readonly Size IniSize;
 
         private readonly int IniSpeed;
@@ -37,7 +35,6 @@ namespace Disk.Visual.Impl
 
         public Circle(Point2D<int> center, int radius, int speed, Brush color)
         {
-            IniCenter = center;
             IniRadius = radius;
             IniSpeed = speed;
 

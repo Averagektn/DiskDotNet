@@ -59,11 +59,13 @@ namespace Disk
         //private readonly FileReader<float> UserPathReader = FileReader<float>.Open("userANG.log", ';');
         //private readonly FileReader<float> EnemyPathReader = FileReader<float>.Open("enemyANG.log", ';');
 
-        private Point3DF CurrentPos;
+        private Point3DF? CurrentPos;
 
         private Converter? Converter;
 
         private readonly Random Random = new();
+
+        private int Score = 0;
 
         public MainWindow()
         {
@@ -77,12 +79,23 @@ namespace Disk
             TargetTimer = new(Random.Next(1000, 5000));
             TargetTimer.Elapsed += TargetTimerElapsed;
 
+            ShotTimer = new(20);
+            ShotTimer.Elapsed += ShotTimerElapsed;
+
             Closing += OnClosing;
             Loaded += OnLoaded;
             SizeChanged += OnSizeChanged;
             PreviewKeyDown += OnKeyDown;
             PreviewKeyUp += OnKeyUp;
             MouseLeftButtonDown += OnMouseLeftButtonDown;
+        }
+
+        private void ShotTimerElapsed(object? sender, ElapsedEventArgs e)
+        {
+            if (Target is not null && User is not null)
+            {
+                Score += Target.ReceiveShot(User.Shot());
+            }
         }
 
         private void TargetTimerElapsed(object? sender, ElapsedEventArgs e)
@@ -104,6 +117,7 @@ namespace Disk
 
             MoveTimer.Stop();
             TargetTimer.Stop();
+            ShotTimer.Stop();
         }
 
         private void MoveTimerElapsed(object? sender, ElapsedEventArgs e)
@@ -158,6 +172,7 @@ namespace Disk
             MoveTimer.Start();
             NetworkThread.Start();
             TargetTimer.Start();
+            ShotTimer.Start();
         }
 
         private void OnSizeChanged(object sender, RoutedEventArgs e)
