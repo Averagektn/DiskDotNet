@@ -5,6 +5,12 @@ using Disk.Visual.Interface;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
+using Point2DF = Disk.Data.Impl.Point2D<float>;
+using Point2DI = Disk.Data.Impl.Point2D<int>;
+using PolarPointF = Disk.Data.Impl.PolarPoint<float>;
+using PolarPointI = Disk.Data.Impl.PolarPoint<int>;
+using Point3DF = Disk.Data.Impl.Point3D<float>;
+using Point3DI = Disk.Data.Impl.Point3D<int>;
 
 namespace Disk
 {

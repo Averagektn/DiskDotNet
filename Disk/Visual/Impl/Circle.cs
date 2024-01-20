@@ -64,7 +64,7 @@ namespace Disk.Visual.Impl
         }
 
         public bool Contains(Point2D<int> p)
-            => Math.Sqrt(Math.Pow((p.X - Center.X) / Radius, 2) + Math.Pow((p.Y - Center.Y) / Radius, 2)) <= 1.0f;
+            => Figure.RenderedGeometry.FillContains(p.ToPoint());
 
         public virtual void Draw(IAddChild addChild)
         {
