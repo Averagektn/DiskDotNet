@@ -2,21 +2,18 @@
 using Disk.Data.Impl;
 using Disk.Visual.Impl;
 using Disk.Visual.Interface;
+using System.ComponentModel;
+using System.Timers;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
+using Timer = System.Timers.Timer;
 using Point2DF = Disk.Data.Impl.Point2D<float>;
 using Point2DI = Disk.Data.Impl.Point2D<int>;
 using PolarPointF = Disk.Data.Impl.PolarPoint<float>;
 using PolarPointI = Disk.Data.Impl.PolarPoint<int>;
 using Point3DF = Disk.Data.Impl.Point3D<float>;
 using Point3DI = Disk.Data.Impl.Point3D<int>;
-using System.Net;
-using System.Timers;
-using Timer = System.Timers.Timer;
-using System.Windows.Controls;
-using System.Windows.Documents;
-using System.ComponentModel;
 
 namespace Disk
 {
@@ -44,8 +41,8 @@ namespace Disk
         private Axis? YAxis;
         private User? User;
         private Target? Target;
-        private Path? Path;
-        private Graph? Graph;
+        private readonly Path? Path;
+        private readonly Graph? Graph;
         private Enemy? Enemy;
 
         private readonly Logger UserLogWnd = Logger.GetLogger("userWND.log");
@@ -56,13 +53,17 @@ namespace Disk
         private readonly Logger EnemyLogCen = Logger.GetLogger("enemyCEN.log");
         private readonly Logger EnemyLogAng = Logger.GetLogger("enemyANG.log");
 
-/*        private readonly FileReader<int> TargetReader = FileReader<int>.Open("target.txt", ';');
-        private readonly FileReader<float> UserPathReader = FileReader<float>.Open("userANG.log", ';');
-        private readonly FileReader<float> EnemyPathReader = FileReader<float>.Open("enemyANG.log", ';');*/
+        private readonly Logger Calculations = Logger.GetLogger("calculations.log");
+
+        // create after logger is closed
+        //private readonly FileReader<float> UserPathReader = FileReader<float>.Open("userANG.log", ';');
+        //private readonly FileReader<float> EnemyPathReader = FileReader<float>.Open("enemyANG.log", ';');
 
         private Point3DF CurrentPos;
 
         private Converter? Converter;
+
+        private readonly Random Random = new();
 
         public MainWindow()
         {
@@ -73,6 +74,9 @@ namespace Disk
             MoveTimer = new(20);
             MoveTimer.Elapsed += MoveTimerElapsed;
 
+            TargetTimer = new(Random.Next(1000, 5000));
+            TargetTimer.Elapsed += TargetTimerElapsed;
+
             Closing += OnClosing;
             Loaded += OnLoaded;
             SizeChanged += OnSizeChanged;
@@ -81,32 +85,44 @@ namespace Disk
             MouseLeftButtonDown += OnMouseLeftButtonDown;
         }
 
+        private void TargetTimerElapsed(object? sender, ElapsedEventArgs e)
+        {
+            Application.Current.Dispatcher.Invoke(
+                () => Target?.Move(new(
+                    Random.Next(Target.MaxRadius, (int)RenderSize.Width - Target.MaxRadius * 2),
+                    Random.Next(Target.MaxRadius, (int)RenderSize.Height - Target.MaxRadius * 2)
+                    )));
+
+            TargetTimer.Interval = Random.Next(1000, 5000);
+        }
+
         private void OnClosing(object? sender, CancelEventArgs e)
         {
             IsGame = false;
 
             NetworkThread.Join();
+
             MoveTimer.Stop();
+            TargetTimer.Stop();
         }
 
         private void MoveTimerElapsed(object? sender, ElapsedEventArgs e)
         {
             //User?.Move(Converter?.ToWndCoord(CurrentPos.To2D()) ?? User.Center);
-            //Enemy?.Follow(User?.Center ?? new((int)RenderSize.Width / 2, (int)RenderSize.Height / 2));
-
             Application.Current.Dispatcher.Invoke(() => User?.Move(MoveUp, MoveRight, MoveDown, MoveLeft));
+
             Application.Current.Dispatcher.Invoke(
                 () => Enemy?.Follow(User?.Center ?? new((int)RenderSize.Width / 2, (int)RenderSize.Height / 2)));
         }
 
         private void NetworkReceive()
         {
-/*            var con = Connection.GetConnection(IPAddress.Parse("127.0.0.1"), 9888);
+            /*            var con = Connection.GetConnection(IPAddress.Parse("127.0.0.1"), 9888);
 
-            while (IsGame)
-            {
-                CurrentPos = con.GetXYZ();
-            }*/
+                        while (IsGame)
+                        {
+                            CurrentPos = con.GetXYZ();
+                        }*/
         }
 
         private void OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
@@ -127,6 +143,8 @@ namespace Disk
             Enemy = new(new((int)RenderSize.Width / 2 - 20, (int)RenderSize.Height / 2 - 100), 3, 4, Brushes.Red, RenderSize);
             Enemy.OnShot += UserLogWnd.LogLn;
 
+            Target = new(new(Random.Next((int)RenderSize.Width), Random.Next((int)RenderSize.Height)), 7, RenderSize);
+
             Converter = new(RenderSize, new(20.0f, 20.0f));
 
             Scalables.Add(XAxis); Scalables.Add(YAxis); Scalables.Add(User); Scalables.Add(Target); Scalables.Add(Enemy);
@@ -139,6 +157,7 @@ namespace Disk
 
             MoveTimer.Start();
             NetworkThread.Start();
+            TargetTimer.Start();
         }
 
         private void OnSizeChanged(object sender, RoutedEventArgs e)

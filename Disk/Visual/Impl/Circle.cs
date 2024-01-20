@@ -33,7 +33,7 @@ namespace Disk.Visual.Impl
         private bool isDrawn = false;
 
         private int Speed;
-        private int Radius;
+        protected int Radius;
 
         public Circle(Point2D<int> center, int radius, int speed, Brush color)
         {
@@ -136,7 +136,7 @@ namespace Disk.Visual.Impl
             Radius = (int)Math.Round(IniRadius * (coeffX + coeffY) / 2);
 
             Center = new(
-                    (int)Math.Round(Center.X * (newSize.Width / CurrSize.Width)), 
+                    (int)Math.Round(Center.X * (newSize.Width / CurrSize.Width)),
                     (int)Math.Round(Center.Y * (newSize.Height / CurrSize.Height))
                 );
 

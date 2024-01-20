@@ -9,6 +9,8 @@ namespace Disk.Visual.Impl
     {
         private readonly List<Circle> Circles;
 
+        public int MaxRadius => Radius * 5;
+
         public Target(Point2D<int> center, int radius) : base(center, radius, 0, Brushes.White)
         {
             Circles =

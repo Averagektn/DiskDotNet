@@ -31,16 +31,16 @@ namespace Disk.Visual.Impl
 
             return (float)new PolarPoint<double>(new Point2D<double>(deltaX, deltaY)).Angle;
 
-/*            var angleRadians = Math.Atan2(deltaY, deltaX);
+            /*            var angleRadians = Math.Atan2(deltaY, deltaX);
 
-            var angleDegrees = angleRadians * (180 / Math.PI);
+                        var angleDegrees = angleRadians * (180 / Math.PI);
 
-            if (angleDegrees < 0)
-            {
-                angleDegrees += 360;
-            }
+                        if (angleDegrees < 0)
+                        {
+                            angleDegrees += 360;
+                        }
 
-            return (float)angleDegrees;*/
+                        return (float)angleDegrees;*/
         }
 
         private static bool IsBetween(float angle, float left, float right)
