@@ -26,6 +26,7 @@ namespace Disk
         private Axis? XAxis;
         private Axis? YAxis;
         private User? User;
+        private Target? Target;
 
         public MainWindow()
         {
@@ -85,8 +86,8 @@ namespace Disk
                 RenderSize, Brushes.Black);
             User = new(new((int)RenderSize.Width / 2, (int)RenderSize.Height / 2), 5, 5, Brushes.Green, RenderSize);
 
-            Scalables.Add(XAxis); Scalables.Add(YAxis); Scalables.Add(User);
-            Drawables.Add(XAxis); Drawables.Add(YAxis); Drawables.Add(User);
+            Scalables.Add(XAxis); Scalables.Add(YAxis); Scalables.Add(User); Scalables.Add(Target);
+            Drawables.Add(XAxis); Drawables.Add(YAxis); Drawables.Add(User); Drawables.Add(Target);
 
             foreach (var elem in Drawables)
             {

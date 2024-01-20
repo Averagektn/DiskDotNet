@@ -64,6 +64,9 @@ namespace Disk.Visual.Impl
             IniSize = iniSize;
         }
 
+        public bool Contains(Point2D<int> p)
+            => Math.Sqrt(Math.Pow((p.X - Center.X) / Radius, 2) + Math.Pow((p.Y - Center.Y) / Radius, 2)) <= 1.0f;
+
         public virtual void Draw(IAddChild addChild)
         {
             if (!isDrawn)
@@ -75,7 +78,7 @@ namespace Disk.Visual.Impl
             Figure.Margin = new(Left, Top, 0, 0);
         }
 
-        public void Move(bool moveTop, bool moveRight, bool moveBottom, bool moveLeft)
+        public virtual void Move(bool moveTop, bool moveRight, bool moveBottom, bool moveLeft)
         {
             int xSpeed = 0;
             int ySpeed = 0;
@@ -125,7 +128,7 @@ namespace Disk.Visual.Impl
             Figure.Margin = new(Left, Top, 0, 0);
         }
 
-        public void Scale(Size newSize)
+        public virtual void Scale(Size newSize)
         {
             double coeffX = (double)newSize.Width / IniSize.Width;
             double coeffY = (double)newSize.Height / IniSize.Height;
@@ -140,7 +143,7 @@ namespace Disk.Visual.Impl
             Figure.Margin = new(Left, Top, 0, 0);
         }
 
-        public void Move(Point2D<int> center)
+        public virtual void Move(Point2D<int> center)
         {
             if (center.X <= CurrSize.Width && center.Y <= CurrSize.Height && center.X > 0 && center.Y > 0)
             {

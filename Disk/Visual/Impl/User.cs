@@ -20,8 +20,5 @@ namespace Disk.Visual.Impl
 
             return Center;
         }
-
-        public bool Contains(Point2D<int> p)
-            => Math.Sqrt(Math.Pow((p.X - Center.X) / Radius, 2) + Math.Pow((p.Y - Center.Y) / Radius, 2)) <= 1.0f;
     }
 }
