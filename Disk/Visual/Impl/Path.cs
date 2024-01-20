@@ -1,21 +1,54 @@
-﻿using Disk.Visual.Interface;
-using System.Windows;
+﻿using Disk.Calculations.Impl;
+using Disk.Data.Impl;
+using Disk.Visual.Interface;
+using System.Drawing;
 using System.Windows.Markup;
+using System.Windows.Shapes;
+using Size = System.Windows.Size;
 
 namespace Disk.Visual.Impl
 {
     class Path : IDrawable, IScalable
     {
-        public Size CurrSize { get; protected set; }
+        private readonly Polyline Polyline;
+
+        private readonly SizeF AngleSize;
+
+        private readonly IEnumerable<Point2D<float>> Points;
+        
+        private Converter Converter;
+
+        public Path(IEnumerable<Point2D<float>> points, Size currSize, SizeF angleSize)
+        {
+            AngleSize = angleSize;
+
+            Converter = new(currSize, angleSize);
+
+            Points = points;
+
+            Polyline = new Polyline();
+
+            foreach (var point in Points)
+            {
+                Polyline.Points.Add(Converter.ToWndCoord(point).ToPoint());
+            }
+        }
 
         public void Draw(IAddChild addChild)
         {
-            throw new NotImplementedException();
+            addChild.AddChild(Polyline);
         }
 
         public void Scale(Size newSize)
         {
-            throw new NotImplementedException();
+            Converter = new(newSize, AngleSize);
+
+            Polyline.Points.Clear();
+
+            foreach (var point in Points)
+            {
+                Polyline.Points.Add(Converter.ToWndCoord(point).ToPoint());
+            }
         }
     }
 }

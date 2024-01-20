@@ -26,7 +26,8 @@ namespace Disk
         private Axis? XAxis;
         private Axis? YAxis;
         private User? User;
-        private Target? Target;
+        private readonly Target? Target;
+
 
         public MainWindow()
         {
@@ -36,6 +37,12 @@ namespace Disk
             SizeChanged += OnSizeChanged;
             PreviewKeyDown += OnKeyDown;
             PreviewKeyUp += OnKeyUp;
+            MouseLeftButtonDown += OnMouseLeftButtonDown;
+        }
+
+        private void OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            throw new NotImplementedException();
         }
 
         private void OnKeyDown(object sender, KeyEventArgs e)
@@ -80,9 +87,9 @@ namespace Disk
 
         private void OnLoaded(object sender, RoutedEventArgs e)
         {
-            XAxis = new Axis(new(0, (int)RenderSize.Height / 2), new((int)RenderSize.Width, (int)RenderSize.Height / 2), 
+            XAxis = new Axis(new(0, (int)RenderSize.Height / 2), new((int)RenderSize.Width, (int)RenderSize.Height / 2),
                 RenderSize, Brushes.Black);
-            YAxis = new Axis(new((int)RenderSize.Width / 2, 0), new((int)RenderSize.Width / 2, (int)RenderSize.Height), 
+            YAxis = new Axis(new((int)RenderSize.Width / 2, 0), new((int)RenderSize.Width / 2, (int)RenderSize.Height),
                 RenderSize, Brushes.Black);
             User = new(new((int)RenderSize.Width / 2, (int)RenderSize.Height / 2), 5, 5, Brushes.Green, RenderSize);
 
@@ -97,7 +104,7 @@ namespace Disk
 
         private void OnSizeChanged(object sender, RoutedEventArgs e)
         {
-            foreach(var elem in Scalables)
+            foreach (var elem in Scalables)
             {
                 elem?.Scale(RenderSize);
             }

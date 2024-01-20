@@ -1,4 +1,8 @@
-﻿namespace Disk.Data.Impl
+﻿
+using System.Drawing;
+using Point = System.Windows.Point;
+
+namespace Disk.Data.Impl
 {
     class Point2D<CoordType> : IEquatable<Point2D<CoordType>> where CoordType : IConvertible, new()
     {
@@ -53,5 +57,9 @@
         public override bool Equals(object? obj) => Equals(obj as Point2D<CoordType>);
 
         public override int GetHashCode() => (int)Math.Pow(XDbl, YDbl);
+
+        public Point ToPoint() => new(XDbl, YDbl);
+
+        public PointF ToPointF() => new((float)XDbl, (float)YDbl);
     }
 }

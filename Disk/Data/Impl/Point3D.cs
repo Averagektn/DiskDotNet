@@ -1,4 +1,6 @@
-﻿namespace Disk.Data.Impl
+﻿using System.Windows.Media.Media3D;
+
+namespace Disk.Data.Impl
 {
     class Point3D<CoordType> : Point2D<CoordType>, IEquatable<Point3D<CoordType>> where CoordType : IConvertible, new()
     {
@@ -46,5 +48,7 @@
         public override bool Equals(object? obj) => Equals(obj as Point3D<CoordType>);
 
         public override int GetHashCode() => (int)(Math.Pow(XDbl, YDbl) * ZDbl);
+
+        public Point3D ToPoint3D() => new(XDbl, YDbl, ZDbl);
     }
 }

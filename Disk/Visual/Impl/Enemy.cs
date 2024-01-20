@@ -12,7 +12,7 @@ namespace Disk.Visual.Impl
             base(center, radius, speed, color, iniSize)
         { }
 
-        public void Follow(Point2D<int> target) 
+        public void Follow(Point2D<int> target)
         {
             var direction = GetAngleDirection(target);
 

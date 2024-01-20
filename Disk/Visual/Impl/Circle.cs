@@ -17,11 +17,9 @@ namespace Disk.Visual.Impl
         public int Bottom => Center.Y + Radius;
         public int Left => Center.X - Radius;
 
-        private readonly Ellipse Figure;
-
-        protected int Radius;
-        
         private const float DIAGONAL_CORRECTION = 1.41f;
+
+        private readonly Ellipse Figure;
 
         private readonly Point2D<int> IniCenter;
 
@@ -29,12 +27,13 @@ namespace Disk.Visual.Impl
 
         private readonly int IniSpeed;
         private readonly int IniRadius;
-        
+
         private Size CurrSize { get; set; }
 
         private bool isDrawn = false;
 
         private int Speed;
+        private int Radius;
 
         public Circle(Point2D<int> center, int radius, int speed, Brush color)
         {
@@ -57,7 +56,7 @@ namespace Disk.Visual.Impl
             };
         }
 
-        public Circle(Point2D<int> center, int radius, int speed, Brush color, Size iniSize) : 
+        public Circle(Point2D<int> center, int radius, int speed, Brush color, Size iniSize) :
             this(center, radius, speed, color)
         {
             CurrSize = iniSize;

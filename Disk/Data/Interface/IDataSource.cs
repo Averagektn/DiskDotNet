@@ -14,15 +14,15 @@ namespace Disk.Data.Interface
         TriplePoint? GetXYZ();
 
         DoublePoint? GetXY();
-        
+
         DoublePoint? GetYZ();
-        
+
         DoublePoint? GetXZ();
-        
+
         DoublePoint? GetYX();
-        
+
         DoublePoint? GetZY();
-        
+
         DoublePoint? GetZX();
     }
 }

@@ -1,5 +1,8 @@
 ﻿using Disk.Data.Impl;
 using System.Drawing;
+using System.Windows;
+using Point = System.Windows.Point;
+using Size = System.Windows.Size;
 
 namespace Disk.Calculations.Impl
 {
@@ -21,7 +24,7 @@ namespace Disk.Calculations.Impl
 
         public Converter(Point screenSize, PointF angleSize)
         {
-            ScreenSize = new(screenSize);
+            ScreenSize = new(ScreenSize.Width, ScreenSize.Height);
             MaxLogCoord = new(screenSize.X / 2, screenSize.Y / 2);
 
             AngleSize = new(angleSize);
@@ -52,9 +55,9 @@ namespace Disk.Calculations.Impl
             return (int)Math.Round(angle * ScreenSize.Height / AngleSize.Height);
         }
 
-        public int ToWndCoordX(int logCoord) => logCoord + MaxLogCoord.Width;
+        public int ToWndCoordX(int logCoord) => (int)(logCoord + MaxLogCoord.Width);
 
-        public int ToWndCoordY(int logCoord) => MaxLogCoord.Height - logCoord;
+        public int ToWndCoordY(int logCoord) => (int)(MaxLogCoord.Height - logCoord);
 
         public static Point2D<int> ToWndCoord(string str, char separator)
         {
@@ -76,9 +79,9 @@ namespace Disk.Calculations.Impl
         public Point2D<int> ToWndCoord(Point2D<int> logPoint) => new(ToWndCoordX(logPoint.X), ToWndCoordY(logPoint.Y));
 
         // Logical
-        public int ToLogCoordX(int coord) => coord + MaxLogCoord.Width;
+        public int ToLogCoordX(int coord) => (int)(coord + MaxLogCoord.Width);
 
-        public int ToLogCoordY(int coord) => MaxLogCoord.Height - coord;
+        public int ToLogCoordY(int coord) => (int)(MaxLogCoord.Height - coord);
 
         public int ToLogCoordX(float angle) => ToLogCoordX(ToWndCoordX(angle));
 
@@ -103,13 +106,13 @@ namespace Disk.Calculations.Impl
         }
 
         // ANGLES
-        public float ToAngleX_FromWnd(int wndCoord) => ToLogCoordX(wndCoord) * AngleSize.Width / ScreenSize.Width;
+        public float ToAngleX_FromWnd(int wndCoord) => (float)(ToLogCoordX(wndCoord) * AngleSize.Width / ScreenSize.Width);
 
-        public float ToAngleY_FromWnd(int wndCoord) => ToLogCoordY(wndCoord) * AngleSize.Height / ScreenSize.Height;
+        public float ToAngleY_FromWnd(int wndCoord) => (float)(ToLogCoordY(wndCoord) * AngleSize.Height / ScreenSize.Height);
 
-        public float ToAngleX_FromLog(int logCoord) => ToAngleX_FromWnd(logCoord + MaxLogCoord.Width);
+        public float ToAngleX_FromLog(int logCoord) => ToAngleX_FromWnd((int)(logCoord + MaxLogCoord.Width));
 
-        public float ToAngleY_FromLog(int logCoord) => ToAngleY_FromWnd(logCoord + MaxLogCoord.Height);
+        public float ToAngleY_FromLog(int logCoord) => ToAngleY_FromWnd((int)(logCoord + MaxLogCoord.Height));
 
         public static Point2D<float> ToAngle(string str, char separator)
         {

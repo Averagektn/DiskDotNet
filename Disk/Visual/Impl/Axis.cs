@@ -47,7 +47,7 @@ namespace Disk.Visual.Impl
 
         public void Scale(Size newSize)
         {
-            var xScale = newSize.Width / IniSize.Width; 
+            var xScale = newSize.Width / IniSize.Width;
             var yScale = newSize.Height / IniSize.Height;
 
             Line.X1 = P1.X * xScale;
