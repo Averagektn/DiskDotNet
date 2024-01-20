@@ -109,7 +109,7 @@ namespace Disk.Visual.Impl
             {
                 xSpeed = 0;
             }
-            if (Right >= CurrSize.Width && xSpeed > 0)
+            if (Right >= CurrSize.Width - xSpeed && xSpeed > 0)
             {
                 xSpeed = 0;
             }
@@ -117,7 +117,7 @@ namespace Disk.Visual.Impl
             {
                 ySpeed = 0;
             }
-            if (Bottom >= CurrSize.Height && ySpeed > 0)
+            if (Bottom >= CurrSize.Height - ySpeed - Radius && ySpeed > 0)
             {
                 ySpeed = 0;
             }
@@ -134,10 +134,16 @@ namespace Disk.Visual.Impl
 
             Speed = (int)Math.Round(IniSpeed * (coeffX + coeffY) / 2);
             Radius = (int)Math.Round(IniRadius * (coeffX + coeffY) / 2);
-            Center = new((int)Math.Round(IniCenter.X * coeffX), (int)Math.Round(IniCenter.Y * coeffY));
+
+            Center = new(
+                    (int)Math.Round(Center.X * (newSize.Width / CurrSize.Width)), 
+                    (int)Math.Round(Center.Y * (newSize.Height / CurrSize.Height))
+                );
 
             Figure.Width = Radius * 2;
             Figure.Height = Radius * 2;
+
+            CurrSize = newSize;
 
             Figure.Margin = new(Left, Top, 0, 0);
         }

@@ -18,7 +18,7 @@
                     angleRad += 2 * Math.PI;
                 }
 
-                return angleRad;
+                return (angleRad * (180.0 / Math.PI) + 360.0) % 360.0;
             }
         }
 

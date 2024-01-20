@@ -11,6 +11,12 @@ using PolarPointF = Disk.Data.Impl.PolarPoint<float>;
 using PolarPointI = Disk.Data.Impl.PolarPoint<int>;
 using Point3DF = Disk.Data.Impl.Point3D<float>;
 using Point3DI = Disk.Data.Impl.Point3D<int>;
+using System.Net;
+using System.Timers;
+using Timer = System.Timers.Timer;
+using System.Windows.Controls;
+using System.Windows.Documents;
+using System.ComponentModel;
 
 namespace Disk
 {
@@ -29,6 +35,7 @@ namespace Disk
         private bool MoveDown;
         private bool MoveLeft;
         private bool MoveRight;
+        private bool IsGame;
 
         private readonly List<IScalable?> Scalables = [];
         private readonly List<IDrawable?> Drawables = [];
@@ -41,10 +48,20 @@ namespace Disk
         private Graph? Graph;
         private Enemy? Enemy;
 
+        private Point3DF CurrentPos;
+
+        private Converter? Converter;
+
         public MainWindow()
         {
             InitializeComponent();
 
+            NetworkThread = new(NetworkReceive);
+
+            MoveTimer = new(20);
+            MoveTimer.Elapsed += MoveTimerElapsed;
+
+            Closing += OnClosing;
             Loaded += OnLoaded;
             SizeChanged += OnSizeChanged;
             PreviewKeyDown += OnKeyDown;
@@ -52,9 +69,68 @@ namespace Disk
             MouseLeftButtonDown += OnMouseLeftButtonDown;
         }
 
+        private void OnClosing(object? sender, CancelEventArgs e)
+        {
+            IsGame = false;
+
+            NetworkThread.Join();
+            MoveTimer.Stop();
+        }
+
+        private void MoveTimerElapsed(object? sender, ElapsedEventArgs e)
+        {
+            //User?.Move(Converter?.ToWndCoord(CurrentPos.To2D()) ?? User.Center);
+            //Enemy?.Follow(User?.Center ?? new((int)RenderSize.Width / 2, (int)RenderSize.Height / 2));
+
+            Application.Current.Dispatcher.Invoke(() => User?.Move(MoveUp, MoveRight, MoveDown, MoveLeft));
+            Application.Current.Dispatcher.Invoke(
+                () => Enemy?.Follow(User?.Center ?? new((int)RenderSize.Width / 2, (int)RenderSize.Height / 2)));
+        }
+
+        private void NetworkReceive()
+        {
+/*            var con = Connection.GetConnection(IPAddress.Parse("127.0.0.1"), 9888);
+
+            while (IsGame)
+            {
+                CurrentPos = con.GetXYZ();
+            }*/
+        }
+
         private void OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            throw new NotImplementedException();
+
+        }
+
+        private void OnLoaded(object sender, RoutedEventArgs e)
+        {
+            XAxis = new Axis(new(0, (int)RenderSize.Height / 2), new((int)RenderSize.Width, (int)RenderSize.Height / 2),
+                RenderSize, Brushes.Black);
+            YAxis = new Axis(new((int)RenderSize.Width / 2, 0), new((int)RenderSize.Width / 2, (int)RenderSize.Height),
+                RenderSize, Brushes.Black);
+            User = new(new((int)RenderSize.Width / 2, (int)RenderSize.Height / 2), 5, 5, Brushes.Green, RenderSize);
+            Enemy = new(new((int)RenderSize.Width / 2 - 20, (int)RenderSize.Height / 2 - 100), 3, 4, Brushes.Red, RenderSize);
+
+            Converter = new(RenderSize, new(20.0f, 20.0f));
+
+            Scalables.Add(XAxis); Scalables.Add(YAxis); Scalables.Add(User); Scalables.Add(Target); Scalables.Add(Enemy);
+            Drawables.Add(XAxis); Drawables.Add(YAxis); Drawables.Add(User); Drawables.Add(Target); Drawables.Add(Enemy);
+
+            foreach (var elem in Drawables)
+            {
+                elem?.Draw(PaintAreaGrid);
+            }
+
+            MoveTimer.Start();
+            NetworkThread.Start();
+        }
+
+        private void OnSizeChanged(object sender, RoutedEventArgs e)
+        {
+            foreach (var elem in Scalables)
+            {
+                elem?.Scale(RenderSize);
+            }
         }
 
         private void OnKeyDown(object sender, KeyEventArgs e)
@@ -94,31 +170,6 @@ namespace Disk
             if (e.Key == Key.D || e.Key == Key.Right)
             {
                 MoveRight = false;
-            }
-        }
-
-        private void OnLoaded(object sender, RoutedEventArgs e)
-        {
-            XAxis = new Axis(new(0, (int)RenderSize.Height / 2), new((int)RenderSize.Width, (int)RenderSize.Height / 2),
-                RenderSize, Brushes.Black);
-            YAxis = new Axis(new((int)RenderSize.Width / 2, 0), new((int)RenderSize.Width / 2, (int)RenderSize.Height),
-                RenderSize, Brushes.Black);
-            User = new(new((int)RenderSize.Width / 2, (int)RenderSize.Height / 2), 5, 5, Brushes.Green, RenderSize);
-
-            Scalables.Add(XAxis); Scalables.Add(YAxis); Scalables.Add(User); Scalables.Add(Target);
-            Drawables.Add(XAxis); Drawables.Add(YAxis); Drawables.Add(User); Drawables.Add(Target);
-
-            foreach (var elem in Drawables)
-            {
-                elem?.Draw(PaintAreaGrid);
-            }
-        }
-
-        private void OnSizeChanged(object sender, RoutedEventArgs e)
-        {
-            foreach (var elem in Scalables)
-            {
-                elem?.Scale(RenderSize);
             }
         }
     }
