@@ -1,6 +1,5 @@
 ﻿using Disk.Data.Impl;
 using Disk.Visual.Interface;
-using System.Drawing;
 using System.Windows;
 using System.Windows.Markup;
 using System.Windows.Media;
@@ -9,16 +8,44 @@ using Size = System.Windows.Size;
 
 namespace Disk.Visual.Impl
 {
+    /// <summary>
+    /// 
+    /// </summary>
     class Circle : IFigure
     {
+        /// <summary>
+        /// 
+        /// </summary>
         public Point2D<int> Center { get; protected set; }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public int Right => Center.X + Radius;
+
+        /// <summary>
+        /// 
+        /// </summary>
         public int Top => Center.Y - Radius;
+
+        /// <summary>
+        /// 
+        /// </summary>
         public int Bottom => Center.Y + Radius;
+
+        /// <summary>
+        /// 
+        /// </summary>
         public int Left => Center.X - Radius;
 
+        /// <summary>
+        /// 
+        /// </summary>
         protected int Radius;
+
+        /// <summary>
+        /// 
+        /// </summary>
         protected int Speed;
 
         private const float DIAGONAL_CORRECTION = 1.41f;
@@ -34,6 +61,24 @@ namespace Disk.Visual.Impl
 
         private bool isDrawn = false;
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="center">
+        /// 
+        /// </param>
+        /// <param name="radius">
+        /// 
+        /// </param>
+        /// <param name="speed">
+        /// 
+        /// </param>
+        /// <param name="color">
+        /// 
+        /// </param>
+        /// <param name="iniSize">
+        /// 
+        /// </param>
         public Circle(Point2D<int> center, int radius, int speed, Brush color, Size iniSize)
         {
             IniRadius = radius;
@@ -57,9 +102,24 @@ namespace Disk.Visual.Impl
             IniSize = iniSize;
         }
 
-        public bool Contains(Point2D<int> p) 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="p">
+        /// 
+        /// </param>
+        /// <returns>
+        /// 
+        /// </returns>
+        public bool Contains(Point2D<int> p)
             => Math.Sqrt(Math.Pow((p.X - Center.X) / Radius, 2) + Math.Pow((p.Y - Center.Y) / Radius, 2)) <= 1;
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="addChild">
+        /// 
+        /// </param>
         public virtual void Draw(IAddChild addChild)
         {
             if (!isDrawn)
@@ -71,6 +131,21 @@ namespace Disk.Visual.Impl
             Figure.Margin = new(Left, Top, 0, 0);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="moveTop">
+        /// 
+        /// </param>
+        /// <param name="moveRight">
+        /// 
+        /// </param>
+        /// <param name="moveBottom">
+        /// 
+        /// </param>
+        /// <param name="moveLeft">
+        /// 
+        /// </param>
         public virtual void Move(bool moveTop, bool moveRight, bool moveBottom, bool moveLeft)
         {
             int xSpeed = 0;
@@ -121,6 +196,12 @@ namespace Disk.Visual.Impl
             Figure.Margin = new(Left, Top, 0, 0);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="newSize">
+        /// 
+        /// </param>
         public virtual void Scale(Size newSize)
         {
             double coeffX = (double)newSize.Width / IniSize.Width;
@@ -142,6 +223,12 @@ namespace Disk.Visual.Impl
             Figure.Margin = new(Left, Top, 0, 0);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="center">
+        /// 
+        /// </param>
         public virtual void Move(Point2D<int> center)
         {
             if (center.X <= CurrSize.Width && center.Y <= CurrSize.Height && center.X > 0 && center.Y > 0)

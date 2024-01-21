@@ -6,13 +6,30 @@ namespace Disk.Data.Impl
 {
     class Connection : IDataSource<float>, IDisposable
     {
+        /// <summary>
+        /// 
+        /// </summary>
         public readonly IPAddress IP;
+
+        /// <summary>
+        /// 
+        /// </summary>
         public readonly int Port;
 
         private static readonly List<Connection> Connections = [];
+
         private readonly Logger Logger;
         private readonly Socket Socket;
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="ip">
+        /// 
+        /// </param>
+        /// <param name="port">
+        /// 
+        /// </param>
         private Connection(IPAddress ip, int port)
         {
             Logger = Logger.GetLogger("connection.log");
@@ -26,6 +43,12 @@ namespace Disk.Data.Impl
             Handshake();
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <exception cref="SocketException">
+        /// 
+        /// </exception>
         private void Handshake()
         {
             byte[] receiveData = new byte[1];
@@ -42,6 +65,18 @@ namespace Disk.Data.Impl
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="ip">
+        /// 
+        /// </param>
+        /// <param name="port">
+        /// 
+        /// </param>
+        /// <returns>
+        /// 
+        /// </returns>
         public static Connection GetConnection(IPAddress ip, int port)
         {
             var conn = Connections.FirstOrDefault(c => c.IP.Equals(ip) && c.Port == port);
@@ -56,6 +91,12 @@ namespace Disk.Data.Impl
             return conn;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns>
+        /// 
+        /// </returns>
         public Point3D<float> GetXYZ()
         {
             var coords = new byte[12];
@@ -73,6 +114,12 @@ namespace Disk.Data.Impl
             return p;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns>
+        /// 
+        /// </returns>
         public Point2D<float> GetXY()
         {
             var data = GetXYZ();
@@ -80,6 +127,12 @@ namespace Disk.Data.Impl
             return new((float)data.X, (float)data.Y);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns>
+        /// 
+        /// </returns>
         public Point2D<float> GetXZ()
         {
             var data = GetXYZ();
@@ -87,6 +140,12 @@ namespace Disk.Data.Impl
             return new((float)data.X, (float)data.Z);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns>
+        /// 
+        /// </returns>
         public Point2D<float> GetYX()
         {
             var data = GetXYZ();
@@ -94,6 +153,12 @@ namespace Disk.Data.Impl
             return new((float)data.Y, (float)data.X);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns>
+        /// 
+        /// </returns>
         public Point2D<float> GetYZ()
         {
             var data = GetXYZ();
@@ -101,6 +166,12 @@ namespace Disk.Data.Impl
             return new((float)data.Y, (float)data.Z);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns>
+        /// 
+        /// </returns>
         public Point2D<float> GetZX()
         {
             var data = GetXYZ();
@@ -108,6 +179,12 @@ namespace Disk.Data.Impl
             return new((float)data.Z, (float)data.X);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns>
+        /// 
+        /// </returns>
         public Point2D<float> GetZY()
         {
             var data = GetXYZ();
@@ -115,6 +192,9 @@ namespace Disk.Data.Impl
             return new((float)data.Z, (float)data.Y);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public void Dispose()
         {
             Connections.Remove(this);

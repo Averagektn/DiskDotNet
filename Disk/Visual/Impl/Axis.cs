@@ -7,6 +7,9 @@ using Size = System.Windows.Size;
 
 namespace Disk.Visual.Impl
 {
+    /// <summary>
+    /// 
+    /// </summary>
     class Axis : IDrawable, IScalable
     {
         private readonly Size IniSize;
@@ -18,6 +21,21 @@ namespace Disk.Visual.Impl
 
         private bool isDrawn = false;
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="p1">
+        /// 
+        /// </param>
+        /// <param name="p2">
+        /// 
+        /// </param>
+        /// <param name="currSize">
+        /// 
+        /// </param>
+        /// <param name="brush">
+        /// 
+        /// </param>
         public Axis(Point2D<int> p1, Point2D<int> p2, Size currSize, Brush brush)
         {
             P1 = p1;
@@ -35,6 +53,12 @@ namespace Disk.Visual.Impl
             IniSize = currSize;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="addChild">
+        /// 
+        /// </param>
         public void Draw(IAddChild addChild)
         {
             if (!isDrawn)
@@ -45,6 +69,12 @@ namespace Disk.Visual.Impl
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="newSize">
+        /// 
+        /// </param>
         public void Scale(Size newSize)
         {
             var xScale = newSize.Width / IniSize.Width;

@@ -15,7 +15,7 @@ using Timer = System.Timers.Timer;
 namespace Disk
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    ///     Interaction logic for PaintWindow.xaml
     /// </summary>
     public partial class PaintWindow : Window
     {
@@ -53,7 +53,7 @@ namespace Disk
         private readonly Logger EnemyLogCen = Logger.GetLogger("enemyCEN.log");
         private readonly Logger EnemyLogAng = Logger.GetLogger("enemyANG.log");
 
-        private Point3DF? CurrentPos;
+        private readonly Point3DF? CurrentPos;
 
         private Converter? Converter;
 
@@ -61,6 +61,9 @@ namespace Disk
 
         private int Score = 0;
 
+        /// <summary>
+        /// 
+        /// </summary>
         public PaintWindow()
         {
             InitializeComponent();
@@ -84,6 +87,11 @@ namespace Disk
             MouseLeftButtonDown += OnMouseLeftButtonDown;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void ShotTimerElapsed(object? sender, ElapsedEventArgs e)
         {
             if (Target is not null && User is not null)
@@ -99,6 +107,11 @@ namespace Disk
             Application.Current.Dispatcher.Invoke(() => Title = $"Score: {Score}");
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void TargetTimerElapsed(object? sender, ElapsedEventArgs e)
         {
             Application.Current.Dispatcher.Invoke(
@@ -110,11 +123,21 @@ namespace Disk
             TargetTimer.Interval = Random.Next(1000, 5000);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void OnClosing(object? sender, CancelEventArgs e)
         {
             StopGame();
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void MoveTimerElapsed(object? sender, ElapsedEventArgs e)
         {
             //User?.Move(Converter?.ToWndCoord(CurrentPos.To2D()) ?? User.Center);
@@ -124,6 +147,9 @@ namespace Disk
                 () => Enemy?.Follow(User?.Center ?? new(PaintWidth / 2, PaintHeight / 2)));
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         private void NetworkReceive()
         {
             /*            var con = Connection.GetConnection(IPAddress.Parse("127.0.0.1"), 9888);
@@ -134,6 +160,11 @@ namespace Disk
                         }*/
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             StopGame();
@@ -145,6 +176,9 @@ namespace Disk
             ShowStats();
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         private static void ShowStats()
         {
             using var userAngleReader = FileReader<float>.Open("userANG.log", ';');
@@ -167,6 +201,9 @@ namespace Disk
                 """);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         private void DrawPaths()
         {
             using var userPathReader = FileReader<float>.Open("userANG.log", ';');
@@ -182,6 +219,9 @@ namespace Disk
             Scalables.Add(enemyPath);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         private void DrawWindRose()
         {
             using var userReader = FileReader<float>.Open("userANG.log", ';');
@@ -194,11 +234,17 @@ namespace Disk
             Scalables.Add(userRose);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         private void ClearWnd()
         {
             PaintAreaGrid.Children.Clear();
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         private void StopGame()
         {
             IsGame = false;
@@ -218,6 +264,11 @@ namespace Disk
             EnemyLogCen.Dispose();
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void OnLoaded(object sender, RoutedEventArgs e)
         {
             Converter = new(PaintSize, new(40.0f, 40.0f));
@@ -252,6 +303,11 @@ namespace Disk
             ShotTimer.Start();
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void OnSizeChanged(object sender, RoutedEventArgs e)
         {
             foreach (var elem in Scalables)
@@ -260,6 +316,11 @@ namespace Disk
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void OnKeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.W || e.Key == Key.Up)
@@ -280,6 +341,11 @@ namespace Disk
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void OnKeyUp(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.W || e.Key == Key.Up)

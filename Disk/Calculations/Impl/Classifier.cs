@@ -2,8 +2,26 @@
 
 namespace Disk.Calculations.Impl
 {
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <typeparam name="CoordType">
+    /// 
+    /// </typeparam>
     static class Classifier<CoordType> where CoordType : IConvertible, new()
     {
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="dataset">
+        /// 
+        /// </param>
+        /// <param name="classesCount">
+        /// 
+        /// </param>
+        /// <returns>
+        /// 
+        /// </returns>
         public static IEnumerable<IEnumerable<Point2D<CoordType>>> Classify(IEnumerable<Point2D<CoordType>> dataset,
             int classesCount)
         {
@@ -21,6 +39,18 @@ namespace Disk.Calculations.Impl
             return res;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="dataset">
+        /// 
+        /// </param>
+        /// <param name="classesCount">
+        /// 
+        /// </param>
+        /// <returns>
+        /// 
+        /// </returns>
         public static IEnumerable<IEnumerable<Point3D<CoordType>>> Classify(IEnumerable<Point3D<CoordType>> dataset,
             int classesCount)
         {
@@ -38,6 +68,18 @@ namespace Disk.Calculations.Impl
             return res;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="dataset">
+        /// 
+        /// </param>
+        /// <param name="classesCount">
+        /// 
+        /// </param>
+        /// <returns>
+        /// 
+        /// </returns>
         public static IEnumerable<IEnumerable<PolarPoint<CoordType>>> Classify(IEnumerable<PolarPoint<CoordType>> dataset,
             int classesCount)
         {
@@ -58,6 +100,24 @@ namespace Disk.Calculations.Impl
             return res;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <typeparam name="T">
+        /// 
+        /// </typeparam>
+        /// <param name="dataset">
+        /// 
+        /// </param>
+        /// <param name="classification">
+        /// 
+        /// </param>
+        /// <param name="classesCount">
+        /// 
+        /// </param>
+        /// <returns>
+        /// 
+        /// </returns>
         private static List<T> GetInitialCenters<T>(IEnumerable<T> dataset, IEnumerable<IEnumerable<T>> classification,
             int classesCount)
         {
@@ -87,6 +147,21 @@ namespace Disk.Calculations.Impl
             return centers;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <typeparam name="T">
+        /// 
+        /// </typeparam>
+        /// <param name="centers">
+        /// 
+        /// </param>
+        /// <param name="classification">
+        /// 
+        /// </param>
+        /// <returns>
+        /// 
+        /// </returns>
         private static bool GenerateNewCenters2D<T>(IEnumerable<T> centers, IEnumerable<IEnumerable<T>> classification)
             where T :
                 Point2D<CoordType>,
@@ -112,6 +187,21 @@ namespace Disk.Calculations.Impl
             return isCounting;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <typeparam name="T">
+        /// 
+        /// </typeparam>
+        /// <param name="centers">
+        /// 
+        /// </param>
+        /// <param name="classification">
+        /// 
+        /// </param>
+        /// <returns>
+        /// 
+        /// </returns>
         private static bool GenerateNewCenters3D<T>(IEnumerable<T> centers, IEnumerable<IEnumerable<T>> classification)
             where T :
                 Point3D<CoordType>,
@@ -138,6 +228,21 @@ namespace Disk.Calculations.Impl
             return isCounting;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <typeparam name="T">
+        /// 
+        /// </typeparam>
+        /// <param name="dataset">
+        /// 
+        /// </param>
+        /// <param name="centers">
+        /// 
+        /// </param>
+        /// <param name="classification">
+        /// 
+        /// </param>
         private static void Separate<T>(IEnumerable<T> dataset, IEnumerable<T> centers,
             IEnumerable<IEnumerable<T>> classification) where T : Point2D<CoordType>
         {

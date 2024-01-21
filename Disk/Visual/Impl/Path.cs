@@ -9,6 +9,9 @@ using Size = System.Windows.Size;
 
 namespace Disk.Visual.Impl
 {
+    /// <summary>
+    /// 
+    /// </summary>
     class Path : IDrawable, IScalable
     {
         private readonly Polyline Polyline;
@@ -19,6 +22,21 @@ namespace Disk.Visual.Impl
 
         private Converter Converter;
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="points">
+        /// 
+        /// </param>
+        /// <param name="currSize">
+        /// 
+        /// </param>
+        /// <param name="angleSize">
+        /// 
+        /// </param>
+        /// <param name="color">
+        /// 
+        /// </param>
         public Path(IEnumerable<Point2D<float>> points, Size currSize, SizeF angleSize, Brush color)
         {
             AngleSize = angleSize;
@@ -37,11 +55,23 @@ namespace Disk.Visual.Impl
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="addChild">
+        /// 
+        /// </param>
         public void Draw(IAddChild addChild)
         {
             addChild.AddChild(Polyline);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="newSize">
+        /// 
+        /// </param>
         public void Scale(Size newSize)
         {
             Converter = new(newSize, AngleSize);

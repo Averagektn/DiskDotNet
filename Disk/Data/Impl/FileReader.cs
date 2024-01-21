@@ -3,6 +3,12 @@ using System.IO;
 
 namespace Disk.Data.Impl
 {
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <typeparam name="CoordType">
+    /// 
+    /// </typeparam>
     class FileReader<CoordType> :
         IDataSource<CoordType>,
         IDisposable
@@ -10,13 +16,29 @@ namespace Disk.Data.Impl
             IConvertible,
             new()
     {
+        /// <summary>
+        /// 
+        /// </summary>
         public readonly string Filename;
+
+        /// <summary>
+        /// 
+        /// </summary>
         public readonly char Separator;
 
         private static readonly List<FileReader<CoordType>> Files = [];
 
         private readonly StreamReader Reader;
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="filename">
+        /// 
+        /// </param>
+        /// <param name="separator">
+        /// 
+        /// </param>
         private FileReader(string filename, char separator)
         {
             Filename = filename;
@@ -30,6 +52,18 @@ namespace Disk.Data.Impl
             Reader = new(filename);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="filename">
+        /// 
+        /// </param>
+        /// <param name="separator">
+        /// 
+        /// </param>
+        /// <returns>
+        /// 
+        /// </returns>
         public static FileReader<CoordType> Open(string filename, char separator)
         {
             var reader = Files.FirstOrDefault(f => f.Filename == filename);
@@ -43,6 +77,9 @@ namespace Disk.Data.Impl
             return reader;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public void Dispose()
         {
             Files.Remove(this);
@@ -50,8 +87,20 @@ namespace Disk.Data.Impl
             Reader.Close();
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns>
+        /// 
+        /// </returns>
         public string? ReadLn() => Reader.ReadLine();
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns>
+        /// 
+        /// </returns>
         public Point3D<CoordType>? GetXYZ()
         {
             var str = Reader.ReadLine();
@@ -74,6 +123,12 @@ namespace Disk.Data.Impl
             return res;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns>
+        /// 
+        /// </returns>
         public Point2D<CoordType>? GetXY()
         {
             var str = Reader.ReadLine();
@@ -95,6 +150,12 @@ namespace Disk.Data.Impl
             return res;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns>
+        /// 
+        /// </returns>
         public Point2D<CoordType>? GetYZ()
         {
             var point3D = GetXYZ();
@@ -109,6 +170,12 @@ namespace Disk.Data.Impl
             return res;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns>
+        /// 
+        /// </returns>
         public Point2D<CoordType>? GetXZ()
         {
             var point3D = GetXYZ();
@@ -123,6 +190,12 @@ namespace Disk.Data.Impl
             return res;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns>
+        /// 
+        /// </returns>
         public Point2D<CoordType>? GetYX()
         {
             var point2D = GetXY();
@@ -130,6 +203,12 @@ namespace Disk.Data.Impl
             return point2D is null ? point2D : new(point2D.Y, point2D.X);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns>
+        /// 
+        /// </returns>
         public Point2D<CoordType>? GetZY()
         {
             var point3D = GetXYZ();
@@ -144,6 +223,12 @@ namespace Disk.Data.Impl
             return res;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns>
+        /// 
+        /// </returns>
         public Point2D<CoordType>? GetZX()
         {
             var point3D = GetXYZ();
@@ -158,6 +243,24 @@ namespace Disk.Data.Impl
             return res;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="isX">
+        /// 
+        /// </param>
+        /// <param name="isY">
+        /// 
+        /// </param>
+        /// <param name="isZ">
+        /// 
+        /// </param>
+        /// <param name="isStraightforward">
+        /// 
+        /// </param>
+        /// <returns>
+        /// 
+        /// </returns>
         public IEnumerable<Point2D<CoordType>> Get2DPoints(bool isX = true, bool isY = true, bool isZ = false,
             bool isStraightforward = true)
         {
@@ -207,6 +310,12 @@ namespace Disk.Data.Impl
             } while (true);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns>
+        /// 
+        /// </returns>
         public IEnumerable<Point3D<CoordType>> Get3DPoints()
         {
             do

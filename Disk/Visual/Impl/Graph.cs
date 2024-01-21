@@ -8,6 +8,9 @@ using Size = System.Windows.Size;
 
 namespace Disk.Visual.Impl
 {
+    /// <summary>
+    /// 
+    /// </summary>
     class Graph : IDrawable, IScalable
     {
         private Size Size;
@@ -20,6 +23,21 @@ namespace Disk.Visual.Impl
 
         private int Radius;
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="points">
+        /// 
+        /// </param>
+        /// <param name="currSize">
+        /// 
+        /// </param>
+        /// <param name="color">
+        /// 
+        /// </param>
+        /// <param name="segmentsNum">
+        /// 
+        /// </param>
         public Graph(IEnumerable<PolarPoint<float>> points, Size currSize, Brush color, int segmentsNum = 4)
         {
             SegmentsNum = segmentsNum;
@@ -42,6 +60,12 @@ namespace Disk.Visual.Impl
             };
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="addChild">
+        /// 
+        /// </param>
         public void Draw(IAddChild addChild)
         {
             FillPolygon();
@@ -49,6 +73,12 @@ namespace Disk.Visual.Impl
             addChild.AddChild(Polygon);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="newSize">
+        /// 
+        /// </param>
         public void Scale(Size newSize)
         {
             Size = newSize;
@@ -60,6 +90,9 @@ namespace Disk.Visual.Impl
             FillPolygon();
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         private void FillPolygon()
         {
             var angleStep = 360.0 / SegmentsNum;
@@ -77,6 +110,15 @@ namespace Disk.Visual.Impl
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="dataset">
+        /// 
+        /// </param>
+        /// <returns>
+        /// 
+        /// </returns>
         private static List<int> GetFrequency(IEnumerable<IEnumerable<PolarPoint<float>>> dataset)
         {
             var res = new List<int>(dataset.Count());

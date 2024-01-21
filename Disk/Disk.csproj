@@ -9,7 +9,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Calculations\Interface\" />
     <Folder Include="Window\Calibration\" />
     <Folder Include="Window\Main\" />
     <Folder Include="Window\Settings\" />

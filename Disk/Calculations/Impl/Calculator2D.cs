@@ -2,8 +2,20 @@
 
 namespace Disk.Calculations.Impl
 {
+    /// <summary>
+    /// 
+    /// </summary>
     static class Calculator2D
     {
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="dataset">
+        /// 
+        /// </param>
+        /// <returns>
+        /// 
+        /// </returns>
         public static Point2D<float> MathExp(IEnumerable<Point2D<float>> dataset)
             => new
             (
@@ -11,6 +23,15 @@ namespace Disk.Calculations.Impl
                 Calculator.MathExp(dataset.Select(p => p.Y))
             );
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="dataset">
+        /// 
+        /// </param>
+        /// <returns>
+        /// 
+        /// </returns>
         public static Point2D<float> StandartDeviation(IEnumerable<Point2D<float>> dataset)
             => new
             (
@@ -18,6 +39,15 @@ namespace Disk.Calculations.Impl
                 Calculator.StandartDeviation(dataset.Select(p => p.Y))
             );
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="dataset">
+        /// 
+        /// </param>
+        /// <returns>
+        /// 
+        /// </returns>
         public static Point2D<float> Dispersion(IEnumerable<Point2D<float>> dataset)
             => new
             (

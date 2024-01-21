@@ -5,8 +5,25 @@ using System.Windows.Media;
 
 namespace Disk.Visual.Impl
 {
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="center">
+    /// 
+    /// </param>
+    /// <param name="radius">
+    /// 
+    /// </param>
+    /// <param name="iniSize">
+    /// 
+    /// </param>
     class Target(Point2D<int> center, int radius, Size iniSize) : User(center, radius, 0, Brushes.White, iniSize)
     {
+        /// <summary>
+        /// 
+        /// </summary>
+        public int MaxRadius => Radius * 5;
+
         private readonly List<Circle> Circles =
             [
                 new(center, radius * 5, 0, Brushes.Red, iniSize),
@@ -16,8 +33,12 @@ namespace Disk.Visual.Impl
                 new(center, radius * 1, 0, Brushes.Red, iniSize)
             ];
 
-        public int MaxRadius => Radius * 5;
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="addChild">
+        /// 
+        /// </param>
         public override void Draw(IAddChild addChild)
         {
             foreach (var circle in Circles)
@@ -26,6 +47,21 @@ namespace Disk.Visual.Impl
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="moveTop">
+        /// 
+        /// </param>
+        /// <param name="moveRight">
+        /// 
+        /// </param>
+        /// <param name="moveBottom">
+        /// 
+        /// </param>
+        /// <param name="moveLeft">
+        /// 
+        /// </param>
         public override void Move(bool moveTop, bool moveRight, bool moveBottom, bool moveLeft)
         {
             foreach (var circle in Circles)
@@ -34,6 +70,12 @@ namespace Disk.Visual.Impl
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="newSize">
+        /// 
+        /// </param>
         public override void Scale(Size newSize)
         {
             foreach (var circle in Circles)
@@ -42,6 +84,12 @@ namespace Disk.Visual.Impl
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="center">
+        /// 
+        /// </param>
         public override void Move(Point2D<int> center)
         {
             foreach (var circle in Circles)
@@ -50,6 +98,15 @@ namespace Disk.Visual.Impl
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="shot">
+        /// 
+        /// </param>
+        /// <returns>
+        /// 
+        /// </returns>
         public override int ReceiveShot(Point2D<int> shot)
         {
             int res = 0;

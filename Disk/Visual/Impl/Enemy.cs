@@ -4,8 +4,33 @@ using System.Windows.Media;
 
 namespace Disk.Visual.Impl
 {
-    class Enemy(Point2D<int> center, int radius, int speed, Brush color, Size iniSize) : User(center, radius, speed, color, iniSize)
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="center">
+    /// 
+    /// </param>
+    /// <param name="radius">
+    /// 
+    /// </param>
+    /// <param name="speed">
+    /// 
+    /// </param>
+    /// <param name="color">
+    /// 
+    /// </param>
+    /// <param name="iniSize">
+    /// 
+    /// </param>
+    class Enemy(Point2D<int> center, int radius, int speed, Brush color, Size iniSize) :
+        User(center, radius, speed, color, iniSize)
     {
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="target">
+        /// 
+        /// </param>
         public void Follow(Point2D<int> target)
         {
             var direction = GetAngleDirection(target);
@@ -21,6 +46,15 @@ namespace Disk.Visual.Impl
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="target">
+        /// 
+        /// </param>
+        /// <returns>
+        /// 
+        /// </returns>
         private float GetAngleDirection(Point2D<int> target)
         {
             var deltaX = target.X - Center.X;
@@ -29,6 +63,21 @@ namespace Disk.Visual.Impl
             return (float)new PolarPoint<double>(new Point2D<double>(deltaX, deltaY)).Angle;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="angle">
+        /// 
+        /// </param>
+        /// <param name="left">
+        /// 
+        /// </param>
+        /// <param name="right">
+        /// 
+        /// </param>
+        /// <returns>
+        /// 
+        /// </returns>
         private static bool IsBetween(float angle, float left, float right)
         {
             angle = (angle + 360.0f) % 360.0f;
