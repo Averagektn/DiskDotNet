@@ -69,14 +69,6 @@ namespace Disk.Data.Impl
                         (CoordType)Convert.ChangeType(data[2], typeof(CoordType))
                         );
                 }
-                if (data.Length == 2)
-                {
-                    res = new Point3D<CoordType>(
-                        (CoordType)Convert.ChangeType(data[0], typeof(CoordType)),
-                        (CoordType)Convert.ChangeType(data[1], typeof(CoordType)),
-                        new()
-                        );
-                }
             }
 
             return res;
@@ -84,13 +76,20 @@ namespace Disk.Data.Impl
 
         public Point2D<CoordType>? GetXY()
         {
-            var point3D = GetXYZ();
-
+            var str = Reader.ReadLine();
             Point2D<CoordType>? res = null;
 
-            if (point3D is not null)
+            if (str is not null)
             {
-                res = new(point3D.X, point3D.Y);
+                var data = str.Split(Separator);
+
+                if (data.Length == 2)
+                {
+                    res = new Point2D<CoordType>(
+                        (CoordType)Convert.ChangeType(data[0], typeof(CoordType)),
+                        (CoordType)Convert.ChangeType(data[1], typeof(CoordType))
+                        );
+                }
             }
 
             return res;
@@ -126,16 +125,9 @@ namespace Disk.Data.Impl
 
         public Point2D<CoordType>? GetYX()
         {
-            var point3D = GetXYZ();
+            var point2D = GetXY();
 
-            Point2D<CoordType>? res = null;
-
-            if (point3D is not null)
-            {
-                res = new(point3D.Y, point3D.X);
-            }
-
-            return res;
+            return point2D is null ? point2D : new(point2D.Y, point2D.X);
         }
 
         public Point2D<CoordType>? GetZY()
@@ -171,53 +163,65 @@ namespace Disk.Data.Impl
         {
             Point2D<CoordType>? p = null;
 
-            if (isStraightforward)
+            do
             {
-                if (isX && isY)
+                if (isStraightforward)
                 {
-                    p = GetXY();
+                    if (isX && isY)
+                    {
+                        p = GetXY();
+                    }
+                    else if (isY && isZ)
+                    {
+                        p = GetYZ();
+                    }
+                    else if (isX && isZ)
+                    {
+                        p = GetXZ();
+                    }
                 }
-                if (isY && isZ)
+                else
                 {
-                    p = GetYZ();
+                    if (isX && isY)
+                    {
+                        p = GetYX();
+                    }
+                    else if (isY && isZ)
+                    {
+                        p = GetZY();
+                    }
+                    else if (isX && isZ)
+                    {
+                        p = GetZX();
+                    }
                 }
-                if (isX && isZ)
-                {
-                    p = GetXZ();
-                }
-            }
-            else
-            {
-                if (isX && isY)
-                {
-                    p = GetYX();
-                }
-                if (isY && isZ)
-                {
-                    p = GetZY();
-                }
-                if (isX && isZ)
-                {
-                    p = GetZX();
-                }
-            }
 
-            if (p is not null)
-            {
-                yield return p;
-            }
-            yield break;
+                if (p is not null)
+                {
+                    yield return p;
+                }
+                else
+                {
+                    yield break;
+                }
+            } while (true);
         }
 
         public IEnumerable<Point3D<CoordType>> Get3DPoints()
         {
-            var p = GetXYZ();
-
-            if (p is not null)
+            do
             {
-                yield return p;
-            }
-            yield break;
+                var p = GetXYZ();
+
+                if (p is not null)
+                {
+                    yield return p;
+                }
+                else
+                {
+                    yield break;
+                }
+            } while (true);
         }
     }
 }

@@ -15,7 +15,7 @@ namespace Disk.Visual.Impl
 
         private readonly SizeF AngleSize;
 
-        private readonly IEnumerable<Point2D<float>> Points;
+        private readonly List<Point2D<float>> Points = [];
 
         private Converter Converter;
 
@@ -25,16 +25,15 @@ namespace Disk.Visual.Impl
 
             Converter = new(currSize, angleSize);
 
-            Points = points;
-
             Polyline = new Polyline()
             {
                 Stroke = color
             };
 
-            foreach (var point in Points)
+            foreach (var point in points)
             {
                 Polyline.Points.Add(Converter.ToWndCoord(point).ToPoint());
+                Points.Add(point);
             }
         }
 

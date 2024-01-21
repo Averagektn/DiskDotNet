@@ -1,4 +1,5 @@
 ﻿using Disk.Data.Impl;
+using Disk.Visual.Interface;
 using System.Drawing;
 using Point = System.Windows.Point;
 using Size = System.Windows.Size;
@@ -6,12 +7,13 @@ using Size = System.Windows.Size;
 namespace Disk.Calculations.Impl
 {
     // REWORK
-    class Converter
+    class Converter : IScalable
     {
-        private readonly Size ScreenSize;
         private readonly SizeF AngleSize;
         private readonly SizeF MaxAngle;
-        private readonly Size MaxLogCoord;
+
+        private Size ScreenSize;
+        private Size MaxLogCoord;
 
         public Converter(int screenWidth, int screenHeight, float angleWidth, float angleHeight)
         {
@@ -42,7 +44,7 @@ namespace Disk.Calculations.Impl
         // Window
         public int ToWndCoordX(float angle)
         {
-            angle = -angle + MaxAngle.Width;
+            angle = angle + MaxAngle.Width;
 
             return (int)Math.Round(angle * ScreenSize.Width / AngleSize.Width);
         }
@@ -149,5 +151,11 @@ namespace Disk.Calculations.Impl
 
         public static Point3D<float> ToRadian_FromAngle(Point3D<float> angle)
             => new(ToRadian_FromAngle(angle.X), ToRadian_FromAngle(angle.Y), ToRadian_FromAngle(angle.Z));
+
+        public void Scale(Size newSize)
+        {
+            ScreenSize = newSize;
+            MaxLogCoord = new(newSize.Width / 2, newSize.Height / 2);
+        }
     }
 }

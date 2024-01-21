@@ -146,6 +146,18 @@ namespace Disk
         private void OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             StopGame();
+
+            var userPathReader = FileReader<float>.Open("userANG.log", ';');
+            var userPath = new Path(userPathReader.Get2DPoints(), PaintSize, new(40.0f, 40.0f), Brushes.Green);
+
+            var enemyPathReader = FileReader<float>.Open("enemyAng.log", ';');
+            var enemyPath = new Path(enemyPathReader.Get2DPoints(), PaintSize, new(40.0f, 40.0f), Brushes.DarkRed);
+
+            userPath.Draw(PaintAreaGrid);
+            enemyPath.Draw(PaintAreaGrid);
+
+            Scalables.Add(userPath);
+            Scalables.Add(enemyPath);
         }
 
         private void StopGame()
@@ -189,6 +201,7 @@ namespace Disk
             Target = new(new(Random.Next(PaintWidth), Random.Next(PaintHeight)), 7, PaintSize);
 
             Scalables.Add(XAxis); Scalables.Add(YAxis); Scalables.Add(Target); Scalables.Add(User); Scalables.Add(Enemy);
+            Scalables.Add(Converter);
             Drawables.Add(XAxis); Drawables.Add(YAxis); Drawables.Add(Target); Drawables.Add(User); Drawables.Add(Enemy);
 
             foreach (var elem in Drawables)
