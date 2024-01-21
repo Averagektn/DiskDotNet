@@ -15,7 +15,7 @@ namespace Disk.Data.Impl
 
         private Connection(IPAddress ip, int port)
         {
-            Logger = Logger.GetLogger("Connection/Connection.log");
+            Logger = Logger.GetLogger("connection.log");
 
             IP = ip;
             Port = port;

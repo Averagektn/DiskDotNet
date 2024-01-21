@@ -56,7 +56,7 @@ namespace Disk.Visual.Impl
 
             foreach (var circle in Circles)
             {
-                res += circle.Contains(shot) ? 5 : 0;
+                res += circle.Contains(shot) ? 1 : 0;
             }
 
             return res;

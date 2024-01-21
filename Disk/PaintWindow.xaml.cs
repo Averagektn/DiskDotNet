@@ -14,6 +14,7 @@ using PolarPointF = Disk.Data.Impl.PolarPoint<float>;
 using PolarPointI = Disk.Data.Impl.PolarPoint<int>;
 using Point3DF = Disk.Data.Impl.Point3D<float>;
 using Point3DI = Disk.Data.Impl.Point3D<int>;
+using System.Net;
 
 namespace Disk
 {
@@ -46,8 +47,6 @@ namespace Disk
         private Axis? YAxis;
         private User? User;
         private Target? Target;
-        private readonly Path? Path;
-        private readonly Graph? Graph;
         private Enemy? Enemy;
 
         private readonly Logger UserLogWnd = Logger.GetLogger("userWND.log");
@@ -57,12 +56,6 @@ namespace Disk
         private readonly Logger EnemyLogWnd = Logger.GetLogger("enemyWND.log");
         private readonly Logger EnemyLogCen = Logger.GetLogger("enemyCEN.log");
         private readonly Logger EnemyLogAng = Logger.GetLogger("enemyANG.log");
-
-        private readonly Logger Calculations = Logger.GetLogger("calculations.log");
-
-        // create after logger is closed
-        //private readonly FileReader<float> UserPathReader = FileReader<float>.Open("userANG.log", ';');
-        //private readonly FileReader<float> EnemyPathReader = FileReader<float>.Open("enemyANG.log", ';');
 
         private Point3DF? CurrentPos;
 
@@ -84,7 +77,7 @@ namespace Disk
             TargetTimer = new(Random.Next(1000, 5000));
             TargetTimer.Elapsed += TargetTimerElapsed;
 
-            ShotTimer = new(20);
+            ShotTimer = new(200);
             ShotTimer.Elapsed += ShotTimerElapsed;
 
             Closing += OnClosing;
@@ -106,6 +99,8 @@ namespace Disk
             {
                 Score -= User.ReceiveShot(Enemy.Shot());
             }
+
+            Application.Current.Dispatcher.Invoke(() => Title = $"Score: {Score}");
         }
 
         private void TargetTimerElapsed(object? sender, ElapsedEventArgs e)
@@ -135,12 +130,12 @@ namespace Disk
 
         private void NetworkReceive()
         {
-            /*            var con = Connection.GetConnection(IPAddress.Parse("127.0.0.1"), 9888);
+/*            var con = Connection.GetConnection(IPAddress.Parse("127.0.0.1"), 9888);
 
-                        while (IsGame)
-                        {
-                            CurrentPos = con.GetXYZ();
-                        }*/
+            while (IsGame)
+            {
+                CurrentPos = con.GetXYZ();
+            }*/
         }
 
         private void OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
@@ -150,6 +145,30 @@ namespace Disk
             DrawWindRose();
 
             DrawPaths();
+
+            ShowStats();
+        }
+
+        private static void ShowStats()
+        {
+            using var userAngleReader = FileReader<float>.Open("userANG.log", ';');
+
+            var dataset = new List<Point2DF>();
+            foreach (var p in userAngleReader.Get2DPoints())
+            {
+                dataset.Add(p);
+            }
+
+            var mx = Calculator2D.MathExp(dataset);
+            var dispersion = Calculator2D.Dispersion(dataset);
+            var deviation = Calculator2D.StandartDeviation(dataset);
+
+            MessageBox.Show(
+                $"""
+                Math expectation: {mx}
+                Dispersion: {dispersion}
+                Standart deviation: {deviation}
+                """);
         }
 
         private void DrawPaths()
@@ -165,18 +184,23 @@ namespace Disk
 
             Scalables.Add(userPath);
             Scalables.Add(enemyPath);
-        }
+    }
 
         private void DrawWindRose()
         {
             using var userReader = FileReader<float>.Open("userANG.log", ';');
 
-            var userRose = 
-                new Graph(userReader.Get2DPoints().Select(p => new PolarPointF(p.X, p.Y)), PaintSize, Brushes.LightGreen);
+            var userRose = new Graph(userReader.Get2DPoints().Select(p => new PolarPointF(p.X, p.Y)), 
+                PaintSize, Brushes.LightGreen);
 
             userRose.Draw(PaintAreaGrid);
 
             Scalables.Add(userRose);
+        }
+
+        private void ClearWnd()
+        {
+            PaintAreaGrid.Children.Clear();
         }
 
         private void StopGame()
@@ -196,8 +220,6 @@ namespace Disk
             EnemyLogAng.Dispose();
             EnemyLogWnd.Dispose();
             EnemyLogCen.Dispose();
-
-            Calculations.Dispose();
         }
 
         private void OnLoaded(object sender, RoutedEventArgs e)
