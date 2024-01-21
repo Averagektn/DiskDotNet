@@ -1,5 +1,6 @@
 ﻿using Disk.Data.Impl;
 using Disk.Visual.Interface;
+using System.Drawing;
 using System.Windows;
 using System.Windows.Markup;
 using System.Windows.Media;
@@ -56,8 +57,8 @@ namespace Disk.Visual.Impl
             IniSize = iniSize;
         }
 
-        public bool Contains(Point2D<int> p)
-            => Figure.RenderedGeometry.FillContains(p.ToPoint());
+        public bool Contains(Point2D<int> p) 
+            => Math.Sqrt(Math.Pow((p.X - Center.X) / Radius, 2) + Math.Pow((p.Y - Center.Y) / Radius, 2)) <= 1;
 
         public virtual void Draw(IAddChild addChild)
         {

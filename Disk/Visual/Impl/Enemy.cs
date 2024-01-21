@@ -10,10 +10,11 @@ namespace Disk.Visual.Impl
         {
             var direction = GetAngleDirection(target);
 
-            bool moveRight = IsBetween(direction, 315, 45);
-            bool moveTop = IsBetween(direction, 45, 135);
-            bool moveLeft = IsBetween(direction, 135, 225);
-            bool moveBottom = IsBetween(direction, 225, 315);
+            bool reached = Contains(target);
+            bool moveRight = IsBetween(direction, 315, 45) && !reached;
+            bool moveTop = IsBetween(direction, 45, 135) && !reached;
+            bool moveLeft = IsBetween(direction, 135, 225) && !reached;
+            bool moveBottom = IsBetween(direction, 225, 315) && !reached;
 
             Move(moveTop, moveRight, moveBottom, moveLeft);
         }
@@ -24,17 +25,6 @@ namespace Disk.Visual.Impl
             var deltaY = -target.Y + Center.Y;
 
             return (float)new PolarPoint<double>(new Point2D<double>(deltaX, deltaY)).Angle;
-
-            /*            var angleRadians = Math.Atan2(deltaY, deltaX);
-
-                        var angleDegrees = angleRadians * (180 / Math.PI);
-
-                        if (angleDegrees < 0)
-                        {
-                            angleDegrees += 360;
-                        }
-
-                        return (float)angleDegrees;*/
         }
 
         private static bool IsBetween(float angle, float left, float right)
