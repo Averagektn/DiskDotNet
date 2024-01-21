@@ -10,6 +10,8 @@ namespace Disk.Visual.Impl
 {
     class Graph : IDrawable, IScalable
     {
+        private Size Size;
+
         private readonly Polygon Polygon;
 
         private readonly IEnumerable<int> Frequency;
@@ -22,9 +24,17 @@ namespace Disk.Visual.Impl
         {
             SegmentsNum = segmentsNum;
 
+            Size = currSize;
+
             Radius = (int)(Math.Min(currSize.Width / 2, currSize.Height / 2) * 0.9);
 
-            Frequency = GetFrequency(Classifier<float>.Classify(points, segmentsNum));
+            var l = new List<PolarPoint<float>>();
+            foreach (var p in points)
+            {
+                l.Add(p);
+            }
+
+            Frequency = GetFrequency(Classifier<float>.Classify(l, segmentsNum));
 
             Polygon = new()
             {
@@ -41,7 +51,9 @@ namespace Disk.Visual.Impl
 
         public void Scale(Size newSize)
         {
-            Radius = (int)(Math.Min(newSize.Width, newSize.Height) * 0.9);
+            Size = newSize;
+
+            Radius = (int)(Math.Min(newSize.Width / 2, newSize.Height / 2) * 0.9);
 
             Polygon.Points.Clear();
 
@@ -57,11 +69,11 @@ namespace Disk.Visual.Impl
 
             for (var angle = angleStep / 2; angle < 360.0; angle += angleStep, i++)
             {
-                var radius = Radius * (double)maxFrequency / Frequency.ElementAt(i);
+                var radius = Radius * (Frequency.ElementAt(i) + 1) / (double)maxFrequency;
 
-                var point = new PolarPoint<float>(radius, angle);
+                var point = new PolarPoint<float>(radius, Math.PI * angle / 180);
 
-                Polygon.Points.Add(point.ToPoint());
+                Polygon.Points.Add(new(point.X + Size.Width / 2, Size.Height / 2 - point.Y));
             }
         }
 

@@ -147,13 +147,15 @@ namespace Disk
         {
             StopGame();
 
+            DrawWindRose();
+
             DrawPaths();
         }
 
         private void DrawPaths()
         {
             using var userPathReader = FileReader<float>.Open("userANG.log", ';');
-            using var enemyPathReader = FileReader<float>.Open("enemyAng.log", ';');
+            using var enemyPathReader = FileReader<float>.Open("enemyANG.log", ';');
 
             var userPath = new Path(userPathReader.Get2DPoints(), PaintSize, new(40.0f, 40.0f), Brushes.Green);
             var enemyPath = new Path(enemyPathReader.Get2DPoints(), PaintSize, new(40.0f, 40.0f), Brushes.DarkRed);
@@ -163,6 +165,18 @@ namespace Disk
 
             Scalables.Add(userPath);
             Scalables.Add(enemyPath);
+        }
+
+        private void DrawWindRose()
+        {
+            using var userReader = FileReader<float>.Open("userANG.log", ';');
+
+            var userRose = 
+                new Graph(userReader.Get2DPoints().Select(p => new PolarPointF(p.X, p.Y)), PaintSize, Brushes.LightGreen);
+
+            userRose.Draw(PaintAreaGrid);
+
+            Scalables.Add(userRose);
         }
 
         private void StopGame()
