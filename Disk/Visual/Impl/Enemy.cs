@@ -10,13 +10,15 @@ namespace Disk.Visual.Impl
         {
             var direction = GetAngleDirection(target);
 
-            bool reached = Contains(target);
-            bool moveRight = IsBetween(direction, 292.5f, 67.5f) && !reached;
-            bool moveTop = IsBetween(direction, 22.5f, 157.5f) && !reached;
-            bool moveLeft = IsBetween(direction, 112.5f, 247.5f) && !reached;
-            bool moveBottom = IsBetween(direction, 202.5f, 337.5f) && !reached;
+            if (!Contains(target))
+            {
+                bool moveRight = IsBetween(direction, 292.5f, 67.5f);
+                bool moveTop = IsBetween(direction, 22.5f, 157.5f);
+                bool moveLeft = IsBetween(direction, 112.5f, 247.5f);
+                bool moveBottom = IsBetween(direction, 202.5f, 337.5f);
 
-            Move(moveTop, moveRight, moveBottom, moveLeft);
+                Move(moveTop, moveRight, moveBottom, moveLeft);
+            }
         }
 
         private float GetAngleDirection(Point2D<int> target)
