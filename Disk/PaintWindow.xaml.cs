@@ -20,7 +20,7 @@ namespace Disk
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class PaintWindow : Window
     {
         private Size PaintSize => PaintAreaGrid.RenderSize;
 
@@ -72,7 +72,7 @@ namespace Disk
 
         private int Score = 0;
 
-        public MainWindow()
+        public PaintWindow()
         {
             InitializeComponent();
 
@@ -181,15 +181,15 @@ namespace Disk
             User.OnShot += (p) => UserLogAng.LogLn(Converter?.ToAngle_FromWnd(p));
             User.OnShot += (p) => UserLogCen.LogLn(Converter?.ToLogCoord(p));
 
-            Enemy = new(new(Random.Next(PaintWidth), Random.Next(PaintHeight)), 3, 4, Brushes.Red, PaintSize);
+            Enemy = new(new(Random.Next(PaintWidth), Random.Next(PaintHeight)), 3, 4, Brushes.DarkRed, PaintSize);
             Enemy.OnShot += EnemyLogWnd.LogLn;
             Enemy.OnShot += (p) => EnemyLogAng.LogLn(Converter?.ToAngle_FromWnd(p));
             Enemy.OnShot += (p) => EnemyLogCen.LogLn(Converter?.ToLogCoord(p));
 
             Target = new(new(Random.Next(PaintWidth), Random.Next(PaintHeight)), 7, PaintSize);
 
-            Scalables.Add(XAxis); Scalables.Add(YAxis); Scalables.Add(User); Scalables.Add(Target); Scalables.Add(Enemy);
-            Drawables.Add(XAxis); Drawables.Add(YAxis); Drawables.Add(User); Drawables.Add(Target); Drawables.Add(Enemy);
+            Scalables.Add(XAxis); Scalables.Add(YAxis); Scalables.Add(Target); Scalables.Add(User); Scalables.Add(Enemy);
+            Drawables.Add(XAxis); Drawables.Add(YAxis); Drawables.Add(Target); Drawables.Add(User); Drawables.Add(Enemy);
 
             foreach (var elem in Drawables)
             {

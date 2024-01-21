@@ -10,9 +10,10 @@
 
   <ItemGroup>
     <Folder Include="Calculations\Interface\" />
-    <Folder Include="Data\Enemy\" />
-    <Folder Include="Data\Target\" />
-    <Folder Include="Data\User\" />
+    <Folder Include="Window\Calibration\" />
+    <Folder Include="Window\Main\" />
+    <Folder Include="Window\Settings\" />
+    <Folder Include="Window\Paint\" />
   </ItemGroup>
 
   <ItemGroup>
