@@ -7,14 +7,10 @@ using System.Timers;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
-using Timer = System.Timers.Timer;
 using Point2DF = Disk.Data.Impl.Point2D<float>;
-using Point2DI = Disk.Data.Impl.Point2D<int>;
-using PolarPointF = Disk.Data.Impl.PolarPoint<float>;
-using PolarPointI = Disk.Data.Impl.PolarPoint<int>;
 using Point3DF = Disk.Data.Impl.Point3D<float>;
-using Point3DI = Disk.Data.Impl.Point3D<int>;
-using System.Net;
+using PolarPointF = Disk.Data.Impl.PolarPoint<float>;
+using Timer = System.Timers.Timer;
 
 namespace Disk
 {
@@ -130,12 +126,12 @@ namespace Disk
 
         private void NetworkReceive()
         {
-/*            var con = Connection.GetConnection(IPAddress.Parse("127.0.0.1"), 9888);
+            /*            var con = Connection.GetConnection(IPAddress.Parse("127.0.0.1"), 9888);
 
-            while (IsGame)
-            {
-                CurrentPos = con.GetXYZ();
-            }*/
+                        while (IsGame)
+                        {
+                            CurrentPos = con.GetXYZ();
+                        }*/
         }
 
         private void OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
@@ -184,13 +180,13 @@ namespace Disk
 
             Scalables.Add(userPath);
             Scalables.Add(enemyPath);
-    }
+        }
 
         private void DrawWindRose()
         {
             using var userReader = FileReader<float>.Open("userANG.log", ';');
 
-            var userRose = new Graph(userReader.Get2DPoints().Select(p => new PolarPointF(p.X, p.Y)), 
+            var userRose = new Graph(userReader.Get2DPoints().Select(p => new PolarPointF(p.X, p.Y)),
                 PaintSize, Brushes.LightGreen);
 
             userRose.Draw(PaintAreaGrid);
