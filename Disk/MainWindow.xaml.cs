@@ -121,23 +121,7 @@ namespace Disk
 
         private void OnClosing(object? sender, CancelEventArgs e)
         {
-            IsGame = false;
-
-            NetworkThread.Join();
-
-            MoveTimer.Stop();
-            TargetTimer.Stop();
-            ShotTimer.Stop();
-
-            UserLogAng.Dispose();
-            UserLogWnd.Dispose();
-            UserLogCen.Dispose();
-
-            EnemyLogAng.Dispose();
-            EnemyLogWnd.Dispose();
-            EnemyLogCen.Dispose();
-
-            Calculations.Dispose();
+            StopGame();
         }
 
         private void MoveTimerElapsed(object? sender, ElapsedEventArgs e)
@@ -161,7 +145,28 @@ namespace Disk
 
         private void OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
+            StopGame();
+        }
 
+        private void StopGame()
+        {
+            IsGame = false;
+
+            NetworkThread.Join();
+
+            MoveTimer.Stop();
+            TargetTimer.Stop();
+            ShotTimer.Stop();
+
+            UserLogAng.Dispose();
+            UserLogWnd.Dispose();
+            UserLogCen.Dispose();
+
+            EnemyLogAng.Dispose();
+            EnemyLogWnd.Dispose();
+            EnemyLogCen.Dispose();
+
+            Calculations.Dispose();
         }
 
         private void OnLoaded(object sender, RoutedEventArgs e)
