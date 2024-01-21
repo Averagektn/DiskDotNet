@@ -65,8 +65,16 @@ namespace Disk.Data.Impl
                 {
                     res = new Point3D<CoordType>(
                         (CoordType)Convert.ChangeType(data[0], typeof(CoordType)),
+                        (CoordType)Convert.ChangeType(data[1], typeof(CoordType)),
+                        (CoordType)Convert.ChangeType(data[2], typeof(CoordType))
+                        );
+                }
+                if (data.Length == 2)
+                {
+                    res = new Point3D<CoordType>(
                         (CoordType)Convert.ChangeType(data[0], typeof(CoordType)),
-                        (CoordType)Convert.ChangeType(data[0], typeof(CoordType))
+                        (CoordType)Convert.ChangeType(data[1], typeof(CoordType)),
+                        new()
                         );
                 }
             }

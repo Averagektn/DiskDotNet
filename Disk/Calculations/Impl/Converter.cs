@@ -78,7 +78,7 @@ namespace Disk.Calculations.Impl
         public Point2D<int> ToWndCoord(Point2D<int> logPoint) => new(ToWndCoordX(logPoint.X), ToWndCoordY(logPoint.Y));
 
         // Logical
-        public int ToLogCoordX(int coord) => (int)(coord + MaxLogCoord.Width);
+        public int ToLogCoordX(int coord) => (int)(coord - MaxLogCoord.Width);
 
         public int ToLogCoordY(int coord) => (int)(MaxLogCoord.Height - coord);
 

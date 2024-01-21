@@ -101,6 +101,11 @@ namespace Disk
             {
                 Score += Target.ReceiveShot(User.Shot());
             }
+
+            if (User is not null && Enemy is not null)
+            {
+                Score -= User.ReceiveShot(Enemy.Shot());
+            }
         }
 
         private void TargetTimerElapsed(object? sender, ElapsedEventArgs e)
@@ -123,6 +128,16 @@ namespace Disk
             MoveTimer.Stop();
             TargetTimer.Stop();
             ShotTimer.Stop();
+
+            UserLogAng.Dispose();
+            UserLogWnd.Dispose();
+            UserLogCen.Dispose();
+
+            EnemyLogAng.Dispose();
+            EnemyLogWnd.Dispose();
+            EnemyLogCen.Dispose();
+
+            Calculations.Dispose();
         }
 
         private void MoveTimerElapsed(object? sender, ElapsedEventArgs e)
@@ -151,18 +166,22 @@ namespace Disk
 
         private void OnLoaded(object sender, RoutedEventArgs e)
         {
+            Converter = new(PaintSize, new(40.0f, 40.0f));
+
             XAxis = new(new(0, PaintHeight / 2), new(PaintWidth, PaintHeight / 2), PaintSize, Brushes.Black);
             YAxis = new(new(PaintWidth / 2, 0), new(PaintWidth / 2, PaintHeight), PaintSize, Brushes.Black);
 
             User = new(new(PaintWidth / 2, PaintHeight / 2), 5, 5, Brushes.Green, PaintSize);
             User.OnShot += UserLogWnd.LogLn;
+            User.OnShot += (p) => UserLogAng.LogLn(Converter?.ToAngle_FromWnd(p));
+            User.OnShot += (p) => UserLogCen.LogLn(Converter?.ToLogCoord(p));
 
             Enemy = new(new(Random.Next(PaintWidth), Random.Next(PaintHeight)), 3, 4, Brushes.Red, PaintSize);
-            Enemy.OnShot += UserLogWnd.LogLn;
+            Enemy.OnShot += EnemyLogWnd.LogLn;
+            Enemy.OnShot += (p) => EnemyLogAng.LogLn(Converter?.ToAngle_FromWnd(p));
+            Enemy.OnShot += (p) => EnemyLogCen.LogLn(Converter?.ToLogCoord(p));
 
             Target = new(new(Random.Next(PaintWidth), Random.Next(PaintHeight)), 7, PaintSize);
-
-            Converter = new(PaintSize, new(20.0f, 20.0f));
 
             Scalables.Add(XAxis); Scalables.Add(YAxis); Scalables.Add(User); Scalables.Add(Target); Scalables.Add(Enemy);
             Drawables.Add(XAxis); Drawables.Add(YAxis); Drawables.Add(User); Drawables.Add(Target); Drawables.Add(Enemy);

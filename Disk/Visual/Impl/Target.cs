@@ -50,7 +50,7 @@ namespace Disk.Visual.Impl
             }
         }
 
-        public int ReceiveShot(Point2D<int> shot)
+        public override int ReceiveShot(Point2D<int> shot)
         {
             int res = 0;
 
