@@ -147,10 +147,15 @@ namespace Disk
         {
             StopGame();
 
-            var userPathReader = FileReader<float>.Open("userANG.log", ';');
-            var userPath = new Path(userPathReader.Get2DPoints(), PaintSize, new(40.0f, 40.0f), Brushes.Green);
+            DrawPaths();
+        }
 
-            var enemyPathReader = FileReader<float>.Open("enemyAng.log", ';');
+        private void DrawPaths()
+        {
+            using var userPathReader = FileReader<float>.Open("userANG.log", ';');
+            using var enemyPathReader = FileReader<float>.Open("enemyAng.log", ';');
+
+            var userPath = new Path(userPathReader.Get2DPoints(), PaintSize, new(40.0f, 40.0f), Brushes.Green);
             var enemyPath = new Path(enemyPathReader.Get2DPoints(), PaintSize, new(40.0f, 40.0f), Brushes.DarkRed);
 
             userPath.Draw(PaintAreaGrid);
