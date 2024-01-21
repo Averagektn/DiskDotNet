@@ -17,6 +17,9 @@ namespace Disk.Visual.Impl
         public int Bottom => Center.Y + Radius;
         public int Left => Center.X - Radius;
 
+        protected int Radius;
+        protected int Speed;
+
         private const float DIAGONAL_CORRECTION = 1.41f;
 
         private readonly Ellipse Figure;
@@ -30,10 +33,7 @@ namespace Disk.Visual.Impl
 
         private bool isDrawn = false;
 
-        private int Speed;
-        protected int Radius;
-
-        public Circle(Point2D<int> center, int radius, int speed, Brush color)
+        public Circle(Point2D<int> center, int radius, int speed, Brush color, Size iniSize)
         {
             IniRadius = radius;
             IniSpeed = speed;
@@ -51,11 +51,7 @@ namespace Disk.Visual.Impl
                 VerticalAlignment = VerticalAlignment.Top,
                 Margin = new(Left, Top, 0, 0)
             };
-        }
 
-        public Circle(Point2D<int> center, int radius, int speed, Brush color, Size iniSize) :
-            this(center, radius, speed, color)
-        {
             CurrSize = iniSize;
             IniSize = iniSize;
         }
@@ -106,7 +102,7 @@ namespace Disk.Visual.Impl
             {
                 xSpeed = 0;
             }
-            if (Right >= CurrSize.Width - xSpeed && xSpeed > 0)
+            if (Right >= CurrSize.Width && xSpeed > 0)
             {
                 xSpeed = 0;
             }
@@ -114,7 +110,7 @@ namespace Disk.Visual.Impl
             {
                 ySpeed = 0;
             }
-            if (Bottom >= CurrSize.Height - ySpeed - Radius && ySpeed > 0)
+            if (Bottom >= CurrSize.Height && ySpeed > 0)
             {
                 ySpeed = 0;
             }

@@ -22,6 +22,11 @@ namespace Disk
     /// </summary>
     public partial class MainWindow : Window
     {
+        private Size PaintSize => PaintAreaGrid.RenderSize;
+
+        private int PaintHeight => (int)PaintAreaGrid.RenderSize.Height;
+        private int PaintWidth => (int)PaintAreaGrid.RenderSize.Width;
+
         private readonly Timer ShotTimer;
         private readonly Timer MoveTimer;
         private readonly Timer TargetTimer;
@@ -102,8 +107,8 @@ namespace Disk
         {
             Application.Current.Dispatcher.Invoke(
                 () => Target?.Move(new(
-                    Random.Next(Target.MaxRadius, (int)RenderSize.Width - Target.MaxRadius * 2),
-                    Random.Next(Target.MaxRadius, (int)RenderSize.Height - Target.MaxRadius * 2)
+                    Random.Next(Target.MaxRadius, PaintWidth - Target.MaxRadius * 2),
+                    Random.Next(Target.MaxRadius, PaintHeight - Target.MaxRadius * 2)
                     )));
 
             TargetTimer.Interval = Random.Next(1000, 5000);
@@ -126,7 +131,7 @@ namespace Disk
             Application.Current.Dispatcher.Invoke(() => User?.Move(MoveUp, MoveRight, MoveDown, MoveLeft));
 
             Application.Current.Dispatcher.Invoke(
-                () => Enemy?.Follow(User?.Center ?? new((int)RenderSize.Width / 2, (int)RenderSize.Height / 2)));
+                () => Enemy?.Follow(User?.Center ?? new(PaintWidth / 2, PaintHeight / 2)));
         }
 
         private void NetworkReceive()
@@ -146,20 +151,18 @@ namespace Disk
 
         private void OnLoaded(object sender, RoutedEventArgs e)
         {
-            XAxis = new Axis(new(0, (int)RenderSize.Height / 2), new((int)RenderSize.Width, (int)RenderSize.Height / 2),
-                RenderSize, Brushes.Black);
-            YAxis = new Axis(new((int)RenderSize.Width / 2, 0), new((int)RenderSize.Width / 2, (int)RenderSize.Height),
-                RenderSize, Brushes.Black);
+            XAxis = new(new(0, PaintHeight / 2), new(PaintWidth, PaintHeight / 2), PaintSize, Brushes.Black);
+            YAxis = new(new(PaintWidth / 2, 0), new(PaintWidth / 2, PaintHeight), PaintSize, Brushes.Black);
 
-            User = new(new((int)RenderSize.Width / 2, (int)RenderSize.Height / 2), 5, 5, Brushes.Green, RenderSize);
+            User = new(new(PaintWidth / 2, PaintHeight / 2), 5, 5, Brushes.Green, PaintSize);
             User.OnShot += UserLogWnd.LogLn;
 
-            Enemy = new(new((int)RenderSize.Width / 2 - 20, (int)RenderSize.Height / 2 - 100), 3, 4, Brushes.Red, RenderSize);
+            Enemy = new(new(Random.Next(PaintWidth), Random.Next(PaintHeight)), 3, 4, Brushes.Red, PaintSize);
             Enemy.OnShot += UserLogWnd.LogLn;
 
-            Target = new(new(Random.Next((int)RenderSize.Width), Random.Next((int)RenderSize.Height)), 7, RenderSize);
+            Target = new(new(Random.Next(PaintWidth), Random.Next(PaintHeight)), 7, PaintSize);
 
-            Converter = new(RenderSize, new(20.0f, 20.0f));
+            Converter = new(PaintSize, new(20.0f, 20.0f));
 
             Scalables.Add(XAxis); Scalables.Add(YAxis); Scalables.Add(User); Scalables.Add(Target); Scalables.Add(Enemy);
             Drawables.Add(XAxis); Drawables.Add(YAxis); Drawables.Add(User); Drawables.Add(Target); Drawables.Add(Enemy);
@@ -179,7 +182,7 @@ namespace Disk
         {
             foreach (var elem in Scalables)
             {
-                elem?.Scale(RenderSize);
+                elem?.Scale(PaintSize);
             }
         }
 

@@ -4,14 +4,8 @@ using System.Windows.Media;
 
 namespace Disk.Visual.Impl
 {
-    class Enemy : User
+    class Enemy(Point2D<int> center, int radius, int speed, Brush color, Size iniSize) : User(center, radius, speed, color, iniSize)
     {
-        public Enemy(Point2D<int> center, int radius, int speed, Brush color) : base(center, radius, speed, color) { }
-
-        public Enemy(Point2D<int> center, int radius, int speed, Brush color, Size iniSize) :
-            base(center, radius, speed, color, iniSize)
-        { }
-
         public void Follow(Point2D<int> target)
         {
             var direction = GetAngleDirection(target);

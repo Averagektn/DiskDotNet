@@ -8,8 +8,6 @@ namespace Disk.Visual.Impl
     {
         public event Action<Point2D<int>>? OnShot;
 
-        public User(Point2D<int> center, int radius, int speed, Brush color) : base(center, radius, speed, color) { }
-
         public User(Point2D<int> center, int radius, int speed, Brush color, Size iniSize) :
             base(center, radius, speed, color, iniSize)
         { }

@@ -5,28 +5,9 @@ using System.Windows.Media;
 
 namespace Disk.Visual.Impl
 {
-    class Target : User
+    class Target(Point2D<int> center, int radius, Size iniSize) : User(center, radius, 0, Brushes.White, iniSize)
     {
-        private readonly List<Circle> Circles;
-
-        public int MaxRadius => Radius * 5;
-
-        public Target(Point2D<int> center, int radius) : base(center, radius, 0, Brushes.White)
-        {
-            Circles =
-            [
-                new(center, radius * 5, 0, Brushes.Red),
-                new(center, radius * 4, 0, Brushes.White),
-                new(center, radius * 3, 0, Brushes.Red),
-                new(center, radius * 2, 0, Brushes.White),
-                new(center, radius * 1, 0, Brushes.Red)
-            ];
-        }
-
-        public Target(Point2D<int> center, int radius, Size iniSize) :
-            base(center, radius, 0, Brushes.White, iniSize)
-        {
-            Circles =
+        private readonly List<Circle> Circles =
             [
                 new(center, radius * 5, 0, Brushes.Red, iniSize),
                 new(center, radius * 4, 0, Brushes.White, iniSize),
@@ -34,7 +15,8 @@ namespace Disk.Visual.Impl
                 new(center, radius * 2, 0, Brushes.White, iniSize),
                 new(center, radius * 1, 0, Brushes.Red, iniSize)
             ];
-        }
+
+        public int MaxRadius => Radius * 5;
 
         public override void Draw(IAddChild addChild)
         {
