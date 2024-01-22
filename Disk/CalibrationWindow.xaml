@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Disk"
         mc:Ignorable="d"
-        Title="Calibration" Height="500" Width="400">
+        Title="CALIBRATION" Height="500" Width="400">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="1*" />

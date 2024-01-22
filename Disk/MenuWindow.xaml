@@ -22,19 +22,19 @@
         </Grid.ColumnDefinitions>
 
         <Border Grid.Row="1" Grid.Column="1" Margin="10, 15, 10, 15">
-            <Button Content="Start" Click="OnStartClick"/>
+            <Button Content="Start" Click="OnStartClick" FontSize="20"/>
         </Border>
 
         <Border Grid.Row="2" Grid.Column="1" Margin="10, 15, 10, 15">
-            <Button Content="Settings" Click="OnSettingsClick"/>
+            <Button Content="Settings" Click="OnSettingsClick" FontSize="20"/>
         </Border>
 
         <Border Grid.Row="3" Grid.Column="1" Margin="10, 15, 10, 15">
-            <Button Content="Calibration" Click="OnCalibrationClick"/>
+            <Button Content="Calibration" Click="OnCalibrationClick" FontSize="20"/>
         </Border>
 
         <Border Grid.Row="4" Grid.Column="1" Margin="10, 15, 10, 15">
-            <Button Content="Quit" Click="OnQuitClick"/>
+            <Button Content="Quit" Click="OnQuitClick" FontSize="20"/>
         </Border>
     </Grid>
 </Window>
