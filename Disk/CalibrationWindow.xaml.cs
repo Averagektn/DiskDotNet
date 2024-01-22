@@ -1,4 +1,5 @@
-﻿using Disk.Data.Impl;
+﻿using Disk.Calculations.Impl;
+using Disk.Data.Impl;
 using System.ComponentModel;
 using System.Net;
 using System.Timers;
@@ -48,11 +49,11 @@ namespace Disk
             {
                 if (BtnCalibrateX.IsEnabled)
                 {
-                    TbXCoord.Text = XAngle.ToString();
+                    TbXCoord.Text = Converter.ToAngle_FromRadian(XAngle).ToString();
                 }
                 if (BtnCalibrateY.IsEnabled)
                 {
-                    TbYCoord.Text = YAngle.ToString();
+                    TbYCoord.Text = Converter.ToAngle_FromRadian(YAngle).ToString();
                 }
             });
         }
