@@ -33,7 +33,7 @@ namespace Disk
 
         private void OnCalibrationClick(object sender, RoutedEventArgs e)
         {
-            new SettingsWindow().ShowDialog();
+            new CalibrationWindow().ShowDialog();
         }
 
         private void OnQuitClick(object sender, RoutedEventArgs e)
