@@ -4,7 +4,6 @@ using Disk.Visual.Impl;
 using Disk.Visual.Interface;
 using System.ComponentModel;
 using System.Net;
-using System.Net.Sockets;
 using System.Timers;
 using System.Windows;
 using System.Windows.Input;
@@ -21,6 +20,36 @@ namespace Disk
     /// </summary>
     public partial class PaintWindow : Window
     {
+        private const int TARGET_MIN_TIME = 1000;
+        private const int TARGET_MAX_TIME = 5000;
+        private const int MOVE_TIME = 20;
+        private const int SHOT_TIME = 200;
+        private const float MAX_X_ANGLE = 40.0f;
+        private const float MAX_Y_ANGLE = 40.0f;
+        private const string IP = "127.0.0.1";
+        private const int PORT = 9998;
+        private const int USER_INI_SPEED = 5;
+        private const int USER_INI_RADIUS = 5;
+        private const int ENEMY_INI_SPEED = 4;
+        private const int ENEMY_INI_RADIUS = 5;
+        private const int TARGET_INI_RADIUS = 7;
+        private const int SCREEN_INI_WIDTH = 600;
+        private const int SCREEN_INI_HEIGHT = 600;
+        private const int ENEMIES_NUM = 1;
+        private const string USER_WND_LOG_NAME = "userWND";
+        private const string USER_CEN_LOG_NAME = "userCEN";
+        private const string USER_ANG_LOG_NAME = "userANG";
+        private const string ENEMY_WND_LOG_NAME = "enemyWND";
+        private const string ENEMY_CEN_LOG_NAME = "enemyCEN";
+        private const string ENEMY_ANG_LOG_NAME = "enemyANG";
+        private const char LOG_SEPARATOR = ';';
+        private const string LOG_EXTENSION = ".log";
+
+        private readonly List<Enemy?> Enemies = [];
+
+        private int XCenter => (int)PaintAreaGrid.RenderSize.Height;
+        private int YCenter => (int)PaintAreaGrid.RenderSize.Width;
+
         private Size PaintSize => PaintAreaGrid.RenderSize;
 
         private int PaintHeight => (int)PaintAreaGrid.RenderSize.Height;
@@ -167,7 +196,7 @@ namespace Disk
                 {
                     CurrentPos = con.GetXYZ();
                 }
-            } 
+            }
             catch
             {
                 MessageBox.Show("Connection lost");

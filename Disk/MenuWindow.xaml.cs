@@ -19,8 +19,8 @@ namespace Disk
         {
             var paintWindow = new PaintWindow
             {
-                Width = 400,
-                Height = 300
+                Width = Width,
+                Height = Height
             };
 
             paintWindow.ShowDialog();
@@ -28,12 +28,12 @@ namespace Disk
 
         private void OnSettingsClick(object sender, RoutedEventArgs e)
         {
- 
+            new SettingsWindow().ShowDialog();
         }
 
         private void OnCalibrationClick(object sender, RoutedEventArgs e)
         {
-            
+            new SettingsWindow().ShowDialog();
         }
 
         private void OnQuitClick(object sender, RoutedEventArgs e)
