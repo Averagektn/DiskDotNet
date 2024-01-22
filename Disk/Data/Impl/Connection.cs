@@ -37,7 +37,10 @@ namespace Disk.Data.Impl
             IP = ip;
             Port = port;
 
-            Socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+            Socket = new(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp)
+            {
+                ReceiveTimeout = 1000
+            };
             Socket.Connect(new IPEndPoint(IP, Port));
 
             Handshake();
@@ -54,7 +57,7 @@ namespace Disk.Data.Impl
             byte[] receiveData = new byte[1];
             int bytesRead = Socket.Receive(receiveData);
 
-            if (bytesRead == 1 && receiveData[0] == 0x23)
+            if (bytesRead == 1 && receiveData[0] == 23)
             {
                 Socket.Send(receiveData);
             }
@@ -97,11 +100,18 @@ namespace Disk.Data.Impl
         /// <returns>
         /// 
         /// </returns>
-        public Point3D<float> GetXYZ()
+        public Point3D<float>? GetXYZ()
         {
             var coords = new byte[12];
 
-            Socket.Receive(coords);
+            try
+            {
+                Socket.Receive(coords);
+            }
+            catch
+            {
+                return null;
+            }
 
             float x = BitConverter.ToSingle(coords, 0);
             float y = BitConverter.ToSingle(coords, 4);
@@ -120,11 +130,11 @@ namespace Disk.Data.Impl
         /// <returns>
         /// 
         /// </returns>
-        public Point2D<float> GetXY()
+        public Point2D<float>? GetXY()
         {
             var data = GetXYZ();
 
-            return new((float)data.X, (float)data.Y);
+            return data is null ? null : new((float)data.X, (float)data.Y);
         }
 
         /// <summary>
@@ -133,11 +143,11 @@ namespace Disk.Data.Impl
         /// <returns>
         /// 
         /// </returns>
-        public Point2D<float> GetXZ()
+        public Point2D<float>? GetXZ()
         {
             var data = GetXYZ();
 
-            return new((float)data.X, (float)data.Z);
+            return data is null ? null : new((float)data.X, (float)data.Z);
         }
 
         /// <summary>
@@ -146,11 +156,11 @@ namespace Disk.Data.Impl
         /// <returns>
         /// 
         /// </returns>
-        public Point2D<float> GetYX()
+        public Point2D<float>? GetYX()
         {
             var data = GetXYZ();
 
-            return new((float)data.Y, (float)data.X);
+            return data is null ? null : new((float)data.Y, (float)data.X);
         }
 
         /// <summary>
@@ -159,11 +169,11 @@ namespace Disk.Data.Impl
         /// <returns>
         /// 
         /// </returns>
-        public Point2D<float> GetYZ()
+        public Point2D<float>? GetYZ()
         {
             var data = GetXYZ();
 
-            return new((float)data.Y, (float)data.Z);
+            return data is null ? null : new((float)data.Y, (float)data.Z);
         }
 
         /// <summary>
@@ -172,11 +182,11 @@ namespace Disk.Data.Impl
         /// <returns>
         /// 
         /// </returns>
-        public Point2D<float> GetZX()
+        public Point2D<float>? GetZX()
         {
             var data = GetXYZ();
 
-            return new((float)data.Z, (float)data.X);
+            return data is null ? null : new((float)data.Z, (float)data.X);
         }
 
         /// <summary>
@@ -185,11 +195,11 @@ namespace Disk.Data.Impl
         /// <returns>
         /// 
         /// </returns>
-        public Point2D<float> GetZY()
+        public Point2D<float>? GetZY()
         {
             var data = GetXYZ();
 
-            return new((float)data.Z, (float)data.Y);
+            return data is null ? null : new((float)data.Z, (float)data.Y);
         }
 
         /// <summary>

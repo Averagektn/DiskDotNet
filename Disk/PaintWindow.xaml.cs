@@ -3,6 +3,7 @@ using Disk.Data.Impl;
 using Disk.Visual.Impl;
 using Disk.Visual.Interface;
 using System.ComponentModel;
+using System.Net;
 using System.Timers;
 using System.Windows;
 using System.Windows.Input;
@@ -34,7 +35,7 @@ namespace Disk
         private bool MoveDown;
         private bool MoveLeft;
         private bool MoveRight;
-        private bool IsGame;
+        private bool IsGame = true;
 
         private readonly List<IScalable?> Scalables = [];
         private readonly List<IDrawable?> Drawables = [];
@@ -53,7 +54,7 @@ namespace Disk
         private readonly Logger EnemyLogCen = Logger.GetLogger("enemyCEN.log");
         private readonly Logger EnemyLogAng = Logger.GetLogger("enemyANG.log");
 
-        private readonly Point3DF? CurrentPos;
+        private Point3DF? CurrentPos;
 
         private Converter? Converter;
 
@@ -140,8 +141,13 @@ namespace Disk
         /// <param name="e"></param>
         private void MoveTimerElapsed(object? sender, ElapsedEventArgs e)
         {
-            //User?.Move(Converter?.ToWndCoord(CurrentPos.To2D()) ?? User.Center);
-            Application.Current.Dispatcher.Invoke(() => User?.Move(MoveUp, MoveRight, MoveDown, MoveLeft));
+            Application.Current.Dispatcher.Invoke(
+                () => User?.Move(Converter?.ToWndCoord(Converter.ToAngle_FromRadian(CurrentPos?.To2D() ??
+                    new(User.Center.X, User.Center.Y))) ??
+                    new(User.Center.X, User.Center.Y)));
+
+            // Keyboard
+            //Application.Current.Dispatcher.Invoke(() => User?.Move(MoveUp, MoveRight, MoveDown, MoveLeft));
 
             Application.Current.Dispatcher.Invoke(
                 () => Enemy?.Follow(User?.Center ?? new(PaintWidth / 2, PaintHeight / 2)));
@@ -152,12 +158,12 @@ namespace Disk
         /// </summary>
         private void NetworkReceive()
         {
-            /*            var con = Connection.GetConnection(IPAddress.Parse("127.0.0.1"), 9888);
+            using var con = Connection.GetConnection(IPAddress.Parse("127.0.0.1"), 9998);
 
-                        while (IsGame)
-                        {
-                            CurrentPos = con.GetXYZ();
-                        }*/
+            while (IsGame)
+            {
+                CurrentPos = con.GetXYZ();
+            }
         }
 
         /// <summary>
@@ -297,8 +303,9 @@ namespace Disk
                 elem?.Draw(PaintAreaGrid);
             }
 
-            MoveTimer.Start();
             NetworkThread.Start();
+
+            MoveTimer.Start();
             TargetTimer.Start();
             ShotTimer.Start();
         }
