@@ -22,5 +22,23 @@ namespace Disk.Config {
                 return defaultInstance;
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("20")]
+        public float X_MAX_ANGLE {
+            get {
+                return ((float)(this["X_MAX_ANGLE"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("20")]
+        public float Y_MAX_ANGLE {
+            get {
+                return ((float)(this["Y_MAX_ANGLE"]));
+            }
+        }
     }
 }

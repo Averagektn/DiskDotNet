@@ -15,6 +15,11 @@ namespace Disk
             InitializeComponent();
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void OnStartClick(object sender, RoutedEventArgs e)
         {
             var paintWindow = new PaintWindow
@@ -26,16 +31,31 @@ namespace Disk
             paintWindow.ShowDialog();
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void OnSettingsClick(object sender, RoutedEventArgs e)
         {
             new SettingsWindow().ShowDialog();
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void OnCalibrationClick(object sender, RoutedEventArgs e)
         {
             new CalibrationWindow().ShowDialog();
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void OnQuitClick(object sender, RoutedEventArgs e)
         {
             Close();

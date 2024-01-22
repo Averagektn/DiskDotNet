@@ -1,6 +1,12 @@
 ﻿<?xml version='1.0' encoding='utf-8'?>
-<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)">
-  <Profiles>
-    <Profile Name="(Default)" />
-  </Profiles>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="Disk.Config" GeneratedClassName="Config">
+  <Profiles />
+  <Settings>
+    <Setting Name="X_MAX_ANGLE" Type="System.Single" Scope="Application">
+      <Value Profile="(Default)">20</Value>
+    </Setting>
+    <Setting Name="Y_MAX_ANGLE" Type="System.Single" Scope="Application">
+      <Value Profile="(Default)">20</Value>
+    </Setting>
+  </Settings>
 </SettingsFile>
