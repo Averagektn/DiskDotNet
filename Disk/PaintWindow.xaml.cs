@@ -4,6 +4,7 @@ using Disk.Visual.Impl;
 using Disk.Visual.Interface;
 using System.ComponentModel;
 using System.Net;
+using System.Net.Sockets;
 using System.Timers;
 using System.Windows;
 using System.Windows.Input;
@@ -158,11 +159,19 @@ namespace Disk
         /// </summary>
         private void NetworkReceive()
         {
-            using var con = Connection.GetConnection(IPAddress.Parse("127.0.0.1"), 9998);
-
-            while (IsGame)
+            try
             {
-                CurrentPos = con.GetXYZ();
+                using var con = Connection.GetConnection(IPAddress.Parse("127.0.0.1"), 9998);
+
+                while (IsGame)
+                {
+                    CurrentPos = con.GetXYZ();
+                }
+            } 
+            catch
+            {
+                MessageBox.Show("Connection lost");
+                Application.Current.Dispatcher.BeginInvoke(new Action(() => Close()));
             }
         }
 

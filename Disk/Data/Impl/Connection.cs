@@ -209,6 +209,8 @@ namespace Disk.Data.Impl
         {
             Connections.Remove(this);
 
+            Logger.Dispose();
+
             Socket.Close();
         }
     }

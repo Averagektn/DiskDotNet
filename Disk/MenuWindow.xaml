@@ -7,6 +7,34 @@
         mc:Ignorable="d"
         Title="" Height="450" Width="800">
     <Grid>
-        
+        <Grid.RowDefinitions>
+            <RowDefinition Height="1*" />
+            <RowDefinition Height="2*" />
+            <RowDefinition Height="2*" />
+            <RowDefinition Height="2*" />
+            <RowDefinition Height="2*" />
+            <RowDefinition Height="1*" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="2*" />
+            <ColumnDefinition Width="1*" />
+            <ColumnDefinition Width="2*" />
+        </Grid.ColumnDefinitions>
+
+        <Border Grid.Row="1" Grid.Column="1" Margin="10, 10, 10, 10">
+            <Button Content="Start" Click="OnStartClick"/>
+        </Border>
+
+        <Border Grid.Row="2" Grid.Column="1" Margin="10, 10, 10, 10">
+            <Button Content="Settings" Click="OnSettingsClick"/>
+        </Border>
+
+        <Border Grid.Row="3" Grid.Column="1" Margin="10, 10, 10, 10">
+            <Button Content="Calibration" Click="OnCalibrationClick"/>
+        </Border>
+
+        <Border Grid.Row="4" Grid.Column="1" Margin="10, 10, 10, 10">
+            <Button Content="Quit" Click="OnQuitClick"/>
+        </Border>
     </Grid>
 </Window>
