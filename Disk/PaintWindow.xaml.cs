@@ -22,33 +22,55 @@ namespace Disk
     {
         private const int TARGET_MIN_TIME = 1000;
         private const int TARGET_MAX_TIME = 5000;
+
         private const int MOVE_TIME = 20;
         private const int SHOT_TIME = 200;
+
         private const float MAX_X_ANGLE = 40.0f;
         private const float MAX_Y_ANGLE = 40.0f;
+
         private const string IP = "127.0.0.1";
+
         private const int PORT = 9998;
+
         private const int USER_INI_SPEED = 5;
         private const int USER_INI_RADIUS = 5;
+
         private const int ENEMY_INI_SPEED = 4;
         private const int ENEMY_INI_RADIUS = 5;
+
         private const int TARGET_INI_RADIUS = 7;
+
         private const int SCREEN_INI_WIDTH = 600;
         private const int SCREEN_INI_HEIGHT = 600;
+
+        private static readonly Size SCREEN_INI_SIZE = new(SCREEN_INI_WIDTH, SCREEN_INI_HEIGHT);
+
+        private static int SCREEN_INI_CENTER_X => (int)SCREEN_INI_SIZE.Width / 2;
+        private static int SCREEN_INI_CENTER_Y => (int)SCREEN_INI_SIZE.Height / 2;
+
         private const int ENEMIES_NUM = 1;
+
         private const string USER_WND_LOG_NAME = "userWND";
         private const string USER_CEN_LOG_NAME = "userCEN";
         private const string USER_ANG_LOG_NAME = "userANG";
+
+        private const string USER_WND_LOG_FILE = USER_WND_LOG_NAME + LOG_EXTENSION;
+        private const string USER_CEN_LOG_FILE = USER_CEN_LOG_NAME + LOG_EXTENSION;
+        private const string USER_ANG_LOG_FILE = USER_ANG_LOG_NAME + LOG_EXTENSION;
+
         private const string ENEMY_WND_LOG_NAME = "enemyWND";
         private const string ENEMY_CEN_LOG_NAME = "enemyCEN";
         private const string ENEMY_ANG_LOG_NAME = "enemyANG";
+
         private const char LOG_SEPARATOR = ';';
+
         private const string LOG_EXTENSION = ".log";
 
         private readonly List<Enemy?> Enemies = [];
 
-        private int XCenter => (int)PaintAreaGrid.RenderSize.Height;
-        private int YCenter => (int)PaintAreaGrid.RenderSize.Width;
+        private int PaintCenterX => (int)PaintAreaGrid.RenderSize.Width / 2;
+        private int PaintCenterY => (int)PaintAreaGrid.RenderSize.Height / 2;
 
         private Size PaintSize => PaintAreaGrid.RenderSize;
 
@@ -76,13 +98,13 @@ namespace Disk
         private Target? Target;
         private Enemy? Enemy;
 
-        private readonly Logger UserLogWnd = Logger.GetLogger("userWND.log");
-        private readonly Logger UserLogCen = Logger.GetLogger("userCEN.log");
-        private readonly Logger UserLogAng = Logger.GetLogger("userANG.log");
+        private readonly Logger UserLogWnd = Logger.GetLogger(USER_WND_LOG_FILE);
+        private readonly Logger UserLogCen = Logger.GetLogger(USER_CEN_LOG_FILE);
+        private readonly Logger UserLogAng = Logger.GetLogger(USER_ANG_LOG_FILE);
 
-        private readonly Logger EnemyLogWnd = Logger.GetLogger("enemyWND.log");
-        private readonly Logger EnemyLogCen = Logger.GetLogger("enemyCEN.log");
-        private readonly Logger EnemyLogAng = Logger.GetLogger("enemyANG.log");
+        private readonly Logger EnemyLogWnd = Logger.GetLogger(ENEMY_WND_LOG_NAME + LOG_EXTENSION);
+        private readonly Logger EnemyLogCen = Logger.GetLogger(ENEMY_CEN_LOG_NAME + LOG_EXTENSION);
+        private readonly Logger EnemyLogAng = Logger.GetLogger(ENEMY_ANG_LOG_NAME + LOG_EXTENSION);
 
         private Point3DF? CurrentPos;
 
@@ -101,13 +123,13 @@ namespace Disk
 
             NetworkThread = new(NetworkReceive);
 
-            MoveTimer = new(20);
+            MoveTimer = new(MOVE_TIME);
             MoveTimer.Elapsed += MoveTimerElapsed;
 
-            TargetTimer = new(Random.Next(1000, 5000));
+            TargetTimer = new(Random.Next(TARGET_MIN_TIME, TARGET_MAX_TIME));
             TargetTimer.Elapsed += TargetTimerElapsed;
 
-            ShotTimer = new(200);
+            ShotTimer = new(SHOT_TIME);
             ShotTimer.Elapsed += ShotTimerElapsed;
 
             Closing += OnClosing;
@@ -151,7 +173,7 @@ namespace Disk
                     Random.Next(Target.MaxRadius, PaintHeight - Target.MaxRadius * 2)
                     )));
 
-            TargetTimer.Interval = Random.Next(1000, 5000);
+            TargetTimer.Interval = Random.Next(TARGET_MIN_TIME, TARGET_MIN_TIME);
         }
 
         /// <summary>
@@ -180,7 +202,7 @@ namespace Disk
             //Application.Current.Dispatcher.Invoke(() => User?.Move(MoveUp, MoveRight, MoveDown, MoveLeft));
 
             Application.Current.Dispatcher.Invoke(
-                () => Enemy?.Follow(User?.Center ?? new(PaintWidth / 2, PaintHeight / 2)));
+                () => Enemy?.Follow(User?.Center ?? new(PaintCenterX, PaintCenterY)));
         }
 
         /// <summary>
@@ -190,7 +212,7 @@ namespace Disk
         {
             try
             {
-                using var con = Connection.GetConnection(IPAddress.Parse("127.0.0.1"), 9998);
+                using var con = Connection.GetConnection(IPAddress.Parse(IP), PORT);
 
                 while (IsGame)
                 {
@@ -225,7 +247,7 @@ namespace Disk
         /// </summary>
         private static void ShowStats()
         {
-            using var userAngleReader = FileReader<float>.Open("userANG.log", ';');
+            using var userAngleReader = FileReader<float>.Open(USER_ANG_LOG_FILE, LOG_SEPARATOR);
 
             var dataset = new List<Point2DF>();
             foreach (var p in userAngleReader.Get2DPoints())
@@ -250,11 +272,11 @@ namespace Disk
         /// </summary>
         private void DrawPaths()
         {
-            using var userPathReader = FileReader<float>.Open("userANG.log", ';');
-            using var enemyPathReader = FileReader<float>.Open("enemyANG.log", ';');
+            using var userPathReader = FileReader<float>.Open(USER_ANG_LOG_FILE, LOG_SEPARATOR);
+            using var enemyPathReader = FileReader<float>.Open(ENEMY_ANG_LOG_NAME + LOG_EXTENSION, LOG_SEPARATOR);
 
-            var userPath = new Path(userPathReader.Get2DPoints(), PaintSize, new(40.0f, 40.0f), Brushes.Green);
-            var enemyPath = new Path(enemyPathReader.Get2DPoints(), PaintSize, new(40.0f, 40.0f), Brushes.DarkRed);
+            var userPath = new Path(userPathReader.Get2DPoints(), PaintSize, new(MAX_X_ANGLE, MAX_Y_ANGLE), Brushes.Green);
+            var enemyPath = new Path(enemyPathReader.Get2DPoints(), PaintSize, new(MAX_X_ANGLE, MAX_Y_ANGLE), Brushes.DarkRed);
 
             userPath.Draw(PaintAreaGrid);
             enemyPath.Draw(PaintAreaGrid);
@@ -268,7 +290,7 @@ namespace Disk
         /// </summary>
         private void DrawWindRose()
         {
-            using var userReader = FileReader<float>.Open("userANG.log", ';');
+            using var userReader = FileReader<float>.Open(USER_ANG_LOG_FILE, LOG_SEPARATOR);
 
             var userRose = new Graph(userReader.Get2DPoints().Select(p => new PolarPointF(p.X, p.Y)),
                 PaintSize, Brushes.LightGreen);
@@ -315,22 +337,25 @@ namespace Disk
         /// <param name="e"></param>
         private void OnLoaded(object sender, RoutedEventArgs e)
         {
-            Converter = new(PaintSize, new(40.0f, 40.0f));
+            Converter = new(PaintSize, new(MAX_X_ANGLE, MAX_Y_ANGLE));
 
-            XAxis = new(new(0, PaintHeight / 2), new(PaintWidth, PaintHeight / 2), PaintSize, Brushes.Black);
-            YAxis = new(new(PaintWidth / 2, 0), new(PaintWidth / 2, PaintHeight), PaintSize, Brushes.Black);
+            XAxis = new(new(0, PaintCenterY), new(PaintWidth, PaintCenterY), PaintSize, Brushes.Black);
+            YAxis = new(new(PaintCenterX, 0), new(PaintCenterX, PaintHeight), PaintSize, Brushes.Black);
 
-            User = new(new(PaintWidth / 2, PaintHeight / 2), 5, 5, Brushes.Green, PaintSize);
+            User = new(new(SCREEN_INI_CENTER_X, SCREEN_INI_CENTER_Y), USER_INI_RADIUS, USER_INI_SPEED, Brushes.Green, 
+                SCREEN_INI_SIZE);
             User.OnShot += UserLogWnd.LogLn;
             User.OnShot += (p) => UserLogAng.LogLn(Converter?.ToAngle_FromWnd(p));
             User.OnShot += (p) => UserLogCen.LogLn(Converter?.ToLogCoord(p));
 
-            Enemy = new(new(Random.Next(PaintWidth), Random.Next(PaintHeight)), 3, 4, Brushes.DarkRed, PaintSize);
+            Enemy = new(new(Random.Next(SCREEN_INI_WIDTH), Random.Next(SCREEN_INI_HEIGHT)), ENEMY_INI_RADIUS, ENEMY_INI_SPEED, 
+                Brushes.DarkRed, SCREEN_INI_SIZE);
             Enemy.OnShot += EnemyLogWnd.LogLn;
             Enemy.OnShot += (p) => EnemyLogAng.LogLn(Converter?.ToAngle_FromWnd(p));
             Enemy.OnShot += (p) => EnemyLogCen.LogLn(Converter?.ToLogCoord(p));
 
-            Target = new(new(Random.Next(PaintWidth), Random.Next(PaintHeight)), 7, PaintSize);
+            Target = new(new(Random.Next(SCREEN_INI_WIDTH), Random.Next(SCREEN_INI_HEIGHT)), TARGET_INI_RADIUS, 
+                SCREEN_INI_SIZE);
 
             Scalables.Add(XAxis); Scalables.Add(YAxis); Scalables.Add(Target); Scalables.Add(User); Scalables.Add(Enemy);
             Scalables.Add(Converter);
@@ -339,6 +364,11 @@ namespace Disk
             foreach (var elem in Drawables)
             {
                 elem?.Draw(PaintAreaGrid);
+            }
+
+            foreach (var elem in Scalables) 
+            {
+                elem?.Scale(PaintSize);
             }
 
             NetworkThread.Start();
