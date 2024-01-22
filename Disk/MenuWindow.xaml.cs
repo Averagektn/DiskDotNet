@@ -24,8 +24,9 @@ namespace Disk
         {
             var paintWindow = new PaintWindow
             {
-                Width = Width,
-                Height = Height
+                Width = RenderSize.Width,
+                Height = RenderSize.Height,
+                WindowState = WindowState
             };
 
             paintWindow.ShowDialog();
