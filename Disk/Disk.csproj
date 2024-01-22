@@ -9,13 +9,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Window\Calibration\" />
-    <Folder Include="Window\Main\" />
-    <Folder Include="Window\Settings\" />
-    <Folder Include="Window\Paint\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Compile Update="Config\Config.Designer.cs">
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <AutoGen>True</AutoGen>

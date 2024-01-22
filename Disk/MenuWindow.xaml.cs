@@ -1,4 +1,5 @@
 ﻿using System.Windows;
+using Settings = Disk.Config.Config;
 
 namespace Disk
 {
@@ -7,13 +8,12 @@ namespace Disk
     /// </summary>
     public partial class MenuWindow : Window
     {
+        private static Settings Settings => Settings.Default;
+
         /// <summary>
         /// 
         /// </summary>
-        public MenuWindow()
-        {
-            InitializeComponent();
-        }
+        public MenuWindow() => InitializeComponent();
 
         /// <summary>
         /// 
@@ -21,45 +21,32 @@ namespace Disk
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnStartClick(object sender, RoutedEventArgs e)
-        {
-            var paintWindow = new PaintWindow
+            => new PaintWindow
             {
-                Width = RenderSize.Width,
-                Height = RenderSize.Height,
+                Width = Settings.SCREEN_INI_WIDTH,
+                Height = Settings.SCREEN_INI_HEIGHT,
                 WindowState = WindowState
-            };
-
-            paintWindow.ShowDialog();
-        }
+            }.ShowDialog();
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void OnSettingsClick(object sender, RoutedEventArgs e)
-        {
-            new SettingsWindow().ShowDialog();
-        }
+        private void OnSettingsClick(object sender, RoutedEventArgs e) => new SettingsWindow().ShowDialog();
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void OnCalibrationClick(object sender, RoutedEventArgs e)
-        {
-            new CalibrationWindow().ShowDialog();
-        }
+        private void OnCalibrationClick(object sender, RoutedEventArgs e) => new CalibrationWindow().ShowDialog();
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void OnQuitClick(object sender, RoutedEventArgs e)
-        {
-            Close();
-        }
+        private void OnQuitClick(object sender, RoutedEventArgs e) => Close();
     }
 }

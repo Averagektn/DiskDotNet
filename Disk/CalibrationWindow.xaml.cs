@@ -127,10 +127,7 @@ namespace Disk
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void OnApplyClick(object sender, RoutedEventArgs e)
-        {
-            Close();
-        }
+        private void OnApplyClick(object sender, RoutedEventArgs e) => Close();
 
         /// <summary>
         /// 
