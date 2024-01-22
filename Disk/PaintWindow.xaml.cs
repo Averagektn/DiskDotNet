@@ -26,8 +26,8 @@ namespace Disk
         private const int MOVE_TIME = 20;
         private const int SHOT_TIME = 200;
 
-        private const float MAX_X_ANGLE = 40.0f;
-        private const float MAX_Y_ANGLE = 40.0f;
+        private const float X_ANGLE_SIZE = 40.0f;
+        private const float Y_ANGLE_SIZE = 40.0f;
 
         private const string IP = "127.0.0.1";
 
@@ -275,8 +275,9 @@ namespace Disk
             using var userPathReader = FileReader<float>.Open(USER_ANG_LOG_FILE, LOG_SEPARATOR);
             using var enemyPathReader = FileReader<float>.Open(ENEMY_ANG_LOG_NAME + LOG_EXTENSION, LOG_SEPARATOR);
 
-            var userPath = new Path(userPathReader.Get2DPoints(), PaintSize, new(MAX_X_ANGLE, MAX_Y_ANGLE), Brushes.Green);
-            var enemyPath = new Path(enemyPathReader.Get2DPoints(), PaintSize, new(MAX_X_ANGLE, MAX_Y_ANGLE), Brushes.DarkRed);
+            var userPath = new Path(userPathReader.Get2DPoints(), PaintSize, new(X_ANGLE_SIZE, Y_ANGLE_SIZE), Brushes.Green);
+            var enemyPath = new Path(enemyPathReader.Get2DPoints(), PaintSize, new(X_ANGLE_SIZE, Y_ANGLE_SIZE), 
+                Brushes.DarkRed);
 
             userPath.Draw(PaintAreaGrid);
             enemyPath.Draw(PaintAreaGrid);
@@ -337,7 +338,7 @@ namespace Disk
         /// <param name="e"></param>
         private void OnLoaded(object sender, RoutedEventArgs e)
         {
-            Converter = new(PaintSize, new(MAX_X_ANGLE, MAX_Y_ANGLE));
+            Converter = new(PaintSize, new(X_ANGLE_SIZE, Y_ANGLE_SIZE));
 
             XAxis = new(new(0, PaintCenterY), new(PaintWidth, PaintCenterY), PaintSize, Brushes.Black);
             YAxis = new(new(PaintCenterX, 0), new(PaintCenterX, PaintHeight), PaintSize, Brushes.Black);

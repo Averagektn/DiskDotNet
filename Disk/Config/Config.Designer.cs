@@ -40,5 +40,212 @@ namespace Disk.Config {
                 return ((float)(this["Y_MAX_ANGLE"]));
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("127.0.0.1")]
+        public string IP {
+            get {
+                return ((string)(this["IP"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("9998")]
+        public int PORT {
+            get {
+                return ((int)(this["PORT"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("1000")]
+        public int TARGET_MIN_TIME {
+            get {
+                return ((int)(this["TARGET_MIN_TIME"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("5000")]
+        public int TARGET_MAX_TIME {
+            get {
+                return ((int)(this["TARGET_MAX_TIME"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("20")]
+        public int MOVE_TIME {
+            get {
+                return ((int)(this["MOVE_TIME"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("200")]
+        public int SHOT_TIME {
+            get {
+                return ((int)(this["SHOT_TIME"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("5")]
+        public int USER_INI_SPEED {
+            get {
+                return ((int)(this["USER_INI_SPEED"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("5")]
+        public int USER_INI_RADIUS {
+            get {
+                return ((int)(this["USER_INI_RADIUS"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("4")]
+        public int ENEMY_INI_SPEED {
+            get {
+                return ((int)(this["ENEMY_INI_SPEED"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("5")]
+        public int ENEMY_INI_RADIUS {
+            get {
+                return ((int)(this["ENEMY_INI_RADIUS"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("7")]
+        public int TARGET_INI_RADIUS {
+            get {
+                return ((int)(this["TARGET_INI_RADIUS"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("600")]
+        public int SCREEN_INI_WIDTH {
+            get {
+                return ((int)(this["SCREEN_INI_WIDTH"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("600")]
+        public int SCREEN_INI_HEIGHT {
+            get {
+                return ((int)(this["SCREEN_INI_HEIGHT"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("1")]
+        public int ENEMIES_NUM {
+            get {
+                return ((int)(this["ENEMIES_NUM"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("userWND.log")]
+        public string USER_WND_LOG_FILE {
+            get {
+                return ((string)(this["USER_WND_LOG_FILE"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("userCEN.log")]
+        public string USER_CEN_LOG_FILE {
+            get {
+                return ((string)(this["USER_CEN_LOG_FILE"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("userANG.log")]
+        public string USER_ANG_LOG_FILE {
+            get {
+                return ((string)(this["USER_ANG_LOG_FILE"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("enemyWND")]
+        public string ENEMY_WND_LOG_NAME {
+            get {
+                return ((string)(this["ENEMY_WND_LOG_NAME"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("enemyCEN")]
+        public string ENEMY_CEN_LOG_NAME {
+            get {
+                return ((string)(this["ENEMY_CEN_LOG_NAME"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("enemyANG")]
+        public string ENEMY_ANG_LOG_NAME {
+            get {
+                return ((string)(this["ENEMY_ANG_LOG_NAME"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute(";")]
+        public char LOG_SEPARATOR {
+            get {
+                return ((char)(this["LOG_SEPARATOR"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute(".log")]
+        public string LOG_EXTENSION {
+            get {
+                return ((string)(this["LOG_EXTENSION"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string ENEMY_LOG_PATH {
+            get {
+                return ((string)(this["ENEMY_LOG_PATH"]));
+            }
+        }
     }
 }
