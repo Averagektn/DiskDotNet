@@ -179,27 +179,21 @@ namespace Disk.Config {
             }
         }
         
-        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("600")]
         public int SCREEN_INI_WIDTH {
             get {
                 return ((int)(this["SCREEN_INI_WIDTH"]));
             }
-            set {
-                this["SCREEN_INI_WIDTH"] = value;
-            }
         }
         
-        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("600")]
         public int SCREEN_INI_HEIGHT {
             get {
                 return ((int)(this["SCREEN_INI_HEIGHT"]));
-            }
-            set {
-                this["SCREEN_INI_HEIGHT"] = value;
             }
         }
         
@@ -320,6 +314,18 @@ namespace Disk.Config {
             }
             set {
                 this["ENEMY_LOG_PATH"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Green")]
+        public global::System.Drawing.Color USER_COLOR {
+            get {
+                return ((global::System.Drawing.Color)(this["USER_COLOR"]));
+            }
+            set {
+                this["USER_COLOR"] = value;
             }
         }
     }
