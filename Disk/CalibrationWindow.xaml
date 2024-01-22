@@ -38,7 +38,7 @@
         </Border>
 
         <Border Grid.Row="4" Grid.Column="1" Margin="10, 10, 10, 10">
-            <Button Content="Calibrate X" Click="OnCalibrateXClick" FontSize="20" Name="BtnCalibrateX"/>
+            <Button Content="Calibrate X" Click="OnCalibrateXClick" FontSize="20" Name="BtnCalibrateX" IsEnabled="False"/>
         </Border>
 
         <Border Grid.Row="5" Grid.Column="1" Margin="10, 0, 10, 0">
@@ -50,7 +50,7 @@
         </Border>
 
         <Border Grid.Row="7" Grid.Column="1" Margin="10, 10, 10, 10">
-            <Button Content="Calibrate Y" Click="OnCalibrateYClick" FontSize="20" Name="BtnCalibrateY"/>
+            <Button Content="Calibrate Y" Click="OnCalibrateYClick" FontSize="20" Name="BtnCalibrateY" IsEnabled="False"/>
         </Border>
 
         <Border Grid.Row="8" Grid.Column="1" Margin="10, 10, 10, 10">

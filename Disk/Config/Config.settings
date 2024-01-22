@@ -2,79 +2,79 @@
 <SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="Disk.Config" GeneratedClassName="Config">
   <Profiles />
   <Settings>
-    <Setting Name="X_MAX_ANGLE" Type="System.Single" Scope="Application">
+    <Setting Name="X_MAX_ANGLE" Type="System.Single" Scope="User">
       <Value Profile="(Default)">20</Value>
     </Setting>
-    <Setting Name="Y_MAX_ANGLE" Type="System.Single" Scope="Application">
+    <Setting Name="Y_MAX_ANGLE" Type="System.Single" Scope="User">
       <Value Profile="(Default)">20</Value>
     </Setting>
-    <Setting Name="IP" Type="System.String" Scope="Application">
+    <Setting Name="IP" Type="System.String" Scope="User">
       <Value Profile="(Default)">127.0.0.1</Value>
     </Setting>
-    <Setting Name="PORT" Type="System.Int32" Scope="Application">
+    <Setting Name="PORT" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">9998</Value>
     </Setting>
-    <Setting Name="TARGET_MIN_TIME" Type="System.Int32" Scope="Application">
+    <Setting Name="TARGET_MIN_TIME" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">1000</Value>
     </Setting>
-    <Setting Name="TARGET_MAX_TIME" Type="System.Int32" Scope="Application">
+    <Setting Name="TARGET_MAX_TIME" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">5000</Value>
     </Setting>
-    <Setting Name="MOVE_TIME" Type="System.Int32" Scope="Application">
+    <Setting Name="MOVE_TIME" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">20</Value>
     </Setting>
-    <Setting Name="SHOT_TIME" Type="System.Int32" Scope="Application">
+    <Setting Name="SHOT_TIME" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">200</Value>
     </Setting>
-    <Setting Name="USER_INI_SPEED" Type="System.Int32" Scope="Application">
+    <Setting Name="USER_INI_SPEED" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">5</Value>
     </Setting>
-    <Setting Name="USER_INI_RADIUS" Type="System.Int32" Scope="Application">
+    <Setting Name="USER_INI_RADIUS" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">5</Value>
     </Setting>
-    <Setting Name="ENEMY_INI_SPEED" Type="System.Int32" Scope="Application">
+    <Setting Name="ENEMY_INI_SPEED" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">4</Value>
     </Setting>
-    <Setting Name="ENEMY_INI_RADIUS" Type="System.Int32" Scope="Application">
+    <Setting Name="ENEMY_INI_RADIUS" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">5</Value>
     </Setting>
-    <Setting Name="TARGET_INI_RADIUS" Type="System.Int32" Scope="Application">
+    <Setting Name="TARGET_INI_RADIUS" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">7</Value>
     </Setting>
-    <Setting Name="SCREEN_INI_WIDTH" Type="System.Int32" Scope="Application">
+    <Setting Name="SCREEN_INI_WIDTH" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">600</Value>
     </Setting>
-    <Setting Name="SCREEN_INI_HEIGHT" Type="System.Int32" Scope="Application">
+    <Setting Name="SCREEN_INI_HEIGHT" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">600</Value>
     </Setting>
-    <Setting Name="ENEMIES_NUM" Type="System.Int32" Scope="Application">
+    <Setting Name="ENEMIES_NUM" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">1</Value>
     </Setting>
-    <Setting Name="USER_WND_LOG_FILE" Type="System.String" Scope="Application">
+    <Setting Name="USER_WND_LOG_FILE" Type="System.String" Scope="User">
       <Value Profile="(Default)">userWND.log</Value>
     </Setting>
-    <Setting Name="USER_CEN_LOG_FILE" Type="System.String" Scope="Application">
+    <Setting Name="USER_CEN_LOG_FILE" Type="System.String" Scope="User">
       <Value Profile="(Default)">userCEN.log</Value>
     </Setting>
-    <Setting Name="USER_ANG_LOG_FILE" Type="System.String" Scope="Application">
+    <Setting Name="USER_ANG_LOG_FILE" Type="System.String" Scope="User">
       <Value Profile="(Default)">userANG.log</Value>
     </Setting>
-    <Setting Name="ENEMY_WND_LOG_NAME" Type="System.String" Scope="Application">
+    <Setting Name="ENEMY_WND_LOG_NAME" Type="System.String" Scope="User">
       <Value Profile="(Default)">enemyWND</Value>
     </Setting>
-    <Setting Name="ENEMY_CEN_LOG_NAME" Type="System.String" Scope="Application">
+    <Setting Name="ENEMY_CEN_LOG_NAME" Type="System.String" Scope="User">
       <Value Profile="(Default)">enemyCEN</Value>
     </Setting>
-    <Setting Name="ENEMY_ANG_LOG_NAME" Type="System.String" Scope="Application">
+    <Setting Name="ENEMY_ANG_LOG_NAME" Type="System.String" Scope="User">
       <Value Profile="(Default)">enemyANG</Value>
     </Setting>
-    <Setting Name="LOG_SEPARATOR" Type="System.Char" Scope="Application">
+    <Setting Name="LOG_SEPARATOR" Type="System.Char" Scope="User">
       <Value Profile="(Default)">;</Value>
     </Setting>
-    <Setting Name="LOG_EXTENSION" Type="System.String" Scope="Application">
+    <Setting Name="LOG_EXTENSION" Type="System.String" Scope="User">
       <Value Profile="(Default)">.log</Value>
     </Setting>
-    <Setting Name="ENEMY_LOG_PATH" Type="System.String" Scope="Application">
+    <Setting Name="ENEMY_LOG_PATH" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
   </Settings>
