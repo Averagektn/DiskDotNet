@@ -96,6 +96,7 @@ namespace Disk
             }
             finally
             {
+                Settings.Save();
                 Close();
             }
         }
