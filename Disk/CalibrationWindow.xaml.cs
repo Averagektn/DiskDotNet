@@ -69,20 +69,14 @@ namespace Disk
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void OnCentralizeXClick(object sender, RoutedEventArgs e)
-        {
-            XShift += XAngleRes;
-        }
+        private void OnCentralizeXClick(object sender, RoutedEventArgs e) => XShift += XAngleRes;
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void OnCentralizeYClick(object sender, RoutedEventArgs e)
-        {
-            YShift += YAngleRes;
-        }
+        private void OnCentralizeYClick(object sender, RoutedEventArgs e) => YShift += YAngleRes;
 
         /// <summary>
         /// 

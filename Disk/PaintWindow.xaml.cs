@@ -8,8 +8,8 @@ using System.Timers;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
-using Point2DI = Disk.Data.Impl.Point2D<int>;
 using Point2DF = Disk.Data.Impl.Point2D<float>;
+using Point2DI = Disk.Data.Impl.Point2D<int>;
 using Point3DF = Disk.Data.Impl.Point3D<float>;
 using PolarPointF = Disk.Data.Impl.PolarPoint<float>;
 using Settings = Disk.Config.Config;
@@ -80,7 +80,7 @@ namespace Disk
         private Target? Target;
 
         private Point3DF? CurrentPos;
-       
+
         private Point2DI? ShiftedWndPos
         {
             get
@@ -287,7 +287,7 @@ namespace Disk
         {
             using var userReader = FileReader<float>.Open(Settings.USER_ANG_LOG_FILE, Settings.LOG_SEPARATOR);
 
-            var userRose = new Graph(userReader.Get2DPoints().Select(p => new PolarPointF(p.X, p.Y)), PaintSize, 
+            var userRose = new Graph(userReader.Get2DPoints().Select(p => new PolarPointF(p.X, p.Y)), PaintSize,
                 Brushes.LightGreen);
 
             userRose.Draw(PaintAreaGrid);
@@ -375,7 +375,7 @@ namespace Disk
                 Scalables.Add(enemy);
                 Drawables.Add(enemy);
                 Enemies.Add(enemy);
-            } 
+            }
 
             foreach (var elem in Drawables)
             {
