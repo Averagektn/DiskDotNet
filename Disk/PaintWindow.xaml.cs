@@ -17,6 +17,12 @@ using Timer = System.Timers.Timer;
 
 namespace Disk
 {
+    // Extend constructior for target
+    // Extend constructor for enemy
+    // Keyboard enemy mode in settings (remove thread, uncomment keybard and 1 enemy)
+    // Update settings
+    // Color selection
+
     /// <summary>
     ///     Interaction logic for PaintWindow.xaml
     /// </summary>
@@ -38,10 +44,9 @@ namespace Disk
         private readonly Logger UserLogCen = Logger.GetLogger(Settings.USER_CEN_LOG_FILE);
         private readonly Logger UserLogAng = Logger.GetLogger(Settings.USER_ANG_LOG_FILE);
 
-        // rework after multiple enemies added
-        private readonly Logger EnemyLogWnd = Logger.GetLogger(Settings.ENEMY_WND_LOG_NAME + Settings.LOG_EXTENSION);
-        private readonly Logger EnemyLogCen = Logger.GetLogger(Settings.ENEMY_CEN_LOG_NAME + Settings.LOG_EXTENSION);
-        private readonly Logger EnemyLogAng = Logger.GetLogger(Settings.ENEMY_ANG_LOG_NAME + Settings.LOG_EXTENSION);
+        private readonly List<Logger> EnemyWndLoggers = [];
+        private readonly List<Logger> EnemyAngLoggers = [];
+        private readonly List<Logger> EnemyCenLoggers = [];
 
         private readonly Timer ShotTimer;
         private readonly Timer MoveTimer;
@@ -49,7 +54,7 @@ namespace Disk
 
         private readonly Thread NetworkThread;
 
-        private readonly List<Enemy?> Enemies = new(Settings.ENEMIES_NUM);
+        private readonly List<Enemy> Enemies = new(Settings.ENEMIES_NUM);
 
         private readonly List<IScalable?> Scalables = [];
         private readonly List<IDrawable?> Drawables = [];
@@ -73,7 +78,6 @@ namespace Disk
         private Axis? YAxis;
         private User? User;
         private Target? Target;
-        private Enemy? Enemy;
 
         private Point3DF? CurrentPos;
        
@@ -142,10 +146,12 @@ namespace Disk
                 Score += Target.ReceiveShot(User.Shot());
             }
 
-            // lists
-            if (User is not null && Enemy is not null)
+            if (User is not null)
             {
-                Score -= User.ReceiveShot(Enemy.Shot());
+                foreach (var enemy in Enemies)
+                {
+                    Score -= User.ReceiveShot(enemy.Shot());
+                }
             }
 
             Application.Current.Dispatcher.Invoke(() => Title = $"Score: {Score}");
@@ -189,9 +195,11 @@ namespace Disk
             // Keyboard
             //Application.Current.Dispatcher.Invoke(() => User?.Move(MoveUp, MoveRight, MoveDown, MoveLeft));
 
-            // lists
-            Application.Current.Dispatcher.Invoke(
-                () => Enemy?.Follow(User?.Center ?? new(PaintCenterX, PaintCenterY)));
+            foreach (var enemy in Enemies)
+            {
+                Application.Current.Dispatcher.Invoke(
+                    () => enemy?.Follow(User?.Center ?? new(PaintCenterX, PaintCenterY)));
+            }
         }
 
         /// <summary>
@@ -304,9 +312,20 @@ namespace Disk
             UserLogWnd.Dispose();
             UserLogCen.Dispose();
 
-            EnemyLogAng.Dispose();
-            EnemyLogWnd.Dispose();
-            EnemyLogCen.Dispose();
+            foreach (var logger in EnemyAngLoggers)
+            {
+                logger.Dispose();
+            }
+
+            foreach (var logger in EnemyCenLoggers)
+            {
+                logger.Dispose();
+            }
+
+            foreach (var logger in EnemyWndLoggers)
+            {
+                logger.Dispose();
+            }
         }
 
         /// <summary>
@@ -328,21 +347,35 @@ namespace Disk
             User.OnShot += (p) => UserLogAng.LogLn(Converter?.ToAngle_FromWnd(p));
             User.OnShot += (p) => UserLogCen.LogLn(Converter?.ToLogCoord(p));
 
-            // add to list of enemies
-            Enemy = new(new(Random.Next(Settings.SCREEN_INI_WIDTH), Random.Next(Settings.SCREEN_INI_HEIGHT)),
-                Settings.ENEMY_INI_RADIUS, Settings.ENEMY_INI_SPEED,
-                new SolidColorBrush(Color.FromRgb((byte)Random.Next(256), (byte)Random.Next(256), (byte)Random.Next(256))),
-                SCREEN_INI_SIZE);
-            Enemy.OnShot += EnemyLogWnd.LogLn;
-            Enemy.OnShot += (p) => EnemyLogAng.LogLn(Converter?.ToAngle_FromWnd(p));
-            Enemy.OnShot += (p) => EnemyLogCen.LogLn(Converter?.ToLogCoord(p));
-
             Target = new(new(Random.Next(Settings.SCREEN_INI_WIDTH), Random.Next(Settings.SCREEN_INI_HEIGHT)),
                 Settings.TARGET_INI_RADIUS, SCREEN_INI_SIZE);
 
-            Scalables.Add(XAxis); Scalables.Add(YAxis); Scalables.Add(Target); Scalables.Add(User); Scalables.Add(Enemy);
-            Scalables.Add(Converter);
-            Drawables.Add(XAxis); Drawables.Add(YAxis); Drawables.Add(Target); Drawables.Add(User); Drawables.Add(Enemy);
+            Drawables.Add(XAxis); Drawables.Add(YAxis); Drawables.Add(Target); Drawables.Add(User);
+            Scalables.Add(XAxis); Scalables.Add(YAxis); Scalables.Add(Target); Scalables.Add(User); Scalables.Add(Converter);
+
+            for (int i = 0; i < Settings.ENEMIES_NUM; i++)
+            {
+                var enemy = new Enemy(new(Random.Next(Settings.SCREEN_INI_WIDTH), Random.Next(Settings.SCREEN_INI_HEIGHT)),
+                    Settings.ENEMY_INI_RADIUS, Settings.ENEMY_INI_SPEED,
+                    new SolidColorBrush(Color.FromRgb((byte)Random.Next(256), (byte)Random.Next(256), (byte)Random.Next(256))),
+                    SCREEN_INI_SIZE);
+
+                var loggerWnd = Logger.GetLogger(Settings.ENEMY_WND_LOG_NAME + i + Settings.LOG_EXTENSION);
+                var loggerCen = Logger.GetLogger(Settings.ENEMY_CEN_LOG_NAME + i + Settings.LOG_EXTENSION);
+                var loggerAng = Logger.GetLogger(Settings.ENEMY_ANG_LOG_NAME + i + Settings.LOG_EXTENSION);
+
+                EnemyAngLoggers.Add(loggerAng);
+                EnemyCenLoggers.Add(loggerCen);
+                EnemyWndLoggers.Add(loggerWnd);
+
+                enemy.OnShot += loggerWnd.LogLn;
+                enemy.OnShot += (p) => loggerAng.LogLn(Converter?.ToAngle_FromWnd(p));
+                enemy.OnShot += (p) => loggerCen.LogLn(Converter?.ToLogCoord(p));
+
+                Scalables.Add(enemy);
+                Drawables.Add(enemy);
+                Enemies.Add(enemy);
+            } 
 
             foreach (var elem in Drawables)
             {
