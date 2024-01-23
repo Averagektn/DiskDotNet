@@ -8,6 +8,7 @@ using System.Timers;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
+using Point2DI = Disk.Data.Impl.Point2D<int>;
 using Point2DF = Disk.Data.Impl.Point2D<float>;
 using Point3DF = Disk.Data.Impl.Point3D<float>;
 using PolarPointF = Disk.Data.Impl.PolarPoint<float>;
@@ -75,6 +76,29 @@ namespace Disk
         private Enemy? Enemy;
 
         private Point3DF? CurrentPos;
+       
+        private Point2DI? ShiftedWndPos
+        {
+            get
+            {
+                if (User is null)
+                {
+                    return null;
+                }
+
+                if (Converter is null || CurrentPos is null)
+                {
+                    return User.Center;
+                }
+
+                var anglePoint = Converter.ToAngle_FromRadian(CurrentPos.To2D());
+
+                var wndPoint = Converter.ToWndCoord(
+                    new Point2DF(anglePoint.X - Settings.ANGLE_X_SHIFT, anglePoint.Y - Settings.ANGLE_Y_SHIFT));
+
+                return wndPoint;
+            }
+        }
 
         private Converter? Converter;
 
@@ -160,10 +184,7 @@ namespace Disk
         /// <param name="e"></param>
         private void MoveTimerElapsed(object? sender, ElapsedEventArgs e)
         {
-            Application.Current.Dispatcher.Invoke(
-                () => User?.Move(Converter?.ToWndCoord(Converter.ToAngle_FromRadian(CurrentPos?.To2D() ??
-                    new(User.Center.X, User.Center.Y))) ??
-                    new(User.Center.X, User.Center.Y)));
+            Application.Current.Dispatcher.Invoke(() => User?.Move(ShiftedWndPos ?? User.Center));
 
             // Keyboard
             //Application.Current.Dispatcher.Invoke(() => User?.Move(MoveUp, MoveRight, MoveDown, MoveLeft));
@@ -258,8 +279,8 @@ namespace Disk
         {
             using var userReader = FileReader<float>.Open(Settings.USER_ANG_LOG_FILE, Settings.LOG_SEPARATOR);
 
-            var userRose = new Graph(userReader.Get2DPoints().Select(p => new PolarPointF(p.X, p.Y)),
-                PaintSize, Brushes.LightGreen);
+            var userRose = new Graph(userReader.Get2DPoints().Select(p => new PolarPointF(p.X, p.Y)), PaintSize, 
+                Brushes.LightGreen);
 
             userRose.Draw(PaintAreaGrid);
 
@@ -307,7 +328,6 @@ namespace Disk
             User.OnShot += (p) => UserLogAng.LogLn(Converter?.ToAngle_FromWnd(p));
             User.OnShot += (p) => UserLogCen.LogLn(Converter?.ToLogCoord(p));
 
-            // random color generation
             // add to list of enemies
             Enemy = new(new(Random.Next(Settings.SCREEN_INI_WIDTH), Random.Next(Settings.SCREEN_INI_HEIGHT)),
                 Settings.ENEMY_INI_RADIUS, Settings.ENEMY_INI_SPEED,

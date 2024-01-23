@@ -328,5 +328,29 @@ namespace Disk.Config {
                 this["USER_COLOR"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public float ANGLE_X_SHIFT {
+            get {
+                return ((float)(this["ANGLE_X_SHIFT"]));
+            }
+            set {
+                this["ANGLE_X_SHIFT"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public float ANGLE_Y_SHIFT {
+            get {
+                return ((float)(this["ANGLE_Y_SHIFT"]));
+            }
+            set {
+                this["ANGLE_Y_SHIFT"] = value;
+            }
+        }
     }
 }

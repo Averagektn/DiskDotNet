@@ -20,6 +20,12 @@ namespace Disk
 
         private readonly Timer TextBoxUpdateTimer;
 
+        private float XAngleRes => XAngle - XShift;
+        private float YAngleRes => YAngle - YShift;
+
+        private float XShift = Settings.ANGLE_X_SHIFT;
+        private float YShift = Settings.ANGLE_Y_SHIFT;
+
         private float XAngle = Settings.X_MAX_ANGLE;
         private float YAngle = Settings.Y_MAX_ANGLE;
 
@@ -49,13 +55,33 @@ namespace Disk
             {
                 if (BtnCalibrateX.IsEnabled)
                 {
-                    TbXCoord.Text = Converter.ToAngle_FromRadian(XAngle).ToString();
+                    TbXCoord.Text = XAngleRes.ToString();
                 }
                 if (BtnCalibrateY.IsEnabled)
                 {
-                    TbYCoord.Text = Converter.ToAngle_FromRadian(YAngle).ToString();
+                    TbYCoord.Text = YAngleRes.ToString();
                 }
             });
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void OnCentralizeXClick(object sender, RoutedEventArgs e)
+        {
+            XShift += XAngleRes;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void OnCentralizeYClick(object sender, RoutedEventArgs e)
+        {
+            YShift += YAngleRes;
         }
 
         /// <summary>
@@ -88,8 +114,11 @@ namespace Disk
                 {
                     var data = con.GetXYZ();
 
-                    XAngle = data?.X ?? XAngle;
-                    YAngle = data?.Y ?? YAngle;
+                    if (data is not null)
+                    {
+                        XAngle = Converter.ToAngle_FromRadian(data.X);
+                        YAngle = Converter.ToAngle_FromRadian(data.Y);
+                    }
                 }
             }
             catch
@@ -148,6 +177,9 @@ namespace Disk
 
             Settings.X_MAX_ANGLE = Math.Abs(Convert.ToSingle(TbXCoord.Text));
             Settings.Y_MAX_ANGLE = Math.Abs(Convert.ToSingle(TbYCoord.Text));
+
+            Settings.ANGLE_X_SHIFT = XShift;
+            Settings.ANGLE_Y_SHIFT = YShift;
 
             Settings.Save();
         }

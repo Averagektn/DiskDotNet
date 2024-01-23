@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Disk"
         mc:Ignorable="d"
-        Title="CALIBRATION" Height="500" Width="400">
+        Title="CALIBRATION" Height="500" Width="500">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="1*" />
@@ -37,6 +37,10 @@
             <TextBox Name="TbXCoord" FontSize="20" TextAlignment="Center"></TextBox>
         </Border>
 
+        <Border Grid.Row="3" Grid.Column="2" Margin="10, 10, 10, 10">
+            <Button Content="Centralize" Click="OnCentralizeXClick" FontSize="20" Name="BtnCentralizeX"/>
+        </Border>
+
         <Border Grid.Row="4" Grid.Column="1" Margin="10, 10, 10, 10">
             <Button Content="Calibrate X" Click="OnCalibrateXClick" FontSize="20" Name="BtnCalibrateX" IsEnabled="False"/>
         </Border>
@@ -47,6 +51,10 @@
 
         <Border Grid.Row="6" Grid.Column="1" Margin="10, 15, 10, 15">
             <TextBox Name="TbYCoord" FontSize="20" TextAlignment="Center"></TextBox>
+        </Border>
+
+        <Border Grid.Row="6" Grid.Column="2" Margin="10, 10, 10, 10">
+            <Button Content="Centralize" Click="OnCentralizeYClick" FontSize="20" Name="BtnCentralizeY"/>
         </Border>
 
         <Border Grid.Row="7" Grid.Column="1" Margin="10, 10, 10, 10">
