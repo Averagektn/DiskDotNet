@@ -63,10 +63,10 @@ namespace Disk
         private int PaintHeight => (int)PaintAreaGrid.RenderSize.Height;
         private int PaintWidth => (int)PaintAreaGrid.RenderSize.Width;
 
-        private bool MoveUp = false;
+/*        private bool MoveUp = false;
         private bool MoveDown = false;
         private bool MoveLeft = false;
-        private bool MoveRight = false;
+        private bool MoveRight = false;*/
 
         private bool IsGame = true;
 
@@ -413,7 +413,7 @@ namespace Disk
         /// <param name="e"></param>
         private void OnKeyDown(object sender, KeyEventArgs e)
         {
-            if (e.Key == Key.W || e.Key == Key.Up)
+/*            if (e.Key == Key.W || e.Key == Key.Up)
             {
                 MoveUp = true;
             }
@@ -428,7 +428,7 @@ namespace Disk
             if (e.Key == Key.D || e.Key == Key.Right)
             {
                 MoveRight = true;
-            }
+            }*/
         }
 
         /// <summary>
@@ -438,7 +438,7 @@ namespace Disk
         /// <param name="e"></param>
         private void OnKeyUp(object sender, KeyEventArgs e)
         {
-            if (e.Key == Key.W || e.Key == Key.Up)
+/*            if (e.Key == Key.W || e.Key == Key.Up)
             {
                 MoveUp = false;
             }
@@ -453,7 +453,7 @@ namespace Disk
             if (e.Key == Key.D || e.Key == Key.Right)
             {
                 MoveRight = false;
-            }
+            }*/
         }
     }
 }
