@@ -13,7 +13,15 @@ namespace Disk
         /// <summary>
         /// 
         /// </summary>
-        public MenuWindow() => InitializeComponent();
+        public MenuWindow()
+        {
+            InitializeComponent();
+
+            Settings.ANGLE_X_SHIFT = 0;
+            Settings.ANGLE_Y_SHIFT = 0;
+
+            Settings.Save();
+        }
 
         /// <summary>
         /// 

@@ -1,4 +1,5 @@
-﻿using Disk.Data.Interface;
+﻿using Disk.Calculations.Impl;
+using Disk.Data.Interface;
 using System.Net;
 using System.Net.Sockets;
 
@@ -102,26 +103,23 @@ namespace Disk.Data.Impl
         /// </returns>
         public Point3D<float>? GetXYZ()
         {
-            var coords = new byte[12];
+            var coordX = new byte[4];
+            var coordY = new byte[4];
+            var coordZ = new byte[4];
 
-            try
-            {
-                Socket.Receive(coords);
-            }
-            catch
-            {
-                return null;
-            }
+            Socket.Receive(coordX);
+            Socket.Receive(coordY);
+            Socket.Receive(coordZ);
 
-            float x = BitConverter.ToSingle(coords, 0);
-            float y = BitConverter.ToSingle(coords, 4);
-            float z = BitConverter.ToSingle(coords, 8);
+            var x = BitConverter.ToSingle(coordX, 0);
+            var y = BitConverter.ToSingle(coordY, 0);
+            var z = BitConverter.ToSingle(coordZ, 0);
 
             var p = new Point3D<float>(x, y, z);
 
             Logger.LogLn(p);
 
-            return p;
+            return Converter.ToAngle_FromRadian(p);
         }
 
         /// <summary>
