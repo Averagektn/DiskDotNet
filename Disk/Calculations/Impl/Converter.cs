@@ -88,7 +88,7 @@ namespace Disk.Calculations.Impl
         /// </returns>
         public int ToWndCoordX(float angle)
         {
-            angle = angle + MaxAngle.Width;
+            angle = -angle + MaxAngle.Width;
 
             return (int)Math.Round(angle * ScreenSize.Width / AngleSize.Width);
         }

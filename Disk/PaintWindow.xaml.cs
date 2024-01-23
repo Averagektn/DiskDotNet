@@ -17,11 +17,7 @@ using Timer = System.Timers.Timer;
 
 namespace Disk
 {
-    // Extend constructior for target
-    // Extend constructor for enemy
-    // Keyboard enemy mode in settings (remove thread, uncomment keybard and 1 enemy)
     // Update settings
-    // Color selection
 
     /// <summary>
     ///     Interaction logic for PaintWindow.xaml
@@ -54,7 +50,7 @@ namespace Disk
 
         private readonly Thread NetworkThread;
 
-        private readonly List<Enemy> Enemies = new(Settings.ENEMIES_NUM);
+        //private readonly List<Enemy> Enemies = new(Settings.ENEMIES_NUM);
 
         private readonly List<IScalable?> Scalables = [];
         private readonly List<IDrawable?> Drawables = [];
@@ -67,10 +63,10 @@ namespace Disk
         private int PaintHeight => (int)PaintAreaGrid.RenderSize.Height;
         private int PaintWidth => (int)PaintAreaGrid.RenderSize.Width;
 
-        private bool MoveUp = false;
+/*        private bool MoveUp = false;
         private bool MoveDown = false;
         private bool MoveLeft = false;
-        private bool MoveRight = false;
+        private bool MoveRight = false;*/
 
         private bool IsGame = true;
 
@@ -94,13 +90,9 @@ namespace Disk
                 {
                     return User.Center;
                 }
-
-                var anglePoint = Converter.ToAngle_FromRadian(CurrentPos.To2D());
-
-                var wndPoint = Converter.ToWndCoord(
-                    new Point2DF(anglePoint.X - Settings.ANGLE_X_SHIFT, anglePoint.Y - Settings.ANGLE_Y_SHIFT));
-
-                return wndPoint;
+               
+                return Converter.ToWndCoord(
+                    new Point2DF(CurrentPos.X - Settings.ANGLE_X_SHIFT, CurrentPos.Y - Settings.ANGLE_Y_SHIFT));
             }
         }
 
@@ -146,13 +138,13 @@ namespace Disk
                 Score += Target.ReceiveShot(User.Shot());
             }
 
-            if (User is not null)
+/*            if (User is not null)
             {
                 foreach (var enemy in Enemies)
                 {
                     Score -= User.ReceiveShot(enemy.Shot());
                 }
-            }
+            }*/
 
             Application.Current.Dispatcher.Invoke(() => Title = $"Score: {Score}");
         }
@@ -164,6 +156,7 @@ namespace Disk
         /// <param name="e"></param>
         private void TargetTimerElapsed(object? sender, ElapsedEventArgs e)
         {
+            // target on muse click, remove timer
             Application.Current.Dispatcher.Invoke(
                 () => Target?.Move(new(
                     Random.Next(Target.MaxRadius, PaintWidth - Target.MaxRadius * 2),
@@ -178,10 +171,7 @@ namespace Disk
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void OnClosing(object? sender, CancelEventArgs e)
-        {
-            StopGame();
-        }
+        private void OnClosing(object? sender, CancelEventArgs e) => StopGame();
 
         /// <summary>
         /// 
@@ -195,11 +185,11 @@ namespace Disk
             // Keyboard
             //Application.Current.Dispatcher.Invoke(() => User?.Move(MoveUp, MoveRight, MoveDown, MoveLeft));
 
-            foreach (var enemy in Enemies)
+/*            foreach (var enemy in Enemies)
             {
                 Application.Current.Dispatcher.Invoke(
                     () => enemy?.Follow(User?.Center ?? new(PaintCenterX, PaintCenterY)));
-            }
+            }*/
         }
 
         /// <summary>
@@ -231,11 +221,8 @@ namespace Disk
         private void OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             StopGame();
-
             DrawWindRose();
-
             DrawPaths();
-
             ShowStats();
         }
 
@@ -306,10 +293,10 @@ namespace Disk
 
                 User?.Move(new(-Target.MaxRadius * 2, -Target.MaxRadius * 2));
 
-                foreach (var enemy in Enemies)
+/*                foreach (var enemy in Enemies)
                 {
                     enemy?.Move(new(-Target.MaxRadius * 2, -Target.MaxRadius * 2));
-                }
+                }*/
             }
 
             IsGame = false;
@@ -365,7 +352,7 @@ namespace Disk
             Drawables.Add(XAxis); Drawables.Add(YAxis); Drawables.Add(Target); Drawables.Add(User);
             Scalables.Add(XAxis); Scalables.Add(YAxis); Scalables.Add(Target); Scalables.Add(User); Scalables.Add(Converter);
 
-            for (int i = 0; i < Settings.ENEMIES_NUM; i++)
+/*            for (int i = 0; i < Settings.ENEMIES_NUM; i++)
             {
                 var enemy = new Enemy(new(Random.Next(Settings.SCREEN_INI_WIDTH), Random.Next(Settings.SCREEN_INI_HEIGHT)),
                     Settings.ENEMY_INI_RADIUS, Settings.ENEMY_INI_SPEED,
@@ -387,7 +374,7 @@ namespace Disk
                 Scalables.Add(enemy);
                 Drawables.Add(enemy);
                 Enemies.Add(enemy);
-            }
+            }*/
 
             foreach (var elem in Drawables)
             {
@@ -426,7 +413,7 @@ namespace Disk
         /// <param name="e"></param>
         private void OnKeyDown(object sender, KeyEventArgs e)
         {
-            if (e.Key == Key.W || e.Key == Key.Up)
+/*            if (e.Key == Key.W || e.Key == Key.Up)
             {
                 MoveUp = true;
             }
@@ -441,7 +428,7 @@ namespace Disk
             if (e.Key == Key.D || e.Key == Key.Right)
             {
                 MoveRight = true;
-            }
+            }*/
         }
 
         /// <summary>
@@ -451,7 +438,7 @@ namespace Disk
         /// <param name="e"></param>
         private void OnKeyUp(object sender, KeyEventArgs e)
         {
-            if (e.Key == Key.W || e.Key == Key.Up)
+/*            if (e.Key == Key.W || e.Key == Key.Up)
             {
                 MoveUp = false;
             }
@@ -466,7 +453,7 @@ namespace Disk
             if (e.Key == Key.D || e.Key == Key.Right)
             {
                 MoveRight = false;
-            }
+            }*/
         }
     }
 }

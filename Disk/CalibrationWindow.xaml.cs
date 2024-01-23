@@ -40,12 +40,13 @@ namespace Disk
 
             Closing += OnClosing;
 
-            TbXCoord.Text = XAngle.ToString();
-            TbYCoord.Text = YAngle.ToString();
+            TbXCoord.Text = $"{XAngle:F2}";
+            TbYCoord.Text = $"{YAngle:F2}";
 
             DataThread = new(NetworkThreadProc);
 
             TextBoxUpdateTimer = new(Settings.MOVE_TIME);
+
             TextBoxUpdateTimer.Elapsed += OnTextBoxUpdateTimerElapsed;
         }
 
@@ -55,11 +56,11 @@ namespace Disk
             {
                 if (BtnCalibrateX.IsEnabled)
                 {
-                    TbXCoord.Text = XAngleRes.ToString();
+                    TbXCoord.Text = $"{XAngleRes:F2}";
                 }
                 if (BtnCalibrateY.IsEnabled)
                 {
-                    TbYCoord.Text = YAngleRes.ToString();
+                    TbYCoord.Text = $"{YAngleRes:F2}";
                 }
             });
         }
@@ -110,8 +111,8 @@ namespace Disk
 
                     if (data is not null)
                     {
-                        XAngle = Converter.ToAngle_FromRadian(data.X);
-                        YAngle = Converter.ToAngle_FromRadian(data.Y);
+                        XAngle = data.X;
+                        YAngle = data.Y;
                     }
                 }
             }
