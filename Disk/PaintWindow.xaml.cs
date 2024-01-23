@@ -300,6 +300,18 @@ namespace Disk
         /// </summary>
         private void StopGame()
         {
+            if (Target is not null)
+            {
+                Target.Move(new(-Target.MaxRadius * 2, -Target.MaxRadius * 2));
+
+                User?.Move(new(-Target.MaxRadius * 2, -Target.MaxRadius * 2));
+
+                foreach (var enemy in Enemies)
+                {
+                    enemy?.Move(new(-Target.MaxRadius * 2, -Target.MaxRadius * 2));
+                }
+            }
+
             IsGame = false;
 
             NetworkThread.Join();
