@@ -86,5 +86,8 @@
     <Setting Name="ANGLE_Y_SHIFT" Type="System.Single" Scope="User">
       <Value Profile="(Default)">0</Value>
     </Setting>
+    <Setting Name="CALIBRATION_TIMEOUT" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">100</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

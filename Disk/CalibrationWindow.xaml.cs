@@ -1,6 +1,4 @@
-﻿using Disk.Calculations.Impl;
-using Disk.Data.Impl;
-using System.ComponentModel;
+﻿using Disk.Data.Impl;
 using System.Net;
 using System.Timers;
 using System.Windows;
@@ -38,14 +36,12 @@ namespace Disk
         {
             InitializeComponent();
 
-            Closing += OnClosing;
-
             TbXCoord.Text = $"{XAngle:F2}";
             TbYCoord.Text = $"{YAngle:F2}";
 
             DataThread = new(NetworkThreadProc);
 
-            TextBoxUpdateTimer = new(Settings.MOVE_TIME);
+            TextBoxUpdateTimer = new(Settings.CALIBRATION_TIMEOUT);
 
             TextBoxUpdateTimer.Elapsed += OnTextBoxUpdateTimerElapsed;
         }
@@ -152,14 +148,7 @@ namespace Disk
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void OnApplyClick(object sender, RoutedEventArgs e) => Close();
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void OnClosing(object? sender, CancelEventArgs e)
+        private void OnApplyClick(object sender, RoutedEventArgs e)
         {
             IsRunningThread = false;
 
@@ -177,6 +166,8 @@ namespace Disk
             Settings.ANGLE_Y_SHIFT = YShift;
 
             Settings.Save();
+
+            Close();
         }
     }
 }
