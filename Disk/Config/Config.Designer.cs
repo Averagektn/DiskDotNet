@@ -352,5 +352,17 @@ namespace Disk.Config {
                 this["ANGLE_Y_SHIFT"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("100")]
+        public int CALIBRATION_TIMEOUT {
+            get {
+                return ((int)(this["CALIBRATION_TIMEOUT"]));
+            }
+            set {
+                this["CALIBRATION_TIMEOUT"] = value;
+            }
+        }
     }
 }

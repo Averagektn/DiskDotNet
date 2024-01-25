@@ -40,17 +40,11 @@ namespace Disk
         private readonly Logger UserLogCen = Logger.GetLogger(Settings.USER_CEN_LOG_FILE);
         private readonly Logger UserLogAng = Logger.GetLogger(Settings.USER_ANG_LOG_FILE);
 
-        private readonly List<Logger> EnemyWndLoggers = [];
-        private readonly List<Logger> EnemyAngLoggers = [];
-        private readonly List<Logger> EnemyCenLoggers = [];
-
         private readonly Timer ShotTimer;
         private readonly Timer MoveTimer;
         private readonly Timer TargetTimer;
 
         private readonly Thread NetworkThread;
-
-        //private readonly List<Enemy> Enemies = new(Settings.ENEMIES_NUM);
 
         private readonly List<IScalable?> Scalables = [];
         private readonly List<IDrawable?> Drawables = [];
@@ -62,11 +56,6 @@ namespace Disk
 
         private int PaintHeight => (int)PaintAreaGrid.RenderSize.Height;
         private int PaintWidth => (int)PaintAreaGrid.RenderSize.Width;
-
-/*        private bool MoveUp = false;
-        private bool MoveDown = false;
-        private bool MoveLeft = false;
-        private bool MoveRight = false;*/
 
         private bool IsGame = true;
 
@@ -90,7 +79,7 @@ namespace Disk
                 {
                     return User.Center;
                 }
-               
+
                 return Converter.ToWndCoord(
                     new Point2DF(CurrentPos.X - Settings.ANGLE_X_SHIFT, CurrentPos.Y - Settings.ANGLE_Y_SHIFT));
             }
@@ -121,8 +110,6 @@ namespace Disk
             Closing += OnClosing;
             Loaded += OnLoaded;
             SizeChanged += OnSizeChanged;
-            PreviewKeyDown += OnKeyDown;
-            PreviewKeyUp += OnKeyUp;
             MouseLeftButtonDown += OnMouseLeftButtonDown;
         }
 
@@ -137,14 +124,6 @@ namespace Disk
             {
                 Score += Target.ReceiveShot(User.Shot());
             }
-
-/*            if (User is not null)
-            {
-                foreach (var enemy in Enemies)
-                {
-                    Score -= User.ReceiveShot(enemy.Shot());
-                }
-            }*/
 
             Application.Current.Dispatcher.Invoke(() => Title = $"Score: {Score}");
         }
@@ -179,18 +158,7 @@ namespace Disk
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void MoveTimerElapsed(object? sender, ElapsedEventArgs e)
-        {
-            Application.Current.Dispatcher.Invoke(() => User?.Move(ShiftedWndPos ?? User.Center));
-
-            // Keyboard
-            //Application.Current.Dispatcher.Invoke(() => User?.Move(MoveUp, MoveRight, MoveDown, MoveLeft));
-
-/*            foreach (var enemy in Enemies)
-            {
-                Application.Current.Dispatcher.Invoke(
-                    () => enemy?.Follow(User?.Center ?? new(PaintCenterX, PaintCenterY)));
-            }*/
-        }
+            => Application.Current.Dispatcher.Invoke(() => User?.Move(ShiftedWndPos ?? User.Center));
 
         /// <summary>
         /// 
@@ -245,10 +213,10 @@ namespace Disk
 
             MessageBox.Show(
                 $"""
-                Score: {Score}
-                Math expectation: {mx}
-                Dispersion: {dispersion}
-                Standart deviation: {deviation}
+                Счет: {Score}
+                Среднее смещение от центра: {mx}
+                Дисперсия: {dispersion}
+                Среднее отклонение от центра: {deviation}
                 """);
         }
 
@@ -292,11 +260,6 @@ namespace Disk
                 Target.Move(new(-Target.MaxRadius * 2, -Target.MaxRadius * 2));
 
                 User?.Move(new(-Target.MaxRadius * 2, -Target.MaxRadius * 2));
-
-/*                foreach (var enemy in Enemies)
-                {
-                    enemy?.Move(new(-Target.MaxRadius * 2, -Target.MaxRadius * 2));
-                }*/
             }
 
             IsGame = false;
@@ -310,21 +273,6 @@ namespace Disk
             UserLogAng.Dispose();
             UserLogWnd.Dispose();
             UserLogCen.Dispose();
-
-            foreach (var logger in EnemyAngLoggers)
-            {
-                logger.Dispose();
-            }
-
-            foreach (var logger in EnemyCenLoggers)
-            {
-                logger.Dispose();
-            }
-
-            foreach (var logger in EnemyWndLoggers)
-            {
-                logger.Dispose();
-            }
         }
 
         /// <summary>
@@ -351,30 +299,6 @@ namespace Disk
 
             Drawables.Add(XAxis); Drawables.Add(YAxis); Drawables.Add(Target); Drawables.Add(User);
             Scalables.Add(XAxis); Scalables.Add(YAxis); Scalables.Add(Target); Scalables.Add(User); Scalables.Add(Converter);
-
-/*            for (int i = 0; i < Settings.ENEMIES_NUM; i++)
-            {
-                var enemy = new Enemy(new(Random.Next(Settings.SCREEN_INI_WIDTH), Random.Next(Settings.SCREEN_INI_HEIGHT)),
-                    Settings.ENEMY_INI_RADIUS, Settings.ENEMY_INI_SPEED,
-                    new SolidColorBrush(Color.FromRgb((byte)Random.Next(256), (byte)Random.Next(256), (byte)Random.Next(256))),
-                    SCREEN_INI_SIZE);
-
-                var loggerWnd = Logger.GetLogger(Settings.ENEMY_WND_LOG_NAME + i + Settings.LOG_EXTENSION);
-                var loggerCen = Logger.GetLogger(Settings.ENEMY_CEN_LOG_NAME + i + Settings.LOG_EXTENSION);
-                var loggerAng = Logger.GetLogger(Settings.ENEMY_ANG_LOG_NAME + i + Settings.LOG_EXTENSION);
-
-                EnemyAngLoggers.Add(loggerAng);
-                EnemyCenLoggers.Add(loggerCen);
-                EnemyWndLoggers.Add(loggerWnd);
-
-                enemy.OnShot += loggerWnd.LogLn;
-                enemy.OnShot += (p) => loggerAng.LogLn(Converter?.ToAngle_FromWnd(p));
-                enemy.OnShot += (p) => loggerCen.LogLn(Converter?.ToLogCoord(p));
-
-                Scalables.Add(enemy);
-                Drawables.Add(enemy);
-                Enemies.Add(enemy);
-            }*/
 
             foreach (var elem in Drawables)
             {
@@ -404,56 +328,6 @@ namespace Disk
             {
                 elem?.Scale(PaintSize);
             }
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void OnKeyDown(object sender, KeyEventArgs e)
-        {
-/*            if (e.Key == Key.W || e.Key == Key.Up)
-            {
-                MoveUp = true;
-            }
-            if (e.Key == Key.A || e.Key == Key.Left)
-            {
-                MoveLeft = true;
-            }
-            if (e.Key == Key.S || e.Key == Key.Down)
-            {
-                MoveDown = true;
-            }
-            if (e.Key == Key.D || e.Key == Key.Right)
-            {
-                MoveRight = true;
-            }*/
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void OnKeyUp(object sender, KeyEventArgs e)
-        {
-/*            if (e.Key == Key.W || e.Key == Key.Up)
-            {
-                MoveUp = false;
-            }
-            if (e.Key == Key.A || e.Key == Key.Left)
-            {
-                MoveLeft = false;
-            }
-            if (e.Key == Key.S || e.Key == Key.Down)
-            {
-                MoveDown = false;
-            }
-            if (e.Key == Key.D || e.Key == Key.Right)
-            {
-                MoveRight = false;
-            }*/
         }
     }
 }
