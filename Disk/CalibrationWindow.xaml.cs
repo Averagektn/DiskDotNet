@@ -114,7 +114,7 @@ namespace Disk
             }
             catch
             {
-                MessageBox.Show("Connection lost");
+                MessageBox.Show("Потеряно соединение");
                 Application.Current.Dispatcher.BeginInvoke(new Action(() => Close()));
             }
         }
