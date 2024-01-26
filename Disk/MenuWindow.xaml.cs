@@ -23,7 +23,7 @@ namespace Disk
         private void OnStartClick(object sender, RoutedEventArgs e)
             => new PaintWindow
             {
-                Width = Settings.SCREEN_INI_WIDTH,
+                Width = Settings.SCREEN_INI_WIDTH * 1.25,
                 Height = Settings.SCREEN_INI_HEIGHT,
                 WindowState = WindowState
             }.ShowDialog();

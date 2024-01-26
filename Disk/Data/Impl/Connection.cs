@@ -31,7 +31,7 @@ namespace Disk.Data.Impl
         /// <param name="port">
         /// 
         /// </param>
-        private Connection(IPAddress ip, int port)
+        private Connection(IPAddress ip, int port, int receiveTimeout)
         {
             Logger = Logger.GetLogger("connection.log");
 
@@ -40,7 +40,7 @@ namespace Disk.Data.Impl
 
             Socket = new(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp)
             {
-                ReceiveTimeout = 1000
+                ReceiveTimeout = receiveTimeout
             };
             Socket.Connect(new IPEndPoint(IP, Port));
 
@@ -81,13 +81,13 @@ namespace Disk.Data.Impl
         /// <returns>
         /// 
         /// </returns>
-        public static Connection GetConnection(IPAddress ip, int port)
+        public static Connection GetConnection(IPAddress ip, int port, int receiveTimeout = 2000)
         {
             var conn = Connections.FirstOrDefault(c => c.IP.Equals(ip) && c.Port == port);
 
             if (conn is null)
             {
-                conn = new(ip, port);
+                conn = new(ip, port, receiveTimeout);
 
                 Connections.Add(conn);
             }

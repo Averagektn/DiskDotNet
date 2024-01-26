@@ -284,8 +284,8 @@ namespace Disk
         {
             Converter = new(PaintSize, new(X_ANGLE_SIZE, Y_ANGLE_SIZE));
 
-            XAxis = new(new(0, PaintCenterY), new(PaintWidth, PaintCenterY), PaintSize, Brushes.Black);
-            YAxis = new(new(PaintCenterX, 0), new(PaintCenterX, PaintHeight), PaintSize, Brushes.Black);
+            XAxis = new(new(0, SCREEN_INI_CENTER_Y), new((int)SCREEN_INI_SIZE.Width, SCREEN_INI_CENTER_Y), PaintSize, Brushes.Black);
+            YAxis = new(new(SCREEN_INI_CENTER_X, 0), new(SCREEN_INI_CENTER_X, (int)SCREEN_INI_SIZE.Height), PaintSize, Brushes.Black);
 
             User = new(new(SCREEN_INI_CENTER_X, SCREEN_INI_CENTER_Y), Settings.USER_INI_RADIUS, Settings.USER_INI_SPEED,
                 new SolidColorBrush(Color.FromRgb(Settings.USER_COLOR.R, Settings.USER_COLOR.G, Settings.USER_COLOR.B)),
