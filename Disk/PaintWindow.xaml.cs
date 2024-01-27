@@ -121,9 +121,12 @@ namespace Disk
         /// <param name="e"></param>
         private void OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            var mousePos = e.GetPosition(sender as UIElement);
+            if (IsGame)
+            {
+                var mousePos = e.GetPosition(sender as UIElement);
 
-            Target?.Move(new((int)mousePos.X, (int)mousePos.Y));
+                Target?.Move(new((int)mousePos.X, (int)mousePos.Y));
+            }
         }
 
         /// <summary>
