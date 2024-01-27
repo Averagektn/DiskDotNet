@@ -49,11 +49,11 @@ namespace Disk
         private int ScreenCenterX => (int)ScreenSize.Width / 2;
         private int ScreenCenterY => (int)ScreenSize.Height / 2;
 
-        private Size PaintPanelSize => PaintArea.RenderSize;
+        private Size PaintPanelSize => PaintRect.RenderSize;
         private int PaintPanelCenterX => (int)PaintPanelSize.Width / 2;
         private int PaintPanelCenterY => (int)PaintPanelSize.Height / 2;
 
-        private Size DataPanelSize => DataArea.RenderSize;
+        private Size DataPanelSize => DataRect.RenderSize;
 
         private bool IsGame = true;
 
@@ -213,7 +213,7 @@ namespace Disk
             var userPath = new Path(userPathReader.Get2DPoints(), PaintPanelSize, new(X_ANGLE_SIZE, Y_ANGLE_SIZE),
                 new SolidColorBrush(Color.FromRgb(Settings.USER_COLOR.R, Settings.USER_COLOR.G, Settings.USER_COLOR.B)));
 
-            userPath.Draw(PaintAreaGrid);
+            userPath.Draw(PaintArea);
 
             Scalables.Add(userPath);
         }
@@ -228,7 +228,7 @@ namespace Disk
             var userRose = new Graph(userReader.Get2DPoints().Select(p => new PolarPointF(p.X, p.Y)), PaintPanelSize,
                 Brushes.LightGreen);
 
-            userRose.Draw(PaintAreaGrid);
+            userRose.Draw(PaintArea);
 
             Scalables.Add(userRose);
         }
@@ -289,7 +289,8 @@ namespace Disk
 
             foreach (var elem in Drawables)
             {
-                elem?.Draw(PaintAreaGrid);
+                //elem?.Draw(PaintAreaGrid);
+                elem?.Draw(PaintArea);
             }
 
             foreach (var elem in Scalables)
