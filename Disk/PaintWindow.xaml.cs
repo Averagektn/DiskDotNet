@@ -161,7 +161,7 @@ namespace Disk
         /// </summary>
         private void NetworkReceive()
         {
-/*            try
+            try
             {
                 using var con = Connection.GetConnection(IPAddress.Parse(Settings.IP), Settings.PORT);
 
@@ -174,7 +174,7 @@ namespace Disk
             {
                 MessageBox.Show("Соединение потеряно");
                 Application.Current.Dispatcher.BeginInvoke(new Action(() => Close()));
-            }*/
+            }
         }
 
         /// <summary>
