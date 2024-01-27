@@ -8,33 +8,41 @@
         Title="DISK" Height="450" Width="400">
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="1*" />
-            <RowDefinition Height="2*" />
-            <RowDefinition Height="2*" />
-            <RowDefinition Height="2*" />
-            <RowDefinition Height="2*" />
-            <RowDefinition Height="1*" />
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="2*"/>
+            <RowDefinition Height="2*"/>
+            <RowDefinition Height="2*"/>
+            <RowDefinition Height="2*"/>
+            <RowDefinition Height="1*"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="1*" />
-            <ColumnDefinition Width="2*" />
-            <ColumnDefinition Width="1*" />
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="2*"/>
+            <ColumnDefinition Width="1*"/>
         </Grid.ColumnDefinitions>
 
-        <Border Grid.Row="1" Grid.Column="1" Margin="10, 15, 10, 15">
-            <Button Content="Start" Click="OnStartClick" FontSize="20"/>
+        <Border Grid.Row="1" Grid.Column="1">
+            <Viewbox>
+                <Button Content="Start" Click="OnStartClick" FontSize="20" Margin="10 15 10 15" Width="200" Height="50"/>
+            </Viewbox>
         </Border>
 
-        <Border Grid.Row="2" Grid.Column="1" Margin="10, 15, 10, 15">
-            <Button Content="Settings" Click="OnSettingsClick" FontSize="20"/>
+        <Border Grid.Row="2" Grid.Column="1">
+            <Viewbox>
+                <Button Content="Settings" Click="OnSettingsClick" FontSize="20" Margin="10 15 10 15" Width="200" Height="50"/>
+            </Viewbox>
         </Border>
 
-        <Border Grid.Row="3" Grid.Column="1" Margin="10, 15, 10, 15">
-            <Button Content="Calibration" Click="OnCalibrationClick" FontSize="20"/>
+        <Border Grid.Row="3" Grid.Column="1">
+            <Viewbox>
+                <Button Content="Calibration" Click="OnCalibrationClick" FontSize="20" Margin="10 15 10 15" Width="200" Height="50"/>
+            </Viewbox>
         </Border>
 
-        <Border Grid.Row="4" Grid.Column="1" Margin="10, 15, 10, 15">
-            <Button Content="Quit" Click="OnQuitClick" FontSize="20"/>
+        <Border Grid.Row="4" Grid.Column="1">
+            <Viewbox>
+                <Button Content="Quit" Click="OnQuitClick" FontSize="20" Margin="10 15 10 15" Width="200" Height="50"/>
+            </Viewbox>
         </Border>
     </Grid>
 </Window>

@@ -1,6 +1,7 @@
 ﻿using Disk.Data.Impl;
 using Disk.Visual.Interface;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Markup;
 using System.Windows.Media;
 using System.Windows.Shapes;
@@ -112,7 +113,7 @@ namespace Disk.Visual.Impl
         /// 
         /// </returns>
         public bool Contains(Point2D<int> p)
-            => Math.Sqrt(Math.Pow((p.X - Center.X) / Radius, 2) + Math.Pow((p.Y - Center.Y) / Radius, 2)) <= 1;
+            => Math.Sqrt(Math.Pow((p.X - Center.X) / Radius, 2) + Math.Pow((p.Y - Center.Y) / Radius, 2)) <= 0;
 
         /// <summary>
         /// 
@@ -129,6 +130,18 @@ namespace Disk.Visual.Impl
             }
 
             Figure.Margin = new(Left, Top, 0, 0);
+        }
+        
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="collection"></param>
+        public virtual void Remove(UIElementCollection collection)
+        {
+            if (isDrawn)
+            {
+                collection.Remove(Figure);
+            }
         }
 
         /// <summary>

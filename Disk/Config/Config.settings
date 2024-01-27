@@ -89,5 +89,8 @@
     <Setting Name="CALIBRATION_TIMEOUT" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">100</Value>
     </Setting>
+    <Setting Name="RECEIVE_TIMEOUT" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">2000</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

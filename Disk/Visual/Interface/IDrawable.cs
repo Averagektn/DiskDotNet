@@ -1,4 +1,5 @@
-﻿using System.Windows.Markup;
+﻿using System.Windows.Controls;
+using System.Windows.Markup;
 
 namespace Disk.Visual.Interface
 {
@@ -14,5 +15,11 @@ namespace Disk.Visual.Interface
         /// 
         /// </param>
         void Draw(IAddChild addChild);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="collection"></param>
+        void Remove(UIElementCollection collection);
     }
 }

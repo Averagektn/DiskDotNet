@@ -17,22 +17,22 @@ using Timer = System.Timers.Timer;
 
 namespace Disk
 {
-    // Update settings
-
     /// <summary>
     ///     Interaction logic for PaintWindow.xaml
     /// </summary>
     public partial class PaintWindow : Window
     {
-        private static readonly Size SCREEN_INI_SIZE = new(Settings.SCREEN_INI_WIDTH, Settings.SCREEN_INI_WIDTH);
+        private static readonly Brush UserBrush =
+            new SolidColorBrush(Color.FromRgb(Settings.USER_COLOR.R, Settings.USER_COLOR.G, Settings.USER_COLOR.B));
+
+        private static readonly Size SCREEN_INI_SIZE = new(Settings.SCREEN_INI_WIDTH, Settings.SCREEN_INI_HEIGHT);
+        private static readonly int SCREEN_INI_CENTER_X = (int)SCREEN_INI_SIZE.Width / 2;
+        private static readonly int SCREEN_INI_CENTER_Y = (int)SCREEN_INI_SIZE.Height / 2;
 
         private static readonly float X_ANGLE_SIZE = Settings.X_MAX_ANGLE * 2;
         private static readonly float Y_ANGLE_SIZE = Settings.Y_MAX_ANGLE * 2;
 
         private static Settings Settings => Settings.Default;
-
-        private static int SCREEN_INI_CENTER_X => (int)SCREEN_INI_SIZE.Width / 2;
-        private static int SCREEN_INI_CENTER_Y => (int)SCREEN_INI_SIZE.Height / 2;
 
         private readonly Random Random = new();
 
@@ -42,27 +42,31 @@ namespace Disk
 
         private readonly Timer ShotTimer;
         private readonly Timer MoveTimer;
-        private readonly Timer TargetTimer;
 
         private readonly Thread NetworkThread;
 
         private readonly List<IScalable?> Scalables = [];
         private readonly List<IDrawable?> Drawables = [];
 
-        private int PaintCenterX => (int)PaintAreaGrid.RenderSize.Width / 2;
-        private int PaintCenterY => (int)PaintAreaGrid.RenderSize.Height / 2;
+        private Size ScreenSize => PaintAreaGrid.RenderSize;
+        private int ScreenCenterX => (int)ScreenSize.Width / 2;
+        private int ScreenCenterY => (int)ScreenSize.Height / 2;
 
-        private Size PaintSize => PaintAreaGrid.RenderSize;
+        private Size PaintPanelSize => PaintRect.RenderSize;
+        private int PaintPanelCenterX => (int)PaintPanelSize.Width / 2;
+        private int PaintPanelCenterY => (int)PaintPanelSize.Height / 2;
 
-        private int PaintHeight => (int)PaintAreaGrid.RenderSize.Height;
-        private int PaintWidth => (int)PaintAreaGrid.RenderSize.Width;
-
-        private bool IsGame = true;
+        private Size DataPanelSize => DataRect.RenderSize;
 
         private Axis? XAxis;
         private Axis? YAxis;
+        private Axis? PaintToDataBorder;
+
         private User? User;
+
         private Target? Target;
+
+        private Converter? Converter;
 
         private Point3DF? CurrentPos;
 
@@ -85,9 +89,9 @@ namespace Disk
             }
         }
 
-        private Converter? Converter;
-
         private int Score = 0;
+
+        private bool IsGame = true;
 
         /// <summary>
         /// 
@@ -100,9 +104,6 @@ namespace Disk
 
             MoveTimer = new(Settings.MOVE_TIME);
             MoveTimer.Elapsed += MoveTimerElapsed;
-
-            TargetTimer = new(Random.Next(Settings.TARGET_MIN_TIME, Settings.TARGET_MAX_TIME));
-            TargetTimer.Elapsed += TargetTimerElapsed;
 
             ShotTimer = new(Settings.SHOT_TIME);
             ShotTimer.Elapsed += ShotTimerElapsed;
@@ -118,6 +119,21 @@ namespace Disk
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
+        private void OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            if (IsGame)
+            {
+                var mousePos = e.GetPosition(sender as UIElement);
+
+                Target?.Move(new((int)mousePos.X, (int)mousePos.Y));
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void ShotTimerElapsed(object? sender, ElapsedEventArgs e)
         {
             if (Target is not null && User is not null)
@@ -126,23 +142,6 @@ namespace Disk
             }
 
             Application.Current.Dispatcher.Invoke(() => Title = $"Score: {Score}");
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void TargetTimerElapsed(object? sender, ElapsedEventArgs e)
-        {
-            // target on muse click, remove timer
-            Application.Current.Dispatcher.Invoke(
-                () => Target?.Move(new(
-                    Random.Next(Target.MaxRadius, PaintWidth - Target.MaxRadius * 2),
-                    Random.Next(Target.MaxRadius, PaintHeight - Target.MaxRadius * 2)
-                    )));
-
-            TargetTimer.Interval = Random.Next(Settings.TARGET_MIN_TIME, Settings.TARGET_MIN_TIME);
         }
 
         /// <summary>
@@ -176,22 +175,9 @@ namespace Disk
             }
             catch
             {
-                MessageBox.Show("Connection lost");
+                MessageBox.Show("Соединение потеряно");
                 Application.Current.Dispatcher.BeginInvoke(new Action(() => Close()));
             }
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
-        {
-            StopGame();
-            DrawWindRose();
-            DrawPaths();
-            ShowStats();
         }
 
         /// <summary>
@@ -227,10 +213,10 @@ namespace Disk
         {
             using var userPathReader = FileReader<float>.Open(Settings.USER_ANG_LOG_FILE, Settings.LOG_SEPARATOR);
 
-            var userPath = new Path(userPathReader.Get2DPoints(), PaintSize, new(X_ANGLE_SIZE, Y_ANGLE_SIZE),
+            var userPath = new Path(userPathReader.Get2DPoints(), PaintPanelSize, new(X_ANGLE_SIZE, Y_ANGLE_SIZE),
                 new SolidColorBrush(Color.FromRgb(Settings.USER_COLOR.R, Settings.USER_COLOR.G, Settings.USER_COLOR.B)));
 
-            userPath.Draw(PaintAreaGrid);
+            userPath.Draw(PaintArea);
 
             Scalables.Add(userPath);
         }
@@ -242,10 +228,10 @@ namespace Disk
         {
             using var userReader = FileReader<float>.Open(Settings.USER_ANG_LOG_FILE, Settings.LOG_SEPARATOR);
 
-            var userRose = new Graph(userReader.Get2DPoints().Select(p => new PolarPointF(p.X, p.Y)), PaintSize,
+            var userRose = new Graph(userReader.Get2DPoints().Select(p => new PolarPointF(p.X, p.Y)), PaintPanelSize,
                 Brushes.LightGreen);
 
-            userRose.Draw(PaintAreaGrid);
+            userRose.Draw(PaintArea);
 
             Scalables.Add(userRose);
         }
@@ -267,7 +253,6 @@ namespace Disk
             NetworkThread.Join();
 
             MoveTimer.Stop();
-            TargetTimer.Stop();
             ShotTimer.Stop();
 
             UserLogAng.Dispose();
@@ -282,38 +267,42 @@ namespace Disk
         /// <param name="e"></param>
         private void OnLoaded(object sender, RoutedEventArgs e)
         {
-            Converter = new(PaintSize, new(X_ANGLE_SIZE, Y_ANGLE_SIZE));
+            Converter = new(SCREEN_INI_SIZE, new(X_ANGLE_SIZE, Y_ANGLE_SIZE));
 
-            XAxis = new(new(0, PaintCenterY), new(PaintWidth, PaintCenterY), PaintSize, Brushes.Black);
-            YAxis = new(new(PaintCenterX, 0), new(PaintCenterX, PaintHeight), PaintSize, Brushes.Black);
+            XAxis = new(new(0, SCREEN_INI_CENTER_X), new((int)SCREEN_INI_SIZE.Width, SCREEN_INI_CENTER_Y), SCREEN_INI_SIZE, 
+                Brushes.Black);
+            YAxis = new(new(SCREEN_INI_CENTER_X, 0), new(SCREEN_INI_CENTER_X, (int)SCREEN_INI_SIZE.Height), SCREEN_INI_SIZE, 
+                Brushes.Black);
+            PaintToDataBorder = new(new((int)SCREEN_INI_SIZE.Width, 0), new((int)SCREEN_INI_SIZE.Width, 
+                (int)SCREEN_INI_SIZE.Height), SCREEN_INI_SIZE, Brushes.Black);
 
-            User = new(new(SCREEN_INI_CENTER_X, SCREEN_INI_CENTER_Y), Settings.USER_INI_RADIUS, Settings.USER_INI_SPEED,
-                new SolidColorBrush(Color.FromRgb(Settings.USER_COLOR.R, Settings.USER_COLOR.G, Settings.USER_COLOR.B)),
-                SCREEN_INI_SIZE);
+            User = new(new(SCREEN_INI_CENTER_X, SCREEN_INI_CENTER_Y), Settings.USER_INI_RADIUS, Settings.USER_INI_SPEED, 
+                UserBrush, SCREEN_INI_SIZE);
             User.OnShot += UserLogWnd.LogLn;
             User.OnShot += (p) => UserLogAng.LogLn(Converter?.ToAngle_FromWnd(p));
             User.OnShot += (p) => UserLogCen.LogLn(Converter?.ToLogCoord(p));
 
-            Target = new(new(Random.Next(Settings.SCREEN_INI_WIDTH), Random.Next(Settings.SCREEN_INI_HEIGHT)),
-                Settings.TARGET_INI_RADIUS, SCREEN_INI_SIZE);
+            Target = new(new(-Settings.TARGET_INI_RADIUS * 10, -Settings.TARGET_INI_RADIUS * 10), Settings.TARGET_INI_RADIUS, 
+                SCREEN_INI_SIZE);
 
-            Drawables.Add(XAxis); Drawables.Add(YAxis); Drawables.Add(Target); Drawables.Add(User);
-            Scalables.Add(XAxis); Scalables.Add(YAxis); Scalables.Add(Target); Scalables.Add(User); Scalables.Add(Converter);
+            Drawables.Add(XAxis); Drawables.Add(YAxis); Drawables.Add(PaintToDataBorder); Drawables.Add(Target);
+            Drawables.Add(User);
+            Scalables.Add(XAxis); Scalables.Add(YAxis); Scalables.Add(PaintToDataBorder); Scalables.Add(Target);
+            Scalables.Add(User); Scalables.Add(Converter);
 
             foreach (var elem in Drawables)
             {
-                elem?.Draw(PaintAreaGrid);
+                elem?.Draw(PaintArea);
             }
 
             foreach (var elem in Scalables)
             {
-                elem?.Scale(PaintSize);
+                elem?.Scale(PaintPanelSize);
             }
 
             NetworkThread.Start();
 
             MoveTimer.Start();
-            TargetTimer.Start();
             ShotTimer.Start();
         }
 
@@ -326,8 +315,16 @@ namespace Disk
         {
             foreach (var elem in Scalables)
             {
-                elem?.Scale(PaintSize);
+                elem?.Scale(PaintPanelSize);
             }
+        }
+
+        private void OnStopClick(object sender, RoutedEventArgs e)
+        {
+            StopGame();
+            DrawWindRose();
+            DrawPaths();
+            ShowStats();
         }
     }
 }

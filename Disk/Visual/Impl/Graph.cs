@@ -1,6 +1,7 @@
 ﻿using Disk.Calculations.Impl;
 using Disk.Data.Impl;
 using Disk.Visual.Interface;
+using System.Windows.Controls;
 using System.Windows.Markup;
 using System.Windows.Media;
 using System.Windows.Shapes;
@@ -129,6 +130,16 @@ namespace Disk.Visual.Impl
             }
 
             return res;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="collection"></param>
+        /// <exception cref="NotImplementedException"></exception>
+        public void Remove(UIElementCollection collection)
+        {
+            collection.Remove(Polygon);
         }
     }
 }

@@ -2,6 +2,7 @@
 using Disk.Data.Impl;
 using Disk.Visual.Interface;
 using System.Drawing;
+using System.Windows.Controls;
 using System.Windows.Markup;
 using System.Windows.Media;
 using System.Windows.Shapes;
@@ -64,6 +65,15 @@ namespace Disk.Visual.Impl
         public void Draw(IAddChild addChild)
         {
             addChild.AddChild(Polyline);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="collection"></param>
+        public void Remove(UIElementCollection collection)
+        {
+            collection.Remove(Polyline);
         }
 
         /// <summary>

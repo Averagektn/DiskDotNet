@@ -364,5 +364,17 @@ namespace Disk.Config {
                 this["CALIBRATION_TIMEOUT"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("2000")]
+        public int RECEIVE_TIMEOUT {
+            get {
+                return ((int)(this["RECEIVE_TIMEOUT"]));
+            }
+            set {
+                this["RECEIVE_TIMEOUT"] = value;
+            }
+        }
     }
 }
