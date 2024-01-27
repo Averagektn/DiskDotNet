@@ -1,6 +1,7 @@
 ﻿using Disk.Data.Impl;
 using Disk.Visual.Interface;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Markup;
 using System.Windows.Media;
 using System.Windows.Shapes;
@@ -129,6 +130,14 @@ namespace Disk.Visual.Impl
             }
 
             Figure.Margin = new(Left, Top, 0, 0);
+        }
+
+        public virtual void Remove(UIElementCollection collection)
+        {
+            if (isDrawn)
+            {
+                collection.Remove(Figure);
+            }
         }
 
         /// <summary>
