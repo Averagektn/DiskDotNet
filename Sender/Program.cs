@@ -2,7 +2,7 @@
 using System.Net.Sockets;
 
 TcpListener? server = null;
-string fileName = "dataset_12_working.txt";
+string fileName = "connection.log";
 string ip = "127.0.0.1";
 int port = 9998;
 byte handshake = 23;
@@ -35,7 +35,7 @@ try
         line = line.Replace('.', ',');
 
         Console.WriteLine(line);
-        string[] numbers = line.Split(' ');
+        string[] numbers = line.Split(';');
 
         if (numbers.Length < 3)
         {

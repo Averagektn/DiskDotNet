@@ -1,5 +1,4 @@
 ﻿using System.Windows;
-using Settings = Disk.Config.Config;
 
 namespace Disk
 {
@@ -8,8 +7,6 @@ namespace Disk
     /// </summary>
     public partial class MenuWindow : Window
     {
-        private static Settings Settings => Settings.Default;
-
         /// <summary>
         /// 
         /// </summary>
@@ -23,8 +20,6 @@ namespace Disk
         private void OnStartClick(object sender, RoutedEventArgs e)
             => new PaintWindow
             {
-                Width = Settings.SCREEN_INI_WIDTH * 1.25,
-                Height = Settings.SCREEN_INI_HEIGHT,
                 WindowState = WindowState
             }.ShowDialog();
 
