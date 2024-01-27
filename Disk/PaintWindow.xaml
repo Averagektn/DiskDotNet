@@ -18,7 +18,7 @@
 
         <Border Grid.Row="1" Grid.Column="1">
             <Viewbox>
-                <Button Content="Stop" Click="OnStopClick" FontSize="20" Name="BtnStop" Width="100" Margin="30 10 30 10"/>
+                <Button Content="Stop" Click="OnStopClick" FontSize="20" Name="BtnStop" Width="200" Height="50" Margin="30 10 30 10"/>
             </Viewbox>
         </Border>
 

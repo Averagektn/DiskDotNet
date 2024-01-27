@@ -22,6 +22,9 @@ namespace Disk
     /// </summary>
     public partial class PaintWindow : Window
     {
+        private static readonly Brush UserBrush =
+            new SolidColorBrush(Color.FromRgb(Settings.USER_COLOR.R, Settings.USER_COLOR.G, Settings.USER_COLOR.B));
+
         private static readonly Size SCREEN_INI_SIZE = new(Settings.SCREEN_INI_WIDTH, Settings.SCREEN_INI_HEIGHT);
         private static readonly int SCREEN_INI_CENTER_X = (int)SCREEN_INI_SIZE.Width / 2;
         private static readonly int SCREEN_INI_CENTER_Y = (int)SCREEN_INI_SIZE.Height / 2;
@@ -55,8 +58,6 @@ namespace Disk
 
         private Size DataPanelSize => DataRect.RenderSize;
 
-        private bool IsGame = true;
-
         private Axis? XAxis;
         private Axis? YAxis;
         private Axis? PaintToDataBorder;
@@ -65,8 +66,7 @@ namespace Disk
 
         private Target? Target;
 
-        private static readonly Brush UserBrush = 
-            new SolidColorBrush(Color.FromRgb(Settings.USER_COLOR.R, Settings.USER_COLOR.G, Settings.USER_COLOR.B));
+        private Converter? Converter;
 
         private Point3DF? CurrentPos;
 
@@ -89,9 +89,9 @@ namespace Disk
             }
         }
 
-        private Converter? Converter;
-
         private int Score = 0;
+
+        private bool IsGame = true;
 
         /// <summary>
         /// 
@@ -289,7 +289,6 @@ namespace Disk
 
             foreach (var elem in Drawables)
             {
-                //elem?.Draw(PaintAreaGrid);
                 elem?.Draw(PaintArea);
             }
 
