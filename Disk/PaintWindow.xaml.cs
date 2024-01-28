@@ -2,7 +2,6 @@
 using Disk.Data.Impl;
 using Disk.Visual.Impl;
 using Disk.Visual.Interface;
-
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
@@ -11,7 +10,7 @@ using System.Timers;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
-
+using FilePath = System.IO.Path;
 using Path = Disk.Visual.Impl.Path;
 using Point2DF = Disk.Data.Impl.Point2D<float>;
 using Point2DI = Disk.Data.Impl.Point2D<int>;
@@ -19,7 +18,6 @@ using Point3DF = Disk.Data.Impl.Point3D<float>;
 using PolarPointF = Disk.Data.Impl.PolarPoint<float>;
 using Settings = Disk.Config.Config;
 using Timer = System.Timers.Timer;
-using FilePath = System.IO.Path;
 
 namespace Disk
 {
@@ -30,9 +28,7 @@ namespace Disk
     {
         public string CurrPath = string.Empty;
 
-        private Stopwatch Stopwatch = new();
-
-        private Point2DF? StartPoint;
+        private static readonly object LockObject = new();
 
         private static readonly Brush UserBrush =
             new SolidColorBrush(Color.FromRgb(Settings.USER_COLOR.R, Settings.USER_COLOR.G, Settings.USER_COLOR.B));
@@ -48,11 +44,6 @@ namespace Disk
 
         private readonly Random Random = new();
 
-        private Logger? UserLogWnd;
-        private Logger? UserLogCen;
-        private Logger? UserLogAng;
-        private Logger? UserMovementLog;
-
         private readonly Timer ShotTimer;
         private readonly Timer MoveTimer;
 
@@ -60,6 +51,15 @@ namespace Disk
 
         private readonly List<IScalable?> Scalables = [];
         private readonly List<IDrawable?> Drawables = [];
+
+        private Stopwatch Stopwatch = new();
+
+        private Point2DF? StartPoint;
+
+        private Logger? UserLogWnd;
+        private Logger? UserLogCen;
+        private Logger? UserLogAng;
+        private Logger? UserMovementLog;
 
         private Size ScreenSize => PaintAreaGrid.RenderSize;
         private int ScreenCenterX => (int)ScreenSize.Width / 2;
@@ -102,6 +102,15 @@ namespace Disk
             }
         }
 
+        private string MovingToTargetLogName => $"{CurrPath}{FilePath.DirectorySeparatorChar}Движение к мишени {TargetID}.log";
+        private string OnTargetLogName => $"{CurrPath}{FilePath.DirectorySeparatorChar}В мишени {TargetID}.log";
+        private string TargetReachedLogName => $"{CurrPath}{FilePath.DirectorySeparatorChar}Мишень {TargetID} поражена.log";
+
+        private string UsrWndLog => $"{CurrPath}{FilePath.DirectorySeparatorChar}{Settings.USER_WND_LOG_FILE}";
+        private string UsrAngLog => $"{CurrPath}{FilePath.DirectorySeparatorChar}{Settings.USER_ANG_LOG_FILE}";
+        private string UsrCenLog => $"{CurrPath}{FilePath.DirectorySeparatorChar}{Settings.USER_CEN_LOG_FILE}";
+        private string UsrMovementLog => $"{CurrPath}{FilePath.DirectorySeparatorChar}BeforeTarget.log";
+
         private int Score = 0;
         private int TargetID = 1;
 
@@ -141,7 +150,13 @@ namespace Disk
                     StartPoint = Converter?.ToAngle_FromWnd(User.Center);
                 }
 
-                // stop logging for user and target
+                lock (LockObject)
+                {
+                    UserMovementLog?.Dispose();
+                    UserMovementLog = Logger.GetLogger(MovingToTargetLogName);
+                }
+
+                TargetID++;
             }
         }
 
@@ -153,27 +168,32 @@ namespace Disk
 
                 if (shotScore != 0 && Stopwatch.IsRunning)
                 {
-                    // log time
-                    // start log in new file
-
-                    // LOG: time, avg speed = ang distance / time, distance
-
                     Stopwatch.Stop();
 
                     if (StartPoint is not null)
                     {
+                        using var log = Logger.GetLogger(TargetReachedLogName);
+
                         var touchPoint = Converter?.ToAngle_FromWnd(User.Center);
                         var distance = touchPoint?.GetDistance(StartPoint);
                         var time = Stopwatch.Elapsed.TotalSeconds;
                         var avgSpeed = distance / time;
 
-                        // LOG IT
-                        Application.Current.Dispatcher.Invoke(() => TblTime.Text =
-                        $"""
+                        var message =
+                            $"""
                             Время: {time:F2}
                             Расстояние(в углах): {distance:F2}
                             Средняя скорость(в углах): {avgSpeed:F2}
-                        """);
+                            """;
+
+                        Application.Current.Dispatcher.Invoke(() => TblTime.Text = message);
+                        log.Log(message);
+
+                        lock (LockObject)
+                        {
+                            UserMovementLog?.Dispose();
+                            UserMovementLog = Logger.GetLogger(OnTargetLogName);
+                        }
                     }
                 }
 
@@ -209,7 +229,7 @@ namespace Disk
 
         private void ShowStats()
         {
-            using var userAngleReader = FileReader<float>.Open(Settings.USER_ANG_LOG_FILE, Settings.LOG_SEPARATOR);
+            using var userAngleReader = FileReader<float>.Open(UsrAngLog, Settings.LOG_SEPARATOR);
 
             var dataset = new List<Point2DF>();
             foreach (var p in userAngleReader.Get2DPoints())
@@ -217,22 +237,29 @@ namespace Disk
                 dataset.Add(p);
             }
 
-            var mx = Calculator2D.MathExp(dataset);
-            var dispersion = Calculator2D.Dispersion(dataset);
-            var deviation = Calculator2D.StandartDeviation(dataset);
+            if (dataset.Count != 0)
+            {
+                var mx = Calculator2D.MathExp(dataset);
+                var dispersion = Calculator2D.Dispersion(dataset);
+                var deviation = Calculator2D.StandartDeviation(dataset);
 
-            MessageBox.Show(
+                MessageBox.Show(
                 $"""
                 Счет: {Score}
                 Среднее смещение от центра: {mx}
                 Дисперсия: {dispersion}
                 Среднее отклонение от центра: {deviation}
                 """);
+            }
+            else
+            {
+                MessageBox.Show("Конец");
+            }
         }
 
         private void DrawPaths()
         {
-            using var userPathReader = FileReader<float>.Open(Settings.USER_ANG_LOG_FILE, Settings.LOG_SEPARATOR);
+            using var userPathReader = FileReader<float>.Open(UsrAngLog, Settings.LOG_SEPARATOR);
 
             var userPath = new Path(userPathReader.Get2DPoints(), PaintPanelSize, new(X_ANGLE_SIZE, Y_ANGLE_SIZE),
                 new SolidColorBrush(Color.FromRgb(Settings.USER_COLOR.R, Settings.USER_COLOR.G, Settings.USER_COLOR.B)));
@@ -244,7 +271,7 @@ namespace Disk
 
         private void DrawWindRose()
         {
-            using var userReader = FileReader<float>.Open(Settings.USER_ANG_LOG_FILE, Settings.LOG_SEPARATOR);
+            using var userReader = FileReader<float>.Open(UsrAngLog, Settings.LOG_SEPARATOR);
 
             var userRose = new Graph(userReader.Get2DPoints().Select(p => new PolarPointF(p.X, p.Y)), PaintPanelSize,
                 Brushes.LightGreen);
@@ -273,6 +300,7 @@ namespace Disk
             UserLogAng?.Dispose();
             UserLogWnd?.Dispose();
             UserLogCen?.Dispose();
+            UserMovementLog?.Dispose();
         }
 
         // replace with btn start
@@ -283,10 +311,10 @@ namespace Disk
                 Directory.CreateDirectory(CurrPath);
             }
 
-            UserLogWnd = Logger.GetLogger($"{CurrPath}{FilePath.DirectorySeparatorChar}{Settings.USER_WND_LOG_FILE}");
-            UserLogAng = Logger.GetLogger($"{CurrPath}{FilePath.DirectorySeparatorChar}{Settings.USER_ANG_LOG_FILE}");
-            UserLogCen = Logger.GetLogger($"{CurrPath}{FilePath.DirectorySeparatorChar}{Settings.USER_CEN_LOG_FILE}");
-            UserMovementLog = Logger.GetLogger($"{CurrPath}{FilePath.DirectorySeparatorChar}BeforeTarget.log");
+            UserLogWnd = Logger.GetLogger(UsrWndLog);
+            UserLogAng = Logger.GetLogger(UsrAngLog);
+            UserLogCen = Logger.GetLogger(UsrCenLog);
+            UserMovementLog = Logger.GetLogger(UsrMovementLog);
 
             Converter = new(SCREEN_INI_SIZE, new(X_ANGLE_SIZE, Y_ANGLE_SIZE));
 
