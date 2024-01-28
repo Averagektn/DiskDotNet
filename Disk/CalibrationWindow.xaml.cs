@@ -1,7 +1,9 @@
 ﻿using Disk.Data.Impl;
+
 using System.Net;
 using System.Timers;
 using System.Windows;
+
 using Settings = Disk.Config.Config;
 using Timer = System.Timers.Timer;
 

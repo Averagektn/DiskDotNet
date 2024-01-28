@@ -1,4 +1,7 @@
-﻿using System.Windows;
+﻿using System.IO;
+using System.Windows;
+
+using Settings = Disk.Config.Config;
 
 namespace Disk
 {
@@ -7,10 +10,20 @@ namespace Disk
     /// </summary>
     public partial class MenuWindow : Window
     {
+        private static Settings Settings => Settings.Default;
+
         /// <summary>
         /// 
         /// </summary>
-        public MenuWindow() => InitializeComponent();
+        public MenuWindow()
+        {
+            InitializeComponent();
+
+            if (!Directory.Exists(Settings.MAIN_DIR_PATH))
+            {
+                Directory.CreateDirectory(Settings.MAIN_DIR_PATH);
+            }
+        }
 
         /// <summary>
         /// 

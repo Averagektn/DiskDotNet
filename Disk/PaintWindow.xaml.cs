@@ -2,6 +2,7 @@
 using Disk.Data.Impl;
 using Disk.Visual.Impl;
 using Disk.Visual.Interface;
+
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Net;
@@ -9,6 +10,7 @@ using System.Timers;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
+
 using Point2DF = Disk.Data.Impl.Point2D<float>;
 using Point2DI = Disk.Data.Impl.Point2D<int>;
 using Point3DF = Disk.Data.Impl.Point3D<float>;
@@ -18,9 +20,6 @@ using Timer = System.Timers.Timer;
 
 namespace Disk
 {
-    // add staart button
-    // start/stop
-
     /// <summary>
     ///     Interaction logic for PaintWindow.xaml
     /// </summary>
@@ -162,7 +161,7 @@ namespace Disk
                         var avgSpeed = distance / time;
 
                         // LOG IT
-                        Application.Current.Dispatcher.Invoke(() => TblTime.Text = 
+                        Application.Current.Dispatcher.Invoke(() => TblTime.Text =
                         $"""
                             Время: {time:F2}
                             Расстояние(в углах): {distance:F2}
@@ -185,7 +184,7 @@ namespace Disk
 
         private void NetworkReceive()
         {
-            /*try
+            try
             {
                 using var con = Connection.GetConnection(IPAddress.Parse(Settings.IP), Settings.PORT);
 
@@ -198,7 +197,7 @@ namespace Disk
             {
                 MessageBox.Show("Соединение потеряно");
                 Application.Current.Dispatcher.BeginInvoke(new Action(() => Close()));
-            }*/
+            }
         }
 
         private void ShowStats()
@@ -273,20 +272,20 @@ namespace Disk
         {
             Converter = new(SCREEN_INI_SIZE, new(X_ANGLE_SIZE, Y_ANGLE_SIZE));
 
-            XAxis = new(new(0, SCREEN_INI_CENTER_X), new((int)SCREEN_INI_SIZE.Width, SCREEN_INI_CENTER_Y), SCREEN_INI_SIZE, 
+            XAxis = new(new(0, SCREEN_INI_CENTER_X), new((int)SCREEN_INI_SIZE.Width, SCREEN_INI_CENTER_Y), SCREEN_INI_SIZE,
                 Brushes.Black);
-            YAxis = new(new(SCREEN_INI_CENTER_X, 0), new(SCREEN_INI_CENTER_X, (int)SCREEN_INI_SIZE.Height), SCREEN_INI_SIZE, 
+            YAxis = new(new(SCREEN_INI_CENTER_X, 0), new(SCREEN_INI_CENTER_X, (int)SCREEN_INI_SIZE.Height), SCREEN_INI_SIZE,
                 Brushes.Black);
-            PaintToDataBorder = new(new((int)SCREEN_INI_SIZE.Width, 0), new((int)SCREEN_INI_SIZE.Width, 
+            PaintToDataBorder = new(new((int)SCREEN_INI_SIZE.Width, 0), new((int)SCREEN_INI_SIZE.Width,
                 (int)SCREEN_INI_SIZE.Height), SCREEN_INI_SIZE, Brushes.Black);
 
-            User = new(new(SCREEN_INI_CENTER_X, SCREEN_INI_CENTER_Y), Settings.USER_INI_RADIUS, Settings.USER_INI_SPEED, 
+            User = new(new(SCREEN_INI_CENTER_X, SCREEN_INI_CENTER_Y), Settings.USER_INI_RADIUS, Settings.USER_INI_SPEED,
                 UserBrush, SCREEN_INI_SIZE);
             User.OnShot += UserLogWnd.LogLn;
             User.OnShot += (p) => UserLogAng.LogLn(Converter?.ToAngle_FromWnd(p));
             User.OnShot += (p) => UserLogCen.LogLn(Converter?.ToLogCoord(p));
 
-            Target = new(new(-Settings.TARGET_INI_RADIUS * 10, -Settings.TARGET_INI_RADIUS * 10), Settings.TARGET_INI_RADIUS, 
+            Target = new(new(-Settings.TARGET_INI_RADIUS * 10, -Settings.TARGET_INI_RADIUS * 10), Settings.TARGET_INI_RADIUS,
                 SCREEN_INI_SIZE);
 
             Drawables.Add(XAxis); Drawables.Add(YAxis); Drawables.Add(PaintToDataBorder); Drawables.Add(Target);
