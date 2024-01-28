@@ -118,5 +118,17 @@ namespace Disk.Visual.Impl
 
             return res;
         }
+
+        public new bool Contains(Point2D<int> shot)
+        {
+            bool contains = false;
+
+            foreach (var circle in Circles)
+            {
+                contains |= circle.Contains(shot);
+            }
+
+            return contains;
+        }
     }
 }

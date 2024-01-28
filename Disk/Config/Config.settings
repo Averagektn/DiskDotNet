@@ -92,5 +92,8 @@
     <Setting Name="RECEIVE_TIMEOUT" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">2000</Value>
     </Setting>
+    <Setting Name="MAIN_DIR_PATH" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">Диск. Данные</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

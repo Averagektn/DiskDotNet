@@ -19,7 +19,6 @@ namespace Disk.Data.Impl
 
         private static readonly List<Connection> Connections = [];
 
-        private readonly Logger Logger;
         private readonly Socket Socket;
 
         /// <summary>
@@ -33,8 +32,6 @@ namespace Disk.Data.Impl
         /// </param>
         private Connection(IPAddress ip, int port, int receiveTimeout)
         {
-            Logger = Logger.GetLogger("connection.log");
-
             IP = ip;
             Port = port;
 
@@ -116,8 +113,6 @@ namespace Disk.Data.Impl
             var z = BitConverter.ToSingle(coordZ, 0);
 
             var p = new Point3D<float>(x, y, z);
-
-            Logger.LogLn(p);
 
             return Converter.ToAngle_FromRadian(p);
         }
@@ -206,8 +201,6 @@ namespace Disk.Data.Impl
         public void Dispose()
         {
             Connections.Remove(this);
-
-            Logger.Dispose();
 
             Socket.Close();
         }

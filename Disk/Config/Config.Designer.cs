@@ -376,5 +376,14 @@ namespace Disk.Config {
                 this["RECEIVE_TIMEOUT"] = value;
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Диск. Данные")]
+        public string MAIN_DIR_PATH {
+            get {
+                return ((string)(this["MAIN_DIR_PATH"]));
+            }
+        }
     }
 }

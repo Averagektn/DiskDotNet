@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Disk"
         mc:Ignorable="d"
-        Title="DISK" Height="450" Width="400">
+        Title="Диск" Height="450" Width="400">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="1*"/>
@@ -23,25 +23,25 @@
 
         <Border Grid.Row="1" Grid.Column="1">
             <Viewbox>
-                <Button Content="Start" Click="OnStartClick" FontSize="20" Margin="10 15 10 15" Width="200" Height="50"/>
+                <Button Content="Начать" Click="OnStartClick" FontSize="20" Margin="10 15 10 15" Width="200" Height="50"/>
             </Viewbox>
         </Border>
 
         <Border Grid.Row="2" Grid.Column="1">
             <Viewbox>
-                <Button Content="Settings" Click="OnSettingsClick" FontSize="20" Margin="10 15 10 15" Width="200" Height="50"/>
+                <Button Content="Настройки" Click="OnSettingsClick" FontSize="20" Margin="10 15 10 15" Width="200" Height="50"/>
             </Viewbox>
         </Border>
 
         <Border Grid.Row="3" Grid.Column="1">
             <Viewbox>
-                <Button Content="Calibration" Click="OnCalibrationClick" FontSize="20" Margin="10 15 10 15" Width="200" Height="50"/>
+                <Button Content="Калибровка" Click="OnCalibrationClick" FontSize="20" Margin="10 15 10 15" Width="200" Height="50"/>
             </Viewbox>
         </Border>
 
         <Border Grid.Row="4" Grid.Column="1">
             <Viewbox>
-                <Button Content="Quit" Click="OnQuitClick" FontSize="20" Margin="10 15 10 15" Width="200" Height="50"/>
+                <Button Content="Выход" Click="OnQuitClick" FontSize="20" Margin="10 15 10 15" Width="200" Height="50"/>
             </Viewbox>
         </Border>
     </Grid>

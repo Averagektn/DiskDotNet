@@ -1,4 +1,7 @@
-﻿using System.Windows;
+﻿using System.IO;
+using System.Windows;
+
+using Settings = Disk.Config.Config;
 
 namespace Disk
 {
@@ -7,10 +10,20 @@ namespace Disk
     /// </summary>
     public partial class MenuWindow : Window
     {
+        private static Settings Settings => Settings.Default;
+
         /// <summary>
         /// 
         /// </summary>
-        public MenuWindow() => InitializeComponent();
+        public MenuWindow()
+        {
+            InitializeComponent();
+
+            if (!Directory.Exists(Settings.MAIN_DIR_PATH))
+            {
+                Directory.CreateDirectory(Settings.MAIN_DIR_PATH);
+            }
+        }
 
         /// <summary>
         /// 
@@ -18,24 +31,35 @@ namespace Disk
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnStartClick(object sender, RoutedEventArgs e)
-            => new PaintWindow
-            {
-                WindowState = WindowState
-            }.ShowDialog();
+        {
+            Hide();
+            new UserDataForm().ShowDialog();
+            Show();
+        }
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void OnSettingsClick(object sender, RoutedEventArgs e) => new SettingsWindow().ShowDialog();
+        private void OnSettingsClick(object sender, RoutedEventArgs e)
+        {
+            Hide();
+            new SettingsWindow().ShowDialog();
+            Show();
+        }
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void OnCalibrationClick(object sender, RoutedEventArgs e) => new CalibrationWindow().ShowDialog();
+        private void OnCalibrationClick(object sender, RoutedEventArgs e)
+        {
+            Hide();
+            new CalibrationWindow().ShowDialog();
+            Show();
+        }
 
         /// <summary>
         /// 

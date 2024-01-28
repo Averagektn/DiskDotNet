@@ -1,0 +1,52 @@
+﻿<Window x:Class="Disk.UserDataForm"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Disk"
+        mc:Ignorable="d"
+        Title="UserDataForm" Height="250" Width="400">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="5*"/>
+            <ColumnDefinition Width="1*"/>
+        </Grid.ColumnDefinitions>
+
+        <Border Grid.Row="0" Grid.Column="1">
+            <Viewbox VerticalAlignment="Top" HorizontalAlignment="Center">
+                <TextBlock Text="Имя:" FontSize="20"/>
+            </Viewbox>
+        </Border>
+        <Border Grid.Row="1" Grid.Column="1">
+            <Viewbox>
+                <TextBox Name="TbName" Margin="10 10 10 10" FontSize="20" Width="300" TextAlignment="Center"/>
+            </Viewbox>
+        </Border>
+
+        <Border Grid.Row="2" Grid.Column="1">
+            <Viewbox VerticalAlignment="Top" HorizontalAlignment="Center">
+                <TextBlock Text="Фамилия:" FontSize="20"/>
+            </Viewbox>
+        </Border>
+        <Border Grid.Row="3" Grid.Column="1">
+            <Viewbox>
+                <TextBox Name="TbSurname" Margin="10 10 10 10" FontSize="20" Width="300" TextAlignment="Center"/>
+            </Viewbox>
+        </Border>
+
+        <Border Grid.Row="4" Grid.Column="1">
+            <Viewbox>
+                <Button Name="Start" Click="OnStartClick" Content="Начать" FontSize="20" Width="200" Margin="10 10 10 10"/>
+            </Viewbox>
+        </Border>
+        
+    </Grid>
+</Window>

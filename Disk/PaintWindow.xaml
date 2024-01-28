@@ -5,20 +5,32 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Disk"
         mc:Ignorable="d"
-        Title="Score: 0" Height="600" Width="800">
+        Title="Счет: 0" Height="600" Width="800">
     <Grid x:Name="PaintAreaGrid">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="3*" Name="PaintPanel"/>
-            <ColumnDefinition Width="1*" Name="DataPanel"/>
+            <ColumnDefinition Width="3*"/>
+            <ColumnDefinition Width="1*"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="9*" Name="RowOne"/>
-            <RowDefinition Height="1*" Name="RowTwo"/>
+            <RowDefinition Height="9*"/>
+            <RowDefinition Height="1*"/>
         </Grid.RowDefinitions>
 
         <Border Grid.Row="1" Grid.Column="1">
             <Viewbox>
-                <Button Content="Stop" Click="OnStopClick" FontSize="20" Name="BtnStop" Width="200" Height="50" Margin="30 10 30 10"/>
+                <Button Content="Остановить" Click="OnStopClick" FontSize="20" Name="BtnStop" Margin="30 10 30 10"/>
+            </Viewbox>
+        </Border>
+
+        <Border Grid.Row="0" Grid.Column="1">
+            <Viewbox VerticalAlignment="Top" HorizontalAlignment="Left">
+                <TextBlock FontSize="20" Name="TblTime" TextAlignment="Left"/>
+            </Viewbox>
+        </Border>
+
+        <Border Grid.Row="0" Grid.Column="1">
+            <Viewbox VerticalAlignment="Bottom" HorizontalAlignment="Left">
+                <TextBlock FontSize="20" Name="TblScore" TextAlignment="Left"/>
             </Viewbox>
         </Border>
 

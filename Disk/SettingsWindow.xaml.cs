@@ -1,4 +1,5 @@
 ﻿using System.Windows;
+
 using Settings = Disk.Config.Config;
 
 namespace Disk
@@ -92,7 +93,7 @@ namespace Disk
             }
             catch (FormatException)
             {
-                MessageBox.Show("Invalid value");
+                MessageBox.Show("Введено некорректное значение");
             }
             finally
             {
