@@ -3,6 +3,7 @@ using Disk.Data.Impl;
 using Disk.Visual.Impl;
 using Disk.Visual.Interface;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Net;
 using System.Timers;
 using System.Windows;
@@ -17,11 +18,18 @@ using Timer = System.Timers.Timer;
 
 namespace Disk
 {
+    // add staart button
+    // start/stop
+
     /// <summary>
     ///     Interaction logic for PaintWindow.xaml
     /// </summary>
     public partial class PaintWindow : Window
     {
+        private Stopwatch Stopwatch = new();
+
+        private Point2DF? StartPoint;
+
         private static readonly Brush UserBrush =
             new SolidColorBrush(Color.FromRgb(Settings.USER_COLOR.R, Settings.USER_COLOR.G, Settings.USER_COLOR.B));
 
@@ -93,9 +101,6 @@ namespace Disk
 
         private bool IsGame = true;
 
-        /// <summary>
-        /// 
-        /// </summary>
         public PaintWindow()
         {
             InitializeComponent();
@@ -114,11 +119,6 @@ namespace Disk
             MouseLeftButtonDown += OnMouseLeftButtonDown;
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
         private void OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             if (IsGame)
@@ -126,45 +126,65 @@ namespace Disk
                 var mousePos = e.GetPosition(sender as UIElement);
 
                 Target?.Move(new((int)mousePos.X, (int)mousePos.Y));
+
+                Stopwatch = Stopwatch.StartNew();
+                TblTime.Text = string.Empty;
+
+                if (User is not null)
+                {
+                    StartPoint = Converter?.ToAngle_FromWnd(User.Center);
+                }
+
+                // stop logging for user and target
             }
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
         private void ShotTimerElapsed(object? sender, ElapsedEventArgs e)
         {
             if (Target is not null && User is not null)
             {
-                Score += Target.ReceiveShot(User.Shot());
+                var shotScore = Target.ReceiveShot(User.Shot());
+
+                if (shotScore != 0 && Stopwatch.IsRunning)
+                {
+                    // log time
+                    // start log in new file
+
+                    // LOG: time, avg speed = ang distance / time, distance
+
+                    Stopwatch.Stop();
+
+                    if (StartPoint is not null)
+                    {
+                        var touchPoint = Converter?.ToAngle_FromWnd(User.Center);
+                        var distance = touchPoint?.GetDistance(StartPoint);
+                        var time = Stopwatch.Elapsed.TotalSeconds;
+                        var avgSpeed = distance / time;
+
+                        // LOG IT
+                        Application.Current.Dispatcher.Invoke(() => TblTime.Text = 
+                        $"""
+                            Время: {time:F2}
+                            Расстояние(в углах): {distance:F2}
+                            Средняя скорость(в углах): {avgSpeed:F2}
+                        """);
+                    }
+                }
+
+                Score += shotScore;
             }
 
             Application.Current.Dispatcher.Invoke(() => Title = $"Score: {Score}");
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
         private void OnClosing(object? sender, CancelEventArgs e) => StopGame();
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
         private void MoveTimerElapsed(object? sender, ElapsedEventArgs e)
             => Application.Current.Dispatcher.Invoke(() => User?.Move(ShiftedWndPos ?? User.Center));
 
-        /// <summary>
-        /// 
-        /// </summary>
         private void NetworkReceive()
         {
-            try
+            /*try
             {
                 using var con = Connection.GetConnection(IPAddress.Parse(Settings.IP), Settings.PORT);
 
@@ -177,12 +197,9 @@ namespace Disk
             {
                 MessageBox.Show("Соединение потеряно");
                 Application.Current.Dispatcher.BeginInvoke(new Action(() => Close()));
-            }
+            }*/
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
         private void ShowStats()
         {
             using var userAngleReader = FileReader<float>.Open(Settings.USER_ANG_LOG_FILE, Settings.LOG_SEPARATOR);
@@ -206,9 +223,6 @@ namespace Disk
                 """);
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
         private void DrawPaths()
         {
             using var userPathReader = FileReader<float>.Open(Settings.USER_ANG_LOG_FILE, Settings.LOG_SEPARATOR);
@@ -221,9 +235,6 @@ namespace Disk
             Scalables.Add(userPath);
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
         private void DrawWindRose()
         {
             using var userReader = FileReader<float>.Open(Settings.USER_ANG_LOG_FILE, Settings.LOG_SEPARATOR);
@@ -236,9 +247,6 @@ namespace Disk
             Scalables.Add(userRose);
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
         private void StopGame()
         {
             if (Target is not null)
@@ -260,11 +268,6 @@ namespace Disk
             UserLogCen.Dispose();
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
         private void OnLoaded(object sender, RoutedEventArgs e)
         {
             Converter = new(SCREEN_INI_SIZE, new(X_ANGLE_SIZE, Y_ANGLE_SIZE));
@@ -306,11 +309,6 @@ namespace Disk
             ShotTimer.Start();
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
         private void OnSizeChanged(object sender, RoutedEventArgs e)
         {
             foreach (var elem in Scalables)

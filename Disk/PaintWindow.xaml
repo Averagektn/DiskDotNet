@@ -22,6 +22,12 @@
             </Viewbox>
         </Border>
 
+        <Border Grid.Row="0" Grid.Column="1">
+            <Viewbox VerticalAlignment="Top" HorizontalAlignment="Left">
+                <TextBlock FontSize="20" Name="TblTime" TextAlignment="Left"/>
+            </Viewbox>
+        </Border>
+
         <Canvas Name="PaintArea" Grid.RowSpan="2"/>
 
         <Rectangle Grid.Row="0" Grid.Column="0" Grid.RowSpan="2" Name="PaintRect"/>
