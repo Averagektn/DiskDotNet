@@ -19,13 +19,23 @@ namespace Disk
 
         private void OnStartClick(object sender, RoutedEventArgs e)
         {
-            Hide();
-            new PaintWindow(){ CurrPath = 
-                $"{Settings.MAIN_DIR_PATH}{Path.DirectorySeparatorChar}" +
-                $"{TbSurname.Text} {TbName.Text}{Path.DirectorySeparatorChar}" +
-                $"{DateTime.Now:dd.MM.yyyy HH-mm-ss}" }
-            .ShowDialog();
-            Close();
+            if (TbSurname.Text != string.Empty && TbName.Text != string.Empty)
+            {
+                Hide();
+                new PaintWindow()
+                {
+                    CurrPath =
+                    $"{Settings.MAIN_DIR_PATH}{Path.DirectorySeparatorChar}" +
+                    $"{TbSurname.Text} {TbName.Text}{Path.DirectorySeparatorChar}" +
+                    $"{DateTime.Now:dd.MM.yyyy HH-mm-ss}"
+                }
+                .ShowDialog();
+                Close();
+            }
+            else
+            {
+                MessageBox.Show("Не заполнено одно из полей");
+            }
         }
     }
 }
