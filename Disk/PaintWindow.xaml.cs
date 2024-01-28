@@ -5,18 +5,21 @@ using Disk.Visual.Interface;
 
 using System.ComponentModel;
 using System.Diagnostics;
+using System.IO;
 using System.Net;
 using System.Timers;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
 
+using Path = Disk.Visual.Impl.Path;
 using Point2DF = Disk.Data.Impl.Point2D<float>;
 using Point2DI = Disk.Data.Impl.Point2D<int>;
 using Point3DF = Disk.Data.Impl.Point3D<float>;
 using PolarPointF = Disk.Data.Impl.PolarPoint<float>;
 using Settings = Disk.Config.Config;
 using Timer = System.Timers.Timer;
+using FilePath = System.IO.Path;
 
 namespace Disk
 {
@@ -25,6 +28,8 @@ namespace Disk
     /// </summary>
     public partial class PaintWindow : Window
     {
+        public string CurrPath = string.Empty;
+
         private Stopwatch Stopwatch = new();
 
         private Point2DF? StartPoint;
@@ -43,9 +48,10 @@ namespace Disk
 
         private readonly Random Random = new();
 
-        private readonly Logger UserLogWnd = Logger.GetLogger(Settings.USER_WND_LOG_FILE);
-        private readonly Logger UserLogCen = Logger.GetLogger(Settings.USER_CEN_LOG_FILE);
-        private readonly Logger UserLogAng = Logger.GetLogger(Settings.USER_ANG_LOG_FILE);
+        private Logger? UserLogWnd;
+        private Logger? UserLogCen;
+        private Logger? UserLogAng;
+        private Logger? UserMovementLog;
 
         private readonly Timer ShotTimer;
         private readonly Timer MoveTimer;
@@ -97,6 +103,7 @@ namespace Disk
         }
 
         private int Score = 0;
+        private int TargetID = 1;
 
         private bool IsGame = true;
 
@@ -263,13 +270,24 @@ namespace Disk
             MoveTimer.Stop();
             ShotTimer.Stop();
 
-            UserLogAng.Dispose();
-            UserLogWnd.Dispose();
-            UserLogCen.Dispose();
+            UserLogAng?.Dispose();
+            UserLogWnd?.Dispose();
+            UserLogCen?.Dispose();
         }
 
+        // replace with btn start
         private void OnLoaded(object sender, RoutedEventArgs e)
         {
+            if (!Directory.Exists(CurrPath))
+            {
+                Directory.CreateDirectory(CurrPath);
+            }
+
+            UserLogWnd = Logger.GetLogger($"{CurrPath}{FilePath.DirectorySeparatorChar}{Settings.USER_WND_LOG_FILE}");
+            UserLogAng = Logger.GetLogger($"{CurrPath}{FilePath.DirectorySeparatorChar}{Settings.USER_ANG_LOG_FILE}");
+            UserLogCen = Logger.GetLogger($"{CurrPath}{FilePath.DirectorySeparatorChar}{Settings.USER_CEN_LOG_FILE}");
+            UserMovementLog = Logger.GetLogger($"{CurrPath}{FilePath.DirectorySeparatorChar}BeforeTarget.log");
+
             Converter = new(SCREEN_INI_SIZE, new(X_ANGLE_SIZE, Y_ANGLE_SIZE));
 
             XAxis = new(new(0, SCREEN_INI_CENTER_X), new((int)SCREEN_INI_SIZE.Width, SCREEN_INI_CENTER_Y), SCREEN_INI_SIZE,
@@ -284,6 +302,7 @@ namespace Disk
             User.OnShot += UserLogWnd.LogLn;
             User.OnShot += (p) => UserLogAng.LogLn(Converter?.ToAngle_FromWnd(p));
             User.OnShot += (p) => UserLogCen.LogLn(Converter?.ToLogCoord(p));
+            User.OnShot += (p) => UserMovementLog.LogLn(Converter?.ToAngle_FromWnd(p));
 
             Target = new(new(-Settings.TARGET_INI_RADIUS * 10, -Settings.TARGET_INI_RADIUS * 10), Settings.TARGET_INI_RADIUS,
                 SCREEN_INI_SIZE);
