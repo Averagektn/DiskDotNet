@@ -174,7 +174,8 @@ namespace Disk
                 Score += shotScore;
             }
 
-            Application.Current.Dispatcher.Invoke(() => Title = $"Score: {Score}");
+            Application.Current.Dispatcher.Invoke(() => Title = $"Счет: {Score}");
+            Application.Current.Dispatcher.Invoke(() => TblScore.Text = $"Счет: {Score}");
         }
 
         private void OnClosing(object? sender, CancelEventArgs e) => StopGame();
