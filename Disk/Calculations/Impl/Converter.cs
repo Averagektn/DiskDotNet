@@ -202,7 +202,7 @@ namespace Disk.Calculations.Impl
         /// <returns>
         /// 
         /// </returns>
-        public int ToLogCoordX(int coord) => (int)(coord - MaxLogCoord.Width);
+        public int ToLogCoordX(int coord) => (int)(MaxLogCoord.Width - coord);
 
         /// <summary>
         /// 
