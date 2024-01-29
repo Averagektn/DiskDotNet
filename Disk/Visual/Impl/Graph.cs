@@ -23,6 +23,7 @@ namespace Disk.Visual.Impl
         private readonly int SegmentsNum;
 
         private int Radius;
+        private Point2D<int> Center;
 
         /// <summary>
         /// 
@@ -39,13 +40,13 @@ namespace Disk.Visual.Impl
         /// <param name="segmentsNum">
         /// 
         /// </param>
-        public Graph(IEnumerable<PolarPoint<float>> points, Size currSize, Brush color, int segmentsNum = 4)
+        public Graph(IEnumerable<PolarPoint<float>> points, Size currSize, Brush color, Point2D<int> center, int radius, 
+            int segmentsNum = 4)
         {
             SegmentsNum = segmentsNum;
-
             Size = currSize;
-
-            Radius = (int)(Math.Min(currSize.Width / 2, currSize.Height / 2) * 0.9);
+            Radius = radius;
+            Center = center;
 
             var l = new List<PolarPoint<float>>();
             foreach (var p in points)
@@ -82,9 +83,14 @@ namespace Disk.Visual.Impl
         /// </param>
         public void Scale(Size newSize)
         {
-            Size = newSize;
+            var scaleX = newSize.Width / Size.Width;
+            var scaleY = newSize.Height / Size.Height;
+            var scale = (scaleX + scaleY) / 2;
 
-            Radius = (int)(Math.Min(newSize.Width / 2, newSize.Height / 2) * 0.9);
+            Radius = (int)(Radius * scale);
+
+            Center.X = (int)(Center.X * scaleX);
+            Center.Y = (int)(Center.Y * scaleY);
 
             Polygon.Points.Clear();
 
@@ -107,7 +113,7 @@ namespace Disk.Visual.Impl
 
                 var point = new PolarPoint<float>(radius, Math.PI * angle / 180);
 
-                Polygon.Points.Add(new(point.X + Size.Width / 2, Size.Height / 2 - point.Y));
+                Polygon.Points.Add(new(point.X + Center.X, Center.Y - point.Y));
             }
         }
 

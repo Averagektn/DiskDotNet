@@ -26,6 +26,8 @@ namespace Disk
     /// </summary>
     public partial class PaintWindow : Window
     {
+        // add combo box to show target data
+
         public string CurrPath = string.Empty;
 
         private static readonly object LockObject = new();
@@ -52,6 +54,8 @@ namespace Disk
         private readonly List<IScalable?> Scalables = [];
         private readonly List<IDrawable?> Drawables = [];
 
+        private readonly List<Point2DI> TargetCenters = [];
+
         private Stopwatch Stopwatch = new();
 
         private Point2DF? StartPoint;
@@ -60,16 +64,6 @@ namespace Disk
         private Logger? UserLogCen;
         private Logger? UserLogAng;
         private Logger? UserMovementLog;
-
-        private Size ScreenSize => PaintAreaGrid.RenderSize;
-        private int ScreenCenterX => (int)ScreenSize.Width / 2;
-        private int ScreenCenterY => (int)ScreenSize.Height / 2;
-
-        private Size PaintPanelSize => PaintRect.RenderSize;
-        private int PaintPanelCenterX => (int)PaintPanelSize.Width / 2;
-        private int PaintPanelCenterY => (int)PaintPanelSize.Height / 2;
-
-        private Size DataPanelSize => DataRect.RenderSize;
 
         private Axis? XAxis;
         private Axis? YAxis;
@@ -102,14 +96,24 @@ namespace Disk
             }
         }
 
+        private Size ScreenSize => PaintAreaGrid.RenderSize;
+        private int ScreenCenterX => (int)ScreenSize.Width / 2;
+        private int ScreenCenterY => (int)ScreenSize.Height / 2;
+
+        private Size PaintPanelSize => PaintRect.RenderSize;
+        private int PaintPanelCenterX => (int)PaintPanelSize.Width / 2;
+        private int PaintPanelCenterY => (int)PaintPanelSize.Height / 2;
+
+        private Size DataPanelSize => DataRect.RenderSize;
+
         private string MovingToTargetLogName => $"{CurrPath}{FilePath.DirectorySeparatorChar}Движение к мишени {TargetID}.log";
-        private string OnTargetLogName => $"{CurrPath}{FilePath.DirectorySeparatorChar}В мишени {TargetID}.log";
-        private string TargetReachedLogName => $"{CurrPath}{FilePath.DirectorySeparatorChar}Мишень {TargetID} поражена.log";
+        private string OnTargetLogName => $"{CurrPath}{FilePath.DirectorySeparatorChar}В мишени {TargetID - 1}.log";
+        private string TargetReachedLogName => $"{CurrPath}{FilePath.DirectorySeparatorChar}Мишень {TargetID - 1} поражена.log";
 
         private string UsrWndLog => $"{CurrPath}{FilePath.DirectorySeparatorChar}{Settings.USER_WND_LOG_FILE}";
         private string UsrAngLog => $"{CurrPath}{FilePath.DirectorySeparatorChar}{Settings.USER_ANG_LOG_FILE}";
         private string UsrCenLog => $"{CurrPath}{FilePath.DirectorySeparatorChar}{Settings.USER_CEN_LOG_FILE}";
-        private string UsrMovementLog => $"{CurrPath}{FilePath.DirectorySeparatorChar}BeforeTarget.log";
+        private string UsrMovementLog => $"{CurrPath}{FilePath.DirectorySeparatorChar}До первой цели.log";
 
         private int Score = 0;
         private int TargetID = 1;
@@ -141,6 +145,7 @@ namespace Disk
                 var mousePos = e.GetPosition(sender as UIElement);
 
                 Target?.Move(new((int)mousePos.X, (int)mousePos.Y));
+                TargetCenters.Add(new((int)mousePos.X, (int)mousePos.Y));
 
                 Stopwatch = Stopwatch.StartNew();
                 TblTime.Text = string.Empty;
@@ -271,14 +276,18 @@ namespace Disk
 
         private void DrawWindRose()
         {
-            using var userReader = FileReader<float>.Open(UsrAngLog, Settings.LOG_SEPARATOR);
+            for (int i = 1; i <= TargetCenters.Count && Target is not null; i++)
+            {
+                using var userReader = FileReader<float>.Open(
+                    $"{CurrPath}{FilePath.DirectorySeparatorChar}В мишени {i}.log", Settings.LOG_SEPARATOR);
 
-            var userRose = new Graph(userReader.Get2DPoints().Select(p => new PolarPointF(p.X, p.Y)), PaintPanelSize,
-                Brushes.LightGreen);
+                var userRose = new Graph(userReader.Get2DPoints().Select(p => new PolarPointF(p.X, p.Y)), PaintPanelSize,
+                    Brushes.LightGreen, TargetCenters[i - 1], Target.MaxRadius, 12);
 
-            userRose.Draw(PaintArea);
+                userRose.Draw(PaintArea);
 
-            Scalables.Add(userRose);
+                Scalables.Add(userRose);
+            }
         }
 
         private void StopGame()

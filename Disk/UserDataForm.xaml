@@ -27,7 +27,7 @@
         </Border>
         <Border Grid.Row="1" Grid.Column="1">
             <Viewbox>
-                <TextBox Name="TbName" Margin="10 10 10 10" FontSize="20" Width="300" TextAlignment="Center"/>
+                <TextBox Name="TbName" Margin="10 10 10 10" FontSize="20" Width="300" TextAlignment="Center" Text="Test"/>
             </Viewbox>
         </Border>
 
@@ -38,7 +38,7 @@
         </Border>
         <Border Grid.Row="3" Grid.Column="1">
             <Viewbox>
-                <TextBox Name="TbSurname" Margin="10 10 10 10" FontSize="20" Width="300" TextAlignment="Center"/>
+                <TextBox Name="TbSurname" Margin="10 10 10 10" FontSize="20" Width="300" TextAlignment="Center" Text="Testovich"/>
             </Viewbox>
         </Border>
 
