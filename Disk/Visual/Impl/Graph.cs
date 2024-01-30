@@ -39,19 +39,18 @@ namespace Disk.Visual.Impl
         /// <param name="segmentsNum">
         /// 
         /// </param>
-        public Graph(IEnumerable<PolarPoint<float>> points, Size currSize, Brush color, int segmentsNum = 4)
+        public Graph(IEnumerable<PolarPoint<float>> points, Size currSize, Brush color, float xCenter = 0.0f, 
+            float yCenter = 0.0f, int segmentsNum = 4)
         {
             SegmentsNum = segmentsNum;
             Size = currSize;
             Radius = (int)(Math.Min(Size.Width, Size.Height) * 0.9);
 
-            var l = new List<PolarPoint<float>>();
-            foreach (var p in points)
-            {
-                l.Add(p);
-            }
+            points = points.ToList();
 
-            Frequency = GetFrequency(Classifier<float>.Classify(l, segmentsNum));
+            Frequency = GetFrequency(
+                Classifier<float>.Classify(points.Select(p => new PolarPoint<float>(p.X - xCenter, p.Y - yCenter)), 
+                segmentsNum));
 
             Polygon = new()
             {
@@ -101,16 +100,11 @@ namespace Disk.Visual.Impl
 
             for (var angle = angleStep / 2; angle < 360.0; angle += angleStep, i++)
             {
-                var radius = Radius * (Frequency.ElementAt(i)) / (double)maxFrequency;
-
-/*                if (Frequency.Count() == 0)
-                {
-
-                }*/
+                var radius = Radius * (Frequency.ElementAt(i) + 1) / ((double)maxFrequency + 1);
 
                 var point = new PolarPoint<float>(radius, Math.PI * angle / 180);
 
-                Polygon.Points.Add(new(point.X + Size.Width / 2, Size.Height / 2 - point.Y));
+                Polygon.Points.Add(new(Size.Width / 2 - point.X, Size.Height / 2 - point.Y));
             }
         }
 

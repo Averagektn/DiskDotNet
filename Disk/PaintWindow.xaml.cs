@@ -19,9 +19,6 @@ using PolarPointF = Disk.Data.Impl.PolarPoint<float>;
 using Settings = Disk.Config.Config;
 using Timer = System.Timers.Timer;
 
-// Обработать случай пустого файла
-// Розав ветро неправильно направлена
-
 namespace Disk
 {
     /// <summary>
@@ -57,7 +54,7 @@ namespace Disk
         private readonly List<IScalable?> Scalables = [];
         private readonly List<IDrawable?> Drawables = [];
 
-        private readonly List<Point2DI> TargetCenters = [];
+        private readonly List<Point2DF> TargetCenters = [];
 
         private Stopwatch Stopwatch = new();
 
@@ -148,7 +145,8 @@ namespace Disk
                 var mousePos = e.GetPosition(sender as UIElement);
 
                 Target?.Move(new((int)mousePos.X, (int)mousePos.Y));
-                TargetCenters.Add(new((int)mousePos.X, (int)mousePos.Y));
+                TargetCenters.Add(new(Converter?.ToAngleX_FromWnd((int)mousePos.X) ?? 0.0f,  
+                    Converter?.ToAngleY_FromWnd((int)mousePos.Y) ?? 0.0f));
 
                 Stopwatch = Stopwatch.StartNew();
                 TblTime.Text = string.Empty;
@@ -219,7 +217,7 @@ namespace Disk
 
         private void NetworkReceive()
         {
-/*            try
+            try
             {
                 using var con = Connection.GetConnection(IPAddress.Parse(Settings.IP), Settings.PORT);
 
@@ -232,18 +230,14 @@ namespace Disk
             {
                 MessageBox.Show("Соединение потеряно");
                 Application.Current.Dispatcher.BeginInvoke(new Action(() => Close()));
-            }*/
+            }
         }
 
         private void ShowStats()
         {
             using var userAngleReader = FileReader<float>.Open(UsrAngLog, Settings.LOG_SEPARATOR);
 
-            var dataset = new List<Point2DF>();
-            foreach (var p in userAngleReader.Get2DPoints())
-            {
-                dataset.Add(p);
-            }
+            var dataset = userAngleReader.Get2DPoints().ToList();
 
             if (dataset.Count != 0)
             {
@@ -279,15 +273,20 @@ namespace Disk
 
         private void DrawWindRose()
         {
-            using var userReader = FileReader<float>.Open(
-                $"{CurrPath}{FilePath.DirectorySeparatorChar}В мишени {1}.log", Settings.LOG_SEPARATOR);
+            /*for (int i = 0; i < TargetCenters.Count; i++)*/
+            for (int i = 0; i < 1; i++)
+            {
+                using var userReader = FileReader<float>.Open(
+                    $"{CurrPath}{FilePath.DirectorySeparatorChar}В мишени {i + 1}.log", Settings.LOG_SEPARATOR);
 
-            var userRose = new Graph(userReader.Get2DPoints().Select(p => new PolarPointF(p.X, p.Y)), PaintPanelSize,
-                Brushes.LightGreen); // 12
+                var userRose = new Graph(userReader.Get2DPoints().Select(p => new PolarPointF(p.X, p.Y)), PaintPanelSize,
+                    Brushes.LightGreen, TargetCenters[i].X, TargetCenters[i].Y, 4);
 
-            userRose.Draw(PaintArea);
+                userRose.Draw(PaintArea);
 
-            Scalables.Add(userRose);
+                Scalables.Add(userRose);
+            }
+
         }
 
         private void StopGame()
