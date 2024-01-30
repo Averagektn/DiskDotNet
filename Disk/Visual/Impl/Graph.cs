@@ -23,7 +23,6 @@ namespace Disk.Visual.Impl
         private readonly int SegmentsNum;
 
         private int Radius;
-        private Point2D<int> Center;
 
         /// <summary>
         /// 
@@ -40,13 +39,11 @@ namespace Disk.Visual.Impl
         /// <param name="segmentsNum">
         /// 
         /// </param>
-        public Graph(IEnumerable<PolarPoint<float>> points, Size currSize, Brush color, Point2D<int> center, int radius, 
-            int segmentsNum = 4)
+        public Graph(IEnumerable<PolarPoint<float>> points, Size currSize, Brush color, int segmentsNum = 4)
         {
             SegmentsNum = segmentsNum;
             Size = currSize;
-            Radius = radius;
-            Center = center;
+            Radius = (int)(Math.Min(Size.Width, Size.Height) * 0.9);
 
             var l = new List<PolarPoint<float>>();
             foreach (var p in points)
@@ -83,14 +80,9 @@ namespace Disk.Visual.Impl
         /// </param>
         public void Scale(Size newSize)
         {
-            var scaleX = newSize.Width / Size.Width;
-            var scaleY = newSize.Height / Size.Height;
-            var scale = (scaleX + scaleY) / 2;
+            Size = newSize; 
 
-            Radius = (int)(Radius * scale);
-
-            Center.X = (int)(Center.X * scaleX);
-            Center.Y = (int)(Center.Y * scaleY);
+            Radius = (int)(Math.Min(Size.Width, Size.Height) * 0.9);
 
             Polygon.Points.Clear();
 
@@ -109,11 +101,16 @@ namespace Disk.Visual.Impl
 
             for (var angle = angleStep / 2; angle < 360.0; angle += angleStep, i++)
             {
-                var radius = Radius * (Frequency.ElementAt(i) + 1) / (double)maxFrequency;
+                var radius = Radius * (Frequency.ElementAt(i)) / (double)maxFrequency;
+
+/*                if (Frequency.Count() == 0)
+                {
+
+                }*/
 
                 var point = new PolarPoint<float>(radius, Math.PI * angle / 180);
 
-                Polygon.Points.Add(new(point.X + Center.X, Center.Y - point.Y));
+                Polygon.Points.Add(new(point.X + Size.Width / 2, Size.Height / 2 - point.Y));
             }
         }
 

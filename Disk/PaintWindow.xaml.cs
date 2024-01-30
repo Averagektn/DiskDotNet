@@ -19,6 +19,9 @@ using PolarPointF = Disk.Data.Impl.PolarPoint<float>;
 using Settings = Disk.Config.Config;
 using Timer = System.Timers.Timer;
 
+// Обработать случай пустого файла
+// Розав ветро неправильно направлена
+
 namespace Disk
 {
     /// <summary>
@@ -216,7 +219,7 @@ namespace Disk
 
         private void NetworkReceive()
         {
-            try
+/*            try
             {
                 using var con = Connection.GetConnection(IPAddress.Parse(Settings.IP), Settings.PORT);
 
@@ -229,7 +232,7 @@ namespace Disk
             {
                 MessageBox.Show("Соединение потеряно");
                 Application.Current.Dispatcher.BeginInvoke(new Action(() => Close()));
-            }
+            }*/
         }
 
         private void ShowStats()
@@ -276,18 +279,15 @@ namespace Disk
 
         private void DrawWindRose()
         {
-            for (int i = 1; i <= TargetCenters.Count && Target is not null; i++)
-            {
-                using var userReader = FileReader<float>.Open(
-                    $"{CurrPath}{FilePath.DirectorySeparatorChar}В мишени {i}.log", Settings.LOG_SEPARATOR);
+            using var userReader = FileReader<float>.Open(
+                $"{CurrPath}{FilePath.DirectorySeparatorChar}В мишени {1}.log", Settings.LOG_SEPARATOR);
 
-                var userRose = new Graph(userReader.Get2DPoints().Select(p => new PolarPointF(p.X, p.Y)), PaintPanelSize,
-                    Brushes.LightGreen, TargetCenters[i - 1], Target.MaxRadius, 12);
+            var userRose = new Graph(userReader.Get2DPoints().Select(p => new PolarPointF(p.X, p.Y)), PaintPanelSize,
+                Brushes.LightGreen); // 12
 
-                userRose.Draw(PaintArea);
+            userRose.Draw(PaintArea);
 
-                Scalables.Add(userRose);
-            }
+            Scalables.Add(userRose);
         }
 
         private void StopGame()
