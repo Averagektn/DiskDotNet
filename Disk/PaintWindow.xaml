@@ -12,31 +12,59 @@
             <ColumnDefinition Width="1*"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="9*"/>
+            <RowDefinition Height="3*"/>
+            <RowDefinition Height="3*"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="1*"/>
             <RowDefinition Height="1*"/>
         </Grid.RowDefinitions>
 
-        <Border Grid.Row="1" Grid.Column="1">
-            <Viewbox>
-                <Button Content="Остановить" Click="OnStopClick" FontSize="20" Name="BtnStop" Margin="30 10 30 10"/>
-            </Viewbox>
-        </Border>
-
         <Border Grid.Row="0" Grid.Column="1">
-            <Viewbox VerticalAlignment="Top" HorizontalAlignment="Left">
+            <Viewbox VerticalAlignment="Top" HorizontalAlignment="Left" Margin="10">
                 <TextBlock FontSize="20" Name="TblTime" TextAlignment="Left"/>
             </Viewbox>
         </Border>
 
-        <Border Grid.Row="0" Grid.Column="1">
-            <Viewbox VerticalAlignment="Bottom" HorizontalAlignment="Left">
+        <Border Grid.Row="1" Grid.Column="1">
+            <Viewbox VerticalAlignment="Top" HorizontalAlignment="Left" Margin="10">
+                <TextBlock FontSize="20" Name="TblAccuracy" TextAlignment="Left"/>
+            </Viewbox>
+        </Border>
+
+        <Border Grid.Row="2" Grid.Column="1">
+            <Viewbox VerticalAlignment="Top" HorizontalAlignment="Left" Margin="10">
+                <RadioButton Name="RbPath" Content="Path" FontSize="20"/>
+            </Viewbox>
+        </Border>
+
+        <Border Grid.Row="3" Grid.Column="1">
+            <Viewbox VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="10">
+                <RadioButton Name="RbRose" Content="Rose" FontSize="20"/>
+            </Viewbox>
+        </Border>
+
+        <Border Grid.Row="4" Grid.Column="1">
+            <Viewbox VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="10">
+                <ComboBox Name="CbTargets" Visibility="Hidden" FontSize="20"/>
+            </Viewbox>
+        </Border>
+
+        <Border Grid.Row="5" Grid.Column="0">
+            <Viewbox VerticalAlignment="Bottom" HorizontalAlignment="Right">
                 <TextBlock FontSize="20" Name="TblScore" TextAlignment="Left"/>
             </Viewbox>
         </Border>
 
-        <Canvas Name="PaintArea" Grid.RowSpan="2"/>
+        <Border Grid.Row="5" Grid.Column="1">
+            <Viewbox Margin="10 10 10 10">
+                <Button Content="Остановить" Click="OnStopClick" FontSize="20" Name="BtnStop"/>
+            </Viewbox>
+        </Border>
 
-        <Rectangle Grid.Row="0" Grid.Column="0" Grid.RowSpan="2" Name="PaintRect"/>
-        <Rectangle Grid.Row="0" Grid.Column="1" Grid.RowSpan="2" Name="DataRect"/>
+        <Canvas Name="PaintArea" Grid.RowSpan="6"/>
+
+        <Rectangle Grid.Row="0" Grid.Column="0" Grid.RowSpan="6" Name="PaintRect"/>
+        <Rectangle Grid.Row="0" Grid.Column="1" Grid.RowSpan="6" Name="DataRect"/>
     </Grid>
 </Window>

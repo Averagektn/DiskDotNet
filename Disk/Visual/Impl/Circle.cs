@@ -42,12 +42,12 @@ namespace Disk.Visual.Impl
         /// <summary>
         /// 
         /// </summary>
-        protected int Radius;
+        public int Radius { get; protected set; }
 
         /// <summary>
         /// 
         /// </summary>
-        protected int Speed;
+        public int Speed { get; protected set; }
 
         private const float DIAGONAL_CORRECTION = 1.41f;
 

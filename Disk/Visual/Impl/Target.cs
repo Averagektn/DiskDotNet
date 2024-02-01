@@ -1,5 +1,6 @@
 ﻿using Disk.Data.Impl;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Markup;
 using System.Windows.Media;
 
@@ -119,6 +120,15 @@ namespace Disk.Visual.Impl
             return res;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="shot">
+        /// 
+        /// </param>
+        /// <returns>
+        /// 
+        /// </returns>
         public new bool Contains(Point2D<int> shot)
         {
             bool contains = false;
@@ -129,6 +139,20 @@ namespace Disk.Visual.Impl
             }
 
             return contains;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="collection">
+        /// 
+        /// </param>
+        public override void Remove(UIElementCollection collection)
+        {
+            foreach (var circle in Circles)
+            {
+                circle.Remove(collection);
+            }
         }
     }
 }

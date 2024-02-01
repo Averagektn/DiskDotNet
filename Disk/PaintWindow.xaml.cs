@@ -21,13 +21,13 @@ using Timer = System.Timers.Timer;
 
 namespace Disk
 {
+    // add combo box to show target data/path to target
+
     /// <summary>
     ///     Interaction logic for PaintWindow.xaml
     /// </summary>
     public partial class PaintWindow : Window
     {
-        // add combo box to show target data
-
         public string CurrPath = string.Empty;
 
         private static readonly object LockObject = new();
@@ -217,7 +217,7 @@ namespace Disk
 
         private void NetworkReceive()
         {
-            try
+/*            try
             {
                 using var con = Connection.GetConnection(IPAddress.Parse(Settings.IP), Settings.PORT);
 
@@ -230,7 +230,7 @@ namespace Disk
             {
                 MessageBox.Show("Соединение потеряно");
                 Application.Current.Dispatcher.BeginInvoke(new Action(() => Close()));
-            }
+            }*/
         }
 
         private void ShowStats()
@@ -274,13 +274,18 @@ namespace Disk
         private void DrawWindRose()
         {
             /*for (int i = 0; i < TargetCenters.Count; i++)*/
-            for (int i = 0; i < 1; i++)
+            for (int i = 0; i < 1 && Converter is not null && Target is not null; i++)
             {
                 using var userReader = FileReader<float>.Open(
                     $"{CurrPath}{FilePath.DirectorySeparatorChar}В мишени {i + 1}.log", Settings.LOG_SEPARATOR);
 
-                var userRose = new Graph(userReader.Get2DPoints().Select(p => new PolarPointF(p.X, p.Y)), PaintPanelSize,
-                    Brushes.LightGreen, TargetCenters[i].X, TargetCenters[i].Y, 4);
+                var angRadius = (Converter.ToAngleX_FromWnd(Target.Radius) + Converter.ToAngleY_FromWnd(Target.Radius)) / 2;
+                var dataset =
+                    userReader.Get2DPoints()
+                    .Select(p => new PolarPointF(p.X - TargetCenters[i].X, p.Y - TargetCenters[i].Y))
+                    .Where(p => p.X > angRadius && p.Y > angRadius);
+
+                var userRose = new Graph(dataset, PaintPanelSize, Brushes.LightGreen, 4);
 
                 userRose.Draw(PaintArea);
 
@@ -293,9 +298,8 @@ namespace Disk
         {
             if (Target is not null)
             {
-                Target.Move(new(-Target.MaxRadius * 2, -Target.MaxRadius * 2));
-
-                User?.Move(new(-Target.MaxRadius * 2, -Target.MaxRadius * 2));
+                Target.Remove(PaintArea.Children);
+                User?.Remove(PaintArea.Children);
             }
 
             IsGame = false;
@@ -378,6 +382,10 @@ namespace Disk
             DrawWindRose();
             DrawPaths();
             ShowStats();
+
+            BtnStop.IsEnabled = false;
+
+            CbTargets.Visibility = Visibility.Visible;
         }
     }
 }
