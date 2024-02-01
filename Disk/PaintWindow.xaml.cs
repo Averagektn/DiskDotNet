@@ -217,7 +217,7 @@ namespace Disk
 
         private void NetworkReceive()
         {
-/*            try
+            try
             {
                 using var con = Connection.GetConnection(IPAddress.Parse(Settings.IP), Settings.PORT);
 
@@ -230,7 +230,7 @@ namespace Disk
             {
                 MessageBox.Show("Соединение потеряно");
                 Application.Current.Dispatcher.BeginInvoke(new Action(() => Close()));
-            }*/
+            }
         }
 
         private void ShowStats()
@@ -279,11 +279,12 @@ namespace Disk
                 using var userReader = FileReader<float>.Open(
                     $"{CurrPath}{FilePath.DirectorySeparatorChar}В мишени {i + 1}.log", Settings.LOG_SEPARATOR);
 
-                var angRadius = (Converter.ToAngleX_FromWnd(Target.Radius) + Converter.ToAngleY_FromWnd(Target.Radius)) / 2;
+                var angRadius = -(Converter.ToAngleX_FromLog(Target.Radius) + Converter.ToAngleY_FromLog(Target.Radius)) / 2;
+                var a = userReader.Get2DPoints().ToList();
                 var dataset =
-                    userReader.Get2DPoints()
-                    .Select(p => new PolarPointF(p.X - TargetCenters[i].X, p.Y - TargetCenters[i].Y))
-                    .Where(p => p.X > angRadius && p.Y > angRadius);
+                    a
+                    .Select(p => new PolarPointF(-(p.X - TargetCenters[i].X), p.Y - TargetCenters[i].Y, null))
+                    .Where(p => Math.Abs(p.X) > angRadius && Math.Abs(p.Y) > angRadius).ToList();
 
                 var userRose = new Graph(dataset, PaintPanelSize, Brushes.LightGreen, 4);
 

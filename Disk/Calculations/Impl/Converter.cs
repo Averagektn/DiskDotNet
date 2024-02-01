@@ -202,7 +202,7 @@ namespace Disk.Calculations.Impl
         /// <returns>
         /// 
         /// </returns>
-        public int ToLogCoordX(int coord) => (int)(MaxLogCoord.Width - coord);
+        public int ToLogCoordX(int coord) => (int)(coord - MaxLogCoord.Width);
 
         /// <summary>
         /// 
@@ -307,7 +307,7 @@ namespace Disk.Calculations.Impl
         /// <returns>
         /// 
         /// </returns>
-        public float ToAngleX_FromWnd(int wndCoord) => (float)(ToLogCoordX(wndCoord) * AngleSize.Width / ScreenSize.Width);
+        public float ToAngleX_FromWnd(int wndCoord) => (float)(-ToLogCoordX(wndCoord) * AngleSize.Width / ScreenSize.Width);
 
         /// <summary>
         /// 
@@ -329,7 +329,7 @@ namespace Disk.Calculations.Impl
         /// <returns>
         /// 
         /// </returns>
-        public float ToAngleX_FromLog(int logCoord) => ToAngleX_FromWnd((int)(logCoord + MaxLogCoord.Width));
+        public float ToAngleX_FromLog(int logCoord) => ToAngleX_FromWnd(ToWndCoordX(logCoord));
 
         /// <summary>
         /// 
