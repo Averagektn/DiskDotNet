@@ -8,6 +8,7 @@ using System.IO;
 using System.Net;
 using System.Timers;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using FilePath = System.IO.Path;
@@ -52,6 +53,8 @@ namespace Disk
         private readonly List<IScalable?> Scalables = [];
         private readonly List<IDrawable?> Drawables = [];
 
+        private readonly List<Point2DF> TargetCenters = [];
+
         private Stopwatch Stopwatch = new();
 
         private Point2DF? StartPoint;
@@ -60,16 +63,6 @@ namespace Disk
         private Logger? UserLogCen;
         private Logger? UserLogAng;
         private Logger? UserMovementLog;
-
-        private Size ScreenSize => PaintAreaGrid.RenderSize;
-        private int ScreenCenterX => (int)ScreenSize.Width / 2;
-        private int ScreenCenterY => (int)ScreenSize.Height / 2;
-
-        private Size PaintPanelSize => PaintRect.RenderSize;
-        private int PaintPanelCenterX => (int)PaintPanelSize.Width / 2;
-        private int PaintPanelCenterY => (int)PaintPanelSize.Height / 2;
-
-        private Size DataPanelSize => DataRect.RenderSize;
 
         private Axis? XAxis;
         private Axis? YAxis;
@@ -102,14 +95,24 @@ namespace Disk
             }
         }
 
+        private Size ScreenSize => PaintAreaGrid.RenderSize;
+        private int ScreenCenterX => (int)ScreenSize.Width / 2;
+        private int ScreenCenterY => (int)ScreenSize.Height / 2;
+
+        private Size PaintPanelSize => PaintRect.RenderSize;
+        private int PaintPanelCenterX => (int)PaintPanelSize.Width / 2;
+        private int PaintPanelCenterY => (int)PaintPanelSize.Height / 2;
+
+        private Size DataPanelSize => DataRect.RenderSize;
+
         private string MovingToTargetLogName => $"{CurrPath}{FilePath.DirectorySeparatorChar}Движение к мишени {TargetID}.log";
-        private string OnTargetLogName => $"{CurrPath}{FilePath.DirectorySeparatorChar}В мишени {TargetID}.log";
-        private string TargetReachedLogName => $"{CurrPath}{FilePath.DirectorySeparatorChar}Мишень {TargetID} поражена.log";
+        private string OnTargetLogName => $"{CurrPath}{FilePath.DirectorySeparatorChar}В мишени {TargetID - 1}.log";
+        private string TargetReachedLogName => $"{CurrPath}{FilePath.DirectorySeparatorChar}Мишень {TargetID - 1} поражена.log";
 
         private string UsrWndLog => $"{CurrPath}{FilePath.DirectorySeparatorChar}{Settings.USER_WND_LOG_FILE}";
         private string UsrAngLog => $"{CurrPath}{FilePath.DirectorySeparatorChar}{Settings.USER_ANG_LOG_FILE}";
         private string UsrCenLog => $"{CurrPath}{FilePath.DirectorySeparatorChar}{Settings.USER_CEN_LOG_FILE}";
-        private string UsrMovementLog => $"{CurrPath}{FilePath.DirectorySeparatorChar}BeforeTarget.log";
+        private string UsrMovementLog => $"{CurrPath}{FilePath.DirectorySeparatorChar}До первой цели.log";
 
         private int Score = 0;
         private int TargetID = 1;
@@ -132,6 +135,10 @@ namespace Disk
             Loaded += OnLoaded;
             SizeChanged += OnSizeChanged;
             MouseLeftButtonDown += OnMouseLeftButtonDown;
+
+            CbTargets.SelectionChanged += CbTargets_SelectionChanged;
+            RbPath.Checked += RbPath_Checked;
+            RbRose.Checked += RbRose_Checked;
         }
 
         private void OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
@@ -141,6 +148,8 @@ namespace Disk
                 var mousePos = e.GetPosition(sender as UIElement);
 
                 Target?.Move(new((int)mousePos.X, (int)mousePos.Y));
+                TargetCenters.Add(new(Converter?.ToAngleX_FromWnd((int)mousePos.X) ?? 0.0f,  
+                    Converter?.ToAngleY_FromWnd((int)mousePos.Y) ?? 0.0f));
 
                 Stopwatch = Stopwatch.StartNew();
                 TblTime.Text = string.Empty;
@@ -231,11 +240,7 @@ namespace Disk
         {
             using var userAngleReader = FileReader<float>.Open(UsrAngLog, Settings.LOG_SEPARATOR);
 
-            var dataset = new List<Point2DF>();
-            foreach (var p in userAngleReader.Get2DPoints())
-            {
-                dataset.Add(p);
-            }
+            var dataset = userAngleReader.Get2DPoints().ToList();
 
             if (dataset.Count != 0)
             {
@@ -257,37 +262,18 @@ namespace Disk
             }
         }
 
-        private void DrawPaths()
-        {
-            using var userPathReader = FileReader<float>.Open(UsrAngLog, Settings.LOG_SEPARATOR);
-
-            var userPath = new Path(userPathReader.Get2DPoints(), PaintPanelSize, new(X_ANGLE_SIZE, Y_ANGLE_SIZE),
-                new SolidColorBrush(Color.FromRgb(Settings.USER_COLOR.R, Settings.USER_COLOR.G, Settings.USER_COLOR.B)));
-
-            userPath.Draw(PaintArea);
-
-            Scalables.Add(userPath);
-        }
-
-        private void DrawWindRose()
-        {
-            using var userReader = FileReader<float>.Open(UsrAngLog, Settings.LOG_SEPARATOR);
-
-            var userRose = new Graph(userReader.Get2DPoints().Select(p => new PolarPointF(p.X, p.Y)), PaintPanelSize,
-                Brushes.LightGreen);
-
-            userRose.Draw(PaintArea);
-
-            Scalables.Add(userRose);
-        }
-
         private void StopGame()
         {
             if (Target is not null)
             {
-                Target.Move(new(-Target.MaxRadius * 2, -Target.MaxRadius * 2));
+                Target.Remove(PaintArea.Children);
+                User?.Remove(PaintArea.Children);
 
-                User?.Move(new(-Target.MaxRadius * 2, -Target.MaxRadius * 2));
+                Drawables.Remove(Target);
+                Scalables.Remove(Target);
+
+                Drawables.Remove(User);
+                Scalables.Remove(User);
             }
 
             IsGame = false;
@@ -364,12 +350,95 @@ namespace Disk
             }
         }
 
+        private void CbTargets_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            PaintArea.Children.Clear();
+            foreach (var elem in Drawables)
+            {
+                elem?.Draw(PaintArea);
+            }
+
+            var selectedIndex = CbTargets.SelectedIndex;
+            var roseFileName = $"{CurrPath}{FilePath.DirectorySeparatorChar}В мишени {selectedIndex + 1}.log";
+            var pathFileName = $"{CurrPath}{FilePath.DirectorySeparatorChar}Движение к мишени {selectedIndex + 1}.log";
+
+            if (selectedIndex != -1 && Converter is not null && Target is not null)
+            {
+                if (RbRose.IsChecked ?? false)
+                {
+                    if (File.Exists(roseFileName))
+                    {
+                        using var userReader = FileReader<float>.Open(roseFileName, Settings.LOG_SEPARATOR);
+
+                        var angRadius = Converter.ToAngleX_FromLog(Target.Radius) + 
+                            Converter.ToAngleY_FromLog(Target.Radius) / 2;
+
+                        var a = userReader.Get2DPoints().ToList();
+                        var dataset =
+                            a
+                            .Select(p => new PolarPointF(p.X - TargetCenters[selectedIndex].X, p.Y - 
+                            TargetCenters[selectedIndex].Y, null))
+                            .Where(p => Math.Abs(p.X) > angRadius && Math.Abs(p.Y) > angRadius).ToList();
+
+                        var userRose = new Graph(dataset, PaintPanelSize, Brushes.LightGreen, 4);
+
+                        userRose.Draw(PaintArea);
+
+                        Scalables.Add(userRose);
+                    }
+                }
+                else if (RbPath.IsChecked ?? false)
+                {
+                    if (File.Exists(pathFileName))
+                    {
+                        using var userPathReader = FileReader<float>.Open(pathFileName, Settings.LOG_SEPARATOR);
+
+                        var userPath = new Path(userPathReader.Get2DPoints(), PaintPanelSize, new(X_ANGLE_SIZE, Y_ANGLE_SIZE),
+                            new SolidColorBrush(Color.FromRgb(Settings.USER_COLOR.R, Settings.USER_COLOR.G, 
+                            Settings.USER_COLOR.B)));
+
+                        userPath.Draw(PaintArea);
+
+                        Scalables.Add(userPath);
+                    }
+                }
+            }
+        }
+
+        private void RbRose_Checked(object sender, RoutedEventArgs e)
+        {
+            CbTargets.Items.Clear();
+
+            for (int i = 1; i < TargetID; i++)
+            {
+                CbTargets.Items.Add($"Роза ветров для цели {i}");
+            }
+        }
+
+        private void RbPath_Checked(object sender, RoutedEventArgs e)
+        {
+            CbTargets.Items.Clear();
+
+            for (int i = 1; i < TargetID; i++)
+            {
+                CbTargets.Items.Add($"Путь к цели {i}");
+            }
+        }
+
         private void OnStopClick(object sender, RoutedEventArgs e)
         {
             StopGame();
-            DrawWindRose();
-            DrawPaths();
             ShowStats();
+
+            BtnStop.IsEnabled = false;
+
+            for (int i = 1; i < TargetID; i++)
+            {
+                CbTargets.Items.Add($"Роза ветров для цели {i}");
+            }
+            CbTargets.Visibility = Visibility.Visible;
+            RbPath.Visibility = Visibility.Visible;
+            RbRose.Visibility = Visibility.Visible;
         }
     }
 }

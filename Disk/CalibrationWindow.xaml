@@ -21,19 +21,19 @@
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="3*"/>
             <ColumnDefinition Width="2*"/>
-            <ColumnDefinition Width="1*"/>
         </Grid.ColumnDefinitions>
 
         <Border Grid.Row="1" Grid.Column="1">
             <Viewbox>
-                <Button Content="Start" Click="OnStartCalibrationClick" FontSize="20" Name="BtnStartCalibration" Margin="10 10 10 10" Width="200"/>
+                <Button Content="Начать калибровку" Click="OnStartCalibrationClick" FontSize="20" Name="BtnStartCalibration" Margin="10 10 10 10" Width="200"/>
             </Viewbox>
         </Border>
 
         <Border Grid.Row="2" Grid.Column="1">
             <Viewbox>
-                <TextBlock Text="X angle" TextAlignment="Center" FontSize="20" Margin="10 0 10 0"/>
+                <TextBlock Text="Угол по оси X" TextAlignment="Center" FontSize="20" Margin="10 0 10 0"/>
             </Viewbox>
         </Border>
 
@@ -45,19 +45,19 @@
 
         <Border Grid.Row="3" Grid.Column="2">
             <Viewbox>
-                <Button Content="Centralize" Click="OnCentralizeXClick" FontSize="20" Name="BtnCentralizeX" Margin="10 10 10 10" Width="100"/>
+                <Button Content="Центрировать" Click="OnCentralizeXClick" FontSize="20" Name="BtnCentralizeX" Margin="10 10 10 10"/>
             </Viewbox>
         </Border>
 
         <Border Grid.Row="4" Grid.Column="1">
             <Viewbox>
-                <Button Content="Calibrate X" Click="OnCalibrateXClick" FontSize="20" Name="BtnCalibrateX" IsEnabled="False" Margin="10 10 10 10" Width="200"/>
+                <Button Content="Зафиксировать X" Click="OnCalibrateXClick" FontSize="20" Name="BtnCalibrateX" IsEnabled="False" Margin="10 10 10 10" Width="200"/>
             </Viewbox>
         </Border>
 
         <Border Grid.Row="5" Grid.Column="1">
             <Viewbox>
-                <TextBlock Text="Y angle" TextAlignment="Center" FontSize="20" Margin="10 0 10 0"/>
+                <TextBlock Text="Угол по оси Y" TextAlignment="Center" FontSize="20" Margin="10 0 10 0"/>
             </Viewbox>
         </Border>
 
@@ -69,19 +69,19 @@
 
         <Border Grid.Row="6" Grid.Column="2">
             <Viewbox>
-                <Button Content="Centralize" Click="OnCentralizeYClick" FontSize="20" Name="BtnCentralizeY" Margin="10 10 10 10" Width="100"/>
+                <Button Content="Центрировать" Click="OnCentralizeYClick" FontSize="20" Name="BtnCentralizeY" Margin="10 10 10 10"/>
             </Viewbox>
         </Border>
 
         <Border Grid.Row="7" Grid.Column="1">
             <Viewbox>
-                <Button Content="Calibrate Y" Click="OnCalibrateYClick" FontSize="20" Name="BtnCalibrateY" IsEnabled="False" Margin="10 10 10 10" Width="200"/>
+                <Button Content="Зафиксировать Y" Click="OnCalibrateYClick" FontSize="20" Name="BtnCalibrateY" IsEnabled="False" Margin="10 10 10 10" Width="200"/>
             </Viewbox>
         </Border>
 
         <Border Grid.Row="8" Grid.Column="1">
             <Viewbox>
-                <Button Content="Apply" Click="OnApplyClick" FontSize="20" Name="BtnApply" Margin="10 10 10 10" Width="200"/>
+                <Button Content="Применить" Click="OnApplyClick" FontSize="20" Name="BtnApply" Margin="10 10 10 10" Width="200"/>
             </Viewbox>
         </Border>
     </Grid>
