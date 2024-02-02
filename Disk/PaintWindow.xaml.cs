@@ -262,42 +262,6 @@ namespace Disk
             }
         }
 
-        private void DrawPaths()
-        {
-            using var userPathReader = FileReader<float>.Open(UsrAngLog, Settings.LOG_SEPARATOR);
-
-            var userPath = new Path(userPathReader.Get2DPoints(), PaintPanelSize, new(X_ANGLE_SIZE, Y_ANGLE_SIZE),
-                new SolidColorBrush(Color.FromRgb(Settings.USER_COLOR.R, Settings.USER_COLOR.G, Settings.USER_COLOR.B)));
-
-            userPath.Draw(PaintArea);
-
-            Scalables.Add(userPath);
-        }
-
-        private void DrawWindRose()
-        {
-            /*for (int i = 0; i < TargetCenters.Count; i++)*/
-            for (int i = 0; i < 1 && Converter is not null && Target is not null; i++)
-            {
-                using var userReader = FileReader<float>.Open(
-                    $"{CurrPath}{FilePath.DirectorySeparatorChar}В мишени {i + 1}.log", Settings.LOG_SEPARATOR);
-
-                var angRadius = -(Converter.ToAngleX_FromLog(Target.Radius) + Converter.ToAngleY_FromLog(Target.Radius)) / 2;
-                var a = userReader.Get2DPoints().ToList();
-                var dataset =
-                    a
-                    .Select(p => new PolarPointF(-(p.X - TargetCenters[i].X), p.Y - TargetCenters[i].Y, null))
-                    .Where(p => Math.Abs(p.X) > angRadius && Math.Abs(p.Y) > angRadius).ToList();
-
-                var userRose = new Graph(dataset, PaintPanelSize, Brushes.LightGreen, 4);
-
-                userRose.Draw(PaintArea);
-
-                Scalables.Add(userRose);
-            }
-
-        }
-
         private void StopGame()
         {
             if (Target is not null)
@@ -464,8 +428,6 @@ namespace Disk
         private void OnStopClick(object sender, RoutedEventArgs e)
         {
             StopGame();
-            //DrawWindRose();
-            //DrawPaths();
             ShowStats();
 
             BtnStop.IsEnabled = false;
@@ -475,6 +437,8 @@ namespace Disk
                 CbTargets.Items.Add($"Роза ветров для цели {i}");
             }
             CbTargets.Visibility = Visibility.Visible;
+            RbPath.Visibility = Visibility.Visible;
+            RbRose.Visibility = Visibility.Visible;
         }
     }
 }
