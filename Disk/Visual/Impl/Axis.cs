@@ -34,11 +34,6 @@ namespace Disk.Visual.Impl
         private readonly Point2D<int> P2;
 
         /// <summary>
-        ///     Indicates whether the axis has been drawn
-        /// </summary>
-        private bool isDrawn = false;
-
-        /// <summary>
         ///     Initializes a new instance of the <see cref="Axis"/> class
         /// </summary>
         /// <param name="p1">
@@ -76,14 +71,7 @@ namespace Disk.Visual.Impl
         /// <param name="addChild">
         ///     The parent object to add the axis to
         /// </param>
-        public void Draw(IAddChild addChild)
-        {
-            if (!isDrawn)
-            {
-                isDrawn = true;
-                addChild.AddChild(Line);
-            }
-        }
+        public void Draw(IAddChild addChild) => addChild.AddChild(Line);
 
         /// <summary>
         ///     Removes the axis from the specified collection
@@ -91,13 +79,7 @@ namespace Disk.Visual.Impl
         /// <param name="collection">
         ///     The collection to remove the axis from
         /// </param>
-        public void Remove(UIElementCollection collection)
-        {
-            if (isDrawn)
-            {
-                collection.Remove(Line);
-            }
-        }
+        public void Remove(UIElementCollection collection) => collection.Remove(Line);
 
         /// <summary>
         ///     Scales the axis to the specified size.

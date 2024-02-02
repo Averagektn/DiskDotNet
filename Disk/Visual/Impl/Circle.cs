@@ -79,8 +79,6 @@ namespace Disk.Visual.Impl
         /// </summary>
         private Size CurrSize { get; set; }
 
-        private bool isDrawn = false;
-
         /// <summary>
         ///     Initializes a new instance of the Circle class with the specified center, radius, speed, color, and initial 
         ///     size
@@ -143,11 +141,7 @@ namespace Disk.Visual.Impl
         /// </param>
         public virtual void Draw(IAddChild addChild)
         {
-            if (!isDrawn)
-            {
-                addChild.AddChild(Figure);
-                isDrawn = true;
-            }
+            addChild.AddChild(Figure);
 
             Figure.Margin = new(Left, Top, 0, 0);
         }
@@ -158,13 +152,7 @@ namespace Disk.Visual.Impl
         /// <param name="collection">
         ///     The collection to remove the circle from
         /// </param>
-        public virtual void Remove(UIElementCollection collection)
-        {
-            if (isDrawn)
-            {
-                collection.Remove(Figure);
-            }
-        }
+        public virtual void Remove(UIElementCollection collection) => collection.Remove(Figure);
 
         /// <summary>
         ///     Moves the circle in the specified directions

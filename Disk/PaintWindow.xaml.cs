@@ -8,6 +8,7 @@ using System.IO;
 using System.Net;
 using System.Timers;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using FilePath = System.IO.Path;
@@ -136,6 +137,10 @@ namespace Disk
             Loaded += OnLoaded;
             SizeChanged += OnSizeChanged;
             MouseLeftButtonDown += OnMouseLeftButtonDown;
+
+            CbTargets.SelectionChanged += CbTargets_SelectionChanged;
+            RbPath.Checked += RbPath_Checked;
+            RbRose.Checked += RbRose_Checked;
         }
 
         private void OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
@@ -301,6 +306,12 @@ namespace Disk
             {
                 Target.Remove(PaintArea.Children);
                 User?.Remove(PaintArea.Children);
+
+                Drawables.Remove(Target);
+                Scalables.Remove(Target);
+
+                Drawables.Remove(User);
+                Scalables.Remove(User);
             }
 
             IsGame = false;
@@ -377,15 +388,94 @@ namespace Disk
             }
         }
 
+        private void CbTargets_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            PaintArea.Children.Clear();
+
+            foreach (var elem in Drawables)
+            {
+                elem?.Draw(PaintArea);
+            }
+
+            var selectedIndex = CbTargets.SelectedIndex;
+            var roseFileName = $"{CurrPath}{FilePath.DirectorySeparatorChar}В мишени {selectedIndex + 1}.log";
+            var pathFileName = $"{CurrPath}{FilePath.DirectorySeparatorChar}Движение к мишени {selectedIndex + 1}.log";
+
+            if (selectedIndex != -1 && Converter is not null && Target is not null)
+            {
+                if (RbRose.IsChecked ?? false)
+                {
+                    if (File.Exists(roseFileName))
+                    {
+                        using var userReader = FileReader<float>.Open(roseFileName, Settings.LOG_SEPARATOR);
+
+                        var angRadius = Converter.ToAngleX_FromLog(Target.Radius) + 
+                            Converter.ToAngleY_FromLog(Target.Radius) / 2;
+
+                        var dataset =
+                            userReader.Get2DPoints().ToList()
+                            .Select(p => new PolarPointF(p.X - TargetCenters[selectedIndex].X, p.Y - 
+                            TargetCenters[selectedIndex].Y, null))
+                            .Where(p => Math.Abs(p.X) > angRadius && Math.Abs(p.Y) > angRadius).ToList();
+
+                        var userRose = new Graph(dataset, PaintPanelSize, Brushes.LightGreen, 4);
+
+                        userRose.Draw(PaintArea);
+
+                        Scalables.Add(userRose);
+                    }
+                }
+                else if (RbPath.IsChecked ?? false)
+                {
+                    if (File.Exists(pathFileName))
+                    {
+                        using var userPathReader = FileReader<float>.Open(pathFileName, Settings.LOG_SEPARATOR);
+
+                        var userPath = new Path(userPathReader.Get2DPoints(), PaintPanelSize, new(X_ANGLE_SIZE, Y_ANGLE_SIZE),
+                            new SolidColorBrush(Color.FromRgb(Settings.USER_COLOR.R, Settings.USER_COLOR.G, 
+                            Settings.USER_COLOR.B)));
+
+                        userPath.Draw(PaintArea);
+
+                        Scalables.Add(userPath);
+                    }
+                }
+            }
+        }
+
+        private void RbRose_Checked(object sender, RoutedEventArgs e)
+        {
+            CbTargets.Items.Clear();
+
+            for (int i = 1; i < TargetID; i++)
+            {
+                CbTargets.Items.Add($"Роза ветров для цели {i}");
+            }
+        }
+
+        private void RbPath_Checked(object sender, RoutedEventArgs e)
+        {
+            CbTargets.Items.Clear();
+
+            for (int i = 1; i < TargetID; i++)
+            {
+                CbTargets.Items.Add($"Путь к цели {i}");
+            }
+        }
+
         private void OnStopClick(object sender, RoutedEventArgs e)
         {
             StopGame();
-            DrawWindRose();
-            DrawPaths();
+            //DrawWindRose();
+            //DrawPaths();
             ShowStats();
 
             BtnStop.IsEnabled = false;
 
+            for (int i = 1; i < TargetID; i++)
+            {
+                CbTargets.Items.Add($"Роза ветров для цели {i}");
+            }
             CbTargets.Visibility = Visibility.Visible;
         }
     }

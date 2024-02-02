@@ -33,14 +33,14 @@
         </Border>
 
         <Border Grid.Row="2" Grid.Column="1">
-            <Viewbox VerticalAlignment="Top" HorizontalAlignment="Left" Margin="10">
-                <RadioButton Name="RbPath" Content="Path" FontSize="20"/>
+            <Viewbox VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="10">
+                <RadioButton Name="RbRose" Content="Rose" FontSize="20" GroupName="DataType" IsChecked="True"/>
             </Viewbox>
         </Border>
 
         <Border Grid.Row="3" Grid.Column="1">
-            <Viewbox VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="10">
-                <RadioButton Name="RbRose" Content="Rose" FontSize="20"/>
+            <Viewbox VerticalAlignment="Top" HorizontalAlignment="Left" Margin="10">
+                <RadioButton Name="RbPath" Content="Path" FontSize="20" GroupName="DataType"/>
             </Viewbox>
         </Border>
 

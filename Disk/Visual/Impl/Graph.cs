@@ -140,7 +140,8 @@ namespace Disk.Visual.Impl
         }
 
         /// <summary>
-        ///     Removes the graph from a UI element collection
+        ///     
+        /// s the graph from a UI element collection
         /// </summary>
         /// <param name="collection">
         ///     The UI element collection
