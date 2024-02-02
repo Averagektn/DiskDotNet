@@ -22,8 +22,6 @@ using Timer = System.Timers.Timer;
 
 namespace Disk
 {
-    // add combo box to show target data/path to target
-
     /// <summary>
     ///     Interaction logic for PaintWindow.xaml
     /// </summary>
@@ -391,7 +389,6 @@ namespace Disk
         private void CbTargets_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             PaintArea.Children.Clear();
-
             foreach (var elem in Drawables)
             {
                 elem?.Draw(PaintArea);
@@ -412,8 +409,9 @@ namespace Disk
                         var angRadius = Converter.ToAngleX_FromLog(Target.Radius) + 
                             Converter.ToAngleY_FromLog(Target.Radius) / 2;
 
+                        var a = userReader.Get2DPoints().ToList();
                         var dataset =
-                            userReader.Get2DPoints().ToList()
+                            a
                             .Select(p => new PolarPointF(p.X - TargetCenters[selectedIndex].X, p.Y - 
                             TargetCenters[selectedIndex].Y, null))
                             .Where(p => Math.Abs(p.X) > angRadius && Math.Abs(p.Y) > angRadius).ToList();

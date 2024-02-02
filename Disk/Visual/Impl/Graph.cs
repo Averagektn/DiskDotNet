@@ -58,7 +58,7 @@ namespace Disk.Visual.Impl
         {
             SegmentsNum = segmentsNum;
             Size = currSize;
-            Radius = (int)(Math.Min(Size.Width, Size.Height) * 0.9);
+            Radius = (int)(Math.Min(Size.Width, Size.Height) * 0.9) / 2;
 
             Frequency = GetFrequency(Classifier<float>.Classify(points.ToList(), segmentsNum));
 
@@ -91,7 +91,7 @@ namespace Disk.Visual.Impl
         {
             Size = newSize;
 
-            Radius = (int)(Math.Min(Size.Width, Size.Height) * 0.9);
+            Radius = (int)(Math.Min(Size.Width, Size.Height) * 0.9) / 2;
 
             Polygon.Points.Clear();
 
@@ -114,7 +114,7 @@ namespace Disk.Visual.Impl
 
                 var point = new PolarPoint<float>(radius, Math.PI * angle / 180);
 
-                Polygon.Points.Add(new(Size.Width / 2 - point.X, Size.Height / 2 - point.Y));
+                Polygon.Points.Add(new(Size.Width / 2 + point.X, Size.Height / 2 - point.Y));
             }
         }
 
