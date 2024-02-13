@@ -95,5 +95,8 @@
     <Setting Name="MAIN_DIR_PATH" Type="System.String" Scope="Application">
       <Value Profile="(Default)">Диск. Данные</Value>
     </Setting>
+    <Setting Name="MAPS_DIR_PATH" Type="System.String" Scope="User">
+      <Value Profile="(Default)">maps</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

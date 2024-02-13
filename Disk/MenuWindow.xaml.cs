@@ -23,6 +23,11 @@ namespace Disk
             {
                 Directory.CreateDirectory(Settings.MAIN_DIR_PATH);
             }
+
+            if (!Directory.Exists(Settings.MAPS_DIR_PATH))
+            {
+                Directory.CreateDirectory(Settings.MAPS_DIR_PATH);
+            }
         }
 
         /// <summary>

@@ -13,6 +13,7 @@
             <RowDefinition Height="2*"/>
             <RowDefinition Height="2*"/>
             <RowDefinition Height="2*"/>
+            <RowDefinition Height="2*"/>
             <RowDefinition Height="1*"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
@@ -34,6 +35,10 @@
         </Viewbox>
 
         <Viewbox Grid.Row="4" Grid.Column="1">
+            <Button Content="Контруктор карт" FontSize="20" Margin="10 15 10 15" Width="200" Height="50"/>
+        </Viewbox>
+
+        <Viewbox Grid.Row="5" Grid.Column="1">
             <Button Content="Выход" Click="OnQuitClick" FontSize="20" Margin="10 15 10 15" Width="200" Height="50"/>
         </Viewbox>
     </Grid>
