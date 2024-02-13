@@ -5,9 +5,13 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Disk"
         mc:Ignorable="d"
-        Title="UserDataForm" Height="250" Width="400">
+        Title="UserDataForm" Height="400" Width="400">
     <Grid>
         <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
             <RowDefinition/>
             <RowDefinition/>
             <RowDefinition/>
@@ -20,33 +24,40 @@
             <ColumnDefinition Width="1*"/>
         </Grid.ColumnDefinitions>
 
-        <Border Grid.Row="0" Grid.Column="1">
-            <Viewbox VerticalAlignment="Top" HorizontalAlignment="Center">
-                <TextBlock Text="Имя:" FontSize="20"/>
-            </Viewbox>
-        </Border>
-        <Border Grid.Row="1" Grid.Column="1">
-            <Viewbox>
-                <TextBox Name="TbName" Margin="10 10 10 10" FontSize="20" Width="300" TextAlignment="Center" Text="Test"/>
-            </Viewbox>
-        </Border>
+        <Viewbox Grid.Row="0" Grid.Column="1" VerticalAlignment="Top" HorizontalAlignment="Center">
+            <TextBlock Text="Имя:" FontSize="20"/>
+        </Viewbox>
 
-        <Border Grid.Row="2" Grid.Column="1">
-            <Viewbox VerticalAlignment="Top" HorizontalAlignment="Center">
-                <TextBlock Text="Фамилия:" FontSize="20"/>
-            </Viewbox>
-        </Border>
-        <Border Grid.Row="3" Grid.Column="1">
-            <Viewbox>
-                <TextBox Name="TbSurname" Margin="10 10 10 10" FontSize="20" Width="300" TextAlignment="Center" Text="Testovich"/>
-            </Viewbox>
-        </Border>
+        <Viewbox Grid.Row="1" Grid.Column="1">
+            <TextBox Name="TbName" Margin="10 10 10 10" FontSize="20" Width="300" TextAlignment="Center" Text="Test"/>
+        </Viewbox>
 
-        <Border Grid.Row="4" Grid.Column="1">
-            <Viewbox>
-                <Button Name="Start" Click="OnStartClick" Content="Начать" FontSize="20" Width="200" Margin="10 10 10 10"/>
-            </Viewbox>
-        </Border>
-        
+        <Viewbox Grid.Row="2" Grid.Column="1" VerticalAlignment="Top" HorizontalAlignment="Center">
+            <TextBlock Text="Фамилия:" FontSize="20"/>
+        </Viewbox>
+
+        <Viewbox Grid.Row="3" Grid.Column="1">
+            <TextBox Name="TbSurname" Margin="10 10 10 10" FontSize="20" Width="300" TextAlignment="Center" Text="Testovich"/>
+        </Viewbox>
+
+        <Viewbox Grid.Row="4" Grid.Column="1" VerticalAlignment="Top" HorizontalAlignment="Center">
+            <TextBlock Text="Дата рождения:" FontSize="20"/>
+        </Viewbox>
+
+        <Viewbox Grid.Row="5" Grid.Column="1">
+            <DatePicker SelectedDateFormat="Long" />
+        </Viewbox>
+
+        <Viewbox Grid.Row="6" Grid.Column="1" VerticalAlignment="Top" HorizontalAlignment="Center">
+            <TextBlock Text="Диагоноз:" FontSize="20"/>
+        </Viewbox>
+
+        <Viewbox Grid.Row="7" Grid.Column="1">
+            <TextBox Name="TbDiagnosis" Margin="10 10 10 10" FontSize="20" Width="300" TextAlignment="Center" Text=""/>
+        </Viewbox>
+
+        <Viewbox Grid.Row="8" Grid.Column="1">
+            <Button Name="Start" Click="OnStartClick" Content="Начать" FontSize="20" Width="200" Margin="10 10 10 10"/>
+        </Viewbox>
     </Grid>
 </Window>

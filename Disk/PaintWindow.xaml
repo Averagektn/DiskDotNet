@@ -21,51 +21,36 @@
             <RowDefinition Height="1*"/>
         </Grid.RowDefinitions>
 
-        <xrpb:RadialProgressBar Margin="100 10 100 10" Value="50" Minimum="0" Maximum="100"
-                                Foreground="Blue" 
-            Name="TargetBase" Visibility="Visible" />
+        <xrpb:RadialProgressBar Margin="100 10 100 10" Value="50" Minimum="0" Maximum="100" Foreground="Blue" 
+            Name="TargetBase" Visibility="Hidden" />
 
-        <Border Grid.Row="0" Grid.Column="1">
-            <Viewbox VerticalAlignment="Top" HorizontalAlignment="Left" Margin="10">
-                <TextBlock FontSize="20" Name="TblTime" TextAlignment="Left"/>
-            </Viewbox>
-        </Border>
+        <Viewbox Grid.Row="0" Grid.Column="1" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="10">
+            <TextBlock FontSize="20" Name="TblTime" TextAlignment="Left"/>
+        </Viewbox>
 
-        <Border Grid.Row="1" Grid.Column="1">
-            <Viewbox VerticalAlignment="Top" HorizontalAlignment="Left" Margin="10">
-                <TextBlock FontSize="20" Name="TblAccuracy" TextAlignment="Left"/>
-            </Viewbox>
-        </Border>
+        <Viewbox Grid.Row="1" Grid.Column="1" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="10">
+            <TextBlock FontSize="20" Name="TblAccuracy" TextAlignment="Left"/>
+        </Viewbox>
 
-        <Border Grid.Row="2" Grid.Column="1">
-            <Viewbox VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="10">
-                <RadioButton Name="RbRose" Content="Rose" FontSize="20" GroupName="DataType" IsChecked="True" Visibility="Hidden"/>
-            </Viewbox>
-        </Border>
+        <Viewbox Grid.Row="2" Grid.Column="1" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="10">
+            <RadioButton Name="RbRose" Content="Rose" FontSize="20" GroupName="DataType" IsChecked="True" Visibility="Hidden"/>
+        </Viewbox>
 
-        <Border Grid.Row="3" Grid.Column="1">
-            <Viewbox VerticalAlignment="Top" HorizontalAlignment="Left" Margin="10">
-                <RadioButton Name="RbPath" Content="Path" FontSize="20" GroupName="DataType" Visibility="Hidden"/>
-            </Viewbox>
-        </Border>
+        <Viewbox Grid.Row="3" Grid.Column="1" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="10">
+            <RadioButton Name="RbPath" Content="Path" FontSize="20" GroupName="DataType" Visibility="Hidden"/>
+        </Viewbox>
 
-        <Border Grid.Row="4" Grid.Column="1">
-            <Viewbox VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="10">
-                <ComboBox Name="CbTargets" Visibility="Hidden" FontSize="20"/>
-            </Viewbox>
-        </Border>
+        <Viewbox Grid.Row="4" Grid.Column="1" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="10">
+            <ComboBox Name="CbTargets" Visibility="Hidden" FontSize="20"/>
+        </Viewbox>
 
-        <Border Grid.Row="5" Grid.Column="0">
-            <Viewbox VerticalAlignment="Bottom" HorizontalAlignment="Right">
-                <TextBlock FontSize="20" Name="TblScore" TextAlignment="Left"/>
-            </Viewbox>
-        </Border>
-
-        <Border Grid.Row="5" Grid.Column="1">
-            <Viewbox Margin="10 10 10 10">
-                <Button Content="Остановить" Click="OnStopClick" FontSize="20" Name="BtnStop"/>
-            </Viewbox>
-        </Border>
+        <Viewbox Grid.Row="5" Grid.Column="0" VerticalAlignment="Bottom" HorizontalAlignment="Right">
+            <TextBlock FontSize="20" Name="TblScore" TextAlignment="Left"/>
+        </Viewbox>
+        
+        <Viewbox Grid.Row="5" Grid.Column="1" Margin="10 10 10 10">
+            <Button Content="Остановить" Click="OnStopClick" FontSize="20" Name="BtnStop"/>
+        </Viewbox>
 
         <Canvas Name="PaintArea" Grid.RowSpan="6"/>
 
