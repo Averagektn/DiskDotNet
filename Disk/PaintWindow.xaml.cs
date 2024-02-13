@@ -220,7 +220,7 @@ namespace Disk
 
         private void NetworkReceive()
         {
-            try
+/*            try
             {
                 using var con = Connection.GetConnection(IPAddress.Parse(Settings.IP), Settings.PORT);
 
@@ -233,7 +233,7 @@ namespace Disk
             {
                 MessageBox.Show("Соединение потеряно");
                 Application.Current.Dispatcher.BeginInvoke(new Action(() => Close()));
-            }
+            }*/
         }
 
         private void ShowStats()
@@ -380,7 +380,7 @@ namespace Disk
                             TargetCenters[selectedIndex].Y, null))
                             .Where(p => Math.Abs(p.X) > angRadius && Math.Abs(p.Y) > angRadius).ToList();
 
-                        var userRose = new Graph(dataset, PaintPanelSize, Brushes.LightGreen, 4);
+                        var userRose = new Graph(dataset, PaintPanelSize, Brushes.LightGreen, 8);
 
                         userRose.Draw(PaintArea);
 
