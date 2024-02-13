@@ -5,7 +5,6 @@ using Disk.Visual.Interface;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
-using System.Net;
 using System.Timers;
 using System.Windows;
 using System.Windows.Controls;
@@ -74,7 +73,7 @@ namespace Disk
 
         private Converter? Converter;
 
-        private Point3DF? CurrentPos;
+        private readonly Point3DF? CurrentPos;
 
         private Point2DI? ShiftedWndPos
         {
@@ -147,9 +146,11 @@ namespace Disk
             {
                 var mousePos = e.GetPosition(sender as UIElement);
 
-                Target?.Move(new((int)mousePos.X, (int)mousePos.Y));
-                TargetCenters.Add(new(Converter?.ToAngleX_FromWnd((int)mousePos.X) ?? 0.0f,  
-                    Converter?.ToAngleY_FromWnd((int)mousePos.Y) ?? 0.0f));
+                var x = (int)mousePos.X;
+                var y = (int)mousePos.Y;
+
+                Target?.Move(new(x, y));
+                TargetCenters.Add(new(Converter?.ToAngleX_FromWnd(x) ?? 0.0f, Converter?.ToAngleY_FromWnd(y) ?? 0.0f));
 
                 Stopwatch = Stopwatch.StartNew();
                 TblTime.Text = string.Empty;
@@ -220,20 +221,20 @@ namespace Disk
 
         private void NetworkReceive()
         {
-/*            try
-            {
-                using var con = Connection.GetConnection(IPAddress.Parse(Settings.IP), Settings.PORT);
+            /*            try
+                        {
+                            using var con = Connection.GetConnection(IPAddress.Parse(Settings.IP), Settings.PORT);
 
-                while (IsGame)
-                {
-                    CurrentPos = con.GetXYZ();
-                }
-            }
-            catch
-            {
-                MessageBox.Show("Соединение потеряно");
-                Application.Current.Dispatcher.BeginInvoke(new Action(() => Close()));
-            }*/
+                            while (IsGame)
+                            {
+                                CurrentPos = con.GetXYZ();
+                            }
+                        }
+                        catch
+                        {
+                            MessageBox.Show("Соединение потеряно");
+                            Application.Current.Dispatcher.BeginInvoke(new Action(() => Close()));
+                        }*/
         }
 
         private void ShowStats()
@@ -370,13 +371,13 @@ namespace Disk
                     {
                         using var userReader = FileReader<float>.Open(roseFileName, Settings.LOG_SEPARATOR);
 
-                        var angRadius = Converter.ToAngleX_FromLog(Target.Radius) + 
+                        var angRadius = Converter.ToAngleX_FromLog(Target.Radius) +
                             Converter.ToAngleY_FromLog(Target.Radius) / 2;
 
                         var a = userReader.Get2DPoints().ToList();
                         var dataset =
                             a
-                            .Select(p => new PolarPointF(p.X - TargetCenters[selectedIndex].X, p.Y - 
+                            .Select(p => new PolarPointF(p.X - TargetCenters[selectedIndex].X, p.Y -
                             TargetCenters[selectedIndex].Y, null))
                             .Where(p => Math.Abs(p.X) > angRadius && Math.Abs(p.Y) > angRadius).ToList();
 
@@ -394,7 +395,7 @@ namespace Disk
                         using var userPathReader = FileReader<float>.Open(pathFileName, Settings.LOG_SEPARATOR);
 
                         var userPath = new Path(userPathReader.Get2DPoints(), PaintPanelSize, new(X_ANGLE_SIZE, Y_ANGLE_SIZE),
-                            new SolidColorBrush(Color.FromRgb(Settings.USER_COLOR.R, Settings.USER_COLOR.G, 
+                            new SolidColorBrush(Color.FromRgb(Settings.USER_COLOR.R, Settings.USER_COLOR.G,
                             Settings.USER_COLOR.B)));
 
                         userPath.Draw(PaintArea);

@@ -21,8 +21,9 @@
             <RowDefinition Height="1*"/>
         </Grid.RowDefinitions>
 
-        <xrpb:RadialProgressBar Value="50" Minimum="0" Maximum="100" Width="100" Height="100" Foreground="Blue" 
-            Name="TargetBase" Visibility="Hidden" />
+        <xrpb:RadialProgressBar Margin="100 10 100 10" Value="50" Minimum="0" Maximum="100"
+                                Foreground="Blue" 
+            Name="TargetBase" Visibility="Visible" />
 
         <Border Grid.Row="0" Grid.Column="1">
             <Viewbox VerticalAlignment="Top" HorizontalAlignment="Left" Margin="10">
