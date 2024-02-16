@@ -4,7 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Disk"
-        xmlns:lang="clr-namespace:Disk.Properties"
+        xmlns:lang="clr-namespace:Disk.Properties" xmlns:viewmodel="clr-namespace:Disk.ViewModel" d:DataContext="{d:DesignInstance Type=viewmodel:MenuViewModel}"
         mc:Ignorable="d"
         Title="Диск" Height="450" Width="400">
     <Grid>

@@ -4,7 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:xrpb="http://XamlRadialProgressBar/DotNet"
-        xmlns:local="clr-namespace:Disk"
+        xmlns:local="clr-namespace:Disk" xmlns:viewmodel="clr-namespace:Disk.ViewModel" d:DataContext="{d:DesignInstance Type=viewmodel:PaintViewModel}"
         mc:Ignorable="d"
         Title="Счет: 0" Height="600" Width="800">
     <Grid x:Name="PaintAreaGrid">
