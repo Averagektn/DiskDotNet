@@ -4,7 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Disk"
-        xmlns:language="clr-namespace:Disk.Properties"
+        xmlns:lang="clr-namespace:Disk.Properties"
         mc:Ignorable="d"
         Title="Диск" Height="450" Width="400">
     <Grid>
@@ -24,7 +24,7 @@
         </Grid.ColumnDefinitions>
 
         <Viewbox Grid.Row="1" Grid.Column="1">
-            <Button Content="{x:Static language:Localization.StartGame}" Click="OnStartClick" FontSize="20" Margin="10 15 10 15" Width="200" Height="50"/>
+            <Button Content="{x:Static lang:Localization.StartGame}" Click="OnStartClick" FontSize="20" Margin="10 15 10 15" Width="200" Height="50"/>
         </Viewbox>
 
         <Viewbox Grid.Row="2" Grid.Column="1">

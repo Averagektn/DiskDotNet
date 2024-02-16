@@ -61,7 +61,7 @@ namespace Disk.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Начать.
+        ///   Looks up a localized string similar to Start.
         /// </summary>
         public static string StartGame {
             get {
