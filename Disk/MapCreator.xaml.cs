@@ -11,7 +11,9 @@ namespace Disk
     /// </summary>
     public partial class MapCreator : Window
     {
-        private readonly IList<Target> _targets = [];
+        public int MapId { get; set; } = 1;
+
+        private readonly List<Target> _targets = [];
 
         public MapCreator()
         {
@@ -25,7 +27,7 @@ namespace Disk
 
         private void OnClose(object? sender, CancelEventArgs e)
         {
-            using var writer = Logger.GetLogger(@"maps/map_1.map");
+            using var writer = Logger.GetLogger($"maps\\map_{MapId}.map");
 
             foreach (var target in _targets)
             {
@@ -41,14 +43,12 @@ namespace Disk
             var x = (int)mousePos.X;
             var y = (int)mousePos.Y;
 
-            foreach (var target in _targets)
+            var removableTagets = _targets.Where(target => target.Contains(new(x, y)));
+            foreach (var target in removableTagets)
             {
-                if (target.Contains(new(x, y)))
-                {
-                    target.Remove(PaintArea.Children);
-                    _targets.Remove(target);
-                }
+                target.Remove(PaintArea.Children);
             }
+            _targets.RemoveAll(target => target.Contains(new(x, y)));
         }
 
         private void OnSizeChanged(object sender, SizeChangedEventArgs e)
