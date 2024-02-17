@@ -70,7 +70,7 @@ namespace Disk
 
         private User? User;
 
-        private Target? Target;
+        private ProgressTarget? Target;
 
         private Converter? Converter;
 
@@ -321,7 +321,7 @@ namespace Disk
             User.OnShot += (p) => UserMovementLog.LogLn(Converter?.ToAngle_FromWnd(p));
 
             Target = new(new(-Settings.TARGET_INI_RADIUS * 10, -Settings.TARGET_INI_RADIUS * 10), Settings.TARGET_INI_RADIUS,
-                SCREEN_INI_SIZE);
+                SCREEN_INI_SIZE, 1000);
 
             Drawables.Add(XAxis); Drawables.Add(YAxis); Drawables.Add(PaintToDataBorder); Drawables.Add(Target);
             Drawables.Add(User);

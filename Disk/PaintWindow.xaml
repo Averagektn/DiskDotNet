@@ -21,9 +21,6 @@
             <RowDefinition Height="1*"/>
         </Grid.RowDefinitions>
 
-        <xrpb:RadialProgressBar Margin="100 10 100 10" Value="50" Minimum="0" Maximum="100" Foreground="Blue" 
-            Name="TargetBase" Visibility="Hidden" />
-
         <Viewbox Grid.Row="0" Grid.Column="1" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="10">
             <TextBlock FontSize="20" Name="TblTime" TextAlignment="Left"/>
         </Viewbox>
