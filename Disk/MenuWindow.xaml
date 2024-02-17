@@ -36,7 +36,7 @@
         </Viewbox>
 
         <Viewbox Grid.Row="4" Grid.Column="1">
-            <Button Content="Контруктор карт" FontSize="20" Margin="10 15 10 15" Width="200" Height="50"/>
+            <Button Content="Контруктор карт" Click="OnMapContructorClick" FontSize="20" Margin="10 15 10 15" Width="200" Height="50"/>
         </Viewbox>
 
         <Viewbox Grid.Row="5" Grid.Column="1">

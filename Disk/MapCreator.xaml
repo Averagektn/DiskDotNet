@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:Disk" xmlns:viewmodel="clr-namespace:Disk.ViewModel" d:DataContext="{d:DesignInstance Type=viewmodel:MapViewModel}"
         mc:Ignorable="d"
         Title="MapCreator" Height="450" Width="800">
-    <Grid>
+    <Grid Name="PaintArea">
         
     </Grid>
 </Window>

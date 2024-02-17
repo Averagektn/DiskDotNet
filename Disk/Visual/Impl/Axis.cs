@@ -14,6 +14,11 @@ namespace Disk.Visual.Impl
     class Axis : IDrawable, IScalable
     {
         /// <summary>
+        ///     Specifies whether figure is drawn or not
+        /// </summary>
+        protected bool IsDrawn = false;
+
+        /// <summary>
         ///     The initial size of the axis
         /// </summary>
         private readonly Size IniSize;
@@ -71,7 +76,14 @@ namespace Disk.Visual.Impl
         /// <param name="addChild">
         ///     The parent object to add the axis to
         /// </param>
-        public void Draw(IAddChild addChild) => addChild.AddChild(Line);
+        public void Draw(IAddChild addChild)
+        {
+            if (!IsDrawn)
+            {
+                addChild.AddChild(Line);
+                IsDrawn = true;
+            }
+        }
 
         /// <summary>
         ///     Removes the axis from the specified collection

@@ -35,6 +35,13 @@ namespace Disk
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
+        private void OnMapContructorClick(object sender, RoutedEventArgs e)
+        {
+            Hide();
+            new MapCreator().ShowDialog();
+            Show();
+        }
+
         private void OnStartClick(object sender, RoutedEventArgs e)
         {
             Hide();
