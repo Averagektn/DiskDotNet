@@ -60,13 +60,18 @@ namespace Disk
 
             NetworkThread.Join();
 
+            User?.ClearOnShot();
+
             MoveTimer.Stop();
             ShotTimer.Stop();
+            MoveTimer.Close();
+            ShotTimer.Close();
 
             UserLogAng?.Dispose();
             UserLogWnd?.Dispose();
             UserLogCen?.Dispose();
             UserMovementLog?.Dispose();
+            MapReader?.Dispose();
         }
 
         private void OnClosing(object? sender, CancelEventArgs e) => StopGame();

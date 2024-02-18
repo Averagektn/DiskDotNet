@@ -15,6 +15,13 @@ namespace Disk
         public UserDataForm()
         {
             InitializeComponent();
+
+            string[] mapFiles = Directory.GetFiles("maps", "*.map", SearchOption.AllDirectories);
+            foreach (string mapFile in mapFiles)
+            {
+                CbMaps.Items.Add(mapFile);
+            }
+            CbMaps.SelectedIndex = 0;
         }
 
         private void OnStartClick(object sender, RoutedEventArgs e)
@@ -27,7 +34,8 @@ namespace Disk
                     CurrPath =
                     $"{Settings.MAIN_DIR_PATH}{Path.DirectorySeparatorChar}" +
                     $"{TbSurname.Text} {TbName.Text}{Path.DirectorySeparatorChar}" +
-                    $"{DateTime.Now:dd.MM.yyyy HH-mm-ss}"
+                    $"{DateTime.Now:dd.MM.yyyy HH-mm-ss}",
+                    MapFilePath = CbMaps.Text
                 }
                 .ShowDialog();
                 Close();

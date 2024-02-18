@@ -49,11 +49,11 @@
         </Viewbox>
 
         <Viewbox Grid.Row="6" Grid.Column="1" VerticalAlignment="Top" HorizontalAlignment="Center">
-            <TextBlock Text="Диагоноз:" FontSize="20"/>
+            <TextBlock Text="Карта:" FontSize="20"/>
         </Viewbox>
 
         <Viewbox Grid.Row="7" Grid.Column="1">
-            <TextBox Name="TbDiagnosis" Margin="10 10 10 10" FontSize="20" Width="300" TextAlignment="Center" Text=""/>
+            <ComboBox Name="CbMaps" Margin="10 10 10 10" FontSize="20" Width="300" />
         </Viewbox>
 
         <Viewbox Grid.Row="8" Grid.Column="1">

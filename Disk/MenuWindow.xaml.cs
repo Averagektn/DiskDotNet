@@ -37,8 +37,15 @@ namespace Disk
         /// <param name="e"></param>
         private void OnMapContructorClick(object sender, RoutedEventArgs e)
         {
+            var mapId = Directory.GetFiles("maps", "*.map", SearchOption.AllDirectories).Length + 1;
+
             Hide();
-            new MapCreator().ShowDialog();
+            new MapCreator()
+            {
+                MapId = mapId
+            }
+            .ShowDialog();
+
             Show();
         }
 
