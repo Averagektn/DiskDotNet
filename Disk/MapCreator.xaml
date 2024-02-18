@@ -2,10 +2,10 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:Disk" xmlns:viewmodel="clr-namespace:Disk.ViewModel" d:DataContext="{d:DesignInstance Type=viewmodel:MapViewModel}"
+        xmlns:lang="clr-namespace:Disk.Properties"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:viewmodel="clr-namespace:Disk.ViewModel" d:DataContext="{d:DesignInstance Type=viewmodel:MapViewModel}"
         mc:Ignorable="d"
-        Title="MapCreator" Height="600" Width="600">
+        Title="{x:Static lang:Localization.MapCreator_Title}" Height="600" Width="600">
     <Grid Name="PaintArea">
         <Path Fill="Yellow" Stretch="Fill" Visibility="Hidden">
             <Path.Data>
