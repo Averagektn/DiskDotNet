@@ -9,6 +9,36 @@ namespace Disk.Visual.Impl
 {
     class ProgressTarget : Target
     {
+        public double Progress
+        {
+            get
+            {
+                double progress = 0;
+                
+                Application.Current.Dispatcher.Invoke(() =>
+                {
+                    progress = _border.Value / _border.Maximum;
+                });
+
+                return progress;
+            }
+        }
+
+        public bool IsFull 
+        { 
+            get
+            {
+                bool isFull = false;
+
+                Application.Current.Dispatcher.Invoke(() =>
+                {
+                    isFull = (int)_border.Value >= (int)_border.Maximum;
+                });
+
+                return isFull;
+            } 
+        }
+
         /// <summary>
         ///     Gets the maximum radius of the target
         /// </summary>
@@ -46,6 +76,11 @@ namespace Disk.Visual.Impl
                 Width = radius * 6 * 2,
                 Height = radius * 6 * 2
             };
+        }
+
+        public void Reset()
+        {
+            _border.Value = 0;
         }
 
         public override int ReceiveShot(Point2D<int> shot)

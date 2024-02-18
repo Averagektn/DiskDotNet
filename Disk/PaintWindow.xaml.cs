@@ -27,6 +27,9 @@ namespace Disk
     /// </summary>
     public partial class PaintWindow : Window
     {
+        public const int TargetHP = 1000;
+
+        public string MapFilePath = string.Empty;
         public string CurrPath = string.Empty;
 
         private static readonly object LockObject = new();
@@ -42,8 +45,6 @@ namespace Disk
         private static readonly float Y_ANGLE_SIZE = Settings.Y_MAX_ANGLE * 2;
 
         private static Settings Settings => Settings.Default;
-
-        private readonly Random Random = new();
 
         private readonly Timer ShotTimer;
         private readonly Timer MoveTimer;
@@ -63,6 +64,8 @@ namespace Disk
         private Logger? UserLogCen;
         private Logger? UserLogAng;
         private Logger? UserMovementLog;
+
+        private FileReader<float>? MapReader;
 
         private Axis? XAxis;
         private Axis? YAxis;
@@ -105,9 +108,12 @@ namespace Disk
 
         private Size DataPanelSize => DataRect.RenderSize;
 
-        private string MovingToTargetLogName => $"{CurrPath}{FilePath.DirectorySeparatorChar}Движение к мишени {TargetID}.log";
-        private string OnTargetLogName => $"{CurrPath}{FilePath.DirectorySeparatorChar}В мишени {TargetID - 1}.log";
-        private string TargetReachedLogName => $"{CurrPath}{FilePath.DirectorySeparatorChar}Мишень {TargetID - 1} поражена.log";
+        private string MovingToTargetLogName => 
+            $"{CurrPath}{FilePath.DirectorySeparatorChar}Движение к мишени {TargetID}.log";
+        private string OnTargetLogName => 
+            $"{CurrPath}{FilePath.DirectorySeparatorChar}В мишени {TargetID - 1}.log";
+        private string TargetReachedLogName => 
+            $"{CurrPath}{FilePath.DirectorySeparatorChar}Мишень {TargetID - 1} поражена.log";
 
         private string UsrWndLog => $"{CurrPath}{FilePath.DirectorySeparatorChar}{Settings.USER_WND_LOG_FILE}";
         private string UsrAngLog => $"{CurrPath}{FilePath.DirectorySeparatorChar}{Settings.USER_ANG_LOG_FILE}";
@@ -118,6 +124,7 @@ namespace Disk
         private int TargetID = 1;
 
         private bool IsGame = true;
+        private bool IsMouseTargetPlacement = false;
 
         public PaintWindow()
         {
@@ -134,7 +141,6 @@ namespace Disk
             Closing += OnClosing;
             Loaded += OnLoaded;
             SizeChanged += OnSizeChanged;
-            MouseLeftButtonDown += OnMouseLeftButtonDown;
 
             CbTargets.SelectionChanged += CbTargets_SelectionChanged;
             RbPath.Checked += RbPath_Checked;
@@ -173,6 +179,24 @@ namespace Disk
 
         private void ShotTimerElapsed(object? sender, ElapsedEventArgs e)
         {
+            if (Target is not null)
+            {
+                if (Target.IsFull)
+                {
+                    var newCenter = MapReader?.GetXY();
+                    Target.Reset();
+
+                    if (newCenter is null)
+                    {
+                        OnStopClick(this, new());
+                    }
+                    else
+                    {
+                        Target.Move(Converter?.ToWnd_FromRelative(newCenter) ?? new(0, 0));
+                    }
+                }
+            }
+
             if (Target is not null && User is not null)
             {
                 var shotScore = Target.ReceiveShot(User.Shot());
@@ -291,20 +315,33 @@ namespace Disk
             UserMovementLog?.Dispose();
         }
 
-        // replace with btn start
         private void OnLoaded(object sender, RoutedEventArgs e)
         {
+            Converter = new(SCREEN_INI_SIZE, new(X_ANGLE_SIZE, Y_ANGLE_SIZE));
+
             if (!Directory.Exists(CurrPath))
             {
                 Directory.CreateDirectory(CurrPath);
+            }
+
+            if (MapFilePath == string.Empty)
+            {
+                Target = new(new(-Settings.TARGET_INI_RADIUS * 10, -Settings.TARGET_INI_RADIUS * 10),
+                    Settings.TARGET_INI_RADIUS, SCREEN_INI_SIZE, TargetHP);
+                IsMouseTargetPlacement = true;
+                MouseLeftButtonDown += OnMouseLeftButtonDown;
+            }
+            else
+            {
+                MapReader = FileReader<float>.Open(MapFilePath);
+                Target = new(Converter.ToWnd_FromRelative(MapReader.GetXY() ?? new(0.5f, 0.5f)), 
+                    Settings.TARGET_INI_RADIUS, SCREEN_INI_SIZE, TargetHP);
             }
 
             UserLogWnd = Logger.GetLogger(UsrWndLog);
             UserLogAng = Logger.GetLogger(UsrAngLog);
             UserLogCen = Logger.GetLogger(UsrCenLog);
             UserMovementLog = Logger.GetLogger(UsrMovementLog);
-
-            Converter = new(SCREEN_INI_SIZE, new(X_ANGLE_SIZE, Y_ANGLE_SIZE));
 
             XAxis = new(new(0, SCREEN_INI_CENTER_X), new((int)SCREEN_INI_SIZE.Width, SCREEN_INI_CENTER_Y), SCREEN_INI_SIZE,
                 Brushes.Black);
@@ -319,9 +356,6 @@ namespace Disk
             User.OnShot += (p) => UserLogAng.LogLn(Converter?.ToAngle_FromWnd(p));
             User.OnShot += (p) => UserLogCen.LogLn(Converter?.ToLogCoord(p));
             User.OnShot += (p) => UserMovementLog.LogLn(Converter?.ToAngle_FromWnd(p));
-
-            Target = new(new(-Settings.TARGET_INI_RADIUS * 10, -Settings.TARGET_INI_RADIUS * 10), Settings.TARGET_INI_RADIUS,
-                SCREEN_INI_SIZE, 1000);
 
             Drawables.Add(XAxis); Drawables.Add(YAxis); Drawables.Add(PaintToDataBorder); Drawables.Add(Target);
             Drawables.Add(User);
