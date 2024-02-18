@@ -6,7 +6,7 @@ namespace Disk.Calculations.Impl.Converters
     ///     Provides conversion between coordinate systems
     /// </summary>
     internal partial class Converter
-    { 
+    {
         /// <summary>
         /// 
         /// </summary>

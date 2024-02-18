@@ -1,7 +1,7 @@
 ﻿using System.IO;
 using System.Windows;
-
-using Settings = Disk.Config.Config;
+using System.Windows.Controls;
+using Settings = Disk.Properties.Config.Config;
 
 namespace Disk
 {
@@ -30,6 +30,29 @@ namespace Disk
             }
         }
 
+        private void ChangeLanguage_Click(object sender, RoutedEventArgs e)
+        {
+            var menuItem = (MenuItem)sender;
+            var selectedLanguage = menuItem.Tag.ToString();
+
+            Settings.LANGUAGE = selectedLanguage;
+            Settings.Save();
+
+            RestartApplication();
+        }
+
+        private static void RestartApplication()
+        {
+            var appPath = Environment.ProcessPath;
+
+            if (appPath is not null)
+            {
+                System.Diagnostics.Process.Start(appPath);
+            }
+
+            Application.Current.Shutdown();
+        }
+
         /// <summary>
         /// 
         /// </summary>
@@ -37,15 +60,8 @@ namespace Disk
         /// <param name="e"></param>
         private void OnMapContructorClick(object sender, RoutedEventArgs e)
         {
-            var mapId = Directory.GetFiles("maps", "*.map", SearchOption.AllDirectories).Length + 1;
-
             Hide();
-            new MapCreator()
-            {
-                MapId = mapId
-            }
-            .ShowDialog();
-
+            new MapCreator().ShowDialog();
             Show();
         }
 

@@ -1,7 +1,6 @@
 ﻿using System.IO;
 using System.Windows;
-
-using Settings = Disk.Config.Config;
+using Settings = Disk.Properties.Config.Config;
 
 namespace Disk
 {
@@ -42,7 +41,7 @@ namespace Disk
             }
             else
             {
-                MessageBox.Show("Не заполнено одно из полей");
+                MessageBox.Show(Disk.Properties.Localization.UserData_FieldIsEmpty);
             }
         }
     }

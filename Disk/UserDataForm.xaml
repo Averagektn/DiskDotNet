@@ -3,9 +3,10 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:lang="clr-namespace:Disk.Properties"
         xmlns:local="clr-namespace:Disk" xmlns:viewmodel="clr-namespace:Disk.ViewModel" d:DataContext="{d:DesignInstance Type=viewmodel:UserDataViewModel}"
         mc:Ignorable="d"
-        Title="UserDataForm" Height="400" Width="400">
+        Title="{x:Static lang:Localization.UserData_Title}" Height="410" Width="400">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition/>
@@ -25,7 +26,7 @@
         </Grid.ColumnDefinitions>
 
         <Viewbox Grid.Row="0" Grid.Column="1" VerticalAlignment="Top" HorizontalAlignment="Center">
-            <TextBlock Text="Имя:" FontSize="20"/>
+            <TextBlock Text="{x:Static lang:Localization.UserData_Name}" FontSize="20"/>
         </Viewbox>
 
         <Viewbox Grid.Row="1" Grid.Column="1">
@@ -33,7 +34,7 @@
         </Viewbox>
 
         <Viewbox Grid.Row="2" Grid.Column="1" VerticalAlignment="Top" HorizontalAlignment="Center">
-            <TextBlock Text="Фамилия:" FontSize="20"/>
+            <TextBlock Text="{x:Static lang:Localization.UserData_Surname}" FontSize="20"/>
         </Viewbox>
 
         <Viewbox Grid.Row="3" Grid.Column="1">
@@ -41,7 +42,7 @@
         </Viewbox>
 
         <Viewbox Grid.Row="4" Grid.Column="1" VerticalAlignment="Top" HorizontalAlignment="Center">
-            <TextBlock Text="Дата рождения:" FontSize="20"/>
+            <TextBlock Text="{x:Static lang:Localization.UserData_Birthday}" FontSize="20"/>
         </Viewbox>
 
         <Viewbox Grid.Row="5" Grid.Column="1">
@@ -49,7 +50,7 @@
         </Viewbox>
 
         <Viewbox Grid.Row="6" Grid.Column="1" VerticalAlignment="Top" HorizontalAlignment="Center">
-            <TextBlock Text="Карта:" FontSize="20"/>
+            <TextBlock Text="{x:Static lang:Localization.UserData_Map}" FontSize="20"/>
         </Viewbox>
 
         <Viewbox Grid.Row="7" Grid.Column="1">
@@ -57,7 +58,7 @@
         </Viewbox>
 
         <Viewbox Grid.Row="8" Grid.Column="1">
-            <Button Name="Start" Click="OnStartClick" Content="Начать" FontSize="20" Width="200" Margin="10 10 10 10"/>
+            <Button Name="Start" Click="OnStartClick" Content="{x:Static lang:Localization.UserData_Start}" FontSize="20" Width="200" Margin="10 10 10 10"/>
         </Viewbox>
     </Grid>
 </Window>

@@ -117,7 +117,127 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="StartGame" xml:space="preserve">
+  <data name="Calibration.AngleX" xml:space="preserve">
+    <value>X axis angle</value>
+  </data>
+  <data name="Calibration.AngleY" xml:space="preserve">
+    <value>Y axis angle</value>
+  </data>
+  <data name="Calibration.Apply" xml:space="preserve">
+    <value>Apply</value>
+  </data>
+  <data name="Calibration.Centralize" xml:space="preserve">
+    <value>Centralize</value>
+  </data>
+  <data name="Calibration.ConnectionLost" xml:space="preserve">
+    <value>Connection lost</value>
+  </data>
+  <data name="Calibration.SetX" xml:space="preserve">
+    <value>Set X coordinate</value>
+  </data>
+  <data name="Calibration.SetY" xml:space="preserve">
+    <value>Set Y coordinate</value>
+  </data>
+  <data name="Calibration.Start" xml:space="preserve">
+    <value>Start calibration</value>
+  </data>
+  <data name="Calibration.Title" xml:space="preserve">
+    <value>Disk. Calibration</value>
+  </data>
+  <data name="MapCreator.Title" xml:space="preserve">
+    <value>Disk. Map creator</value>
+  </data>
+  <data name="Menu.Calibration" xml:space="preserve">
+    <value>Calibration</value>
+  </data>
+  <data name="Menu.Language" xml:space="preserve">
+    <value>Language</value>
+  </data>
+  <data name="Menu.MapConstructor" xml:space="preserve">
+    <value>Map creator</value>
+  </data>
+  <data name="Menu.Quit" xml:space="preserve">
+    <value>Quit</value>
+  </data>
+  <data name="Menu.Settings" xml:space="preserve">
+    <value>Settings</value>
+  </data>
+  <data name="Menu.StartGame" xml:space="preserve">
     <value>Start</value>
+  </data>
+  <data name="Menu.Title" xml:space="preserve">
+    <value>Disk</value>
+  </data>
+  <data name="Paint.AngleDistance" xml:space="preserve">
+    <value>Distance (in angles)</value>
+  </data>
+  <data name="Paint.AngleSpeed" xml:space="preserve">
+    <value>Speed (in angles)</value>
+  </data>
+  <data name="Paint.ConnectionLost" xml:space="preserve">
+    <value>Connection lost</value>
+  </data>
+  <data name="Paint.Dispersion" xml:space="preserve">
+    <value>Dispersion</value>
+  </data>
+  <data name="Paint.EmptyMap" xml:space="preserve">
+    <value>Map is empty</value>
+  </data>
+  <data name="Paint.MathExp" xml:space="preserve">
+    <value>Average shift from center</value>
+  </data>
+  <data name="Paint.Over" xml:space="preserve">
+    <value>Wasted</value>
+  </data>
+  <data name="Paint.Path" xml:space="preserve">
+    <value>Path</value>
+  </data>
+  <data name="Paint.PathToTarget" xml:space="preserve">
+    <value>Path to target</value>
+  </data>
+  <data name="Paint.Score" xml:space="preserve">
+    <value>Score</value>
+  </data>
+  <data name="Paint.StandartDeviation" xml:space="preserve">
+    <value>Deviation</value>
+  </data>
+  <data name="Paint.Stop" xml:space="preserve">
+    <value>Stop</value>
+  </data>
+  <data name="Paint.Time" xml:space="preserve">
+    <value>Time</value>
+  </data>
+  <data name="Paint.Title" xml:space="preserve">
+    <value>Disk. Paint field</value>
+  </data>
+  <data name="Paint.WindRose" xml:space="preserve">
+    <value>Wind rose</value>
+  </data>
+  <data name="Paint.WindRoseForTarget" xml:space="preserve">
+    <value>Wind rose for target</value>
+  </data>
+  <data name="Settings.Title" xml:space="preserve">
+    <value>Disk. Settings</value>
+  </data>
+  <data name="UserData.Birthday" xml:space="preserve">
+    <value>Birthday</value>
+  </data>
+  <data name="UserData.FieldIsEmpty" xml:space="preserve">
+    <value>One of the fields is empty</value>
+  </data>
+  <data name="UserData.Map" xml:space="preserve">
+    <value>Map</value>
+  </data>
+  <data name="UserData.Name" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="UserData.Start" xml:space="preserve">
+    <value>Start</value>
+  </data>
+  <data name="UserData.Surname" xml:space="preserve">
+    <value>Surname</value>
+  </data>
+  <data name="UserData.Title" xml:space="preserve">
+    <value>User data</value>
   </data>
 </root>

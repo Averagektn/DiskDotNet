@@ -9,35 +9,9 @@ namespace Disk.Visual.Impl
 {
     class ProgressTarget : Target
     {
-        public double Progress
-        {
-            get
-            {
-                double progress = 0;
+        public double Progress => _border.Value / _border.Maximum;
 
-                Application.Current.Dispatcher.Invoke(() =>
-                {
-                    progress = _border.Value / _border.Maximum;
-                });
-
-                return progress;
-            }
-        }
-
-        public bool IsFull
-        {
-            get
-            {
-                bool isFull = false;
-
-                Application.Current.Dispatcher.Invoke(() =>
-                {
-                    isFull = (int)_border.Value >= (int)_border.Maximum;
-                });
-
-                return isFull;
-            }
-        }
+        public bool IsFull => (int)_border.Value >= (int)_border.Maximum;
 
         /// <summary>
         ///     Gets the maximum radius of the target
@@ -80,7 +54,7 @@ namespace Disk.Visual.Impl
 
         public void Reset()
         {
-            Application.Current.Dispatcher.Invoke(() => _border.Value = 0);
+            _border.Value = 0;
         }
 
         public override int ReceiveShot(Point2D<int> shot)
@@ -88,7 +62,7 @@ namespace Disk.Visual.Impl
             var res = base.ReceiveShot(shot);
             if (res != 0)
             {
-                Application.Current.Dispatcher.Invoke(() => _border.Value += res);
+                _border.Value += res;
             }
 
             return res;
@@ -159,12 +133,9 @@ namespace Disk.Visual.Impl
         /// </param>
         public override void Move(Point2D<int> center)
         {
-            Application.Current.Dispatcher.Invoke(() =>
-            {
-                base.Move(center);
-                Center = center;
-                _border.Margin = new(Left, Top, 0, 0);
-            });
+            base.Move(center);
+            Center = center;
+            _border.Margin = new(Left, Top, 0, 0);
         }
     }
 }

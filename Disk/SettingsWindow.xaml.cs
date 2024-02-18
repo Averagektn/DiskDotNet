@@ -1,6 +1,6 @@
 ﻿using System.Windows;
 
-using Settings = Disk.Config.Config;
+using Settings = Disk.Properties.Config.Config;
 
 namespace Disk
 {

@@ -117,7 +117,127 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="StartGame" xml:space="preserve">
+  <data name="Calibration.AngleX" xml:space="preserve">
+    <value>Угол по оси X</value>
+  </data>
+  <data name="Calibration.AngleY" xml:space="preserve">
+    <value>Угол по оси Y</value>
+  </data>
+  <data name="Calibration.Apply" xml:space="preserve">
+    <value>Применить</value>
+  </data>
+  <data name="Calibration.Centralize" xml:space="preserve">
+    <value>Центрировать</value>
+  </data>
+  <data name="Calibration.ConnectionLost" xml:space="preserve">
+    <value>Потеряно соединение</value>
+  </data>
+  <data name="Calibration.SetX" xml:space="preserve">
+    <value>Зафиксировать X</value>
+  </data>
+  <data name="Calibration.SetY" xml:space="preserve">
+    <value>Зафиксировать Y</value>
+  </data>
+  <data name="Calibration.Start" xml:space="preserve">
+    <value>Начать калибровку</value>
+  </data>
+  <data name="Calibration.Title" xml:space="preserve">
+    <value>Диск. Калибровка</value>
+  </data>
+  <data name="MapCreator.Title" xml:space="preserve">
+    <value>Диск. Конструктор карт</value>
+  </data>
+  <data name="Menu.Calibration" xml:space="preserve">
+    <value>Калибровка</value>
+  </data>
+  <data name="Menu.Language" xml:space="preserve">
+    <value>Язык</value>
+  </data>
+  <data name="Menu.MapConstructor" xml:space="preserve">
+    <value>Конструктор карт</value>
+  </data>
+  <data name="Menu.Quit" xml:space="preserve">
+    <value>Выйти</value>
+  </data>
+  <data name="Menu.Settings" xml:space="preserve">
+    <value>Настройки</value>
+  </data>
+  <data name="Menu.StartGame" xml:space="preserve">
     <value>Начать</value>
+  </data>
+  <data name="Menu.Title" xml:space="preserve">
+    <value>Диск</value>
+  </data>
+  <data name="Paint.AngleDistance" xml:space="preserve">
+    <value>Расстояние (в углах)</value>
+  </data>
+  <data name="Paint.AngleSpeed" xml:space="preserve">
+    <value>Скорость (в углах)</value>
+  </data>
+  <data name="Paint.ConnectionLost" xml:space="preserve">
+    <value>Потеряно соединение с диском</value>
+  </data>
+  <data name="Paint.Dispersion" xml:space="preserve">
+    <value>Дисперсия</value>
+  </data>
+  <data name="Paint.EmptyMap" xml:space="preserve">
+    <value>Карта пуста</value>
+  </data>
+  <data name="Paint.MathExp" xml:space="preserve">
+    <value>Среднее смещение от центра</value>
+  </data>
+  <data name="Paint.Over" xml:space="preserve">
+    <value>Конец</value>
+  </data>
+  <data name="Paint.Path" xml:space="preserve">
+    <value>Путь</value>
+  </data>
+  <data name="Paint.PathToTarget" xml:space="preserve">
+    <value>Путь к цели</value>
+  </data>
+  <data name="Paint.Score" xml:space="preserve">
+    <value>Счет</value>
+  </data>
+  <data name="Paint.StandartDeviation" xml:space="preserve">
+    <value>Среднее отклонение от центра</value>
+  </data>
+  <data name="Paint.Stop" xml:space="preserve">
+    <value>Остановить</value>
+  </data>
+  <data name="Paint.Time" xml:space="preserve">
+    <value>Время</value>
+  </data>
+  <data name="Paint.Title" xml:space="preserve">
+    <value>Диск. Поле</value>
+  </data>
+  <data name="Paint.WindRose" xml:space="preserve">
+    <value>Роза ветров</value>
+  </data>
+  <data name="Paint.WindRoseForTarget" xml:space="preserve">
+    <value>Роза ветров для цели</value>
+  </data>
+  <data name="Settings.Title" xml:space="preserve">
+    <value>Диск. Настройки</value>
+  </data>
+  <data name="UserData.Birthday" xml:space="preserve">
+    <value>Дата рождения</value>
+  </data>
+  <data name="UserData.FieldIsEmpty" xml:space="preserve">
+    <value>Не заполнено одно из полей</value>
+  </data>
+  <data name="UserData.Map" xml:space="preserve">
+    <value>Карта</value>
+  </data>
+  <data name="UserData.Name" xml:space="preserve">
+    <value>Имя</value>
+  </data>
+  <data name="UserData.Start" xml:space="preserve">
+    <value>Начать</value>
+  </data>
+  <data name="UserData.Surname" xml:space="preserve">
+    <value>Фамилия</value>
+  </data>
+  <data name="UserData.Title" xml:space="preserve">
+    <value>Диск. Данные пользователя</value>
   </data>
 </root>
