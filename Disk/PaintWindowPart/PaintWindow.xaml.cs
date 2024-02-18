@@ -6,7 +6,6 @@ using System.Diagnostics;
 using System.IO;
 using System.Timers;
 using System.Windows;
-using System.Windows.Input;
 using System.Windows.Media;
 using FilePath = System.IO.Path;
 using Point2DF = Disk.Data.Impl.Point2D<float>;
@@ -22,7 +21,7 @@ namespace Disk
     /// </summary>
     public partial class PaintWindow : Window
     {
-        public const int TargetHP = 1000;
+        public const int TargetHP = 100;
 
         public string MapFilePath = string.Empty;
         public string CurrPath = string.Empty;
@@ -51,9 +50,9 @@ namespace Disk
 
         private readonly List<Point2DF> TargetCenters = [];
 
-        private Stopwatch Stopwatch = new();
+        private readonly Stopwatch Stopwatch = new();
 
-        private Point2DF? StartPoint;
+        private readonly Point2DF? StartPoint;
 
         private Logger? UserLogWnd;
         private Logger? UserLogCen;
@@ -116,7 +115,7 @@ namespace Disk
         private string UsrMovementLog => $"{CurrPath}{FilePath.DirectorySeparatorChar}До первой цели.log";
 
         private int Score = 0;
-        private int TargetID = 1;
+        private readonly int TargetID = 1;
 
         private bool IsGame = true;
 
@@ -139,40 +138,6 @@ namespace Disk
             CbTargets.SelectionChanged += CbTargets_SelectionChanged;
             RbPath.Checked += RbPath_Checked;
             RbRose.Checked += RbRose_Checked;
-        }
-
-        private void OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
-        {
-            if (IsGame)
-            {
-                var mousePos = e.GetPosition(sender as UIElement);
-
-                var x = (int)mousePos.X;
-                var y = (int)mousePos.Y;
-
-                if (AllowedArea.FillContains(new Point(x, y)))
-                {
-                    Target?.Reset();
-                    Target?.Move(new(x, y));
-                    TargetCenters.Add(new(Converter?.ToAngleX_FromWnd(x) ?? 0.0f, Converter?.ToAngleY_FromWnd(y) ?? 0.0f));
-
-                    Stopwatch = Stopwatch.StartNew();
-                    TblTime.Text = string.Empty;
-
-                    if (User is not null)
-                    {
-                        StartPoint = Converter?.ToAngle_FromWnd(User.Center);
-                    }
-
-                    lock (LockObject)
-                    {
-                        UserMovementLog?.Dispose();
-                        UserMovementLog = Logger.GetLogger(MovingToTargetLogName);
-                    }
-
-                    TargetID++;
-                }
-            }
         }
 
         private void ShotTimerElapsed(object? sender, ElapsedEventArgs e)
@@ -267,17 +232,15 @@ namespace Disk
                 Directory.CreateDirectory(CurrPath);
             }
 
-            if (MapFilePath == string.Empty)
-            {
-                Target = new(new(-Settings.TARGET_INI_RADIUS * 10, -Settings.TARGET_INI_RADIUS * 10),
-                    Settings.TARGET_INI_RADIUS, SCREEN_INI_SIZE, TargetHP);
-                MouseLeftButtonDown += OnMouseLeftButtonDown;
-            }
-            else
+            if (MapFilePath != string.Empty)
             {
                 MapReader = FileReader<float>.Open(MapFilePath);
                 Target = new(Converter.ToWnd_FromRelative(MapReader.GetXY() ?? new(0.5f, 0.5f)),
                     Settings.TARGET_INI_RADIUS, SCREEN_INI_SIZE, TargetHP);
+            }
+            else
+            {
+                MessageBox.Show("Empty map file");
             }
 
             UserLogWnd = Logger.GetLogger(UsrWndLog);
