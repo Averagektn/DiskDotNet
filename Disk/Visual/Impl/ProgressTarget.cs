@@ -14,7 +14,7 @@ namespace Disk.Visual.Impl
             get
             {
                 double progress = 0;
-                
+
                 Application.Current.Dispatcher.Invoke(() =>
                 {
                     progress = _border.Value / _border.Maximum;
@@ -24,8 +24,8 @@ namespace Disk.Visual.Impl
             }
         }
 
-        public bool IsFull 
-        { 
+        public bool IsFull
+        {
             get
             {
                 bool isFull = false;
@@ -36,7 +36,7 @@ namespace Disk.Visual.Impl
                 });
 
                 return isFull;
-            } 
+            }
         }
 
         /// <summary>
@@ -74,7 +74,7 @@ namespace Disk.Visual.Impl
                 Maximum = hp,
                 Foreground = Brushes.Blue,
                 Width = radius * 6 * 2,
-                Height = radius * 6 * 2
+                Height = radius * 6 * 2,
             };
         }
 
@@ -90,7 +90,7 @@ namespace Disk.Visual.Impl
             {
                 Application.Current.Dispatcher.Invoke(() => _border.Value += res);
             }
-            
+
             return res;
         }
 
@@ -142,13 +142,14 @@ namespace Disk.Visual.Impl
             _border.Margin = new(Left, Top, 0, 0);
         }
 
-        /*        public override void Scale(Size newSize)
-                {
-                    foreach (var circle in Circles)
-                    {
-                        circle.Scale(newSize);
-                    }
-                }*/
+        public override void Scale(Size newSize)
+        {
+            base.Scale(newSize);
+
+            _border.Width = MaxRadius * 2;
+            _border.Height = MaxRadius * 2;
+            _border.Margin = new(Left, Top, 0, 0);
+        }
 
         /// <summary>
         ///     Moves the target to the specified center point
@@ -158,11 +159,12 @@ namespace Disk.Visual.Impl
         /// </param>
         public override void Move(Point2D<int> center)
         {
-            base.Move(center);
-
-            Center = center;
-
-            _border.Margin = new(Left, Top, 0, 0);
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+                base.Move(center);
+                Center = center;
+                _border.Margin = new(Left, Top, 0, 0);
+            });
         }
     }
 }

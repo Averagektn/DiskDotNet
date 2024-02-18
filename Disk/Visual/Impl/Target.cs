@@ -102,6 +102,8 @@ namespace Disk.Visual.Impl
         /// </param>
         public override void Scale(Size newSize)
         {
+            base.Scale(newSize);
+
             foreach (var circle in Circles)
             {
                 circle.Scale(newSize);
