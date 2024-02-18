@@ -397,5 +397,17 @@ namespace Disk.Properties.Config {
                 this["MAPS_DIR_PATH"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("1")]
+        public int MAP_ID {
+            get {
+                return ((int)(this["MAP_ID"]));
+            }
+            set {
+                this["MAP_ID"] = value;
+            }
+        }
     }
 }

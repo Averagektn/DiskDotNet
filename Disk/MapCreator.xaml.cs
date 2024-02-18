@@ -3,6 +3,7 @@ using Disk.Visual.Impl;
 using System.ComponentModel;
 using System.Windows;
 using System.Windows.Input;
+using Settings = Disk.Properties.Config.Config;
 
 namespace Disk
 {
@@ -11,7 +12,7 @@ namespace Disk
     /// </summary>
     public partial class MapCreator : Window
     {
-        public int MapId { get; set; } = 1;
+        public int MapId { get; set; } = Settings.Default.MAP_ID;
 
         private readonly List<Target> _targets = [];
 
@@ -27,7 +28,7 @@ namespace Disk
 
         private void OnClose(object? sender, CancelEventArgs e)
         {
-            using var writer = Logger.GetLogger($"maps\\map_{MapId}.map");
+            using var writer = Logger.GetLogger($"maps\\map_{MapId++}.map");
 
             foreach (var target in _targets)
             {
@@ -35,6 +36,9 @@ namespace Disk
                     (float)(target.Center.X / ActualWidth),
                     (float)(target.Center.Y / ActualHeight)));
             }
+
+            Settings.Default.MAP_ID = MapId;
+            Settings.Default.Save();
         }
 
         private void OnMouseRightButtonDown(object sender, MouseButtonEventArgs e)
