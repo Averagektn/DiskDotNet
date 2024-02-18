@@ -64,8 +64,6 @@ namespace Disk
 
             MoveTimer.Stop();
             ShotTimer.Stop();
-            MoveTimer.Close();
-            ShotTimer.Close();
 
             UserLogAng?.Dispose();
             UserLogWnd?.Dispose();

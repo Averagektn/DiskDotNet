@@ -3,7 +3,7 @@
 using System.Net;
 using System.Timers;
 using System.Windows;
-
+using System.Windows.Threading;
 using Settings = Disk.Config.Config;
 using Timer = System.Timers.Timer;
 
@@ -18,7 +18,7 @@ namespace Disk
 
         private readonly Thread DataThread;
 
-        private readonly Timer TextBoxUpdateTimer;
+        private readonly DispatcherTimer TextBoxUpdateTimer;
 
         private float XAngleRes => XAngle - XShift;
         private float YAngleRes => YAngle - YShift;
@@ -43,24 +43,24 @@ namespace Disk
 
             DataThread = new(NetworkThreadProc);
 
-            TextBoxUpdateTimer = new(Settings.CALIBRATION_TIMEOUT);
+            TextBoxUpdateTimer = new(DispatcherPriority.Normal)
+            {
+                Interval = TimeSpan.FromMilliseconds(Settings.CALIBRATION_TIMEOUT)
+            };
 
-            TextBoxUpdateTimer.Elapsed += OnTextBoxUpdateTimerElapsed;
+            TextBoxUpdateTimer.Tick += OnTextBoxUpdateTimerElapsed;
         }
 
-        private void OnTextBoxUpdateTimerElapsed(object? sender, ElapsedEventArgs e)
+        private void OnTextBoxUpdateTimerElapsed(object? sender, EventArgs e)
         {
-            Application.Current.Dispatcher.Invoke(() =>
+            if (BtnCalibrateX.IsEnabled)
             {
-                if (BtnCalibrateX.IsEnabled)
-                {
-                    TbXCoord.Text = $"{XAngleRes:F2}";
-                }
-                if (BtnCalibrateY.IsEnabled)
-                {
-                    TbYCoord.Text = $"{YAngleRes:F2}";
-                }
-            });
+                TbXCoord.Text = $"{XAngleRes:F2}";
+            }
+            if (BtnCalibrateY.IsEnabled)
+            {
+                TbYCoord.Text = $"{YAngleRes:F2}";
+            }
         }
 
         /// <summary>
