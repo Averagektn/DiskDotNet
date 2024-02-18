@@ -26,6 +26,26 @@ namespace Disk.Visual.Impl
         public int MaxRadius => Radius * 5;
 
         /// <summary>
+        ///     Gets the X-coordinate of the right edge of the circle
+        /// </summary>
+        public new int Right => Center.X + MaxRadius;
+
+        /// <summary>
+        ///     Gets the Y-coordinate of the top edge of the circle
+        /// </summary>
+        public new int Top => Center.Y - MaxRadius;
+
+        /// <summary>
+        ///     Gets the Y-coordinate of the bottom edge of the circle
+        /// </summary>
+        public new int Bottom => Center.Y + MaxRadius;
+
+        /// <summary>
+        ///     Gets the X-coordinate of the left edge of the circle
+        /// </summary>
+        public new int Left => Center.X - MaxRadius;
+
+        /// <summary>
         ///     List of circles representing the concentric rings of the target
         /// </summary>
         private readonly List<Circle> Circles =
@@ -82,6 +102,8 @@ namespace Disk.Visual.Impl
         /// </param>
         public override void Scale(Size newSize)
         {
+            base.Scale(newSize);
+
             foreach (var circle in Circles)
             {
                 circle.Scale(newSize);

@@ -385,5 +385,17 @@ namespace Disk.Config {
                 return ((string)(this["MAIN_DIR_PATH"]));
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("maps")]
+        public string MAPS_DIR_PATH {
+            get {
+                return ((string)(this["MAPS_DIR_PATH"]));
+            }
+            set {
+                this["MAPS_DIR_PATH"] = value;
+            }
+        }
     }
 }

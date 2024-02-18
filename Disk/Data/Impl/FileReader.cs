@@ -71,7 +71,7 @@ namespace Disk.Data.Impl
         /// <returns>
         ///     The file reader instance
         /// </returns>
-        public static FileReader<CoordType> Open(string filename, char separator)
+        public static FileReader<CoordType> Open(string filename, char separator = ';')
         {
             var reader = Files.FirstOrDefault(f => f.Filename == filename);
 

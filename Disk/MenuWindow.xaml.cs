@@ -23,6 +23,11 @@ namespace Disk
             {
                 Directory.CreateDirectory(Settings.MAIN_DIR_PATH);
             }
+
+            if (!Directory.Exists(Settings.MAPS_DIR_PATH))
+            {
+                Directory.CreateDirectory(Settings.MAPS_DIR_PATH);
+            }
         }
 
         /// <summary>
@@ -30,6 +35,20 @@ namespace Disk
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
+        private void OnMapContructorClick(object sender, RoutedEventArgs e)
+        {
+            var mapId = Directory.GetFiles("maps", "*.map", SearchOption.AllDirectories).Length + 1;
+
+            Hide();
+            new MapCreator()
+            {
+                MapId = mapId
+            }
+            .ShowDialog();
+
+            Show();
+        }
+
         private void OnStartClick(object sender, RoutedEventArgs e)
         {
             Hide();

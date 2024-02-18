@@ -6,10 +6,12 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <UseWPF>true</UseWPF>
+    <SupportedOSPlatformVersion>7.0</SupportedOSPlatformVersion>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Extended.Wpf.Toolkit" Version="4.6.0" />
+    <PackageReference Include="XamlRadialProgressBar" Version="1.0.3" />
   </ItemGroup>
 
   <ItemGroup>
@@ -18,17 +20,22 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Config.settings</DependentUpon>
     </Compile>
-    <Compile Update="Resources\Loc.Designer.cs">
+    <Compile Update="Properties\Localization.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
-      <DependentUpon>Loc.resx</DependentUpon>
+      <DependentUpon>Localization.resx</DependentUpon>
     </Compile>
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Update="Resources\Loc.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Loc.Designer.cs</LastGenOutput>
+    <EmbeddedResource Update="Properties\Localization.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Localization.Designer.cs</LastGenOutput>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Properties\Localization.ru-RU.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </EmbeddedResource>
   </ItemGroup>
 

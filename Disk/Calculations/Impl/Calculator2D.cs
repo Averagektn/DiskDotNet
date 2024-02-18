@@ -17,11 +17,15 @@ namespace Disk.Calculations.Impl
         ///     Mathematical expectation
         /// </returns>
         public static Point2D<float> MathExp(IEnumerable<Point2D<float>> dataset)
-            => new
+        {
+            var dataList = dataset.ToList();
+
+            return new
             (
-                Calculator.MathExp(dataset.Select(p => p.X)),
-                Calculator.MathExp(dataset.Select(p => p.Y))
+                Calculator.MathExp(dataList.Select(p => p.X)),
+                Calculator.MathExp(dataList.Select(p => p.Y))
             );
+        }
 
         /// <summary>
         ///     Calculates standart deviation
@@ -33,11 +37,16 @@ namespace Disk.Calculations.Impl
         ///     Standart deviation
         /// </returns>
         public static Point2D<float> StandartDeviation(IEnumerable<Point2D<float>> dataset)
-            => new
+        {
+            var dataList = dataset.ToList();
+
+            return new
             (
-                Calculator.StandartDeviation(dataset.Select(p => p.X)),
-                Calculator.StandartDeviation(dataset.Select(p => p.Y))
+                Calculator.StandartDeviation(dataList.Select(p => p.X)),
+                Calculator.StandartDeviation(dataList.Select(p => p.Y))
             );
+        }
+
 
         /// <summary>
         ///     Calculates dispersion
@@ -49,10 +58,14 @@ namespace Disk.Calculations.Impl
         ///     Dispesion
         /// </returns>
         public static Point2D<float> Dispersion(IEnumerable<Point2D<float>> dataset)
-            => new
+        {
+            var dataList = dataset.ToList();
+
+            return new
             (
-                Calculator.Dispersion(dataset.Select(p => p.X)),
-                Calculator.Dispersion(dataset.Select(p => p.Y))
+                Calculator.Dispersion(dataList.Select(p => p.X)), 
+                Calculator.Dispersion(dataList.Select(p => p.Y))
             );
+        }
     }
 }

@@ -30,6 +30,11 @@ namespace Disk.Visual.Impl
         /// </summary>
         public event Action<Point2D<int>>? OnShot;
 
+        public void ClearOnShot()
+        {
+            OnShot = null;
+        }
+
         /// <summary>
         ///     Performs a shooting action and invokes the OnShot event
         /// </summary>
