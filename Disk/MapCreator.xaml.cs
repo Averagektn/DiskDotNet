@@ -32,7 +32,7 @@ namespace Disk
             foreach (var target in _targets)
             {
                 writer.LogLn(new Point2D<float>(
-                    (float)(target.Center.X / ActualWidth), 
+                    (float)(target.Center.X / ActualWidth),
                     (float)(target.Center.Y / ActualHeight)));
             }
         }
@@ -53,6 +53,10 @@ namespace Disk
 
         private void OnSizeChanged(object sender, SizeChangedEventArgs e)
         {
+            AllowedArea.RadiusX = ActualWidth / 2;
+            AllowedArea.RadiusY = ActualHeight / 2;
+            AllowedArea.Center = new(ActualWidth / 2, ActualHeight / 2);
+
             foreach (var target in _targets)
             {
                 target?.Draw(PaintArea);
@@ -64,10 +68,12 @@ namespace Disk
             var mousePos = e.GetPosition(sender as UIElement);
             var x = (int)mousePos.X;
             var y = (int)mousePos.Y;
-
-            var newTarget = new Target(new(x, y), Config.Config.Default.TARGET_INI_RADIUS, RenderSize);
-            newTarget.Draw(PaintArea);
-            _targets.Add(newTarget);
+            if (AllowedArea.FillContains(new Point(x, y)))
+            {
+                var newTarget = new Target(new(x, y), Config.Config.Default.TARGET_INI_RADIUS, RenderSize);
+                newTarget.Draw(PaintArea);
+                _targets.Add(newTarget);
+            }
         }
     }
 }

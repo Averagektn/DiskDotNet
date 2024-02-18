@@ -7,6 +7,10 @@
         mc:Ignorable="d"
         Title="MapCreator" Height="600" Width="600">
     <Grid Name="PaintArea">
-        
+        <Path Fill="Yellow" Stretch="Fill" Visibility="Hidden">
+            <Path.Data>
+                <EllipseGeometry x:Name="AllowedArea" />
+            </Path.Data>
+        </Path>
     </Grid>
 </Window>
