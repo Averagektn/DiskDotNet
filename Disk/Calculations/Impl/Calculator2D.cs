@@ -63,7 +63,7 @@ namespace Disk.Calculations.Impl
 
             return new
             (
-                Calculator.Dispersion(dataList.Select(p => p.X)), 
+                Calculator.Dispersion(dataList.Select(p => p.X)),
                 Calculator.Dispersion(dataList.Select(p => p.Y))
             );
         }

@@ -41,7 +41,7 @@ namespace Disk
             }
             else
             {
-                MessageBox.Show("Не заполнено одно из полей");
+                MessageBox.Show(Disk.Properties.Localization.UserData_FieldIsEmpty);
             }
         }
     }

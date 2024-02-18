@@ -3,9 +3,10 @@ using Disk.Data.Impl;
 using Disk.Visual.Impl;
 using System.Diagnostics;
 using System.IO;
-using System.Timers;
+using System.Net;
 using System.Windows;
 using System.Windows.Media;
+using Localization = Disk.Properties.Localization;
 using Settings = Disk.Properties.Config;
 
 namespace Disk
@@ -36,9 +37,9 @@ namespace Disk
 
                         var message =
                             $"""
-                            Время: {time:F2}
-                            Расстояние(в углах): {distance:F2}
-                            Средняя скорость(в углах): {avgSpeed:F2}
+                            {Localization.Paint_Time}: {time:F2}
+                            {Localization.Paint_AngleDistance}: {distance:F2}
+                            {Localization.Paint_AngleSpeed}: {avgSpeed:F2}
                             """;
 
                         TblTime.Text = message;
@@ -55,8 +56,8 @@ namespace Disk
                 Score += shotScore;
             }
 
-            Title = $"Счет: {Score}";
-            TblScore.Text = $"Счет: {Score}";
+            Title = $"{Localization.Paint_Score}: {Score}";
+            TblScore.Text = $"{Localization.Paint_Score}: {Score}";
 
             if (Target?.IsFull ?? false)
             {
@@ -98,20 +99,20 @@ namespace Disk
 
         private void NetworkReceive()
         {
-            /*            try
-                        {
-                            using var con = Connection.GetConnection(IPAddress.Parse(Settings.IP), Settings.PORT);
+            try
+            {
+                using var con = Connection.GetConnection(IPAddress.Parse(Settings.IP), Settings.PORT);
 
-                            while (IsGame)
-                            {
-                                CurrentPos = con.GetXYZ();
-                            }
-                        }
-                        catch
-                        {
-                            MessageBox.Show("Соединение потеряно");
-                            Application.Current.Dispatcher.BeginInvoke(new Action(() => Close()));
-                        }*/
+                while (IsGame)
+                {
+                    CurrentPos = con.GetXYZ();
+                }
+            }
+            catch
+            {
+                MessageBox.Show(Localization.Paint_ConnectionLost);
+                Application.Current.Dispatcher.BeginInvoke(new Action(() => Close()));
+            }
         }
 
         private void OnLoaded(object sender, RoutedEventArgs e)
@@ -131,7 +132,7 @@ namespace Disk
             }
             else
             {
-                MessageBox.Show("Empty map file");
+                MessageBox.Show(Localization.Paint_EmptyMap);
             }
 
             UserLogWnd = Logger.GetLogger(UsrWndLog);

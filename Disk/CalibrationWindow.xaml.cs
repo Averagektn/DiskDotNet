@@ -113,7 +113,7 @@ namespace Disk
             }
             catch
             {
-                MessageBox.Show("Потеряно соединение");
+                MessageBox.Show(Properties.Localization.Calibration_ConnectionLost);
                 Application.Current.Dispatcher.BeginInvoke(new Action(() => Close()));
             }
         }

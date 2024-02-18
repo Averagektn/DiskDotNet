@@ -1,8 +1,4 @@
 ﻿using Disk.Data.Impl;
-using Disk.Visual.Interface;
-using System.Drawing;
-using Point = System.Windows.Point;
-using Size = System.Windows.Size;
 
 namespace Disk.Calculations.Impl.Converters
 {

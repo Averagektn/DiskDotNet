@@ -8,6 +8,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using FilePath = System.IO.Path;
+using Localization = Disk.Properties.Localization;
 using Path = Disk.Visual.Impl.Path;
 using PolarPointF = Disk.Data.Impl.PolarPoint<float>;
 using Settings = Disk.Properties.Config.Config;
@@ -30,15 +31,15 @@ namespace Disk
 
                 MessageBox.Show(
                 $"""
-                Счет: {Score}
-                Среднее смещение от центра: {mx}
-                Дисперсия: {dispersion}
-                Среднее отклонение от центра: {deviation}
+                {Localization.Paint_Score}: {Score}
+                {Localization.Paint_MathExp}: {mx}
+                {Localization.Paint_Dispersion}: {dispersion}
+                {Localization.Paint_StandartDeviation}: {deviation}
                 """);
             }
             else
             {
-                MessageBox.Show("Конец");
+                MessageBox.Show(Localization.Paint_Over);
             }
         }
 
@@ -86,6 +87,15 @@ namespace Disk
             }
         }
 
+        private string GetInTargetFileName(int id) =>
+            $"{CurrPath}{FilePath.DirectorySeparatorChar}in_tar_{id}.log";
+
+        private string GetMovToTargetFileName(int id) =>
+            $"{CurrPath}{FilePath.DirectorySeparatorChar}mov_to_tar_{id}.log";
+
+        private string GetReachedFileName(int id) =>
+            $"{CurrPath}{FilePath.DirectorySeparatorChar}tar_{id}_reached.log";
+
         private void CbTargets_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             PaintArea.Children.Clear();
@@ -95,8 +105,8 @@ namespace Disk
             }
 
             var selectedIndex = CbTargets.SelectedIndex;
-            var roseFileName = $"{CurrPath}{FilePath.DirectorySeparatorChar}В мишени {selectedIndex + 1}.log";
-            var pathFileName = $"{CurrPath}{FilePath.DirectorySeparatorChar}Движение к мишени {selectedIndex + 1}.log";
+            var roseFileName = GetInTargetFileName(selectedIndex + 1);
+            var pathFileName = GetMovToTargetFileName(selectedIndex + 1);
 
             if (selectedIndex != -1 && Converter is not null && Target is not null)
             {
@@ -147,7 +157,7 @@ namespace Disk
 
             for (int i = 1; i < TargetID; i++)
             {
-                CbTargets.Items.Add($"Роза ветров для цели {i}");
+                CbTargets.Items.Add($"{Localization.Paint_WindRoseForTarget} {i}");
             }
         }
 
@@ -157,7 +167,7 @@ namespace Disk
 
             for (int i = 1; i < TargetID; i++)
             {
-                CbTargets.Items.Add($"Путь к цели {i}");
+                CbTargets.Items.Add($"{Localization.Paint_PathToTarget} {i}");
             }
         }
 
@@ -170,7 +180,7 @@ namespace Disk
 
             for (int i = 1; i < TargetID; i++)
             {
-                CbTargets.Items.Add($"Роза ветров для цели {i}");
+                CbTargets.Items.Add($"{Localization.Paint_WindRoseForTarget} {i}");
             }
             CbTargets.Visibility = Visibility.Visible;
             RbPath.Visibility = Visibility.Visible;

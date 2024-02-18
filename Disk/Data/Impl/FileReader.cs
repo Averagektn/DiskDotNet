@@ -267,7 +267,7 @@ namespace Disk.Data.Impl
         /// <returns>
         ///     A collection of 2D points based on the specified parameters
         /// </returns>
-        public IEnumerable<Point2D<CoordType>> Get2DPoints(bool isX = true, bool isY = true, bool isZ = false, 
+        public IEnumerable<Point2D<CoordType>> Get2DPoints(bool isX = true, bool isY = true, bool isZ = false,
             bool isStraightforward = true)
         {
             Point2D<CoordType>? p = null;

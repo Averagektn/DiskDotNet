@@ -61,11 +61,362 @@ namespace Disk.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to X axis angle.
+        /// </summary>
+        public static string Calibration_AngleX {
+            get {
+                return ResourceManager.GetString("Calibration.AngleX", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Y axis angle.
+        /// </summary>
+        public static string Calibration_AngleY {
+            get {
+                return ResourceManager.GetString("Calibration.AngleY", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Apply.
+        /// </summary>
+        public static string Calibration_Apply {
+            get {
+                return ResourceManager.GetString("Calibration.Apply", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Centralize.
+        /// </summary>
+        public static string Calibration_Centralize {
+            get {
+                return ResourceManager.GetString("Calibration.Centralize", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Connection lost.
+        /// </summary>
+        public static string Calibration_ConnectionLost {
+            get {
+                return ResourceManager.GetString("Calibration.ConnectionLost", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Set X coordinate.
+        /// </summary>
+        public static string Calibration_SetX {
+            get {
+                return ResourceManager.GetString("Calibration.SetX", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Set Y coordinate.
+        /// </summary>
+        public static string Calibration_SetY {
+            get {
+                return ResourceManager.GetString("Calibration.SetY", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Start calibration.
+        /// </summary>
+        public static string Calibration_Start {
+            get {
+                return ResourceManager.GetString("Calibration.Start", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Disk. Calibration.
+        /// </summary>
+        public static string Calibration_Title {
+            get {
+                return ResourceManager.GetString("Calibration.Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Disk. Map creator.
+        /// </summary>
+        public static string MapCreator_Title {
+            get {
+                return ResourceManager.GetString("MapCreator.Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Calibration.
+        /// </summary>
+        public static string Menu_Calibration {
+            get {
+                return ResourceManager.GetString("Menu.Calibration", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Map creator.
+        /// </summary>
+        public static string Menu_MapConstructor {
+            get {
+                return ResourceManager.GetString("Menu.MapConstructor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Quit.
+        /// </summary>
+        public static string Menu_Quit {
+            get {
+                return ResourceManager.GetString("Menu.Quit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Settings.
+        /// </summary>
+        public static string Menu_Settings {
+            get {
+                return ResourceManager.GetString("Menu.Settings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Start.
         /// </summary>
-        public static string StartGame {
+        public static string Menu_StartGame {
             get {
-                return ResourceManager.GetString("StartGame", resourceCulture);
+                return ResourceManager.GetString("Menu.StartGame", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Disk.
+        /// </summary>
+        public static string Menu_Title {
+            get {
+                return ResourceManager.GetString("Menu.Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Distance (in angles).
+        /// </summary>
+        public static string Paint_AngleDistance {
+            get {
+                return ResourceManager.GetString("Paint.AngleDistance", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Speed (in angles).
+        /// </summary>
+        public static string Paint_AngleSpeed {
+            get {
+                return ResourceManager.GetString("Paint.AngleSpeed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Connection lost.
+        /// </summary>
+        public static string Paint_ConnectionLost {
+            get {
+                return ResourceManager.GetString("Paint.ConnectionLost", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Dispersion.
+        /// </summary>
+        public static string Paint_Dispersion {
+            get {
+                return ResourceManager.GetString("Paint.Dispersion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Map is empty.
+        /// </summary>
+        public static string Paint_EmptyMap {
+            get {
+                return ResourceManager.GetString("Paint.EmptyMap", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Average shift from center.
+        /// </summary>
+        public static string Paint_MathExp {
+            get {
+                return ResourceManager.GetString("Paint.MathExp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Wasted.
+        /// </summary>
+        public static string Paint_Over {
+            get {
+                return ResourceManager.GetString("Paint.Over", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Path.
+        /// </summary>
+        public static string Paint_Path {
+            get {
+                return ResourceManager.GetString("Paint.Path", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Path to target.
+        /// </summary>
+        public static string Paint_PathToTarget {
+            get {
+                return ResourceManager.GetString("Paint.PathToTarget", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Score.
+        /// </summary>
+        public static string Paint_Score {
+            get {
+                return ResourceManager.GetString("Paint.Score", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Deviation.
+        /// </summary>
+        public static string Paint_StandartDeviation {
+            get {
+                return ResourceManager.GetString("Paint.StandartDeviation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Stop.
+        /// </summary>
+        public static string Paint_Stop {
+            get {
+                return ResourceManager.GetString("Paint.Stop", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Time.
+        /// </summary>
+        public static string Paint_Time {
+            get {
+                return ResourceManager.GetString("Paint.Time", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Disk. Paint field.
+        /// </summary>
+        public static string Paint_Title {
+            get {
+                return ResourceManager.GetString("Paint.Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Wind rose.
+        /// </summary>
+        public static string Paint_WindRose {
+            get {
+                return ResourceManager.GetString("Paint.WindRose", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Wind rose for target.
+        /// </summary>
+        public static string Paint_WindRoseForTarget {
+            get {
+                return ResourceManager.GetString("Paint.WindRoseForTarget", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Disk. Settings.
+        /// </summary>
+        public static string Settings_Title {
+            get {
+                return ResourceManager.GetString("Settings.Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Birthday.
+        /// </summary>
+        public static string UserData_Birthday {
+            get {
+                return ResourceManager.GetString("UserData.Birthday", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to One of the fields is empty.
+        /// </summary>
+        public static string UserData_FieldIsEmpty {
+            get {
+                return ResourceManager.GetString("UserData.FieldIsEmpty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Map.
+        /// </summary>
+        public static string UserData_Map {
+            get {
+                return ResourceManager.GetString("UserData.Map", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Name.
+        /// </summary>
+        public static string UserData_Name {
+            get {
+                return ResourceManager.GetString("UserData.Name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Start.
+        /// </summary>
+        public static string UserData_Start {
+            get {
+                return ResourceManager.GetString("UserData.Start", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Surname.
+        /// </summary>
+        public static string UserData_Surname {
+            get {
+                return ResourceManager.GetString("UserData.Surname", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to User data.
+        /// </summary>
+        public static string UserData_Title {
+            get {
+                return ResourceManager.GetString("UserData.Title", resourceCulture);
             }
         }
     }

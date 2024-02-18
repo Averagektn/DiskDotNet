@@ -11,7 +11,6 @@ using Point2DF = Disk.Data.Impl.Point2D<float>;
 using Point2DI = Disk.Data.Impl.Point2D<int>;
 using Point3DF = Disk.Data.Impl.Point3D<float>;
 using Settings = Disk.Properties.Config.Config;
-using Timer = System.Timers.Timer;
 
 namespace Disk
 {
@@ -67,7 +66,7 @@ namespace Disk
 
         private Converter? Converter;
 
-        private readonly Point3DF? CurrentPos;
+        private Point3DF? CurrentPos;
 
         private Point2DI? ShiftedWndPos
         {
@@ -98,17 +97,14 @@ namespace Disk
 
         private Size DataPanelSize => DataRect.RenderSize;
 
-        private string MovingToTargetLogName =>
-            $"{CurrPath}{FilePath.DirectorySeparatorChar}Движение к мишени {TargetID}.log";
-        private string OnTargetLogName =>
-            $"{CurrPath}{FilePath.DirectorySeparatorChar}В мишени {TargetID - 1}.log";
-        private string TargetReachedLogName =>
-            $"{CurrPath}{FilePath.DirectorySeparatorChar}Мишень {TargetID - 1} поражена.log";
+        private string MovingToTargetLogName => GetMovToTargetFileName(TargetID);
+        private string OnTargetLogName => GetInTargetFileName(TargetID - 1);
+        private string TargetReachedLogName => GetReachedFileName(TargetID - 1);
 
         private string UsrWndLog => $"{CurrPath}{FilePath.DirectorySeparatorChar}{Settings.USER_WND_LOG_FILE}";
         private string UsrAngLog => $"{CurrPath}{FilePath.DirectorySeparatorChar}{Settings.USER_ANG_LOG_FILE}";
         private string UsrCenLog => $"{CurrPath}{FilePath.DirectorySeparatorChar}{Settings.USER_CEN_LOG_FILE}";
-        private string UsrMovementLog => $"{CurrPath}{FilePath.DirectorySeparatorChar}До первой цели.log";
+        private string UsrMovementLog => $"{CurrPath}{FilePath.DirectorySeparatorChar}To_1_tar.log";
 
         private int Score = 0;
         private int TargetID = 1;

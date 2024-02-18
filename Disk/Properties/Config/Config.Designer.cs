@@ -409,5 +409,17 @@ namespace Disk.Properties.Config {
                 this["MAP_ID"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("ru-RU")]
+        public string LANGUAGE {
+            get {
+                return ((string)(this["LANGUAGE"]));
+            }
+            set {
+                this["LANGUAGE"] = value;
+            }
+        }
     }
 }
