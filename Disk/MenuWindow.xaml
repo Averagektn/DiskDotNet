@@ -8,6 +8,7 @@
         xmlns:viewmodel="clr-namespace:Disk.ViewModel" d:DataContext="{d:DesignInstance Type=viewmodel:MenuViewModel}"
         mc:Ignorable="d"
         Title="{x:Static lang:Localization.Menu_Title}" Height="450" Width="400">
+
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="1*"/>
@@ -43,5 +44,12 @@
         <Viewbox Grid.Row="5" Grid.Column="1">
             <Button Content="{x:Static lang:Localization.Menu_Quit}" Click="OnQuitClick" FontSize="20" Margin="10 15 10 15" Width="200" Height="50"/>
         </Viewbox>
+
+        <Menu Height="20" VerticalAlignment="Top">
+            <MenuItem Header="{x:Static lang:Localization.Menu_Language}">
+                <MenuItem Header="English" Click="ChangeLanguage_Click" Tag="en-US"/>
+                <MenuItem Header="Русский" Click="ChangeLanguage_Click" Tag="ru-RU"/>
+            </MenuItem>
+        </Menu>
     </Grid>
 </Window>

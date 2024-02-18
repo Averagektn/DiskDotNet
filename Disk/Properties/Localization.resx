@@ -150,6 +150,9 @@
   <data name="Menu.Calibration" xml:space="preserve">
     <value>Calibration</value>
   </data>
+  <data name="Menu.Language" xml:space="preserve">
+    <value>Language</value>
+  </data>
   <data name="Menu.MapConstructor" xml:space="preserve">
     <value>Map creator</value>
   </data>

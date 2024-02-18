@@ -160,6 +160,15 @@ namespace Disk.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Language.
+        /// </summary>
+        public static string Menu_Language {
+            get {
+                return ResourceManager.GetString("Menu.Language", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Map creator.
         /// </summary>
         public static string Menu_MapConstructor {

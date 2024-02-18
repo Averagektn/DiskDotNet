@@ -150,6 +150,9 @@
   <data name="Menu.Calibration" xml:space="preserve">
     <value>Калибровка</value>
   </data>
+  <data name="Menu.Language" xml:space="preserve">
+    <value>Язык</value>
+  </data>
   <data name="Menu.MapConstructor" xml:space="preserve">
     <value>Конструктор карт</value>
   </data>

@@ -1,6 +1,6 @@
 ﻿using System.IO;
 using System.Windows;
-
+using System.Windows.Controls;
 using Settings = Disk.Properties.Config.Config;
 
 namespace Disk
@@ -28,6 +28,29 @@ namespace Disk
             {
                 Directory.CreateDirectory(Settings.MAPS_DIR_PATH);
             }
+        }
+
+        private void ChangeLanguage_Click(object sender, RoutedEventArgs e)
+        {
+            var menuItem = (MenuItem)sender;
+            var selectedLanguage = menuItem.Tag.ToString();
+
+            Settings.LANGUAGE = selectedLanguage;
+            Settings.Save();
+
+            RestartApplication();
+        }
+
+        private static void RestartApplication()
+        {
+            var appPath = Environment.ProcessPath;
+
+            if (appPath is not null)
+            {
+                System.Diagnostics.Process.Start(appPath);
+            }
+
+            Application.Current.Shutdown();
         }
 
         /// <summary>
