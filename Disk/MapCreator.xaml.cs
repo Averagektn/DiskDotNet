@@ -70,7 +70,7 @@ namespace Disk
             var y = (int)mousePos.Y;
             if (AllowedArea.FillContains(new Point(x, y)))
             {
-                var newTarget = new Target(new(x, y), Config.Config.Default.TARGET_INI_RADIUS, RenderSize);
+                var newTarget = new Target(new(x, y), Properties.Config.Config.Default.TARGET_INI_RADIUS, RenderSize);
                 newTarget.Draw(PaintArea);
                 _targets.Add(newTarget);
             }

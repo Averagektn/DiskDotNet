@@ -6,7 +6,7 @@ using System.IO;
 using System.Timers;
 using System.Windows;
 using System.Windows.Media;
-using Settings = Disk.Config.Config;
+using Settings = Disk.Properties.Config;
 
 namespace Disk
 {

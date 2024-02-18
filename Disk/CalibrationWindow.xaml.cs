@@ -1,11 +1,8 @@
 ﻿using Disk.Data.Impl;
-
 using System.Net;
-using System.Timers;
 using System.Windows;
 using System.Windows.Threading;
-using Settings = Disk.Config.Config;
-using Timer = System.Timers.Timer;
+using Settings = Disk.Properties.Config.Config;
 
 namespace Disk
 {

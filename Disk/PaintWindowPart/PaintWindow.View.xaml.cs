@@ -10,7 +10,7 @@ using System.Windows.Media;
 using FilePath = System.IO.Path;
 using Path = Disk.Visual.Impl.Path;
 using PolarPointF = Disk.Data.Impl.PolarPoint<float>;
-using Settings = Disk.Config.Config;
+using Settings = Disk.Properties.Config.Config;
 
 namespace Disk
 {

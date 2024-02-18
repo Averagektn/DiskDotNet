@@ -10,7 +10,7 @@ using FilePath = System.IO.Path;
 using Point2DF = Disk.Data.Impl.Point2D<float>;
 using Point2DI = Disk.Data.Impl.Point2D<int>;
 using Point3DF = Disk.Data.Impl.Point3D<float>;
-using Settings = Disk.Config.Config;
+using Settings = Disk.Properties.Config.Config;
 using Timer = System.Timers.Timer;
 
 namespace Disk
