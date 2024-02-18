@@ -80,7 +80,7 @@ namespace Disk.Visual.Impl
 
         public void Reset()
         {
-            _border.Value = 0;
+            Application.Current.Dispatcher.Invoke(() => _border.Value = 0);
         }
 
         public override int ReceiveShot(Point2D<int> shot)

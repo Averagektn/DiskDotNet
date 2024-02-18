@@ -124,7 +124,6 @@ namespace Disk
         private int TargetID = 1;
 
         private bool IsGame = true;
-        private bool IsMouseTargetPlacement = false;
 
         public PaintWindow()
         {
@@ -156,24 +155,28 @@ namespace Disk
                 var x = (int)mousePos.X;
                 var y = (int)mousePos.Y;
 
-                Target?.Move(new(x, y));
-                TargetCenters.Add(new(Converter?.ToAngleX_FromWnd(x) ?? 0.0f, Converter?.ToAngleY_FromWnd(y) ?? 0.0f));
-
-                Stopwatch = Stopwatch.StartNew();
-                TblTime.Text = string.Empty;
-
-                if (User is not null)
+                if (AllowedArea.FillContains(new Point(x, y)))
                 {
-                    StartPoint = Converter?.ToAngle_FromWnd(User.Center);
-                }
+                    Target?.Reset();
+                    Target?.Move(new(x, y));
+                    TargetCenters.Add(new(Converter?.ToAngleX_FromWnd(x) ?? 0.0f, Converter?.ToAngleY_FromWnd(y) ?? 0.0f));
 
-                lock (LockObject)
-                {
-                    UserMovementLog?.Dispose();
-                    UserMovementLog = Logger.GetLogger(MovingToTargetLogName);
-                }
+                    Stopwatch = Stopwatch.StartNew();
+                    TblTime.Text = string.Empty;
 
-                TargetID++;
+                    if (User is not null)
+                    {
+                        StartPoint = Converter?.ToAngle_FromWnd(User.Center);
+                    }
+
+                    lock (LockObject)
+                    {
+                        UserMovementLog?.Dispose();
+                        UserMovementLog = Logger.GetLogger(MovingToTargetLogName);
+                    }
+
+                    TargetID++;
+                }
             }
         }
 
@@ -328,7 +331,6 @@ namespace Disk
             {
                 Target = new(new(-Settings.TARGET_INI_RADIUS * 10, -Settings.TARGET_INI_RADIUS * 10),
                     Settings.TARGET_INI_RADIUS, SCREEN_INI_SIZE, TargetHP);
-                IsMouseTargetPlacement = true;
                 MouseLeftButtonDown += OnMouseLeftButtonDown;
             }
             else
@@ -380,6 +382,10 @@ namespace Disk
 
         private void OnSizeChanged(object sender, RoutedEventArgs e)
         {
+            AllowedArea.RadiusX = PaintPanelCenterX;
+            AllowedArea.RadiusY = PaintPanelCenterY;
+            AllowedArea.Center = new(PaintPanelCenterX, PaintPanelCenterY);
+
             foreach (var elem in Scalables)
             {
                 elem?.Scale(PaintPanelSize);
