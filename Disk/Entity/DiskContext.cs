@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 
 namespace Disk.Entity;
 
@@ -38,7 +36,7 @@ public partial class DiskContext : DbContext
     public virtual DbSet<SessionResult> SessionResults { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        => optionsBuilder.UseSqlite("Data Source=disk.db;");
+        => optionsBuilder.UseSqlite("Data Source=Db/disk.db;");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

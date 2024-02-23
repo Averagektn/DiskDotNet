@@ -45,6 +45,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="Db\disk.db">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="Properties\Config\Config.settings">
       <Generator>PublicSettingsSingleFileGenerator</Generator>
       <LastGenOutput>Config.Designer.cs</LastGenOutput>

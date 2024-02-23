@@ -3,11 +3,30 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:Disk"
         xmlns:lang="clr-namespace:Disk.Properties" 
         xmlns:viewmodel="clr-namespace:Disk.ViewModel" d:DataContext="{d:DesignInstance Type=viewmodel:MenuViewModel}"
         mc:Ignorable="d"
         Title="{x:Static lang:Localization.Menu_Title}" Height="450" Width="400">
+
+    <Window.Resources>
+        <Style x:Key="GradientButtonStyle" TargetType="{x:Type Button}">
+            <Setter Property="Background" Value="#00B334"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Border Background="{TemplateBinding Background}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#4BFE74"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </Window.Resources>
 
     <Grid>
         <Grid.RowDefinitions>
@@ -26,23 +45,23 @@
         </Grid.ColumnDefinitions>
 
         <Viewbox Grid.Row="1" Grid.Column="1">
-            <Button Content="{x:Static lang:Localization.Menu_StartGame}" Click="OnStartClick" FontSize="20" Margin="10 15 10 15" Width="200" Height="50"/>
+            <Button Content="{x:Static lang:Localization.Menu_StartGame}" Style="{StaticResource GradientButtonStyle}" Click="OnStartClick" FontSize="20" Margin="10 15 10 15" Width="200" Height="50"/>
         </Viewbox>
 
         <Viewbox Grid.Row="2" Grid.Column="1">
-            <Button Content="{x:Static lang:Localization.Menu_Settings}" Click="OnSettingsClick" FontSize="20" Margin="10 15 10 15" Width="200" Height="50"/>
+            <Button Content="{x:Static lang:Localization.Menu_Settings}" Style="{StaticResource GradientButtonStyle}" Click="OnSettingsClick" FontSize="20" Margin="10 15 10 15" Width="200" Height="50"/>
         </Viewbox>
 
         <Viewbox Grid.Row="3" Grid.Column="1">
-            <Button Content="{x:Static lang:Localization.Menu_Calibration}" Click="OnCalibrationClick" FontSize="20" Margin="10 15 10 15" Width="200" Height="50"/>
+            <Button Content="{x:Static lang:Localization.Menu_Calibration}" Style="{StaticResource GradientButtonStyle}" Click="OnCalibrationClick" FontSize="20" Margin="10 15 10 15" Width="200" Height="50"/>
         </Viewbox>
 
         <Viewbox Grid.Row="4" Grid.Column="1">
-            <Button Content="{x:Static lang:Localization.Menu_MapConstructor}" Click="OnMapContructorClick" FontSize="20" Margin="10 15 10 15" Width="200" Height="50"/>
+            <Button Content="{x:Static lang:Localization.Menu_MapConstructor}" Style="{StaticResource GradientButtonStyle}" Click="OnMapContructorClick" FontSize="20" Margin="10 15 10 15" Width="200" Height="50"/>
         </Viewbox>
 
         <Viewbox Grid.Row="5" Grid.Column="1">
-            <Button Content="{x:Static lang:Localization.Menu_Quit}" Click="OnQuitClick" FontSize="20" Margin="10 15 10 15" Width="200" Height="50"/>
+            <Button Content="{x:Static lang:Localization.Menu_Quit}" Style="{StaticResource GradientButtonStyle}" Click="OnQuitClick" FontSize="20" Margin="10 15 10 15" Width="200" Height="50"/>
         </Viewbox>
 
         <Menu Height="20" VerticalAlignment="Top">
