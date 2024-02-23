@@ -61,7 +61,8 @@ namespace Disk.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to X axis angle.
+        ///   Looks up a localized string similar to X 
+        ///   angle.
         /// </summary>
         public static string Calibration_AngleX {
             get {

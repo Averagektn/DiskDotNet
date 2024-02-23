@@ -3,8 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:xrpb="http://XamlRadialProgressBar/DotNet"
-        xmlns:local="clr-namespace:Disk" xmlns:viewmodel="clr-namespace:Disk.ViewModel" d:DataContext="{d:DesignInstance Type=viewmodel:PaintViewModel}"
+        xmlns:viewmodel="clr-namespace:Disk.ViewModel" d:DataContext="{d:DesignInstance Type=viewmodel:PaintViewModel}"
         mc:Ignorable="d"
         Title="Счет: 0" Height="600" Width="800">
     <Grid x:Name="PaintAreaGrid">
@@ -50,7 +49,7 @@
         </Viewbox>
 
         <Canvas Name="PaintArea" Grid.RowSpan="6">
-            <Path Fill="Yellow" Stretch="Fill" Visibility="Hidden">
+            <Path Fill="Transparent" Stretch="Fill" Stroke="Black" StrokeThickness="2"> 
                 <Path.Data>
                     <EllipseGeometry x:Name="AllowedArea"/>
                 </Path.Data>
@@ -59,5 +58,7 @@
 
         <Rectangle Grid.Row="0" Grid.Column="0" Grid.RowSpan="6" Name="PaintRect"/>
         <Rectangle Grid.Row="0" Grid.Column="1" Grid.RowSpan="6" Name="DataRect"/>
+        <Line Grid.RowSpan="6" X1="0" Y1="0" X2="0" Y2="{Binding ActualHeight, RelativeSource={RelativeSource AncestorType=Grid}}" Stroke="Black" StrokeThickness="2" HorizontalAlignment="Center" Panel.ZIndex="-10" />
+        <Line Grid.RowSpan="6" X1="0" Y1="0" X2="{Binding ActualWidth, RelativeSource={RelativeSource AncestorType=Grid}}" Y2="0" Stroke="Black" StrokeThickness="2" VerticalAlignment="Center" Panel.ZIndex="-10" />
     </Grid>
 </Window>

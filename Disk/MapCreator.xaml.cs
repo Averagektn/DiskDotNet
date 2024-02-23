@@ -60,10 +60,6 @@ namespace Disk
 
         private void OnSizeChanged(object sender, SizeChangedEventArgs e)
         {
-            AllowedArea.RadiusX = ActualWidth / 2;
-            AllowedArea.RadiusY = ActualHeight / 2;
-            AllowedArea.Center = new(ActualWidth / 2, ActualHeight / 2);
-
             foreach (var target in _targets)
             {
                 target?.Scale(RenderSize);

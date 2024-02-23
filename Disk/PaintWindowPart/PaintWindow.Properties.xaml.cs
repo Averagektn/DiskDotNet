@@ -56,8 +56,6 @@ namespace Disk
 
         private FileReader<float>? MapReader;
 
-        private Axis? XAxis;
-        private Axis? YAxis;
         private Axis? PaintToDataBorder;
 
         private User? User;

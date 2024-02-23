@@ -115,7 +115,7 @@ namespace Disk
 
         private void NetworkReceive()
         {
-            try
+/*            try
             {
                 using var con = Connection.GetConnection(IPAddress.Parse(Settings.IP), Settings.PORT);
 
@@ -128,7 +128,7 @@ namespace Disk
             {
                 MessageBox.Show(Localization.Paint_ConnectionLost);
                 Application.Current.Dispatcher.BeginInvoke(new Action(() => Close()));
-            }
+            }*/
         }
 
         private void OnLoaded(object sender, RoutedEventArgs e)
@@ -158,10 +158,6 @@ namespace Disk
 
             StartPoint = new(0.0f, 0.0f);
 
-            XAxis = new(new(0, SCREEN_INI_CENTER_X), new((int)SCREEN_INI_SIZE.Width, SCREEN_INI_CENTER_Y), SCREEN_INI_SIZE,
-                Brushes.Black);
-            YAxis = new(new(SCREEN_INI_CENTER_X, 0), new(SCREEN_INI_CENTER_X, (int)SCREEN_INI_SIZE.Height), SCREEN_INI_SIZE,
-                Brushes.Black);
             PaintToDataBorder = new(new((int)SCREEN_INI_SIZE.Width, 0), new((int)SCREEN_INI_SIZE.Width,
                 (int)SCREEN_INI_SIZE.Height), SCREEN_INI_SIZE, Brushes.Black);
 
@@ -172,10 +168,8 @@ namespace Disk
             User.OnShot += (p) => UserLogCen.LogLn(Converter?.ToLogCoord(p));
             User.OnShot += (p) => UserMovementLog.LogLn(Converter?.ToAngle_FromWnd(p));
 
-            Drawables.Add(XAxis); Drawables.Add(YAxis); Drawables.Add(PaintToDataBorder); Drawables.Add(Target);
-            Drawables.Add(User);
-            Scalables.Add(XAxis); Scalables.Add(YAxis); Scalables.Add(PaintToDataBorder); Scalables.Add(Target);
-            Scalables.Add(User); Scalables.Add(Converter);
+            Drawables.Add(PaintToDataBorder); Drawables.Add(Target); Drawables.Add(User);
+            Scalables.Add(PaintToDataBorder); Scalables.Add(Target); Scalables.Add(User); Scalables.Add(Converter);
 
             foreach (var elem in Drawables)
             {
