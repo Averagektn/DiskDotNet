@@ -28,28 +28,42 @@ namespace Disk
 
                     if (StartPoint is not null)
                     {
+                        lock (LockObject)
+                        {
+                            UserMovementLog?.Dispose();
+                            UserMovementLog = Logger.GetLogger(OnTargetLogName);
+                        }
+
+                        using var reader = FileReader<float>.Open(MovingToTargetLogName);
                         using var log = Logger.GetLogger(TargetReachedLogName);
 
+                        double distance = 0;
+                        var currPoint = reader.GetXY() ?? StartPoint;
+                        var nextPoint = reader.GetXY();
+                        while (nextPoint is not null)
+                        {
+                            distance += currPoint.GetDistance(nextPoint);
+                            currPoint = nextPoint;
+                            nextPoint = reader.GetXY();
+                        }
+
                         var touchPoint = Converter?.ToAngle_FromWnd(User.Center);
-                        var distance = touchPoint?.GetDistance(StartPoint);
                         var time = Stopwatch.Elapsed.TotalSeconds;
                         var avgSpeed = distance / time;
+                        var approachSpeed = StartPoint.GetDistance(touchPoint!) / time;
 
                         var message =
                             $"""
                             {Localization.Paint_Time}: {time:F2}
                             {Localization.Paint_AngleDistance}: {distance:F2}
                             {Localization.Paint_AngleSpeed}: {avgSpeed:F2}
+                            {Localization.Paint_ApproachSpeed}: {approachSpeed:F2}
                             """;
 
                         TblTime.Text = message;
                         log.Log(message);
 
-                        lock (LockObject)
-                        {
-                            UserMovementLog?.Dispose();
-                            UserMovementLog = Logger.GetLogger(OnTargetLogName);
-                        }
+                        TargetID++;
                     }
                 }
 
@@ -73,7 +87,7 @@ namespace Disk
                     var wndCenter = Converter.ToWnd_FromRelative(newCenter);
                     Target.Move(wndCenter);
 
-                    TargetCenters.Add(new(Converter.ToAngleX_FromWnd(wndCenter.X), Converter.ToAngleY_FromWnd(wndCenter.Y)));
+                    TargetCenters.Add(Converter.ToAngle_FromWnd(wndCenter));
 
                     Stopwatch = Stopwatch.StartNew();
                     TblTime.Text = string.Empty;
@@ -88,8 +102,6 @@ namespace Disk
                         UserMovementLog?.Dispose();
                         UserMovementLog = Logger.GetLogger(MovingToTargetLogName);
                     }
-
-                    TargetID++;
                 }
             }
         }

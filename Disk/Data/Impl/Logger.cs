@@ -13,7 +13,7 @@ namespace Disk.Data.Impl
         /// </summary>
         public readonly string Filename;
 
-        private static readonly List<Logger> Loggers = new();
+        private static readonly List<Logger> Loggers = [];
 
         private readonly StreamWriter Writer;
 
@@ -58,6 +58,7 @@ namespace Disk.Data.Impl
         /// </summary>
         public void Dispose()
         {
+            GC.SuppressFinalize(this);
             Loggers.Remove(this);
             Writer.Close();
         }

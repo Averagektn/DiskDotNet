@@ -232,6 +232,15 @@ namespace Disk.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Approach speed.
+        /// </summary>
+        public static string Paint_ApproachSpeed {
+            get {
+                return ResourceManager.GetString("Paint.ApproachSpeed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Connection lost.
         /// </summary>
         public static string Paint_ConnectionLost {
