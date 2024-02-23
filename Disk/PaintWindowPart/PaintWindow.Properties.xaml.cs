@@ -56,8 +56,6 @@ namespace Disk
 
         private FileReader<float>? MapReader;
 
-        private Axis? PaintToDataBorder;
-
         private User? User;
 
         private ProgressTarget? Target;

@@ -59,6 +59,7 @@
         <Rectangle Grid.Row="0" Grid.Column="0" Grid.RowSpan="6" Name="PaintRect"/>
         <Rectangle Grid.Row="0" Grid.Column="1" Grid.RowSpan="6" Name="DataRect"/>
         <Line Grid.RowSpan="6" X1="0" Y1="0" X2="0" Y2="{Binding ActualHeight, RelativeSource={RelativeSource AncestorType=Grid}}" Stroke="Black" StrokeThickness="2" HorizontalAlignment="Center" Panel.ZIndex="-10" />
+        <Line Grid.RowSpan="6" X1="0" Y1="0" X2="0" Y2="{Binding ActualHeight, RelativeSource={RelativeSource AncestorType=Grid}}" Stroke="Black" StrokeThickness="2" HorizontalAlignment="Right" Panel.ZIndex="-10" />
         <Line Grid.RowSpan="6" X1="0" Y1="0" X2="{Binding ActualWidth, RelativeSource={RelativeSource AncestorType=Grid}}" Y2="0" Stroke="Black" StrokeThickness="2" VerticalAlignment="Center" Panel.ZIndex="-10" />
     </Grid>
 </Window>

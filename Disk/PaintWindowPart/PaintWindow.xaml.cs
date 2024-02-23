@@ -5,7 +5,6 @@ using System.Diagnostics;
 using System.IO;
 using System.Net;
 using System.Windows;
-using System.Windows.Media;
 using Localization = Disk.Properties.Localization;
 using Settings = Disk.Properties.Config;
 
@@ -115,7 +114,7 @@ namespace Disk
 
         private void NetworkReceive()
         {
-/*            try
+            try
             {
                 using var con = Connection.GetConnection(IPAddress.Parse(Settings.IP), Settings.PORT);
 
@@ -128,7 +127,7 @@ namespace Disk
             {
                 MessageBox.Show(Localization.Paint_ConnectionLost);
                 Application.Current.Dispatcher.BeginInvoke(new Action(() => Close()));
-            }*/
+            }
         }
 
         private void OnLoaded(object sender, RoutedEventArgs e)
@@ -158,9 +157,6 @@ namespace Disk
 
             StartPoint = new(0.0f, 0.0f);
 
-            PaintToDataBorder = new(new((int)SCREEN_INI_SIZE.Width, 0), new((int)SCREEN_INI_SIZE.Width,
-                (int)SCREEN_INI_SIZE.Height), SCREEN_INI_SIZE, Brushes.Black);
-
             User = new(new(SCREEN_INI_CENTER_X, SCREEN_INI_CENTER_Y), Settings.USER_INI_RADIUS, Settings.USER_INI_SPEED,
                 UserBrush, SCREEN_INI_SIZE);
             User.OnShot += UserLogWnd.LogLn;
@@ -168,8 +164,8 @@ namespace Disk
             User.OnShot += (p) => UserLogCen.LogLn(Converter?.ToLogCoord(p));
             User.OnShot += (p) => UserMovementLog.LogLn(Converter?.ToAngle_FromWnd(p));
 
-            Drawables.Add(PaintToDataBorder); Drawables.Add(Target); Drawables.Add(User);
-            Scalables.Add(PaintToDataBorder); Scalables.Add(Target); Scalables.Add(User); Scalables.Add(Converter);
+            Drawables.Add(Target); Drawables.Add(User);
+            Scalables.Add(Target); Scalables.Add(User); Scalables.Add(Converter);
 
             foreach (var elem in Drawables)
             {
