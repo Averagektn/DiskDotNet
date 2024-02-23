@@ -16,17 +16,13 @@ namespace Disk.Calculations.Impl
         /// <returns>
         ///     Mathematical expectation
         /// </returns>
-        public static Point3D<float> MathExp(IEnumerable<Point3D<float>> dataset)
-        {
-            var dataList = dataset.ToList();
-
-            return new
+        public static Point3D<float> MathExp(IList<Point3D<float>> dataset) =>
+            new
             (
-                Calculator.MathExp(dataList.Select(p => p.X)),
-                Calculator.MathExp(dataList.Select(p => p.Y)),
-                Calculator.MathExp(dataList.Select(p => p.Z))
+                Calculator.MathExp(dataset.Select(p => p.X).ToList()),
+                Calculator.MathExp(dataset.Select(p => p.Y).ToList()),
+                Calculator.MathExp(dataset.Select(p => p.Z).ToList())
             );
-        }
 
 
         /// <summary>
@@ -38,17 +34,13 @@ namespace Disk.Calculations.Impl
         /// <returns>
         ///     Standart deviation
         /// </returns>
-        public static Point3D<float> StandartDeviation(IEnumerable<Point3D<float>> dataset)
-        {
-            var dataList = dataset.ToList();
-
-            return new
+        public static Point3D<float> StandartDeviation(IList<Point3D<float>> dataset) =>
+            new
             (
-                Calculator.StandartDeviation(dataList.Select(p => p.X)),
-                Calculator.StandartDeviation(dataList.Select(p => p.Y)),
-                Calculator.StandartDeviation(dataList.Select(p => p.Z))
+                Calculator.StandartDeviation(dataset.Select(p => p.X).ToList()),
+                Calculator.StandartDeviation(dataset.Select(p => p.Y).ToList()),
+                Calculator.StandartDeviation(dataset.Select(p => p.Z).ToList())
             );
-        }
 
         /// <summary>
         ///     Calculates dispersion
@@ -59,16 +51,12 @@ namespace Disk.Calculations.Impl
         /// <returns>
         ///     Dispesion
         /// </returns>
-        public static Point3D<float> Dispersion(IEnumerable<Point3D<float>> dataset)
-        {
-            var dataList = dataset.ToList();
-
-            return new
+        public static Point3D<float> Dispersion(IList<Point3D<float>> dataset) =>
+            new
             (
-                Calculator.Dispersion(dataList.Select(p => p.X)),
-                Calculator.Dispersion(dataList.Select(p => p.Y)),
-                Calculator.Dispersion(dataList.Select(p => p.Z))
+                Calculator.Dispersion(dataset.Select(p => p.X).ToList()),
+                Calculator.Dispersion(dataset.Select(p => p.Y).ToList()),
+                Calculator.Dispersion(dataset.Select(p => p.Z).ToList())
             );
-        }
     }
 }
