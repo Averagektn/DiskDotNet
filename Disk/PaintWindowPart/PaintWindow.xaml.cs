@@ -34,17 +34,18 @@ namespace Disk
                             UserMovementLog = Logger.GetLogger(OnTargetLogName);
                         }
 
-                        using var reader = FileReader<float>.Open(MovingToTargetLogName);
-                        using var log = Logger.GetLogger(TargetReachedLogName);
-
                         double distance = 0;
-                        var currPoint = reader.GetXY() ?? StartPoint;
-                        var nextPoint = reader.GetXY();
-                        while (nextPoint is not null)
+                        using (var reader = FileReader<float>.Open(MovingToTargetLogName))
                         {
-                            distance += currPoint.GetDistance(nextPoint);
-                            currPoint = nextPoint;
-                            nextPoint = reader.GetXY();
+                            var currPoint = reader.GetXY() ?? StartPoint;
+                            var nextPoint = reader.GetXY();
+
+                            while (nextPoint is not null)
+                            {
+                                distance += currPoint.GetDistance(nextPoint);
+                                currPoint = nextPoint;
+                                nextPoint = reader.GetXY();
+                            }
                         }
 
                         var touchPoint = Converter?.ToAngle_FromWnd(User.Center);
@@ -61,7 +62,10 @@ namespace Disk
                             """;
 
                         TblTime.Text = message;
-                        log.Log(message);
+                        using (var log = Logger.GetLogger(TargetReachedLogName))
+                        {
+                            log.Log(message);
+                        }
 
                         TargetID++;
                     }
@@ -150,7 +154,9 @@ namespace Disk
             UserLogWnd = Logger.GetLogger(UsrWndLog);
             UserLogAng = Logger.GetLogger(UsrAngLog);
             UserLogCen = Logger.GetLogger(UsrCenLog);
-            UserMovementLog = Logger.GetLogger(UsrMovementLog);
+            UserMovementLog = Logger.GetLogger(MovingToTargetLogName);
+
+            StartPoint = new(0.0f, 0.0f);
 
             XAxis = new(new(0, SCREEN_INI_CENTER_X), new((int)SCREEN_INI_SIZE.Width, SCREEN_INI_CENTER_Y), SCREEN_INI_SIZE,
                 Brushes.Black);
