@@ -14,6 +14,9 @@ namespace Disk
     {
         public int MapId { get; set; } = Settings.Default.MAP_ID;
 
+        private static int IniWidth => Settings.Default.SCREEN_INI_WIDTH;
+        private static int IniHeight => Settings.Default.SCREEN_INI_HEIGHT;
+
         private readonly List<Target> _targets = [];
 
         public MapCreator()
@@ -63,7 +66,7 @@ namespace Disk
 
             foreach (var target in _targets)
             {
-                target?.Draw(PaintArea);
+                target?.Scale(RenderSize);
             }
         }
 
@@ -72,12 +75,24 @@ namespace Disk
             var mousePos = e.GetPosition(sender as UIElement);
             var x = (int)mousePos.X;
             var y = (int)mousePos.Y;
+
             if (AllowedArea.FillContains(new Point(x, y)))
             {
-                var newTarget = new Target(new(x, y), Properties.Config.Config.Default.TARGET_INI_RADIUS, RenderSize);
+                var newTarget = GetIniCoordTarget(mousePos.X, mousePos.Y);
+                newTarget.Scale(RenderSize);
                 newTarget.Draw(PaintArea);
                 _targets.Add(newTarget);
             }
         }
+
+        private Target GetIniCoordTarget(double actualX, double actualY) => 
+            new(
+                new Point2D<int>(
+                    (int)(actualX / RenderSize.Width * IniWidth), 
+                    (int)(actualY / RenderSize.Height * IniHeight)
+                   ), 
+                Settings.Default.TARGET_INI_RADIUS, 
+                new Size(IniWidth, IniHeight)
+               );
     }
 }
