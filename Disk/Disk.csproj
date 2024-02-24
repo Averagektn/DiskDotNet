@@ -7,7 +7,17 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <UseWPF>true</UseWPF>
     <SupportedOSPlatformVersion>7.0</SupportedOSPlatformVersion>
+    <ApplicationIcon>Properties\Icon.ico</ApplicationIcon>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Properties\logo.gif" />
+    <None Remove="Properties\logo.jpg" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Properties\Icon.ico" />
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Extended.Wpf.Toolkit" Version="4.6.0" />
@@ -17,6 +27,11 @@
     </PackageReference>
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="8.0.2" />
     <PackageReference Include="XamlRadialProgressBar" Version="1.0.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Properties\logo.gif" />
+    <Resource Include="Properties\logo.jpg" />
   </ItemGroup>
 
   <ItemGroup>
@@ -51,6 +66,9 @@
     <None Update="Properties\Config\Config.settings">
       <Generator>PublicSettingsSingleFileGenerator</Generator>
       <LastGenOutput>Config.Designer.cs</LastGenOutput>
+    </None>
+    <None Update="Properties\Untitled.ico">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
 
