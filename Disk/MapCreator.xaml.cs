@@ -19,14 +19,40 @@ namespace Disk
 
         private readonly List<Target> _targets = [];
 
+        private Target? _movingTarget;
+
         public MapCreator()
         {
             InitializeComponent();
 
             Closing += OnClose;
-            MouseRightButtonDown += OnMouseRightButtonDown;
             MouseLeftButtonDown += OnMouseLeftButtonDown;
+            MouseRightButtonDown += OnMouseRightButtonDown;
+            MouseDoubleClick += OnMouseDoubleClick;
+            MouseMove += OnMouseMove;
             SizeChanged += OnSizeChanged;
+        }
+
+        private void OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            var mousePos = e.GetPosition(sender as UIElement);
+            var x = (int)mousePos.X;
+            var y = (int)mousePos.Y;
+
+            _movingTarget = _targets.Find(target => target.Contains(new Point2D<int>(x, y)));
+        }
+
+        private void OnMouseMove(object sender, MouseEventArgs e)
+        {
+            if (e.LeftButton == MouseButtonState.Pressed)
+            {
+                var mousePos = e.GetPosition(sender as UIElement);
+                var x = (int)mousePos.X;
+                var y = (int)mousePos.Y;
+                var clickPoint = new Point2D<int>(x, y);
+
+                _movingTarget?.Move(clickPoint);
+            }
         }
 
         private void OnClose(object? sender, CancelEventArgs e)
@@ -66,13 +92,13 @@ namespace Disk
             }
         }
 
-        private void OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        private void OnMouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             var mousePos = e.GetPosition(sender as UIElement);
             var x = (int)mousePos.X;
             var y = (int)mousePos.Y;
 
-            if (AllowedArea.FillContains(new Point(x, y)))
+            if (e.ChangedButton == MouseButton.Left && AllowedArea.FillContains(new Point(x, y)))
             {
                 var newTarget = GetIniCoordTarget(mousePos.X, mousePos.Y);
                 newTarget.Scale(RenderSize);
