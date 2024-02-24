@@ -17,7 +17,7 @@ namespace Disk
         private static int IniWidth => Settings.Default.SCREEN_INI_WIDTH;
         private static int IniHeight => Settings.Default.SCREEN_INI_HEIGHT;
 
-        private readonly List<Target> _targets = [];
+        private readonly List<NumberedTarget> _targets = [];
 
         private Target? _movingTarget;
 
@@ -82,6 +82,11 @@ namespace Disk
                 target.Remove(PaintArea.Children);
             }
             _targets.RemoveAll(target => target.Contains(new(x, y)));
+
+            for (int i = 0; i < _targets.Count; i++)
+            {
+                _targets[i].UpdateNumber(i + 1);
+            }
         }
 
         private void OnSizeChanged(object sender, SizeChangedEventArgs e)
@@ -107,14 +112,15 @@ namespace Disk
             }
         }
 
-        private Target GetIniCoordTarget(double actualX, double actualY) => 
+        private NumberedTarget GetIniCoordTarget(double actualX, double actualY) =>
             new(
                 new Point2D<int>(
-                    (int)(actualX / RenderSize.Width * IniWidth), 
+                    (int)(actualX / RenderSize.Width * IniWidth),
                     (int)(actualY / RenderSize.Height * IniHeight)
-                   ), 
-                Settings.Default.TARGET_INI_RADIUS, 
-                new Size(IniWidth, IniHeight)
+                   ),
+                Settings.Default.TARGET_INI_RADIUS,
+                new Size(IniWidth, IniHeight),
+                _targets.Count + 1
                );
     }
 }
