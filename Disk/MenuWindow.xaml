@@ -9,23 +9,7 @@
         Title="{x:Static lang:Localization.Menu_Title}" Height="450" Width="400">
 
     <Window.Resources>
-        <Style x:Key="GradientButtonStyle" TargetType="{x:Type Button}">
-            <Setter Property="Background" Value="#00B334"/>
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="{x:Type Button}">
-                        <Border Background="{TemplateBinding Background}">
-                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                        </Border>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-            <Style.Triggers>
-                <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Background" Value="#4BFE74"/>
-                </Trigger>
-            </Style.Triggers>
-        </Style>
+        <ResourceDictionary Source="Style/BtnStyles.xaml"/>
     </Window.Resources>
 
     <Grid>
