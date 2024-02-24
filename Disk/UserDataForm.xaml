@@ -4,9 +4,14 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:lang="clr-namespace:Disk.Properties"
-        xmlns:local="clr-namespace:Disk" xmlns:viewmodel="clr-namespace:Disk.ViewModel" d:DataContext="{d:DesignInstance Type=viewmodel:UserDataViewModel}"
+        xmlns:viewmodel="clr-namespace:Disk.ViewModel" d:DataContext="{d:DesignInstance Type=viewmodel:UserDataViewModel}"
         mc:Ignorable="d"
         Title="{x:Static lang:Localization.UserData_Title}" Height="410" Width="400">
+
+    <Window.DataContext>
+        <viewmodel:UserDataViewModel/>
+    </Window.DataContext>
+    
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition/>
@@ -30,7 +35,7 @@
         </Viewbox>
 
         <Viewbox Grid.Row="1" Grid.Column="1">
-            <TextBox Name="TbName" Margin="10 10 10 10" FontSize="20" Width="300" TextAlignment="Center" Text="Test"/>
+            <TextBox Name="TbName" Margin="10 10 10 10" FontSize="20" Width="300" TextAlignment="Center" Text="{Binding UserName}"/>
         </Viewbox>
 
         <Viewbox Grid.Row="2" Grid.Column="1" VerticalAlignment="Top" HorizontalAlignment="Center">
@@ -38,7 +43,7 @@
         </Viewbox>
 
         <Viewbox Grid.Row="3" Grid.Column="1">
-            <TextBox Name="TbSurname" Margin="10 10 10 10" FontSize="20" Width="300" TextAlignment="Center" Text="Testovich"/>
+            <TextBox Name="TbSurname" Margin="10 10 10 10" FontSize="20" Width="300" TextAlignment="Center" Text="{Binding Surname}"/>
         </Viewbox>
 
         <Viewbox Grid.Row="4" Grid.Column="1" VerticalAlignment="Top" HorizontalAlignment="Center">
@@ -46,7 +51,7 @@
         </Viewbox>
 
         <Viewbox Grid.Row="5" Grid.Column="1">
-            <DatePicker SelectedDateFormat="Long" />
+            <DatePicker SelectedDateFormat="Long" SelectedDate="{Binding BirthDate}"/>
         </Viewbox>
 
         <Viewbox Grid.Row="6" Grid.Column="1" VerticalAlignment="Top" HorizontalAlignment="Center">
@@ -54,11 +59,11 @@
         </Viewbox>
 
         <Viewbox Grid.Row="7" Grid.Column="1">
-            <ComboBox Name="CbMaps" Margin="10 10 10 10" FontSize="20" Width="300" />
+            <ComboBox Name="CbMaps" SelectedIndex="{Binding MapId}" ItemsSource="{Binding Maps}" Text="{Binding MapText}" Margin="10 10 10 10" FontSize="20" Width="300" />
         </Viewbox>
 
         <Viewbox Grid.Row="8" Grid.Column="1">
-            <Button Name="Start" Click="OnStartClick" Content="{x:Static lang:Localization.UserData_Start}" FontSize="20" Width="200" Margin="10 10 10 10"/>
+            <Button Name="Start" Command="{Binding StartClick}" Content="{x:Static lang:Localization.UserData_Start}" FontSize="20" Width="200" Margin="10 10 10 10"/>
         </Viewbox>
     </Grid>
 </Window>
