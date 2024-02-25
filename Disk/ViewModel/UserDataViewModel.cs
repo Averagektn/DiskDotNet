@@ -1,5 +1,4 @@
-﻿using Disk.Entity;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.IO;
 using System.Runtime.CompilerServices;
 using System.Windows;
@@ -11,12 +10,19 @@ namespace Disk.ViewModel
     public class UserDataViewModel : INotifyPropertyChanged
     {
         // Properties
-        public string UserName { get; set; } = "Тест";
-        public string Surname { get; set; } = "Тестов";
-        public DateTime? BirthDate { get; set; }
-        public int MapId { get; set; }
-        public string MapText { get; set; } = string.Empty;
-        public IList<string> Maps { get; set; }
+        public string UserName { get => _userName; set => SetProperty(ref _userName, value); }
+        public string Surname { get => _surname; set => SetProperty(ref _surname, value); }
+        public DateTime? BirthDate { get => _birthDate; set => SetProperty(ref _birthDate, value); }
+        public int MapId { get => _mapId; set => SetProperty(ref _mapId, value); }
+        public string MapText { get => _mapText; set => SetProperty(ref _mapText, value); }
+        public IReadOnlyList<string> Maps { get => _maps; set => SetProperty(ref _maps, value); }
+
+        private string _userName = "Тест";
+        private string _surname = "Тестов";
+        private DateTime? _birthDate = null;
+        private int _mapId = 0;
+        private string _mapText = string.Empty;
+        private IReadOnlyList<string> _maps = [];
 
         // Actions
         public ICommand StartClick => new Command(OnStartClick);
@@ -45,7 +51,7 @@ namespace Disk.ViewModel
         {
             if (Surname != string.Empty && UserName != string.Empty)
             {
-                Application.Current.MainWindow.Hide();
+                Application.Current.Windows.OfType<UserDataForm>().First().Hide();
                 new PaintWindow()
                 {
                     CurrPath =
@@ -55,7 +61,7 @@ namespace Disk.ViewModel
                     MapFilePath = MapText
                 }
                 .ShowDialog();
-                Application.Current.MainWindow.Close();
+                Application.Current.Windows.OfType<UserDataForm>().First().Close();
             }
             else
             {

@@ -1,22 +1,31 @@
-﻿using System.ComponentModel;
+﻿using Disk.Data.Impl;
+using System.ComponentModel;
 using System.Net;
 using System.Runtime.CompilerServices;
-using System.Windows.Threading;
 using System.Windows;
-using Settings = Disk.Properties.Config.Config;
-using Disk.Data.Impl;
 using System.Windows.Input;
+using System.Windows.Threading;
+using Settings = Disk.Properties.Config.Config;
 
 namespace Disk.ViewModel
 {
     public class CalibrationViewModel : INotifyPropertyChanged
     {
         // Properties
-        public string XCoord {  get; set; }
-        public string YCoord { get; set; }
-        public bool CalibrateXEnabled { get; set; }
-        public bool CalibrateYEnabled {  get; set; }
-        public bool StartCalibrationEnabled {  get; set; }
+        public string XCoord { get => _xCoord; set => SetProperty(ref _xCoord, value); }
+        public string YCoord { get => _yCoord; set => SetProperty(ref _yCoord, value); }
+        public bool CalibrateXEnabled { get => _calibrateXEnabled; set => SetProperty(ref _calibrateXEnabled, value); }
+        public bool CalibrateYEnabled { get => _calibrateYEnabled; set => SetProperty(ref _calibrateYEnabled, value); }
+        public bool StartCalibrationEnabled
+        {
+            get => _startCalibrationEnabled;
+            set => SetProperty(ref _startCalibrationEnabled, value);
+        }
+        private string _xCoord;
+        private string _yCoord;
+        private bool _calibrateXEnabled;
+        private bool _calibrateYEnabled;
+        private bool _startCalibrationEnabled = true;
 
         // Actions
         public ICommand StartCalibration => new Command(OnStartCalibrationClick);
@@ -47,7 +56,7 @@ namespace Disk.ViewModel
         public event PropertyChangedEventHandler? PropertyChanged;
         protected bool SetProperty<T>(ref T field, T newValue, [CallerMemberName] string? propertyName = null)
         {
-            if (!(object.Equals(field, newValue)))
+            if (!Equals(field, newValue))
             {
                 field = (newValue);
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
@@ -59,8 +68,8 @@ namespace Disk.ViewModel
 
         public CalibrationViewModel()
         {
-            XCoord = $"{XAngle:F2}";
-            YCoord = $"{YAngle:F2}";
+            _xCoord = $"{XAngle:F2}";
+            _yCoord = $"{YAngle:F2}";
 
             DataThread = new(NetworkThreadProc);
 
@@ -103,7 +112,7 @@ namespace Disk.ViewModel
             catch
             {
                 MessageBox.Show(Properties.Localization.Calibration_ConnectionLost);
-                Application.Current.MainWindow.Close();
+                Application.Current.Windows.OfType<CalibrationWindow>().First().Close();
             }
         }
 
@@ -116,7 +125,7 @@ namespace Disk.ViewModel
             StartCalibrationEnabled = false;
 
             IsRunningThread = true;
-            CalibrateXEnabled= true;
+            CalibrateXEnabled = true;
             CalibrateYEnabled = true;
 
             DataThread.Start();
@@ -155,8 +164,7 @@ namespace Disk.ViewModel
             Settings.ANGLE_Y_SHIFT = YShift;
 
             Settings.Save();
-
-            Application.Current.MainWindow.Close();
+            Application.Current.Windows.OfType<CalibrationWindow>().First().Close();
         }
     }
 }
