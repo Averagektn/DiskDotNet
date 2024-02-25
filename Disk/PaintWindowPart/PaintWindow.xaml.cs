@@ -3,7 +3,6 @@ using Disk.Data.Impl;
 using Disk.Visual.Impl;
 using System.Diagnostics;
 using System.IO;
-using System.Net;
 using System.Windows;
 using Localization = Disk.Properties.Localization;
 using Settings = Disk.Properties.Config;

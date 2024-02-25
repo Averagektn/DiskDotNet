@@ -1,5 +1,6 @@
 ﻿using Disk.Calculations.Impl.Converters;
 using Disk.Data.Impl;
+using Disk.ViewModel;
 using Disk.Visual.Impl;
 using Disk.Visual.Interface;
 using System.Diagnostics;
@@ -105,6 +106,8 @@ namespace Disk
         private int TargetID = 1;
 
         private bool IsGame = true;
+
+        //private PaintViewModel PaintViewModel => (DataContext as PaintViewModel)!;
 
         public PaintWindow()
         {

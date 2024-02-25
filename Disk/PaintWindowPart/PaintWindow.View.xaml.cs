@@ -3,10 +3,12 @@ using Disk.Calculations.Impl.Converters;
 using Disk.Data.Impl;
 using Disk.Visual.Impl;
 using System.ComponentModel;
+using System.Drawing;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
+using Color = System.Windows.Media.Color;
 using FilePath = System.IO.Path;
 using Localization = Disk.Properties.Localization;
 using Path = Disk.Visual.Impl.Path;
@@ -31,11 +33,13 @@ namespace Disk
 
                 MessageBox.Show(
                 $"""
-                {Localization.Paint_Score}: {Score}
-                {Localization.Paint_MathExp}: {mx}
-                {Localization.Paint_Dispersion}: {dispersion}
-                {Localization.Paint_StandartDeviation}: {deviation}
-                """);
+                 {Localization.Paint_Score}: {Score}
+                 {Localization.Paint_MathExp}: {mx}
+                 {Localization.Paint_Dispersion}: {dispersion}
+                 {Localization.Paint_StandartDeviation}: {deviation}
+                 """);
+
+                MessageBox.Show(Localization.Paint_Over);
             }
             else
             {
@@ -45,17 +49,14 @@ namespace Disk
 
         private void StopGame()
         {
-            if (Target is not null)
-            {
-                Target.Remove(PaintArea.Children);
-                User?.Remove(PaintArea.Children);
+            Target?.Remove(PaintArea.Children);
+            User?.Remove(PaintArea.Children);
 
-                Drawables.Remove(Target);
-                Scalables.Remove(Target);
+            Drawables.Remove(Target);
+            Scalables.Remove(Target);
 
-                Drawables.Remove(User);
-                Scalables.Remove(User);
-            }
+            Drawables.Remove(User);
+            Scalables.Remove(User);
 
             IsGame = false;
 
@@ -99,11 +100,12 @@ namespace Disk
         private void CbTargets_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             PaintArea.Children.Clear();
-            foreach (var elem in Drawables)
-            {
-                elem?.Draw(PaintArea);
-            }
-
+            // TEST IT
+            /*            foreach (var elem in Drawables)
+                        {
+                            elem?.Draw(PaintArea);
+                        }
+            */
             var selectedIndex = CbTargets.SelectedIndex;
             var roseFileName = GetInTargetFileName(selectedIndex + 1);
             var pathFileName = GetMovToTargetFileName(selectedIndex + 1);
@@ -119,17 +121,15 @@ namespace Disk
                         var angRadius = Converter.ToAngleX_FromLog(Target.Radius) +
                             Converter.ToAngleY_FromLog(Target.Radius) / 2;
 
-                        var a = userReader.Get2DPoints().ToList();
                         var dataset =
-                            a
-                            .Select(p => new PolarPointF(p.X - TargetCenters[selectedIndex].X, p.Y -
-                            TargetCenters[selectedIndex].Y, null))
+                            userReader
+                            .Get2DPoints()
+                            .Select(p =>
+                                new PolarPointF(p.X - TargetCenters[selectedIndex].X, p.Y - TargetCenters[selectedIndex].Y))
                             .Where(p => Math.Abs(p.X) > angRadius && Math.Abs(p.Y) > angRadius).ToList();
 
                         var userRose = new Graph(dataset, PaintPanelSize, Brushes.LightGreen, 8);
-
                         userRose.Draw(PaintArea);
-
                         Scalables.Add(userRose);
                     }
                 }
@@ -139,12 +139,15 @@ namespace Disk
                     {
                         using var userPathReader = FileReader<float>.Open(pathFileName, Settings.LOG_SEPARATOR);
 
-                        var userPath = new Path(userPathReader.Get2DPoints(), PaintPanelSize, new(X_ANGLE_SIZE, Y_ANGLE_SIZE),
-                            new SolidColorBrush(Color.FromRgb(Settings.USER_COLOR.R, Settings.USER_COLOR.G,
-                            Settings.USER_COLOR.B)));
-
+                        var userPath = new Path
+                            (
+                                userPathReader.Get2DPoints(), PaintPanelSize, new SizeF(X_ANGLE_SIZE, Y_ANGLE_SIZE),
+                                new SolidColorBrush
+                                (
+                                    Color.FromRgb(Settings.USER_COLOR.R, Settings.USER_COLOR.G, Settings.USER_COLOR.B)
+                                )
+                            );
                         userPath.Draw(PaintArea);
-
                         Scalables.Add(userPath);
                     }
                 }
@@ -182,6 +185,7 @@ namespace Disk
             {
                 CbTargets.Items.Add($"{Localization.Paint_WindRoseForTarget} {i}");
             }
+
             CbTargets.Visibility = Visibility.Visible;
             RbPath.Visibility = Visibility.Visible;
             RbRose.Visibility = Visibility.Visible;
