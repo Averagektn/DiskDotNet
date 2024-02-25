@@ -15,7 +15,7 @@ namespace Disk.Visual.Impl
             _numberText = new TextBlock()
             {
                 Text = number.ToString(),
-                Margin = new(Left + MaxRadius / 2, Top, 0, 0),
+                Margin = new(Left + MaxRadius / 2, Top - Radius / 2, 0, 0),
                 FontSize = MaxRadius * 2 - Radius * 2,
                 Foreground = Brushes.DarkBlue
             };
@@ -32,20 +32,20 @@ namespace Disk.Visual.Impl
         public override void Move(bool moveTop, bool moveRight, bool moveBottom, bool moveLeft)
         {
             base.Move(moveTop, moveRight, moveBottom, moveLeft);
-            _numberText.Margin = new(Left + MaxRadius / 2, Top, 0, 0);
+            _numberText.Margin = new(Left + MaxRadius / 2, Top - Radius / 2, 0, 0);
         }
 
         public override void Scale(Size newSize)
         {
             base.Scale(newSize);
             _numberText.FontSize = MaxRadius * 2 - Radius * 2;
-            _numberText.Margin = new(Left + MaxRadius / 2, Top, 0, 0);
+            _numberText.Margin = new(Left + MaxRadius / 2, Top - Radius / 2, 0, 0);
         }
 
         public override void Move(Point2D<int> center)
         {
             base.Move(center);
-            _numberText.Margin = new(Left + MaxRadius / 2, Top, 0, 0);
+            _numberText.Margin = new(Left + MaxRadius / 2, Top - Radius, 0, 0);
         }
 
         public override void Remove(UIElementCollection collection)

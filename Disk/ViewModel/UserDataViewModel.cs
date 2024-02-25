@@ -17,7 +17,6 @@ namespace Disk.ViewModel
         public int MapId { get; set; }
         public string MapText { get; set; } = string.Empty;
         public IList<string> Maps { get; set; }
-        public Map Map { get; set; } = new();
 
         // Actions
         public ICommand StartClick => new Command(OnStartClick);
