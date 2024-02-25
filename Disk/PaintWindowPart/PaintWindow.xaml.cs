@@ -116,7 +116,6 @@ namespace Disk
                 User?.Move(ShiftedWndPos);
             }
         }
-             
 
         private void NetworkReceive()
         {
