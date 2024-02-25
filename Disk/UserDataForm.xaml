@@ -8,6 +8,10 @@
         mc:Ignorable="d"
         Title="{x:Static lang:Localization.UserData_Title}" Height="410" Width="400">
 
+    <Window.Resources>
+        <ResourceDictionary Source="Style/BtnStyles.xaml"/>
+    </Window.Resources>
+
     <Window.DataContext>
         <viewmodel:UserDataViewModel/>
     </Window.DataContext>
@@ -35,7 +39,11 @@
         </Viewbox>
 
         <Viewbox Grid.Row="1" Grid.Column="1">
-            <TextBox Name="TbName" Margin="10 10 10 10" FontSize="20" Width="300" TextAlignment="Center" Text="{Binding UserName}"/>
+            <TextBox Name="TbName" TextAlignment="Center" Text="{Binding UserName}">
+                <TextBox.Margin>10 10 10 10</TextBox.Margin>
+                <TextBox.FontSize>20</TextBox.FontSize>
+                <TextBox.Width>300</TextBox.Width>
+            </TextBox>
         </Viewbox>
 
         <Viewbox Grid.Row="2" Grid.Column="1" VerticalAlignment="Top" HorizontalAlignment="Center">
@@ -43,7 +51,11 @@
         </Viewbox>
 
         <Viewbox Grid.Row="3" Grid.Column="1">
-            <TextBox Name="TbSurname" Margin="10 10 10 10" FontSize="20" Width="300" TextAlignment="Center" Text="{Binding Surname}"/>
+            <TextBox Name="TbSurname" TextAlignment="Center" Text="{Binding Surname}">
+                <TextBox.Margin>10 10 10 10</TextBox.Margin>
+                <TextBox.FontSize>20</TextBox.FontSize>
+                <TextBox.Width>300</TextBox.Width>
+            </TextBox>
         </Viewbox>
 
         <Viewbox Grid.Row="4" Grid.Column="1" VerticalAlignment="Top" HorizontalAlignment="Center">
@@ -59,11 +71,22 @@
         </Viewbox>
 
         <Viewbox Grid.Row="7" Grid.Column="1">
-            <ComboBox Name="CbMaps" SelectedIndex="{Binding MapId}" ItemsSource="{Binding Maps}" Text="{Binding MapText}" Margin="10 10 10 10" FontSize="20" Width="300" />
+            <ComboBox Name="CbMaps" SelectedIndex="{Binding MapId}" ItemsSource="{Binding Maps}" Text="{Binding MapText}">
+                <ComboBox.FontSize>20</ComboBox.FontSize>
+                <ComboBox.Margin>10, 10, 10, 10</ComboBox.Margin>
+                <ComboBox.Width>300</ComboBox.Width>
+            </ComboBox>
         </Viewbox>
 
         <Viewbox Grid.Row="8" Grid.Column="1">
-            <Button Name="Start" Command="{Binding StartClick}" Content="{x:Static lang:Localization.UserData_Start}" FontSize="20" Width="200" Margin="10 10 10 10"/>
+            <Button Command="{Binding StartClick}" Content="{x:Static lang:Localization.UserData_Start}">
+                <Button.Style>
+                    <Style TargetType="Button" BasedOn="{StaticResource GradientButtonStyle}"/>
+                </Button.Style>
+                <Button.FontSize>20</Button.FontSize>
+                <Button.Margin>10, 10, 10, 10</Button.Margin>
+                <Button.Width>200</Button.Width>
+            </Button>
         </Viewbox>
     </Grid>
 </Window>
