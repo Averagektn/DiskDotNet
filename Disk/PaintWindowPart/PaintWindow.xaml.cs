@@ -110,7 +110,13 @@ namespace Disk
         }
 
         private void MoveTimerElapsed(object? sender, EventArgs e)
-            => User?.Move(ShiftedWndPos ?? User.Center);
+        {
+            if (ShiftedWndPos is not null && AllowedArea.FillContains(ShiftedWndPos.ToPoint()))
+            {
+                User?.Move(ShiftedWndPos);
+            }
+        }
+             
 
         private void NetworkReceive()
         {
