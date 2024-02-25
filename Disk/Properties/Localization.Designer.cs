@@ -61,7 +61,8 @@ namespace Disk.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to X axis angle.
+        ///   Looks up a localized string similar to X 
+        ///   angle.
         /// </summary>
         public static string Calibration_AngleX {
             get {
@@ -228,6 +229,15 @@ namespace Disk.Properties {
         public static string Paint_AngleSpeed {
             get {
                 return ResourceManager.GetString("Paint.AngleSpeed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Approach speed.
+        /// </summary>
+        public static string Paint_ApproachSpeed {
+            get {
+                return ResourceManager.GetString("Paint.ApproachSpeed", resourceCulture);
             }
         }
         

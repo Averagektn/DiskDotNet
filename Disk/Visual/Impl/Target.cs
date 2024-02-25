@@ -118,6 +118,8 @@ namespace Disk.Visual.Impl
         /// </param>
         public override void Move(Point2D<int> center)
         {
+            Center = center;
+
             foreach (var circle in Circles)
             {
                 circle.Move(center);

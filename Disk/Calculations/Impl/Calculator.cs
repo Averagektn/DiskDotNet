@@ -14,7 +14,7 @@
         /// <returns>
         ///     Mathematical expectation
         /// </returns>
-        public static float MathExp(IEnumerable<float> dataset) => dataset.ToList().Average();
+        public static float MathExp(IList<float> dataset) => dataset.Average();
 
         /// <summary>
         ///     Calculates standart deviation
@@ -25,7 +25,7 @@
         /// <returns>
         ///     Standart deviation
         /// </returns>
-        public static float StandartDeviation(IEnumerable<float> dataset) => float.Sqrt(Dispersion(dataset));
+        public static float StandartDeviation(IList<float> dataset) => float.Sqrt(Dispersion(dataset));
 
         /// <summary>
         ///     Calculates dispersion
@@ -36,10 +36,7 @@
         /// <returns>
         ///     Dispesion
         /// </returns>
-        public static float Dispersion(IEnumerable<float> dataset)
-        {
-            var dataList = dataset.ToList();
-            return (float)dataList.Sum(x => Math.Pow(x - MathExp(dataset), 2)) / dataList.Count;
-        }
+        public static float Dispersion(IList<float> dataset) => 
+            (float)dataset.Sum(x => Math.Pow(x - MathExp(dataset), 2)) / dataset.Count;
     }
 }

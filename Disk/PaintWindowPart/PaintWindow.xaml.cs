@@ -5,7 +5,6 @@ using System.Diagnostics;
 using System.IO;
 using System.Net;
 using System.Windows;
-using System.Windows.Media;
 using Localization = Disk.Properties.Localization;
 using Settings = Disk.Properties.Config;
 
@@ -28,28 +27,46 @@ namespace Disk
 
                     if (StartPoint is not null)
                     {
-                        using var log = Logger.GetLogger(TargetReachedLogName);
+                        lock (LockObject)
+                        {
+                            UserMovementLog?.Dispose();
+                            UserMovementLog = Logger.GetLogger(OnTargetLogName);
+                        }
+
+                        double distance = 0;
+                        using (var reader = FileReader<float>.Open(MovingToTargetLogName))
+                        {
+                            var currPoint = reader.GetXY() ?? StartPoint;
+                            var nextPoint = reader.GetXY();
+
+                            while (nextPoint is not null)
+                            {
+                                distance += currPoint.GetDistance(nextPoint);
+                                currPoint = nextPoint;
+                                nextPoint = reader.GetXY();
+                            }
+                        }
 
                         var touchPoint = Converter?.ToAngle_FromWnd(User.Center);
-                        var distance = touchPoint?.GetDistance(StartPoint);
                         var time = Stopwatch.Elapsed.TotalSeconds;
                         var avgSpeed = distance / time;
+                        var approachSpeed = StartPoint.GetDistance(touchPoint!) / time;
 
                         var message =
                             $"""
                             {Localization.Paint_Time}: {time:F2}
                             {Localization.Paint_AngleDistance}: {distance:F2}
                             {Localization.Paint_AngleSpeed}: {avgSpeed:F2}
+                            {Localization.Paint_ApproachSpeed}: {approachSpeed:F2}
                             """;
 
                         TblTime.Text = message;
-                        log.Log(message);
-
-                        lock (LockObject)
+                        using (var log = Logger.GetLogger(TargetReachedLogName))
                         {
-                            UserMovementLog?.Dispose();
-                            UserMovementLog = Logger.GetLogger(OnTargetLogName);
+                            log.Log(message);
                         }
+
+                        TargetID++;
                     }
                 }
 
@@ -73,7 +90,7 @@ namespace Disk
                     var wndCenter = Converter.ToWnd_FromRelative(newCenter);
                     Target.Move(wndCenter);
 
-                    TargetCenters.Add(new(Converter.ToAngleX_FromWnd(wndCenter.X), Converter.ToAngleY_FromWnd(wndCenter.Y)));
+                    TargetCenters.Add(Converter.ToAngle_FromWnd(wndCenter));
 
                     Stopwatch = Stopwatch.StartNew();
                     TblTime.Text = string.Empty;
@@ -88,14 +105,17 @@ namespace Disk
                         UserMovementLog?.Dispose();
                         UserMovementLog = Logger.GetLogger(MovingToTargetLogName);
                     }
-
-                    TargetID++;
                 }
             }
         }
 
         private void MoveTimerElapsed(object? sender, EventArgs e)
-            => User?.Move(ShiftedWndPos ?? User.Center);
+        {
+            if (ShiftedWndPos is not null && AllowedArea.FillContains(ShiftedWndPos.ToPoint()))
+            {
+                User?.Move(ShiftedWndPos);
+            }
+        }
 
         private void NetworkReceive()
         {
@@ -138,14 +158,9 @@ namespace Disk
             UserLogWnd = Logger.GetLogger(UsrWndLog);
             UserLogAng = Logger.GetLogger(UsrAngLog);
             UserLogCen = Logger.GetLogger(UsrCenLog);
-            UserMovementLog = Logger.GetLogger(UsrMovementLog);
+            UserMovementLog = Logger.GetLogger(MovingToTargetLogName);
 
-            XAxis = new(new(0, SCREEN_INI_CENTER_X), new((int)SCREEN_INI_SIZE.Width, SCREEN_INI_CENTER_Y), SCREEN_INI_SIZE,
-                Brushes.Black);
-            YAxis = new(new(SCREEN_INI_CENTER_X, 0), new(SCREEN_INI_CENTER_X, (int)SCREEN_INI_SIZE.Height), SCREEN_INI_SIZE,
-                Brushes.Black);
-            PaintToDataBorder = new(new((int)SCREEN_INI_SIZE.Width, 0), new((int)SCREEN_INI_SIZE.Width,
-                (int)SCREEN_INI_SIZE.Height), SCREEN_INI_SIZE, Brushes.Black);
+            StartPoint = new(0.0f, 0.0f);
 
             User = new(new(SCREEN_INI_CENTER_X, SCREEN_INI_CENTER_Y), Settings.USER_INI_RADIUS, Settings.USER_INI_SPEED,
                 UserBrush, SCREEN_INI_SIZE);
@@ -154,10 +169,8 @@ namespace Disk
             User.OnShot += (p) => UserLogCen.LogLn(Converter?.ToLogCoord(p));
             User.OnShot += (p) => UserMovementLog.LogLn(Converter?.ToAngle_FromWnd(p));
 
-            Drawables.Add(XAxis); Drawables.Add(YAxis); Drawables.Add(PaintToDataBorder); Drawables.Add(Target);
-            Drawables.Add(User);
-            Scalables.Add(XAxis); Scalables.Add(YAxis); Scalables.Add(PaintToDataBorder); Scalables.Add(Target);
-            Scalables.Add(User); Scalables.Add(Converter);
+            Drawables.Add(Target); Drawables.Add(User);
+            Scalables.Add(Target); Scalables.Add(User); Scalables.Add(Converter);
 
             foreach (var elem in Drawables)
             {

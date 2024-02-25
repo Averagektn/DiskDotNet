@@ -16,16 +16,12 @@ namespace Disk.Calculations.Impl
         /// <returns>
         ///     Mathematical expectation
         /// </returns>
-        public static Point2D<float> MathExp(IEnumerable<Point2D<float>> dataset)
-        {
-            var dataList = dataset.ToList();
-
-            return new
+        public static Point2D<float> MathExp(IList<Point2D<float>> dataset) =>
+            new
             (
-                Calculator.MathExp(dataList.Select(p => p.X)),
-                Calculator.MathExp(dataList.Select(p => p.Y))
+                Calculator.MathExp(dataset.Select(p => p.X).ToList()),
+                Calculator.MathExp(dataset.Select(p => p.Y).ToList())
             );
-        }
 
         /// <summary>
         ///     Calculates standart deviation
@@ -36,17 +32,12 @@ namespace Disk.Calculations.Impl
         /// <returns>
         ///     Standart deviation
         /// </returns>
-        public static Point2D<float> StandartDeviation(IEnumerable<Point2D<float>> dataset)
-        {
-            var dataList = dataset.ToList();
-
-            return new
+        public static Point2D<float> StandartDeviation(IList<Point2D<float>> dataset) =>
+            new
             (
-                Calculator.StandartDeviation(dataList.Select(p => p.X)),
-                Calculator.StandartDeviation(dataList.Select(p => p.Y))
+                Calculator.StandartDeviation(dataset.Select(p => p.X).ToList()),
+                Calculator.StandartDeviation(dataset.Select(p => p.Y).ToList())
             );
-        }
-
 
         /// <summary>
         ///     Calculates dispersion
@@ -57,15 +48,11 @@ namespace Disk.Calculations.Impl
         /// <returns>
         ///     Dispesion
         /// </returns>
-        public static Point2D<float> Dispersion(IEnumerable<Point2D<float>> dataset)
-        {
-            var dataList = dataset.ToList();
-
-            return new
+        public static Point2D<float> Dispersion(IList<Point2D<float>> dataset) =>
+            new
             (
-                Calculator.Dispersion(dataList.Select(p => p.X)),
-                Calculator.Dispersion(dataList.Select(p => p.Y))
+                Calculator.Dispersion(dataset.Select(p => p.X).ToList()),
+                Calculator.Dispersion(dataset.Select(p => p.Y).ToList())
             );
-        }
     }
 }

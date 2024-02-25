@@ -56,10 +56,6 @@ namespace Disk
 
         private FileReader<float>? MapReader;
 
-        private Axis? XAxis;
-        private Axis? YAxis;
-        private Axis? PaintToDataBorder;
-
         private User? User;
 
         private ProgressTarget? Target;
@@ -104,7 +100,6 @@ namespace Disk
         private string UsrWndLog => $"{CurrPath}{FilePath.DirectorySeparatorChar}{Settings.USER_WND_LOG_FILE}";
         private string UsrAngLog => $"{CurrPath}{FilePath.DirectorySeparatorChar}{Settings.USER_ANG_LOG_FILE}";
         private string UsrCenLog => $"{CurrPath}{FilePath.DirectorySeparatorChar}{Settings.USER_CEN_LOG_FILE}";
-        private string UsrMovementLog => $"{CurrPath}{FilePath.DirectorySeparatorChar}To_1_tar.log";
 
         private int Score = 0;
         private int TargetID = 1;
@@ -116,6 +111,8 @@ namespace Disk
             InitializeComponent();
 
             NetworkThread = new(NetworkReceive);
+
+            Stopwatch = Stopwatch.StartNew();
 
             MoveTimer = new(DispatcherPriority.Normal)
             {
