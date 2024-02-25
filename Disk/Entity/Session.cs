@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace Disk.Entity;
+﻿namespace Disk.Entity;
 
 public partial class Session
 {
@@ -17,7 +14,7 @@ public partial class Session
 
     public string SesDate { get; set; } = null!;
 
-    public virtual ICollection<PathToTarget> PathToTargets { get; set; } = new List<PathToTarget>();
+    public virtual ICollection<PathToTarget> PathToTargets { get; set; } = [];
 
     public virtual Doctor SesDoctorNavigation { get; set; } = null!;
 

@@ -57,17 +57,20 @@ namespace Disk
 
         private void OnClose(object? sender, CancelEventArgs e)
         {
-            using var writer = Logger.GetLogger($"maps\\map_{MapId++}.map");
-
-            foreach (var target in _targets)
+            if (_targets.Count != 0)
             {
-                writer.LogLn(new Point2D<float>(
-                    (float)(target.Center.X / ActualWidth),
-                    (float)(target.Center.Y / ActualHeight)));
-            }
+                using var writer = Logger.GetLogger($"maps\\map_{MapId++}.map");
 
-            Settings.Default.MAP_ID = MapId;
-            Settings.Default.Save();
+                foreach (var target in _targets)
+                {
+                    writer.LogLn(new Point2D<float>(
+                        (float)(target.Center.X / ActualWidth),
+                        (float)(target.Center.Y / ActualHeight)));
+                }
+
+                Settings.Default.MAP_ID = MapId;
+                Settings.Default.Save();
+            }
         }
 
         private void OnMouseRightButtonDown(object sender, MouseButtonEventArgs e)

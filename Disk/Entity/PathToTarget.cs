@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace Disk.Entity;
+﻿namespace Disk.Entity;
 
 public partial class PathToTarget
 {

@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace Disk.Entity;
+﻿namespace Disk.Entity;
 
 public partial class Map
 {
@@ -15,5 +12,5 @@ public partial class Map
 
     public virtual Doctor MapCreatedByNavigation { get; set; } = null!;
 
-    public virtual ICollection<Session> Sessions { get; set; } = new List<Session>();
+    public virtual ICollection<Session> Sessions { get; set; } = [];
 }

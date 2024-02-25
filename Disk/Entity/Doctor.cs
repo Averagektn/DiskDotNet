@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace Disk.Entity;
+﻿namespace Disk.Entity;
 
 public partial class Doctor
 {
@@ -15,7 +12,7 @@ public partial class Doctor
 
     public string DocPassword { get; set; } = null!;
 
-    public virtual ICollection<Map> Maps { get; set; } = new List<Map>();
+    public virtual ICollection<Map> Maps { get; set; } = [];
 
-    public virtual ICollection<Session> Sessions { get; set; } = new List<Session>();
+    public virtual ICollection<Session> Sessions { get; set; } = [];
 }

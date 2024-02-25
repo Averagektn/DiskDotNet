@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace Disk.Entity;
+﻿namespace Disk.Entity;
 
 public partial class Address
 {
@@ -19,5 +16,5 @@ public partial class Address
 
     public string AddrDistrict { get; set; } = null!;
 
-    public virtual ICollection<Patient> Patients { get; set; } = new List<Patient>();
+    public virtual ICollection<Patient> Patients { get; set; } = [];
 }

@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace Disk.Entity;
+﻿namespace Disk.Entity;
 
 public partial class Patient
 {
@@ -21,9 +18,9 @@ public partial class Patient
 
     public string? PatPhoneHome { get; set; }
 
-    public virtual ICollection<Card> Cards { get; set; } = new List<Card>();
+    public virtual ICollection<Card> Cards { get; set; } = [];
 
     public virtual Address PatAddressNavigation { get; set; } = null!;
 
-    public virtual ICollection<Session> Sessions { get; set; } = new List<Session>();
+    public virtual ICollection<Session> Sessions { get; set; } = [];
 }

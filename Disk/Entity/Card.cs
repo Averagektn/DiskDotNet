@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace Disk.Entity;
+﻿namespace Disk.Entity;
 
 public partial class Card
 {
@@ -13,5 +10,5 @@ public partial class Card
 
     public virtual Patient CrdPatientNavigation { get; set; } = null!;
 
-    public virtual ICollection<M2mCardDiagnosis> M2mCardDiagnoses { get; set; } = new List<M2mCardDiagnosis>();
+    public virtual ICollection<M2mCardDiagnosis> M2mCardDiagnoses { get; set; } = [];
 }
