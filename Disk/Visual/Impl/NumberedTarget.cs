@@ -19,6 +19,11 @@ namespace Disk.Visual.Impl
                 FontSize = MaxRadius * 2 - Radius * 2,
                 Foreground = Brushes.DarkBlue
             };
+
+            for (int i = 1; i < Circles.Count; i++)
+            {
+                Circles[i] = new Circle(center, radius * (Circles.Count - i), 0, Brushes.White, iniSize);
+            }
         }
 
         public void UpdateNumber(int number) => _numberText.Text = number.ToString();   

@@ -1,4 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using System.IO;
 
 namespace Disk.Entity;
 
@@ -35,8 +37,18 @@ public partial class DiskContext : DbContext
 
     public virtual DbSet<SessionResult> SessionResults { get; set; }
 
+    private readonly StreamWriter _logStream = new("DBlog.log", true);
+
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        => optionsBuilder.UseSqlite("Data Source=Db/disk.db;");
+    {
+        var config = new ConfigurationBuilder()
+                .AddJsonFile("/Properties/appsettings.json")
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .Build();
+
+        optionsBuilder.UseSqlite(config.GetConnectionString("DefaultConnection"));
+        optionsBuilder.LogTo(_logStream.WriteLine, Microsoft.Extensions.Logging.LogLevel.Trace);
+    }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -247,4 +259,18 @@ public partial class DiskContext : DbContext
     }
 
     partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
+
+    public override void Dispose()
+    {
+        GC.SuppressFinalize(this);
+        base.Dispose();
+        _logStream.Dispose();
+    }
+
+    public override async ValueTask DisposeAsync()
+    {
+        GC.SuppressFinalize(this);
+        await base.DisposeAsync();
+        await _logStream.DisposeAsync();
+    }
 }
