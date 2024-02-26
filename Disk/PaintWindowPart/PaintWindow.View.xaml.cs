@@ -31,13 +31,13 @@ namespace Disk
                 var dispersion = Calculator2D.Dispersion(dataset);
                 var deviation = Calculator2D.StandartDeviation(dataset);
 
-                MessageBox.Show(
+/*                MessageBox.Show(
                 $"""
                  {Localization.Paint_Score}: {Score}
                  {Localization.Paint_MathExp}: {mx}
                  {Localization.Paint_Dispersion}: {dispersion}
                  {Localization.Paint_StandartDeviation}: {deviation}
-                 """);
+                 """);*/
 
                 MessageBox.Show(Localization.Paint_Over);
             }
