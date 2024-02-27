@@ -48,7 +48,7 @@ namespace Disk.Visual.Impl
         /// <summary>
         ///     List of circles representing the concentric rings of the target
         /// </summary>
-        private readonly List<Circle> Circles =
+        protected readonly List<Circle> Circles =
             [
                 new(center, radius * 5, 0, Brushes.Red, iniSize),
                 new(center, radius * 4, 0, Brushes.White, iniSize),

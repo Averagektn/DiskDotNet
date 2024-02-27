@@ -147,8 +147,10 @@ namespace Disk
             if (MapFilePath != string.Empty)
             {
                 MapReader = FileReader<float>.Open(MapFilePath);
-                Target = new(Converter.ToWnd_FromRelative(MapReader.GetXY() ?? new(0.5f, 0.5f)),
+                var center = MapReader.GetXY() ?? new(0.5f, 0.5f);
+                Target = new(Converter.ToWnd_FromRelative(center),
                     Settings.TARGET_INI_RADIUS, SCREEN_INI_SIZE, TargetHP);
+                TargetCenters.Add(center);
             }
             else
             {

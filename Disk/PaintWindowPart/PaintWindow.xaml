@@ -4,12 +4,17 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:viewmodel="clr-namespace:Disk.ViewModel" d:DataContext="{d:DesignInstance Type=viewmodel:PaintViewModel}"
+        xmlns:lang="clr-namespace:Disk.Properties"
         mc:Ignorable="d"
-        Title="Счет: 0" Height="600" Width="800">
+        Title="{x:Static lang:Localization.Paint_Title}" Height="600" Width="800">
 
     <Window.Resources>
         <ResourceDictionary Source="/Style/BtnStyles.xaml"/>
     </Window.Resources>
+
+    <Window.DataContext>
+        <viewmodel:PaintViewModel/>
+    </Window.DataContext>
 
     <Grid x:Name="PaintAreaGrid">
         <Grid.ColumnDefinitions>
@@ -34,11 +39,11 @@
         </Viewbox>
 
         <Viewbox Grid.Row="2" Grid.Column="1" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="10">
-            <RadioButton Name="RbRose" Content="Rose" FontSize="20" GroupName="DataType" IsChecked="True" Visibility="Hidden"/>
+            <RadioButton Name="RbRose" Content="{x:Static lang:Localization.Paint_WindRose}" FontSize="20" GroupName="DataType" IsChecked="True" Visibility="Hidden"/>
         </Viewbox>
 
         <Viewbox Grid.Row="3" Grid.Column="1" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="10">
-            <RadioButton Name="RbPath" Content="Path" FontSize="20" GroupName="DataType" Visibility="Hidden"/>
+            <RadioButton Name="RbPath" Content="{x:Static lang:Localization.Paint_Path}" FontSize="20" GroupName="DataType" Visibility="Hidden"/>
         </Viewbox>
 
         <Viewbox Grid.Row="4" Grid.Column="1" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="10">
@@ -50,7 +55,7 @@
         </Viewbox>
         
         <Viewbox Grid.Row="5" Grid.Column="1" Margin="10 10 10 10">
-            <Button Content="Остановить" Click="OnStopClick" Style="{StaticResource GradientButtonStyle}" FontSize="20" Name="BtnStop"/>
+            <Button Content="{x:Static lang:Localization.Paint_Stop}" Click="OnStopClick" Style="{StaticResource GradientButtonStyle}" FontSize="20" Name="BtnStop"/>
         </Viewbox>
 
         <Canvas Name="PaintArea" Grid.RowSpan="6">

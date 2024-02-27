@@ -9,10 +9,12 @@
     <Grid Name="PaintArea">
         <Line X1="0" Y1="0" X2="0" Y2="{Binding ActualHeight, RelativeSource={RelativeSource AncestorType=Grid}}" Stroke="Black" StrokeThickness="2" HorizontalAlignment="Center" />
         <Line X1="0" Y1="0" X2="{Binding ActualWidth, RelativeSource={RelativeSource AncestorType=Grid}}" Y2="0" Stroke="Black" StrokeThickness="2" VerticalAlignment="Center" />
-        <Path Fill="Transparent" Stroke="Black" StrokeThickness="2" Stretch="Fill">
-            <Path.Data>
-                <EllipseGeometry x:Name="AllowedArea" RadiusX="{Binding ActualWidth, RelativeSource={RelativeSource AncestorType=Grid}}" RadiusY="{Binding ActualHeight, RelativeSource={RelativeSource AncestorType=Grid}}" />
-            </Path.Data>
-        </Path>
+        <Canvas>
+            <Path Fill="Transparent" Stretch="Fill" Stroke="Black" StrokeThickness="2">
+                <Path.Data>
+                    <EllipseGeometry x:Name="AllowedArea"/>
+                </Path.Data>
+            </Path>
+        </Canvas>
     </Grid>
 </Window>

@@ -15,13 +15,21 @@ namespace Disk.Visual.Impl
             _numberText = new TextBlock()
             {
                 Text = number.ToString(),
-                Margin = new(Left + MaxRadius / 2, Top - Radius / 2, 0, 0),
-                FontSize = MaxRadius * 2 - Radius * 2,
                 Foreground = Brushes.DarkBlue
             };
+            UpdateSizes();
+
+            for (int i = 1; i < Circles.Count; i++)
+            {
+                Circles[i] = new Circle(center, radius * (Circles.Count - i), 0, Brushes.White, iniSize);
+            }
         }
 
-        public void UpdateNumber(int number) => _numberText.Text = number.ToString();   
+        public void UpdateNumber(int number)
+        {
+            _numberText.Text = number.ToString();
+            UpdateSizes();
+        }
 
         public override void Draw(IAddChild addChild)
         {
@@ -32,20 +40,26 @@ namespace Disk.Visual.Impl
         public override void Move(bool moveTop, bool moveRight, bool moveBottom, bool moveLeft)
         {
             base.Move(moveTop, moveRight, moveBottom, moveLeft);
-            _numberText.Margin = new(Left + MaxRadius / 2, Top - Radius / 2, 0, 0);
+            UpdateSizes();
         }
 
         public override void Scale(Size newSize)
         {
             base.Scale(newSize);
-            _numberText.FontSize = MaxRadius * 2 - Radius * 2;
-            _numberText.Margin = new(Left + MaxRadius / 2, Top - Radius / 2, 0, 0);
+            UpdateSizes();
         }
 
         public override void Move(Point2D<int> center)
         {
             base.Move(center);
-            _numberText.Margin = new(Left + MaxRadius / 2, Top - Radius, 0, 0);
+            UpdateSizes();
+        }
+
+        private void UpdateSizes()
+        {
+            var numSize = _numberText.Text.Length;
+            _numberText.FontSize = (MaxRadius * 2 - Radius * 2) / numSize + Radius * (numSize - 1);
+            _numberText.Margin = new(Left + MaxRadius / 2, Top - Radius / 2 + MaxRadius * (numSize - 1) / 2, 0, 0);
         }
 
         public override void Remove(UIElementCollection collection)

@@ -58,7 +58,8 @@ namespace Disk.Visual.Impl
 
             Polyline = new Polyline()
             {
-                Stroke = color
+                Stroke = color,
+                StrokeThickness = 3
             };
 
             foreach (var point in points)
