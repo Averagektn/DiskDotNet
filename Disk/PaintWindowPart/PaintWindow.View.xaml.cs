@@ -113,22 +113,15 @@ namespace Disk
                     {
                         using var userReader = FileReader<float>.Open(roseFileName, Settings.LOG_SEPARATOR);
 
-                        var angRadius = Converter.ToAngleX_FromLog(Target.Radius) +
-                            Converter.ToAngleY_FromLog(Target.Radius) / 2;
-
-/*                        var dataset =
-                            userReader
-                            .Get2DPoints()
-                            .Select(p =>
-                                new PolarPointF(p.X - TargetCenters[selectedIndex].X, p.Y - TargetCenters[selectedIndex].Y))
-                            .Where(p => Math.Abs(p.X) > angRadius && Math.Abs(p.Y) > angRadius).ToList();*/
+                        var angRadius = (Converter.ToAngleX_FromLog(Target.Radius) +
+                            Converter.ToAngleY_FromLog(Target.Radius)) / 2;
 
                         var dataset =
                             userReader
                             .Get2DPoints()
                             .Select(p =>
                                 new PolarPointF(p.X - TargetCenters[selectedIndex].X, p.Y - TargetCenters[selectedIndex].Y))
-                            .ToList();
+                            .Where(p => Math.Abs(p.X) > angRadius && Math.Abs(p.Y) > angRadius).ToList();
 
                         var userRose = new Graph(dataset, PaintPanelSize, Brushes.LightGreen, 8);
                         userRose.Draw(PaintArea);
