@@ -95,8 +95,8 @@ namespace Disk
         private Size DataPanelSize => DataRect.RenderSize;
 
         private string MovingToTargetLogName => GetMovToTargetFileName(TargetID);
-        private string OnTargetLogName => GetInTargetFileName(TargetID - 1);
-        private string TargetReachedLogName => GetReachedFileName(TargetID - 1);
+        private string OnTargetLogName => GetInTargetFileName(TargetID);
+        private string TargetReachedLogName => GetReachedFileName(TargetID);
 
         private string UsrWndLog => $"{CurrPath}{FilePath.DirectorySeparatorChar}{Settings.USER_WND_LOG_FILE}";
         private string UsrAngLog => $"{CurrPath}{FilePath.DirectorySeparatorChar}{Settings.USER_ANG_LOG_FILE}";

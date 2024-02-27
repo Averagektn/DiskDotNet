@@ -100,12 +100,7 @@ namespace Disk
         private void CbTargets_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             PaintArea.Children.Clear();
-            // TEST IT
-            /*            foreach (var elem in Drawables)
-                        {
-                            elem?.Draw(PaintArea);
-                        }
-            */
+
             var selectedIndex = CbTargets.SelectedIndex;
             var roseFileName = GetInTargetFileName(selectedIndex + 1);
             var pathFileName = GetMovToTargetFileName(selectedIndex + 1);
@@ -121,12 +116,19 @@ namespace Disk
                         var angRadius = Converter.ToAngleX_FromLog(Target.Radius) +
                             Converter.ToAngleY_FromLog(Target.Radius) / 2;
 
+/*                        var dataset =
+                            userReader
+                            .Get2DPoints()
+                            .Select(p =>
+                                new PolarPointF(p.X - TargetCenters[selectedIndex].X, p.Y - TargetCenters[selectedIndex].Y))
+                            .Where(p => Math.Abs(p.X) > angRadius && Math.Abs(p.Y) > angRadius).ToList();*/
+
                         var dataset =
                             userReader
                             .Get2DPoints()
                             .Select(p =>
                                 new PolarPointF(p.X - TargetCenters[selectedIndex].X, p.Y - TargetCenters[selectedIndex].Y))
-                            .Where(p => Math.Abs(p.X) > angRadius && Math.Abs(p.Y) > angRadius).ToList();
+                            .ToList();
 
                         var userRose = new Graph(dataset, PaintPanelSize, Brushes.LightGreen, 8);
                         userRose.Draw(PaintArea);

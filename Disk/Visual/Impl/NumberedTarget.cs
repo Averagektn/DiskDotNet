@@ -11,7 +11,7 @@ namespace Disk.Visual.Impl
         private readonly TextBlock _numberText;
 
         public NumberedTarget(Point2D<int> center, int radius, Size iniSize, int number) : base(center, radius, iniSize)
-        { 
+        {
             _numberText = new TextBlock()
             {
                 Text = number.ToString(),
