@@ -11,16 +11,13 @@ namespace Disk.Visual.Impl
         private readonly TextBlock _numberText;
 
         public NumberedTarget(Point2D<int> center, int radius, Size iniSize, int number) : base(center, radius, iniSize)
-        {
-            var numSize = number.ToString().Length;
-
+        { 
             _numberText = new TextBlock()
             {
                 Text = number.ToString(),
-                FontSize = (MaxRadius * 2 - Radius * 2) / numSize + Radius * (numSize - 1),
                 Foreground = Brushes.DarkBlue
             };
-            UpdateMargin();
+            UpdateSizes();
 
             for (int i = 1; i < Circles.Count; i++)
             {
@@ -28,7 +25,11 @@ namespace Disk.Visual.Impl
             }
         }
 
-        public void UpdateNumber(int number) => _numberText.Text = number.ToString();
+        public void UpdateNumber(int number)
+        {
+            _numberText.Text = number.ToString();
+            UpdateSizes();
+        }
 
         public override void Draw(IAddChild addChild)
         {
@@ -39,26 +40,25 @@ namespace Disk.Visual.Impl
         public override void Move(bool moveTop, bool moveRight, bool moveBottom, bool moveLeft)
         {
             base.Move(moveTop, moveRight, moveBottom, moveLeft);
-            UpdateMargin();
+            UpdateSizes();
         }
 
         public override void Scale(Size newSize)
         {
             base.Scale(newSize);
-            var numSize = _numberText.Text.Length;
-            _numberText.FontSize = (MaxRadius * 2 - Radius * 2) / numSize + Radius * (numSize - 1);
-            UpdateMargin();
+            UpdateSizes();
         }
 
         public override void Move(Point2D<int> center)
         {
             base.Move(center);
-            UpdateMargin();
+            UpdateSizes();
         }
 
-        private void UpdateMargin()
+        private void UpdateSizes()
         {
             var numSize = _numberText.Text.Length;
+            _numberText.FontSize = (MaxRadius * 2 - Radius * 2) / numSize + Radius * (numSize - 1);
             _numberText.Margin = new(Left + MaxRadius / 2, Top - Radius / 2 + MaxRadius * (numSize - 1) / 2, 0, 0);
         }
 
