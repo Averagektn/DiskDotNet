@@ -17,7 +17,7 @@ namespace Disk
 {
     public partial class PaintWindow : Window
     {
-        public const int TargetHP = 100;
+        public const int TargetHP = 20;
 
         public string MapFilePath = string.Empty;
         public string CurrPath = string.Empty;
