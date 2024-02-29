@@ -13,6 +13,8 @@
   <ItemGroup>
     <None Remove="Properties\logo.gif" />
     <None Remove="Properties\logo.jpg" />
+    <None Remove="Properties\pngegg.png" />
+    <None Remove="Properties\WinniePooh.png" />
   </ItemGroup>
 
   <ItemGroup>
@@ -33,6 +35,10 @@
   <ItemGroup>
     <Resource Include="Properties\logo.gif" />
     <Resource Include="Properties\logo.jpg" />
+    <Resource Include="Properties\pngegg.png" />
+    <Resource Include="Properties\WinniePooh.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
   </ItemGroup>
 
   <ItemGroup>

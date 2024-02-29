@@ -402,3 +402,4 @@ notes
 *.gif
 *.jpg
 /Disk/Properties/Config/appsettings.json
+*.png

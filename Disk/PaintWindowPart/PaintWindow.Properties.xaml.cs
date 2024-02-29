@@ -57,7 +57,7 @@ namespace Disk
 
         private FileReader<float>? MapReader;
 
-        private User? User;
+        private UserPicture? User;
 
         private ProgressTarget? Target;
 
@@ -136,6 +136,9 @@ namespace Disk
             CbTargets.SelectionChanged += CbTargets_SelectionChanged;
             RbPath.Checked += RbPath_Checked;
             RbRose.Checked += RbRose_Checked;
+
+            User = new("/Properties/pngegg.png", new(SCREEN_INI_CENTER_X, SCREEN_INI_CENTER_Y), Settings.USER_INI_SPEED,
+                new(50, 50), SCREEN_INI_SIZE);
         }
     }
 }
