@@ -58,6 +58,7 @@ namespace Disk
         private FileReader<float>? MapReader;
 
         private UserPicture? User;
+        //private User? User;
 
         private ProgressTarget? Target;
 
@@ -139,6 +140,7 @@ namespace Disk
 
             User = new("/Properties/pngegg.png", new(SCREEN_INI_CENTER_X, SCREEN_INI_CENTER_Y), Settings.USER_INI_SPEED,
                 new(50, 50), SCREEN_INI_SIZE);
+            //User = new(new(SCREEN_INI_CENTER_X, SCREEN_INI_CENTER_Y), 5, 5, Brushes.Green, SCREEN_INI_SIZE);
         }
     }
 }

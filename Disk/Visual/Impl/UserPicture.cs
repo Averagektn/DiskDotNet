@@ -9,13 +9,13 @@ namespace Disk.Visual.Impl
 {
     internal class UserPicture : IFigure
     {
-        public int Right => (int)(Center.X - _image.Width / 2);
+        public int Right => (int)(Center.X + _image.Width / 2);
 
         public int Top => (int)(Center.Y - _image.Height / 2);
 
         public int Bottom => (int)(Center.Y + _image.Height / 2);
 
-        public int Left => (int)(Center.X + _image.Width / 2);
+        public int Left => (int)(Center.X - _image.Width / 2);
         protected const double DIAGONAL_CORRECTION = 1.41;
 
         public Point2D<int> Center { get; private set; }
@@ -56,7 +56,6 @@ namespace Disk.Visual.Impl
                 Height = imageSize.Height,
                 HorizontalAlignment = HorizontalAlignment.Left,
                 VerticalAlignment = VerticalAlignment.Top,
-                Margin = new(10, 10, 0, 0)
             };
         }
 

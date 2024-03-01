@@ -119,7 +119,7 @@ namespace Disk
 
         private void NetworkReceive()
         {
-/*            try
+            try
             {
                 using var con = Connection.GetConnection(IPAddress.Parse(Settings.IP), Settings.PORT);
 
@@ -132,7 +132,7 @@ namespace Disk
             {
                 MessageBox.Show(Localization.Paint_ConnectionLost);
                 Application.Current.Dispatcher.BeginInvoke(new Action(() => Close()));
-            }*/
+            }
         }
 
         private void OnLoaded(object sender, RoutedEventArgs e)
@@ -149,7 +149,7 @@ namespace Disk
                 MapReader = FileReader<float>.Open(MapFilePath);
                 var center = MapReader.GetXY() ?? new(0.5f, 0.5f);
                 Target = new(Converter.ToWnd_FromRelative(center),
-                    Settings.TARGET_INI_RADIUS, SCREEN_INI_SIZE, TargetHP);
+                    Settings.TARGET_INI_RADIUS + 5, SCREEN_INI_SIZE, TargetHP);
                 TargetCenters.Add(center);
             }
             else
