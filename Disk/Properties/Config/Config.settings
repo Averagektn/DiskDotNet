@@ -104,5 +104,8 @@
     <Setting Name="LANGUAGE" Type="System.String" Scope="User">
       <Value Profile="(Default)">ru-RU</Value>
     </Setting>
+    <Setting Name="DB_CONNECTION" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Data Source=C:\\Archive\\6 semester\\DiskDotNet\\Disk\\Db\\disk.db</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

@@ -1,5 +1,5 @@
 --
--- File generated with SQLiteStudio v3.4.4 on вт апр. 30 18:03:12 2024
+-- File generated with SQLiteStudio v3.4.4 on вт апр. 30 23:23:11 2024
 --
 -- Text encoding used: System
 --
@@ -12,7 +12,8 @@ DROP TABLE IF EXISTS address;
 CREATE TABLE IF NOT EXISTS address (
     addr_id        INTEGER PRIMARY KEY AUTOINCREMENT,
     addr_region    INTEGER NOT NULL
-                           REFERENCES region (rgn_id),
+                           REFERENCES region (rgn_id) ON DELETE RESTRICT
+                                                      ON UPDATE CASCADE,
     addr_street    TEXT    NOT NULL
                            COLLATE NOCASE
                            COLLATE RTRIM,
@@ -22,14 +23,7 @@ CREATE TABLE IF NOT EXISTS address (
                            CONSTRAINT is_postitive CHECK (addr_apartment > 0),
     addr_corpus    INTEGER DEFAULT (1) 
                            NOT NULL
-                           CONSTRAINT is_postitive CHECK (addr_corpus > 0),
-    UNIQUE (
-        addr_region,
-        addr_street,
-        addr_house,
-        addr_apartment,
-        addr_corpus
-    )
+                           CONSTRAINT is_postitive CHECK (addr_corpus > 0) 
 );
 
 
@@ -44,7 +38,7 @@ CREATE TABLE IF NOT EXISTS appointment (
     app_doctor  INTEGER REFERENCES doctor (doc_id) ON DELETE RESTRICT
                                                    ON UPDATE CASCADE
                         NOT NULL,
-    app_patient INTEGER REFERENCES patient (pat_id) ON DELETE RESTRICT
+    app_patient INTEGER REFERENCES patient (pat_id) ON DELETE CASCADE
                                                     ON UPDATE CASCADE
                         NOT NULL
 );
@@ -55,11 +49,10 @@ DROP TABLE IF EXISTS card;
 
 CREATE TABLE IF NOT EXISTS card (
     crd_id      INTEGER  PRIMARY KEY AUTOINCREMENT,
-    crd_patient INTEGER  REFERENCES patient (pat_id) ON DELETE RESTRICT
+    crd_patient INTEGER  REFERENCES patient (pat_id) ON DELETE CASCADE
                                                      ON UPDATE CASCADE
                          NOT NULL,
-    crd_number  TEXT (9) UNIQUE
-                         NOT NULL
+    crd_number  TEXT (9) NOT NULL
                          COLLATE NOCASE
                          COLLATE RTRIM
 );
@@ -101,7 +94,8 @@ CREATE TABLE IF NOT EXISTS district (
                        COLLATE NOCASE
                        COLLATE RTRIM,
     dst_region INTEGER NOT NULL
-                       REFERENCES region (rgn_id) 
+                       REFERENCES region (rgn_id) ON DELETE RESTRICT
+                                                  ON UPDATE CASCADE
 );
 
 
@@ -172,7 +166,7 @@ CREATE TABLE IF NOT EXISTS map (
     map_created_at       TEXT    NOT NULL
                                  COLLATE NOCASE
                                  COLLATE RTRIM,
-    map_created_by       INTEGER REFERENCES doctor (doc_id) ON DELETE CASCADE
+    map_created_by       INTEGER REFERENCES doctor (doc_id) ON DELETE RESTRICT
                                                             ON UPDATE CASCADE
                                  NOT NULL,
     map_name             TEXT    UNIQUE
@@ -190,7 +184,7 @@ CREATE TABLE IF NOT EXISTS note (
     nt_patient INTEGER REFERENCES patient (pat_id) ON DELETE CASCADE
                                                    ON UPDATE CASCADE
                        NOT NULL,
-    nt_doctor  INTEGER REFERENCES doctor (doc_id) ON DELETE CASCADE
+    nt_doctor  INTEGER REFERENCES doctor (doc_id) ON DELETE RESTRICT
                                                   ON UPDATE CASCADE
                        NOT NULL,
     nt_text    TEXT    NOT NULL
@@ -210,7 +204,8 @@ CREATE TABLE IF NOT EXISTS operation (
     op_name        TEXT    NOT NULL
                            COLLATE NOCASE
                            COLLATE RTRIM,
-    op_cabinet     INTEGER REFERENCES doctor_cabinet (dc_id),
+    op_cabinet     INTEGER REFERENCES doctor_cabinet (dc_id) ON DELETE RESTRICT
+                                                             ON UPDATE CASCADE,
     op_date_time   TEXT    NOT NULL
                            COLLATE RTRIM
                            COLLATE NOCASE
@@ -221,7 +216,8 @@ CREATE TABLE IF NOT EXISTS operation (
 DROP TABLE IF EXISTS path_in_target;
 
 CREATE TABLE IF NOT EXISTS path_in_target (
-    pit_session          INTEGER REFERENCES session (ses_id),
+    pit_session          INTEGER REFERENCES session (ses_id) ON DELETE CASCADE
+                                                             ON UPDATE CASCADE,
     pit_target_id        INTEGER,
     pit_coordinates_json TEXT    NOT NULL,
     PRIMARY KEY (
@@ -235,7 +231,8 @@ CREATE TABLE IF NOT EXISTS path_in_target (
 DROP TABLE IF EXISTS path_to_target;
 
 CREATE TABLE IF NOT EXISTS path_to_target (
-    ptt_session          INTEGER REFERENCES session (ses_id),
+    ptt_session          INTEGER REFERENCES session (ses_id) ON DELETE CASCADE
+                                                             ON UPDATE CASCADE,
     ptt_num              INTEGER,
     ptt_coordinates_json TEXT    NOT NULL,
     ptt_time             REAL    NOT NULL,
@@ -262,7 +259,7 @@ CREATE TABLE IF NOT EXISTS patient (
                                 COLLATE NOCASE,
     pat_patronymic    TEXT (30) COLLATE RTRIM
                                 COLLATE NOCASE,
-    pat_address       INTEGER   REFERENCES address (addr_id) ON DELETE RESTRICT
+    pat_address       INTEGER   REFERENCES address (addr_id) ON DELETE CASCADE
                                                              ON UPDATE CASCADE
                                 NOT NULL,
     pat_date_of_birth TEXT      NOT NULL
@@ -292,7 +289,8 @@ CREATE TABLE IF NOT EXISTS procedure (
     pro_name        TEXT    NOT NULL
                             COLLATE RTRIM
                             COLLATE NOCASE,
-    pro_cabinet     INTEGER REFERENCES doctor_cabinet (dc_id) 
+    pro_cabinet     INTEGER REFERENCES doctor_cabinet (dc_id) ON DELETE RESTRICT
+                                                              ON UPDATE CASCADE
 );
 
 
@@ -323,7 +321,8 @@ CREATE TABLE IF NOT EXISTS session (
                               COLLATE RTRIM
                               COLLATE NOCASE,
     ses_appointment   INTEGER NOT NULL
-                              REFERENCES appointment (app_id) 
+                              REFERENCES appointment (app_id) ON DELETE CASCADE
+                                                              ON UPDATE CASCADE
 );
 
 
@@ -332,7 +331,8 @@ DROP TABLE IF EXISTS session_result;
 
 CREATE TABLE IF NOT EXISTS session_result (
     sres_id         INTEGER PRIMARY KEY
-                            REFERENCES session (ses_id),
+                            REFERENCES session (ses_id) ON DELETE CASCADE
+                                                        ON UPDATE CASCADE,
     sres_math_exp   REAL    NOT NULL,
     sres_deviation  REAL    NOT NULL,
     sres_dispersion REAL    NOT NULL,
@@ -349,7 +349,7 @@ CREATE TABLE IF NOT EXISTS target_file (
     tf_filepath TEXT    NOT NULL
                         UNIQUE
                         COLLATE RTRIM,
-    tf_added_by         REFERENCES doctor (doc_id) ON DELETE CASCADE
+    tf_added_by         REFERENCES doctor (doc_id) ON DELETE RESTRICT
                                                    ON UPDATE CASCADE
                         NOT NULL
 );
@@ -373,6 +373,16 @@ CREATE TABLE IF NOT EXISTS xray (
 );
 
 
+-- Index: IDX_name
+DROP INDEX IF EXISTS IDX_name;
+
+CREATE INDEX IF NOT EXISTS IDX_name ON patient (
+    pat_name,
+    pat_surname,
+    pat_patronymic
+);
+
+
 -- Index: IDX_number
 DROP INDEX IF EXISTS IDX_number;
 
@@ -386,6 +396,14 @@ DROP INDEX IF EXISTS IDX_time;
 
 CREATE INDEX IF NOT EXISTS IDX_time ON appointment (
     app_time DESC
+);
+
+
+-- Index: UNQ_IDX_number
+DROP INDEX IF EXISTS UNQ_IDX_number;
+
+CREATE UNIQUE INDEX IF NOT EXISTS UNQ_IDX_number ON card (
+    crd_number
 );
 
 

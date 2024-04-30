@@ -421,5 +421,17 @@ namespace Disk.Properties.Config {
                 this["LANGUAGE"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=C:\\\\Archive\\\\6 semester\\\\DiskDotNet\\\\Disk\\\\Db\\\\disk.db")]
+        public string DB_CONNECTION {
+            get {
+                return ((string)(this["DB_CONNECTION"]));
+            }
+            set {
+                this["DB_CONNECTION"] = value;
+            }
+        }
     }
 }

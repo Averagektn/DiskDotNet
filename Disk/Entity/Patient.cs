@@ -2,7 +2,7 @@
 
 public partial class Patient
 {
-    public int PatId { get; set; }
+    public long PatId { get; set; }
 
     public string PatName { get; set; } = null!;
 
@@ -10,17 +10,21 @@ public partial class Patient
 
     public string? PatPatronymic { get; set; }
 
-    public int PatAddress { get; set; }
+    public long PatAddress { get; set; }
 
     public string PatDateOfBirth { get; set; } = null!;
 
-    public string PatPhoneMobile { get; set; } = null!;
+    public string? PatPhoneMobile { get; set; }
 
     public string? PatPhoneHome { get; set; }
 
-    public virtual ICollection<Card> Cards { get; set; } = [];
+    public virtual ICollection<Appointment> Appointments { get; set; } = new List<Appointment>();
+
+    public virtual ICollection<Card> Cards { get; set; } = new List<Card>();
+
+    public virtual ICollection<Note> Notes { get; set; } = new List<Note>();
 
     public virtual Address PatAddressNavigation { get; set; } = null!;
 
-    public virtual ICollection<Session> Sessions { get; set; } = [];
+    public virtual ICollection<Procedure> Procedures { get; set; } = new List<Procedure>();
 }
