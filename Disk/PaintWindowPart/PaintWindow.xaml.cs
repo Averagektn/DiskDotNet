@@ -1,6 +1,5 @@
 ﻿using Disk.Calculations.Impl.Converters;
 using Disk.Data.Impl;
-using Disk.Visual.Impl;
 using System.Diagnostics;
 using System.IO;
 using System.Net;
@@ -126,12 +125,14 @@ namespace Disk
                 while (IsGame)
                 {
                     CurrentPos = con.GetXYZ();
+                    //???
+                    //Thread.Sleep(Settings.MOVE_TIME / 2);
                 }
             }
             catch
             {
                 MessageBox.Show(Localization.Paint_ConnectionLost);
-                Application.Current.Dispatcher.BeginInvoke(new Action(() => Close()));
+                Application.Current.Dispatcher.BeginInvoke(new Action(Close));
             }
         }
 
@@ -164,8 +165,8 @@ namespace Disk
 
             StartPoint = new(0.0f, 0.0f);
 
-/*            User = new("/Properties/WinniePooh.png", new(SCREEN_INI_CENTER_X, SCREEN_INI_CENTER_Y), Settings.USER_INI_SPEED,
-                new(100, 100), SCREEN_INI_SIZE);*/
+            /*            User = new("/Properties/WinniePooh.png", new(SCREEN_INI_CENTER_X, SCREEN_INI_CENTER_Y), Settings.USER_INI_SPEED,
+                            new(100, 100), SCREEN_INI_SIZE);*/
             User.OnShot += UserLogWnd.LogLn;
             User.OnShot += (p) => UserLogAng.LogLn(Converter?.ToAngle_FromWnd(p));
             User.OnShot += (p) => UserLogCen.LogLn(Converter?.ToLogCoord(p));
