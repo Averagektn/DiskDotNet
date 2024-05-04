@@ -2,19 +2,19 @@
 
 public partial class Address
 {
-    public int AddrId { get; set; }
+    public long AddrId { get; set; }
 
-    public string AddrRegion { get; set; } = null!;
+    public long AddrRegion { get; set; }
 
     public string AddrStreet { get; set; } = null!;
 
-    public int AddrHouse { get; set; }
+    public long AddrHouse { get; set; }
 
-    public int AddrApartment { get; set; }
+    public long AddrApartment { get; set; }
 
-    public int AddrCorpus { get; set; }
+    public long AddrCorpus { get; set; }
 
-    public string AddrDistrict { get; set; } = null!;
+    public virtual Region AddrRegionNavigation { get; set; } = null!;
 
-    public virtual ICollection<Patient> Patients { get; set; } = [];
+    public virtual ICollection<Patient> Patients { get; set; } = new List<Patient>();
 }

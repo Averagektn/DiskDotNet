@@ -2,9 +2,9 @@
 
 public partial class M2mCardDiagnosis
 {
-    public int C2dCard { get; set; }
+    public long C2dCard { get; set; }
 
-    public int C2dDiagnosis { get; set; }
+    public long C2dDiagnosis { get; set; }
 
     public string C2dDiagnosisStart { get; set; } = null!;
 

@@ -8,11 +8,14 @@
     <UseWPF>true</UseWPF>
     <SupportedOSPlatformVersion>7.0</SupportedOSPlatformVersion>
     <ApplicationIcon>Properties\Icon.ico</ApplicationIcon>
+    <GenerateDocumentationFile>False</GenerateDocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>
     <None Remove="Properties\logo.gif" />
     <None Remove="Properties\logo.jpg" />
+    <None Remove="Properties\pngegg.png" />
+    <None Remove="Properties\WinniePooh.png" />
   </ItemGroup>
 
   <ItemGroup>
@@ -33,6 +36,10 @@
   <ItemGroup>
     <Resource Include="Properties\logo.gif" />
     <Resource Include="Properties\logo.jpg" />
+    <Resource Include="Properties\pngegg.png" />
+    <Resource Include="Properties\WinniePooh.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
   </ItemGroup>
 
   <ItemGroup>
@@ -74,6 +81,10 @@
     <None Update="Properties\Untitled.ico">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Entity\" />
   </ItemGroup>
 
 </Project>

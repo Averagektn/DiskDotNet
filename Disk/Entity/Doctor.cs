@@ -2,7 +2,7 @@
 
 public partial class Doctor
 {
-    public int DocId { get; set; }
+    public long DocId { get; set; }
 
     public string DocName { get; set; } = null!;
 
@@ -12,7 +12,15 @@ public partial class Doctor
 
     public string DocPassword { get; set; } = null!;
 
-    public virtual ICollection<Map> Maps { get; set; } = [];
+    public virtual ICollection<Appointment> Appointments { get; set; } = new List<Appointment>();
 
-    public virtual ICollection<Session> Sessions { get; set; } = [];
+    public virtual ICollection<Map> Maps { get; set; } = new List<Map>();
+
+    public virtual ICollection<Note> Notes { get; set; } = new List<Note>();
+
+    public virtual ICollection<Operation> Operations { get; set; } = new List<Operation>();
+
+    public virtual ICollection<Procedure> Procedures { get; set; } = new List<Procedure>();
+
+    public virtual ICollection<TargetFile> TargetFiles { get; set; } = new List<TargetFile>();
 }
