@@ -1,5 +1,5 @@
 --
--- File generated with SQLiteStudio v3.4.4 on ѕн май 20 16:28:38 2024
+-- File generated with SQLiteStudio v3.4.4 on —р май 22 15:13:00 2024
 --
 -- Text encoding used: System
 --
@@ -15,7 +15,7 @@ CREATE TABLE IF NOT EXISTS appointment (
     app_doctor    INTEGER REFERENCES doctor (doc_id) ON DELETE CASCADE
                                                      ON UPDATE CASCADE
                           NOT NULL,
-    app_patient   NUMERIC REFERENCES patient (pat_id) ON DELETE CASCADE
+    app_patient   INTEGER REFERENCES patient (pat_id) ON DELETE CASCADE
                                                       ON UPDATE CASCADE
                           NOT NULL
 );
@@ -83,7 +83,7 @@ CREATE TABLE IF NOT EXISTS path_in_target (
 DROP TABLE IF EXISTS path_to_target;
 
 CREATE TABLE IF NOT EXISTS path_to_target (
-    ptt_session                  REFERENCES session (ses_id) ON DELETE RESTRICT
+    ptt_session          INTEGER REFERENCES session (ses_id) ON DELETE RESTRICT
                                                              ON UPDATE CASCADE
                                  NOT NULL,
     ptt_target_num       INTEGER NOT NULL,
@@ -135,7 +135,7 @@ CREATE TABLE IF NOT EXISTS session (
 DROP TABLE IF EXISTS session_result;
 
 CREATE TABLE IF NOT EXISTS session_result (
-    sres_id                 PRIMARY KEY
+    sres_id         INTEGER PRIMARY KEY
                             REFERENCES session (ses_id) ON DELETE RESTRICT
                                                         ON UPDATE CASCADE,
     sres_math_exp   REAL    NOT NULL,
