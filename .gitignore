@@ -403,3 +403,5 @@ notes
 *.jpg
 /Disk/Properties/Config/appsettings.json
 *.png
+*.db
+Db/disk.db
