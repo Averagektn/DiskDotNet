@@ -405,3 +405,4 @@ notes
 *.png
 *.db
 Db/disk.db
+/Db/disk.db
