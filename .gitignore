@@ -406,3 +406,4 @@ notes
 *.db
 Db/disk.db
 /Db/disk.db
+*.bmp
