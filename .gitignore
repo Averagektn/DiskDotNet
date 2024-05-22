@@ -407,3 +407,4 @@ notes
 Db/disk.db
 /Db/disk.db
 *.bmp
+/Disk/Properties/Config/AppConfig.cs
