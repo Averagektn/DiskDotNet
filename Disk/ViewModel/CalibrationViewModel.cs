@@ -1,7 +1,6 @@
 ﻿using Disk.Data.Impl;
-using System.ComponentModel;
+using Disk.ViewModel.Common;
 using System.Net;
-using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Threading;
@@ -9,7 +8,7 @@ using Settings = Disk.Properties.Config.Config;
 
 namespace Disk.ViewModel
 {
-    public class CalibrationViewModel : INotifyPropertyChanged
+    public class CalibrationViewModel : ObserverViewModel
     {
         // Properties
         public string XCoord { get => _xCoord; set => SetProperty(ref _xCoord, value); }
@@ -52,19 +51,6 @@ namespace Disk.ViewModel
         private float YAngle = Settings.Y_MAX_ANGLE;
 
         private bool IsRunningThread = true;
-
-        public event PropertyChangedEventHandler? PropertyChanged;
-        protected bool SetProperty<T>(ref T field, T newValue, [CallerMemberName] string? propertyName = null)
-        {
-            if (!Equals(field, newValue))
-            {
-                field = (newValue);
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-                return true;
-            }
-
-            return false;
-        }
 
         public CalibrationViewModel()
         {
@@ -111,7 +97,7 @@ namespace Disk.ViewModel
             }
             catch
             {
-                MessageBox.Show(Properties.Localization.Calibration_ConnectionLost);
+                _ = MessageBox.Show(Properties.Localization.Calibration_ConnectionLost);
                 Application.Current.Windows.OfType<CalibrationWindow>().First().Close();
             }
         }

@@ -1,13 +1,12 @@
-﻿using System.ComponentModel;
+﻿using Disk.ViewModel.Common;
 using System.IO;
-using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Input;
 using Settings = Disk.Properties.Config.Config;
 
 namespace Disk.ViewModel
 {
-    public class UserDataViewModel : INotifyPropertyChanged
+    public class UserDataViewModel : ObserverViewModel
     {
         // Properties
         public string UserName { get => _userName; set => SetProperty(ref _userName, value); }
@@ -34,25 +33,12 @@ namespace Disk.ViewModel
 
         private static Settings Settings => Settings.Default;
 
-        public event PropertyChangedEventHandler? PropertyChanged;
-        protected bool SetProperty<T>(ref T field, T newValue, [CallerMemberName] string? propertyName = null)
-        {
-            if (!(Equals(field, newValue)))
-            {
-                field = (newValue);
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-                return true;
-            }
-
-            return false;
-        }
-
         private void OnStartClick(object? obj)
         {
             if (Surname != string.Empty && UserName != string.Empty)
             {
                 Application.Current.Windows.OfType<UserDataForm>().First().Hide();
-                new PaintWindow()
+                _ = new PaintWindow()
                 {
                     CurrPath =
                     $"{Settings.MAIN_DIR_PATH}{Path.DirectorySeparatorChar}" +
@@ -65,7 +51,7 @@ namespace Disk.ViewModel
             }
             else
             {
-                MessageBox.Show(Properties.Localization.UserData_FieldIsEmpty);
+                _ = MessageBox.Show(Properties.Localization.UserData_FieldIsEmpty);
             }
         }
     }

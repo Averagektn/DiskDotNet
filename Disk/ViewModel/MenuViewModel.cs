@@ -1,13 +1,12 @@
-﻿using System.ComponentModel;
+﻿using Disk.ViewModel.Common;
 using System.IO;
-using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Input;
 using Settings = Disk.Properties.Config.Config;
 
 namespace Disk.ViewModel
 {
-    public class MenuViewModel : INotifyPropertyChanged
+    public class MenuViewModel : ObserverViewModel
     {
         // Actions
         public ICommand ChangeLanguage => new Command(ChangeLanguageClick);
@@ -23,26 +22,13 @@ namespace Disk.ViewModel
         {
             if (!Directory.Exists(Settings.MAIN_DIR_PATH))
             {
-                Directory.CreateDirectory(Settings.MAIN_DIR_PATH);
+                _ = Directory.CreateDirectory(Settings.MAIN_DIR_PATH);
             }
 
             if (!Directory.Exists(Settings.MAPS_DIR_PATH))
             {
-                Directory.CreateDirectory(Settings.MAPS_DIR_PATH);
+                _ = Directory.CreateDirectory(Settings.MAPS_DIR_PATH);
             }
-        }
-
-        public event PropertyChangedEventHandler? PropertyChanged;
-        protected bool SetProperty<T>(ref T field, T newValue, [CallerMemberName] string? propertyName = null)
-        {
-            if (!Equals(field, newValue))
-            {
-                field = (newValue);
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-                return true;
-            }
-
-            return false;
         }
 
         private void ChangeLanguageClick(object? parameter)
@@ -64,7 +50,7 @@ namespace Disk.ViewModel
 
             if (appPath is not null)
             {
-                System.Diagnostics.Process.Start(appPath);
+                _ = System.Diagnostics.Process.Start(appPath);
             }
 
             Application.Current.Shutdown();
@@ -73,28 +59,28 @@ namespace Disk.ViewModel
         private void OnMapContructorClick(object? parameter)
         {
             Application.Current.MainWindow.Hide();
-            new MapCreator().ShowDialog();
+            _ = new MapCreator().ShowDialog();
             Application.Current.MainWindow.Show();
         }
 
         private void OnStartClick(object? parameter)
         {
             Application.Current.MainWindow.Hide();
-            new UserDataForm().ShowDialog();
+            _ = new UserDataForm().ShowDialog();
             Application.Current.MainWindow.Show();
         }
 
         private void OnSettingsClick(object? parameter)
         {
             Application.Current.MainWindow.Hide();
-            new SettingsWindow().ShowDialog();
+            _ = new SettingsWindow().ShowDialog();
             Application.Current.MainWindow.Show();
         }
 
         private void OnCalibrationClick(object? parameter)
         {
             Application.Current.MainWindow.Hide();
-            new CalibrationWindow().ShowDialog();
+            _ = new CalibrationWindow().ShowDialog();
             Application.Current.MainWindow.Show();
         }
 

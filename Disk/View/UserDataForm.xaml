@@ -9,7 +9,7 @@
         Title="{x:Static lang:Localization.UserData_Title}" Height="410" Width="400">
 
     <Window.Resources>
-        <ResourceDictionary Source="Style/BtnStyles.xaml"/>
+        <ResourceDictionary Source="/Style/BtnStyles.xaml"/>
     </Window.Resources>
 
     <Window.DataContext>

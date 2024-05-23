@@ -1,6 +1,6 @@
 ﻿using System.Windows.Input;
 
-namespace Disk.ViewModel
+namespace Disk.ViewModel.Common
 {
     public class Command(Action<object?> execute, Predicate<object>? canExecute = null) : ICommand
     {
@@ -14,7 +14,7 @@ namespace Disk.ViewModel
         }
 
         public bool CanExecute(object? parameter) =>
-            _canExecute is null || (parameter is not null && _canExecute(parameter));
+            _canExecute is null || parameter is not null && _canExecute(parameter);
 
         public void Execute(object? parameter)
         {

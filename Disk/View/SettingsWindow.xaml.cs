@@ -4,16 +4,10 @@ using Settings = Disk.Properties.Config.Config;
 
 namespace Disk
 {
-    /// <summary>
-    ///     Interaction logic for SettingsWindow.xaml
-    /// </summary>
     public partial class SettingsWindow : Window
     {
         private static Settings Settings => Settings.Default;
 
-        /// <summary>
-        /// 
-        /// </summary>
         public SettingsWindow()
         {
             InitializeComponent();
