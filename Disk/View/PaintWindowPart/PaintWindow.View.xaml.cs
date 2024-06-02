@@ -49,8 +49,8 @@ namespace Disk
 
         private void StopGame()
         {
-            Target?.Remove(PaintArea.Children);
-            User?.Remove(PaintArea.Children);
+            Target.Remove(PaintArea.Children);
+            User.Remove(PaintArea.Children);
 
             Drawables.Remove(Target);
             Scalables.Remove(Target);
@@ -62,16 +62,16 @@ namespace Disk
 
             NetworkThread.Join();
 
-            User?.ClearOnShot();
+            User.ClearOnShot();
 
             MoveTimer.Stop();
             ShotTimer.Stop();
 
-            UserLogAng?.Dispose();
-            UserLogWnd?.Dispose();
-            UserLogCen?.Dispose();
-            UserMovementLog?.Dispose();
-            MapReader?.Dispose();
+            UserLogAng.Dispose();
+            UserLogWnd.Dispose();
+            UserLogCen.Dispose();
+            UserMovementLog.Dispose();
+            MapReader.Dispose();
         }
 
         private void OnClosing(object? sender, CancelEventArgs e) => StopGame();
@@ -105,7 +105,7 @@ namespace Disk
             var roseFileName = GetInTargetFileName(selectedIndex + 1);
             var pathFileName = GetMovToTargetFileName(selectedIndex + 1);
 
-            if (selectedIndex != -1 && Converter is not null && Target is not null)
+            if (selectedIndex != -1)
             {
                 if (RbRose.IsChecked ?? false)
                 {

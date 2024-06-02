@@ -16,75 +16,74 @@ namespace Disk
     {
         private void ShotTimerElapsed(object? sender, EventArgs e)
         {
-            if (Target is not null && User is not null)
+
+            var shotScore = Target.ReceiveShot(User.Shot());
+
+            if (shotScore != 0 && Stopwatch.IsRunning)
             {
-                var shotScore = Target.ReceiveShot(User.Shot());
+                Stopwatch.Stop();
 
-                if (shotScore != 0 && Stopwatch.IsRunning)
+                if (StartPoint is not null)
                 {
-                    Stopwatch.Stop();
-
-                    if (StartPoint is not null)
+                    lock (LockObject)
                     {
-                        lock (LockObject)
+                        UserMovementLog.Dispose();
+                        UserMovementLog = Logger.GetLogger(OnTargetLogName);
+                    }
+
+                    double distance = 0;
+                    using (var reader = FileReader<float>.Open(MovingToTargetLogName))
+                    {
+                        var currPoint = reader.GetXY() ?? StartPoint;
+                        var nextPoint = reader.GetXY();
+
+                        while (nextPoint is not null)
                         {
-                            UserMovementLog?.Dispose();
-                            UserMovementLog = Logger.GetLogger(OnTargetLogName);
+                            distance += currPoint.GetDistance(nextPoint);
+                            currPoint = nextPoint;
+                            nextPoint = reader.GetXY();
                         }
+                    }
 
-                        double distance = 0;
-                        using (var reader = FileReader<float>.Open(MovingToTargetLogName))
-                        {
-                            var currPoint = reader.GetXY() ?? StartPoint;
-                            var nextPoint = reader.GetXY();
+                    var touchPoint = Converter.ToAngle_FromWnd(User.Center);
+                    var time = Stopwatch.Elapsed.TotalSeconds;
+                    var avgSpeed = distance / time;
+                    var approachSpeed = StartPoint.GetDistance(touchPoint!) / time;
 
-                            while (nextPoint is not null)
-                            {
-                                distance += currPoint.GetDistance(nextPoint);
-                                currPoint = nextPoint;
-                                nextPoint = reader.GetXY();
-                            }
-                        }
-
-                        var touchPoint = Converter?.ToAngle_FromWnd(User.Center);
-                        var time = Stopwatch.Elapsed.TotalSeconds;
-                        var avgSpeed = distance / time;
-                        var approachSpeed = StartPoint.GetDistance(touchPoint!) / time;
-
-                        var message =
-                            $"""
+                    var message =
+                        $"""
                             {Localization.Paint_Time}: {time:F2}
                             {Localization.Paint_AngleDistance}: {distance:F2}
                             {Localization.Paint_AngleSpeed}: {avgSpeed:F2}
                             {Localization.Paint_ApproachSpeed}: {approachSpeed:F2}
                             """;
 
-                        TblTime.Text = message;
-                        using (var log = Logger.GetLogger(TargetReachedLogName))
-                        {
-                            log.Log(message);
-                        }
-
-                        TargetID++;
+                    TblTime.Text = message;
+                    using (var log = Logger.GetLogger(TargetReachedLogName))
+                    {
+                        log.Log(message);
                     }
-                }
 
-                Score += shotScore;
+                    TargetID++;
+                }
             }
+
+            Score += shotScore;
+
 
             Title = $"{Localization.Paint_Score}: {Score}";
             TblScore.Text = $"{Localization.Paint_Score}: {Score}";
 
-            if (Target?.IsFull ?? false)
+            if (Target.IsFull)
             {
-                var newCenter = MapReader?.GetXY();
+                var newCenter = MapReader.GetXY();
                 Target.Reset();
 
                 if (newCenter is null)
                 {
                     OnStopClick(this, new());
                 }
-                else if (Converter is not null)
+                else 
                 {
                     var wndCenter = Converter.ToWnd_FromRelative(newCenter);
                     Target.Move(wndCenter);
@@ -112,7 +111,7 @@ namespace Disk
         {
             if (ShiftedWndPos is not null && AllowedArea.FillContains(ShiftedWndPos.ToPoint()))
             {
-                User?.Move(ShiftedWndPos);
+                User.Move(ShiftedWndPos);
             }
         }
 
@@ -156,6 +155,7 @@ namespace Disk
             else
             {
                 MessageBox.Show(Localization.Paint_EmptyMap);
+                Close();
             }
 
             UserLogWnd = Logger.GetLogger(UsrWndLog);
@@ -168,9 +168,9 @@ namespace Disk
             /*            User = new("/Properties/WinniePooh.png", new(SCREEN_INI_CENTER_X, SCREEN_INI_CENTER_Y), Settings.USER_INI_SPEED,
                             new(100, 100), SCREEN_INI_SIZE);*/
             User.OnShot += UserLogWnd.LogLn;
-            User.OnShot += (p) => UserLogAng.LogLn(Converter?.ToAngle_FromWnd(p));
-            User.OnShot += (p) => UserLogCen.LogLn(Converter?.ToLogCoord(p));
-            User.OnShot += (p) => UserMovementLog.LogLn(Converter?.ToAngle_FromWnd(p));
+            User.OnShot += (p) => UserLogAng.LogLn(Converter.ToAngle_FromWnd(p));
+            User.OnShot += (p) => UserLogCen.LogLn(Converter.ToLogCoord(p));
+            User.OnShot += (p) => UserMovementLog.LogLn(Converter.ToAngle_FromWnd(p));
 
             Drawables.Add(Target); Drawables.Add(User);
             Scalables.Add(Target); Scalables.Add(User); Scalables.Add(Converter);

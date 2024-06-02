@@ -85,7 +85,6 @@
 
   <ItemGroup>
     <Folder Include="Entities\" />
-    <Folder Include="Repository\" />
   </ItemGroup>
 
 </Project>
