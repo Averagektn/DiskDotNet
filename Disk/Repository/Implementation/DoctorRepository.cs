@@ -1,11 +1,32 @@
 ﻿using Disk.Db.Context;
 using Disk.Entities;
+using Disk.Repository.Common;
 using Disk.Repository.Interface;
 
 namespace Disk.Repository.Implementation
 {
-    public class DoctorRepository(DiskContext diskContext) : IDoctorRepository
+    public class DoctorRepository(DiskContext diskContext) : IDoctorRepository, IAuthRepository<Doctor>
     {
+        public Doctor PerformAuthorization(Doctor entity)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Doctor PerformRegistration(Doctor entity)
+        {
+            throw new NotImplementedException(); 
+        }
+
+        public Task<Doctor> PerformAuthorizationAsync(Doctor entity)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<Doctor> PerformRegistrationAsync(Doctor entity)
+        {
+            throw new NotImplementedException();
+        }
+
         public void Add(Doctor entity)
         {
             throw new NotImplementedException();
