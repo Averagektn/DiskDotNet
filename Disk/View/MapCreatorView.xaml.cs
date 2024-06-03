@@ -1,9 +1,7 @@
-﻿using Disk.Data.Impl;
-using Disk.Visual.Impl;
+﻿using Disk.ViewModel;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using Settings = Disk.Properties.Config.Config;
 
 namespace Disk.View
 {
@@ -12,34 +10,24 @@ namespace Disk.View
     /// </summary>
     public partial class MapCreatorView : UserControl
     {
-        public int MapId { get; set; } = Settings.Default.MAP_ID;
-
-        private static int IniWidth => Settings.Default.SCREEN_INI_WIDTH;
-        private static int IniHeight => Settings.Default.SCREEN_INI_HEIGHT;
-
-        private readonly List<NumberedTarget> _targets = [];
-
-        private Target? _movingTarget;
+        private readonly MapCreatorViewModel _viewModel = new();
 
         public MapCreatorView()
         {
             InitializeComponent();
 
             Unloaded += OnClose;
-            //MouseLeftButtonDown += OnMouseLeftButtonDown;
-            //MouseRightButtonDown += OnMouseRightButtonDown;
-            //MouseDoubleClick += OnMouseDoubleClick;
-            //MouseMove += OnMouseMove;
-            //SizeChanged += OnSizeChanged;
+            MouseLeftButtonDown += OnMouseLeftButtonDown;
+            MouseRightButtonDown += OnMouseRightButtonDown;
+            MouseDoubleClick += OnMouseDoubleClick;
+            MouseMove += OnMouseMove;
+            SizeChanged += OnSizeChanged;
         }
 
         private void OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             var mousePos = e.GetPosition(sender as UIElement);
-            var x = (int)mousePos.X;
-            var y = (int)mousePos.Y;
-
-            _movingTarget = _targets.Find(target => target.Contains(new Point2D<int>(x, y)));
+            _viewModel.SelectTarget(mousePos);
         }
 
         private void OnMouseMove(object sender, MouseEventArgs e)
@@ -47,61 +35,28 @@ namespace Disk.View
             if (e.LeftButton == MouseButtonState.Pressed)
             {
                 var mousePos = e.GetPosition(sender as UIElement);
-                var x = (int)mousePos.X;
-                var y = (int)mousePos.Y;
-                var clickPoint = new Point2D<int>(x, y);
-
-                _movingTarget?.Move(clickPoint);
-            }
-        }
-
-        private void OnClose(object? sender, RoutedEventArgs e)
-        {
-            if (_targets.Count != 0)
-            {
-                using var writer = Logger.GetLogger($"maps\\map_{MapId++}.map");
-
-                foreach (var target in _targets)
+                if (AllowedArea.FillContains(mousePos))
                 {
-                    writer.LogLn(new Point2D<float>(
-                        (float)(target.Center.X / ActualWidth),
-                        (float)(target.Center.Y / ActualHeight)));
+                    _viewModel.MoveTarget(mousePos);
                 }
-
-                Settings.Default.MAP_ID = MapId;
-                Settings.Default.Save();
             }
         }
+
+        private void OnClose(object? sender, RoutedEventArgs e) => _viewModel.SaveMap(ActualWidth, ActualHeight);
 
         private void OnMouseRightButtonDown(object sender, MouseButtonEventArgs e)
         {
             var mousePos = e.GetPosition(sender as UIElement);
-            var x = (int)mousePos.X;
-            var y = (int)mousePos.Y;
-
-            var removableTagets = _targets.Where(target => target.Contains(new(x, y)));
-            foreach (var target in removableTagets)
-            {
-                target.Remove(PaintArea.Children);
-            }
-            _ = _targets.RemoveAll(target => target.Contains(new(x, y)));
-
-            for (int i = 0; i < _targets.Count; i++)
-            {
-                _targets[i].UpdateNumber(i + 1);
-            }
+            _viewModel.RemoveTarget(PaintArea.Children, mousePos);
         }
 
         private void OnSizeChanged(object sender, SizeChangedEventArgs e)
         {
-            AllowedArea.RadiusX = (ActualWidth / 2) - 8;
-            AllowedArea.RadiusY = (ActualHeight / 2) - 20;
-            AllowedArea.Center = new((ActualWidth / 2) - 8, (ActualHeight / 2) - 20);
+            AllowedArea.RadiusX = ActualWidth / 2;
+            AllowedArea.RadiusY = ActualHeight / 2;
+            AllowedArea.Center = new(ActualWidth / 2, ActualHeight / 2);
 
-            foreach (var target in _targets)
-            {
-                target?.Scale(RenderSize);
-            }
+            _viewModel.ScaleTargets(RenderSize);
         }
 
         private void OnMouseDoubleClick(object sender, MouseButtonEventArgs e)
@@ -112,22 +67,8 @@ namespace Disk.View
 
             if (e.ChangedButton == MouseButton.Left && AllowedArea.FillContains(new Point(x, y)))
             {
-                var newTarget = GetIniCoordTarget(mousePos.X, mousePos.Y);
-                newTarget.Scale(RenderSize);
-                newTarget.Draw(PaintArea);
-                _targets.Add(newTarget);
+                _viewModel.AddTarget(mousePos, RenderSize, PaintArea);
             }
         }
-
-        private NumberedTarget GetIniCoordTarget(double actualX, double actualY) =>
-            new(
-                new Point2D<int>(
-                    (int)(actualX / RenderSize.Width * IniWidth),
-                    (int)(actualY / RenderSize.Height * IniHeight)
-                   ),
-                Settings.Default.TARGET_INI_RADIUS,
-                new Size(IniWidth, IniHeight),
-                _targets.Count + 1
-               );
     }
 }

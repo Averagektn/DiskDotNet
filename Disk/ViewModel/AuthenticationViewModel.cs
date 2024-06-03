@@ -12,7 +12,7 @@ namespace Disk.ViewModel
         public AuthenticationViewModel(NavigationStore navigationStore)
         {
             _navigationStore = navigationStore;
-            NavigateBackCommand = new Command(_ => _navigationStore.CurrentViewModel = new MapViewModel());
+            NavigateBackCommand = new Command(_ => _navigationStore.CurrentViewModel = new MapCreatorViewModel());
         }
     }
 }

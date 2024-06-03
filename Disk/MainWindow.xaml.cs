@@ -9,7 +9,7 @@ namespace Disk
     /// </summary>
     public partial class MainWindow : Window
     {
-        private MainViewModel _viewModel => (DataContext as MainViewModel)!;
+        private MainViewModel ViewModel => (DataContext as MainViewModel)!;
 
         public MainWindow()
         {
@@ -20,7 +20,7 @@ namespace Disk
 
         private void NavigateBack(object? obj, CancelEventArgs args)
         {
-            if (_viewModel.CanNavigateBack())
+            if (ViewModel.CanNavigateBack())
             {
                 args.Cancel = true;
             }

@@ -58,9 +58,9 @@ namespace Disk.ViewModel
 
         private void OnMapContructorClick(object? parameter)
         {
-            Application.Current.MainWindow.Hide();
-            _ = new MapCreator().ShowDialog();
-            Application.Current.MainWindow.Show();
+            //Application.Current.MainWindow.Hide();
+            //_ = new MapCreator().ShowDialog();
+            //Application.Current.MainWindow.Show();
         }
 
         private void OnStartClick(object? parameter)

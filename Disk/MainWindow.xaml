@@ -13,7 +13,7 @@
             <DataTemplate DataType="{x:Type viewmodels:AuthenticationViewModel}">
                 <views:AuthenticationView/>
             </DataTemplate>
-            <DataTemplate DataType="{x:Type viewmodels:MapViewModel}">
+            <DataTemplate DataType="{x:Type viewmodels:MapCreatorViewModel}">
                 <views:MapCreatorView/>
             </DataTemplate>
         </ContentControl.Resources>
