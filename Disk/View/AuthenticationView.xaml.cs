@@ -10,16 +10,17 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
 using System.Windows.Shapes;
 
 namespace Disk.View
 {
     /// <summary>
-    /// Interaction logic for AuthorizationWindow.xaml
+    /// Interaction logic for AuthenticationView.xaml
     /// </summary>
-    public partial class AuthorizationWindow : Window
+    public partial class AuthenticationView : UserControl
     {
-        public AuthorizationWindow()
+        public AuthenticationView()
         {
             InitializeComponent();
         }

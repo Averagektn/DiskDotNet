@@ -17,5 +17,10 @@ namespace Disk.ViewModel.Common
 
             return false;
         }
+
+        protected void OnPropertyChanged(string propertyName)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
     }
 }

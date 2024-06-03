@@ -1,8 +1,7 @@
 ﻿<Application x:Class="Disk.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:local="clr-namespace:Disk"
-             StartupUri="/View/AuthorizationWindow.xaml">
+             xmlns:local="clr-namespace:Disk">
     <Application.Resources>
          
     </Application.Resources>
