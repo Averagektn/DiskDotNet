@@ -1,4 +1,5 @@
-﻿using System.Windows.Controls;
+﻿using System.Windows;
+using System.Windows.Controls;
 
 namespace Disk.View
 {
@@ -10,6 +11,8 @@ namespace Disk.View
         public AuthenticationView()
         {
             InitializeComponent();
+            Application.Current.MainWindow.Width = 600;
+            Application.Current.MainWindow.Height = 600;    
         }
     }
 }

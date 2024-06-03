@@ -5,8 +5,120 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Disk.View" xmlns:viewmodel="clr-namespace:Disk.ViewModel" d:DataContext="{d:DesignInstance Type=viewmodel:AuthenticationViewModel}"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
-    <Grid>
-        <Button Content="BACK" Width="200" Height="100" Command="{Binding NavigateBackCommand}"/>
-    </Grid>
+             d:DesignHeight="600" d:DesignWidth="600">
+    <UserControl.Resources>
+        <ResourceDictionary Source="/Style/BtnStyles.xaml"/>
+    </UserControl.Resources>
+
+    <Border Width="300"
+            Height="550"
+            Background="White"
+            CornerRadius="6">
+        <Border.Effect>
+            <DropShadowEffect BlurRadius="15"
+                              Direction ="-90" 
+                              RenderingBias ="Quality" 
+                              ShadowDepth ="2" 
+                              Color ="Gray" />
+        </Border.Effect>
+        <StackPanel Orientation="Vertical"
+                    Margin="20" CanVerticallyScroll="True">
+            <TextBlock Text="Авторизация" 
+                       FontSize="25"
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Top"
+                       FontWeight="Bold"
+                       Padding="10"/>
+            <Grid VerticalAlignment="Center">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <TextBlock Text="Фамилия" 
+                   Grid.Row="0"
+                   Margin="0,15"
+                   HorizontalAlignment="Left"/>
+                <TextBox  Grid.Column="1"
+                  Grid.Row="1"
+                  Padding="0,5"
+                  Width="255"
+                  BorderThickness="0,0,0,1"
+                  HorizontalAlignment="Left"
+                  Text="{Binding Doctor.Surname}"/>
+
+                <TextBlock Text="Имя" 
+                   Grid.Row="2"
+                   Margin="0,15"
+                   HorizontalAlignment="Left"/>
+                <TextBox  Grid.Column="3"
+                  Grid.Row="3"
+                  Padding="0,5"
+                  Width="255"
+                  BorderThickness="0,0,0,1"
+                  HorizontalAlignment="Left"
+                  Text="{Binding Doctor.Name}"/>
+
+                <TextBlock Text="Отчество" 
+                   Grid.Row="4"
+                   Margin="0,15"
+                   HorizontalAlignment="Left"/>
+                <TextBox  Grid.Column="5"
+                  Grid.Row="5"
+                  Padding="0,5"
+                  Width="255"
+                  BorderThickness="0,0,0,1"
+                  HorizontalAlignment="Left"
+                  Text="{Binding Doctor.Patronymic}"/>
+
+                <TextBlock Text="Пароль" 
+                   Grid.Row="6"
+                   Margin="0,15"
+                   HorizontalAlignment="Left"/>
+                <PasswordBox x:Name="PasswordBox" 
+                      Grid.Row="7"
+                      Padding="0,5"                           
+                      Width="255"
+                      BorderThickness="0,0,0,1"
+                      HorizontalAlignment="Left"/>
+            </Grid>
+            <Button x:Name="LoginBtn" 
+                    Content="Войти" 
+                    Foreground="White"
+                    Background="Black"
+                    Margin="0,25"
+                    Height="35"
+                    Width="250">
+                <Button.Style>
+                    <Style TargetType="Button" BasedOn="{StaticResource GradientButtonStyle}"/>
+                </Button.Style>
+            </Button>
+
+            <Button x:Name="RegistrationBtn" 
+                    Content="Зарегистрироваться" 
+                    Foreground="White"
+                    Background="Black"
+                    Margin="0,25"
+                    Height="35"
+                    Width="250">
+                <Button.Style>
+                    <Style TargetType="Button" BasedOn="{StaticResource GradientButtonStyle}"/>
+                </Button.Style>
+            </Button>
+
+            <Popup Placement="Center" 
+                   AllowsTransparency="True" 
+                   PopupAnimation="Fade" 
+                   IsOpen="{Binding IsShowPopup}">
+                <Border Background="LightGray" BorderBrush="Black" BorderThickness="1" CornerRadius="6" Padding="10">
+                    <TextBlock Text="{Binding PopupMessage}" />
+                </Border>
+            </Popup>
+        </StackPanel>
+    </Border>
 </UserControl>

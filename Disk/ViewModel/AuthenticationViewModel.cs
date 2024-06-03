@@ -1,11 +1,14 @@
-﻿using Disk.Stores;
+﻿using Disk.Entities;
+using Disk.Stores;
 using Disk.ViewModel.Common;
 using System.Windows.Input;
 
 namespace Disk.ViewModel
 {
-    public class AuthenticationViewModel : ObserverViewModel
+    public class AuthenticationViewModel : PopupViewModel
     {
+        public Doctor Doctor { get; set; } = new();
+
         private readonly NavigationStore _navigationStore;
         public ICommand NavigateBackCommand { get; set; }
 

@@ -7,7 +7,7 @@
         xmlns:viewmodels="clr-namespace:Disk.ViewModel"
         xmlns:views="clr-namespace:Disk.View"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="DiskApp" Height="600" Width="600">
     <ContentControl Content="{Binding CurrentViewModel}">
         <ContentControl.Resources>
             <DataTemplate DataType="{x:Type viewmodels:AuthenticationViewModel}">
