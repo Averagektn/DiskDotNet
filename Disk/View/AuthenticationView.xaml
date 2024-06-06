@@ -93,7 +93,8 @@
                     Background="Black"
                     Margin="0,25"
                     Height="35"
-                    Width="250">
+                    Width="250"
+                    Command="{Binding AuthorizationCommand}">
                 <Button.Style>
                     <Style TargetType="Button" BasedOn="{StaticResource GradientButtonStyle}"/>
                 </Button.Style>
@@ -105,7 +106,8 @@
                     Background="Black"
                     Margin="0,25"
                     Height="35"
-                    Width="250">
+                    Width="250"
+                    Command="{Binding RegistrationCommand}">
                 <Button.Style>
                     <Style TargetType="Button" BasedOn="{StaticResource GradientButtonStyle}"/>
                 </Button.Style>
