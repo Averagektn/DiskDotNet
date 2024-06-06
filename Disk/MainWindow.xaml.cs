@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 using System.Windows;
-using Disk.ViewModel.Common;
+using Disk.ViewModel.Common.ViewModels;
 
 namespace Disk
 {
