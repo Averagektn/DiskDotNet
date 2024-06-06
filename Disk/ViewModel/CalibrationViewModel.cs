@@ -1,5 +1,6 @@
 ﻿using Disk.Data.Impl;
-using Disk.ViewModel.Common;
+using Disk.ViewModel.Common.Commands.Sync;
+using Disk.ViewModel.Common.ViewModels;
 using System.Net;
 using System.Windows;
 using System.Windows.Input;

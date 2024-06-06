@@ -1,4 +1,5 @@
-﻿using Disk.ViewModel.Common;
+﻿using Disk.ViewModel.Common.Commands.Sync;
+using Disk.ViewModel.Common.ViewModels;
 using System.IO;
 using System.Windows;
 using System.Windows.Input;

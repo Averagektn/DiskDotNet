@@ -1,6 +1,8 @@
 ﻿using Disk.Entities;
+using Disk.Repository.Interface;
 using Disk.Stores;
-using Disk.ViewModel.Common;
+using Disk.ViewModel.Common.Commands.Async;
+using Disk.ViewModel.Common.ViewModels;
 using System.Windows.Input;
 
 namespace Disk.ViewModel
@@ -9,13 +11,31 @@ namespace Disk.ViewModel
     {
         public Doctor Doctor { get; set; } = new();
 
-        private readonly NavigationStore _navigationStore;
-        public ICommand NavigateBackCommand { get; set; }
+        public ICommand AuthorizationCommand { get; set; }
+        public ICommand RegistrationCommand { get; set; }
 
-        public AuthenticationViewModel(NavigationStore navigationStore)
+        private readonly NavigationStore _navigationStore;
+        private readonly IDoctorRepository _doctorRepository;
+
+        public AuthenticationViewModel(IDoctorRepository doctorRepository, NavigationStore navigationStore)
         {
             _navigationStore = navigationStore;
-            NavigateBackCommand = new Command(_ => _navigationStore.CurrentViewModel = new MapCreatorViewModel());
+            _doctorRepository = doctorRepository;
+
+            AuthorizationCommand = new AsyncCommand(PerformAuthorization);
+            RegistrationCommand = new AsyncCommand(PerformRegistration);
+        }
+
+        private async Task PerformRegistration(object? param)
+        {
+            _doctorRepository.PerformRegistration(Doctor);
+            _navigationStore.CurrentViewModel = new MenuViewModel();
+        }
+
+        private async Task PerformAuthorization(object? param)
+        {
+            _doctorRepository.PerformAuthorization(Doctor);
+            _navigationStore.CurrentViewModel = new MenuViewModel();
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿using Disk.ViewModel.Common;
+﻿using Disk.ViewModel.Common.ViewModels;
 using System.Windows;
 
 namespace Disk.Stores

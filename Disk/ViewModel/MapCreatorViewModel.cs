@@ -1,5 +1,5 @@
 ﻿using Disk.Data.Impl;
-using Disk.ViewModel.Common;
+using Disk.ViewModel.Common.ViewModels;
 using Disk.Visual.Impl;
 using System.Windows;
 using System.Windows.Controls;

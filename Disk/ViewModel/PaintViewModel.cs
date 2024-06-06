@@ -1,4 +1,4 @@
-﻿using Disk.ViewModel.Common;
+﻿using Disk.ViewModel.Common.ViewModels;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 //using Settings = Disk.Properties.Config.Config;

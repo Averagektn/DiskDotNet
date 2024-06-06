@@ -1,6 +1,6 @@
 ﻿using System.Windows.Input;
 
-namespace Disk.ViewModel.Common
+namespace Disk.ViewModel.Common.Commands.Sync
 {
     public class Command(Action<object?> execute, Predicate<object>? canExecute = null) : ICommand
     {

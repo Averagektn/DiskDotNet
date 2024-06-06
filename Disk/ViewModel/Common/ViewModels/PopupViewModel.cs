@@ -1,4 +1,4 @@
-﻿namespace Disk.ViewModel.Common
+﻿namespace Disk.ViewModel.Common.ViewModels
 {
     public class PopupViewModel : ObserverViewModel
     {

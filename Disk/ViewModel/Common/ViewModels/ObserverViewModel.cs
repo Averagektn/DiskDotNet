@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
-namespace Disk.ViewModel.Common
+namespace Disk.ViewModel.Common.ViewModels
 {
     public class ObserverViewModel : INotifyPropertyChanged
     {
@@ -10,7 +10,7 @@ namespace Disk.ViewModel.Common
         {
             if (!Equals(field, newValue))
             {
-                field = (newValue);
+                field = newValue;
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
                 return true;
             }

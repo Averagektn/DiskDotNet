@@ -1,6 +1,6 @@
 ﻿using Disk.Stores;
 
-namespace Disk.ViewModel.Common
+namespace Disk.ViewModel.Common.ViewModels
 {
     public class MainViewModel : ObserverViewModel
     {
