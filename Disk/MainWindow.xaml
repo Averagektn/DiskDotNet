@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:Disk" xmlns:viewmodel="clr-namespace:Disk.ViewModel.Common" d:DataContext="{d:DesignInstance Type=viewmodel:MainViewModel}"
+        xmlns:local="clr-namespace:Disk" xmlns:viewmodel="clr-namespace:Disk.ViewModel.Common.ViewModels" d:DataContext="{d:DesignInstance Type=viewmodel:MainViewModel}"
         xmlns:viewmodels="clr-namespace:Disk.ViewModel"
         xmlns:views="clr-namespace:Disk.View"
         mc:Ignorable="d"

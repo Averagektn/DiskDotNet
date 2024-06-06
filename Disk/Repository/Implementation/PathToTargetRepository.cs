@@ -26,11 +26,6 @@ namespace Disk.Repository.Implementation
             throw new NotImplementedException();
         }
 
-        public PathToTarget Get(PathToTarget entity)
-        {
-            throw new NotImplementedException();
-        }
-
         public ICollection<PathToTarget> GetAll()
         {
             throw new NotImplementedException();
@@ -41,7 +36,12 @@ namespace Disk.Repository.Implementation
             throw new NotImplementedException();
         }
 
-        public Task<PathToTarget> GetAsync(PathToTarget entity)
+        public PathToTarget GetById(long id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<PathToTarget> GetByIdAsync(long id)
         {
             throw new NotImplementedException();
         }

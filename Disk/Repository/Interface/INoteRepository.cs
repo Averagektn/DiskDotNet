@@ -3,7 +3,7 @@ using Disk.Repository.Common;
 
 namespace Disk.Repository.Interface
 {
-    public interface INoteRepository : ICrudIdRepository<Note>
+    public interface INoteRepository : ICrudRepository<Note>
     {
     }
 }

@@ -3,7 +3,8 @@ using Disk.Repository.Common;
 
 namespace Disk.Repository.Interface
 {
-    internal interface IMapRepository : ICrudIdRepository<Map>
+    internal interface IMapRepository : ICrudRepository<Map>
     {
+
     }
 }
