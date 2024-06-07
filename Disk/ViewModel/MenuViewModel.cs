@@ -1,4 +1,4 @@
-﻿using Disk.Repository.Interface;
+﻿using Disk.Stores;
 using Disk.ViewModel.Common.Commands.Sync;
 using Disk.ViewModel.Common.ViewModels;
 using System.IO;
@@ -10,6 +10,8 @@ namespace Disk.ViewModel
 {
     public class MenuViewModel : ObserverViewModel
     {
+        private readonly NavigationStore _navigationStore;
+
         // Actions
         public ICommand ChangeLanguage => new Command(ChangeLanguageClick);
         public ICommand MapConstructorClick => new Command(OnMapContructorClick);
@@ -20,8 +22,10 @@ namespace Disk.ViewModel
 
         private static Settings Settings => Settings.Default;
 
-        public MenuViewModel(IAppointmentRepository appointmentRepository)
+        public MenuViewModel(NavigationStore navigationStore)
         {
+            _navigationStore = navigationStore;
+
             if (!Directory.Exists(Settings.MAIN_DIR_PATH))
             {
                 _ = Directory.CreateDirectory(Settings.MAIN_DIR_PATH);

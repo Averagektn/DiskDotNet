@@ -1,12 +1,15 @@
 ﻿using Disk.Db.Context;
 using Disk.Repository.Implementation;
 using Disk.Repository.Interface;
+using Disk.Service.Interface;
+using Disk.Service.Implementation;
 using Disk.Stores;
-using Disk.View;
 using Disk.ViewModel;
 using Disk.ViewModel.Common.ViewModels;
 using Microsoft.Extensions.DependencyInjection;
 using System.Windows;
+using Microsoft.Extensions.Logging;
+using Serilog;
 
 namespace Disk
 {
@@ -22,10 +25,16 @@ namespace Disk
             Thread.CurrentThread.CurrentUICulture =
                 new System.Globalization.CultureInfo(Disk.Properties.Config.Config.Default.LANGUAGE);
 
+
+            Log.Logger = new LoggerConfiguration()
+                .WriteTo.File("logs/app.log")
+                .CreateLogger();
+
             var services = new ServiceCollection();
             _ = services.AddDbContext<DiskContext>();
 
-            _ = services.AddSingleton<Func<Type, ObserverViewModel>>(s => type => (ObserverViewModel)s.GetRequiredService(type));
+            _ = services.AddSingleton<Func<Type, ObserverViewModel>>(provider =>
+                type => (ObserverViewModel)provider.GetRequiredService(type));
             _ = services.AddSingleton<NavigationStore>();
 
             _ = services.AddSingleton<IAppointmentRepository, AppointmentRepository>();
@@ -38,21 +47,27 @@ namespace Disk
             _ = services.AddSingleton<ISessionRepository, SessionRepository>();
             _ = services.AddSingleton<ISesssionResultRepository, SessionResultRepository>();
 
+            _ = services.AddSingleton<IAuthenticationService, AuthenticationService>();
+
+            _ = services.AddTransient<MainViewModel>();
             _ = services.AddTransient<MenuViewModel>();
+            _ = services.AddTransient<AuthenticationViewModel>();
+
+            _ = services.AddSingleton<MainWindow>(provider =>
+            {
+                provider.GetRequiredService<NavigationStore>().SetViewModel<AuthenticationViewModel>();
+                return new MainWindow()
+                {
+                    DataContext = provider.GetRequiredService<MainViewModel>()
+                };
+            });
 
             _serviceProvider = services.BuildServiceProvider();
         }
 
         protected override void OnStartup(StartupEventArgs e)
         {
-            var navigationStore = _serviceProvider.GetRequiredService<NavigationStore>();
-            var doctorRepository = _serviceProvider.GetRequiredService<IDoctorRepository>();
-            navigationStore.CurrentViewModel = new AuthenticationViewModel(doctorRepository, navigationStore);
-
-            MainWindow = new MainWindow()
-            {
-                DataContext = new MainViewModel(navigationStore)
-            };
+            MainWindow = _serviceProvider.GetRequiredService<MainWindow>();
             MainWindow.Show();
 
             base.OnStartup(e);
