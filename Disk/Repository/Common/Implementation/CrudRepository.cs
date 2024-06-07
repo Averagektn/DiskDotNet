@@ -9,52 +9,46 @@ namespace Disk.Repository.Common.Implementation
 
         public void Add(T entity)
         {
-            throw new NotImplementedException();
+            table.Add(entity);
+            context.SaveChanges();
         }
 
-        public Task AddAsync(T entity)
+        public async Task AddAsync(T entity)
         {
-            throw new NotImplementedException();
+            await table.AddAsync(entity);
+            await context.SaveChangesAsync();
         }
 
         public void Delete(T entity)
         {
-            throw new NotImplementedException();
-        }
-
-        public Task DeleteAsync(T entity)
-        {
-            throw new NotImplementedException();
+            table.Remove(entity);
+            context.SaveChanges();
         }
 
         public ICollection<T> GetAll()
         {
-            throw new NotImplementedException();
+            return table.ToList();
         }
 
-        public Task<ICollection<T>> GetAllAsync()
+        public async Task<ICollection<T>> GetAllAsync()
         {
-            throw new NotImplementedException();
+            return await table.ToListAsync();
         }
 
         public T GetById(long id)
         {
-            throw new NotImplementedException();
+            return table.Find(id) ?? throw new EntityNotFoundException();
         }
 
-        public Task<T> GetByIdAsync(long id)
+        public async Task<T> GetByIdAsync(long id)
         {
-            throw new NotImplementedException();
+            return await table.FindAsync(id) ?? throw new EntityNotFoundException();
         }
 
         public void Update(T entity)
         {
-            throw new NotImplementedException();
-        }
-
-        public Task UpdateAsync(T entity)
-        {
-            throw new NotImplementedException();
+            table.Update(entity);
+            context.SaveChanges();
         }
     }
 }

@@ -10,8 +10,6 @@
 
         Task AddAsync(Entity entity);
         Task<ICollection<Entity>> GetAllAsync();
-        Task UpdateAsync(Entity entity);
         Task<Entity> GetByIdAsync(long id);
-        Task DeleteAsync(Entity entity);
     }
 }

@@ -3,8 +3,5 @@ using Disk.Repository.Common;
 
 namespace Disk.Repository.Interface
 {
-    public interface IAppointmentRepository : ICrudRepository<Appointment>
-    {
-
-    }
+    public interface IAppointmentRepository : ICrudRepository<Appointment> { }
 }

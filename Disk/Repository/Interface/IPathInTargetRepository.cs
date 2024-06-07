@@ -3,7 +3,5 @@ using Disk.Repository.Common;
 
 namespace Disk.Repository.Interface
 {
-    public interface IPathInTargetRepository : ICrudRepository<PathInTarget>
-    {
-    }
+    public interface IPathInTargetRepository : ICrudRepository<PathInTarget> { }
 }

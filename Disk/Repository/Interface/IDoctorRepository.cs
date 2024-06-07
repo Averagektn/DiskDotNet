@@ -3,8 +3,5 @@ using Disk.Repository.Common;
 
 namespace Disk.Repository.Interface
 {
-    public interface IDoctorRepository : ICrudRepository<Doctor>, IAuthRepository<Doctor>
-    {
-
-    }
+    public interface IDoctorRepository : ICrudRepository<Doctor>, IAuthRepository<Doctor> { }
 }
