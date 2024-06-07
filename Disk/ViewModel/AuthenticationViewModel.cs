@@ -33,13 +33,13 @@ namespace Disk.ViewModel
         public ICommand ReturnWhiteSurnameCommand { get; set; }
         public ICommand ReturnWhitePasswordCommand { get; set; }
 
-        private readonly NavigationStore _navigationStore;
+        private readonly ModalNavigationStore _modalNavigationStore;
         private readonly IAuthenticationService _authenticationService;
 
-        public AuthenticationViewModel(IAuthenticationService authenticationService, NavigationStore navigationStore)
+        public AuthenticationViewModel(IAuthenticationService authenticationService, ModalNavigationStore modalNavigationStore)
         {
-            _navigationStore = navigationStore;
             _authenticationService = authenticationService;
+            _modalNavigationStore = modalNavigationStore;
 
             AuthorizationCommand = new AsyncCommand(PerformAuthorization);
             RegistrationCommand = new AsyncCommand(PerformRegistration);
@@ -54,7 +54,7 @@ namespace Disk.ViewModel
             {
                 _ = await _authenticationService.PerformRegistrationAsync(Doctor);
                 Application.Current.Properties["doctor"] = Doctor;
-                _navigationStore.SetViewModel<MenuViewModel>();
+                _modalNavigationStore.Close();
             }
             catch (InvalidNameException ex)
             {
@@ -120,7 +120,7 @@ namespace Disk.ViewModel
             if (isQuerySent && isSuccessfulAuth)
             {
                 Application.Current.Properties["doctor"] = Doctor;
-                _navigationStore.SetViewModel<MenuViewModel>();
+                _modalNavigationStore.Close();
             }
             else if (isQuerySent)
             {

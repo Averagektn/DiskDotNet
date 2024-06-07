@@ -5,11 +5,11 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Disk" xmlns:viewmodel="clr-namespace:Disk.ViewModel.Common.ViewModels" d:DataContext="{d:DesignInstance Type=viewmodel:MainViewModel}"
         xmlns:viewmodels="clr-namespace:Disk.ViewModel"
-        xmlns:views="clr-namespace:Disk.View"
+        xmlns:views="clr-namespace:Disk.View" xmlns:modalcontrol="clr-namespace:ModalControl;assembly=ModalControl"
         mc:Ignorable="d"
         Title="DiskApp" Height="600" Width="600">
-    <ContentControl Content="{Binding CurrentViewModel}">
-        <ContentControl.Resources>
+    <Grid>
+        <Grid.Resources>
             <DataTemplate DataType="{x:Type viewmodels:AuthenticationViewModel}">
                 <views:AuthenticationView/>
             </DataTemplate>
@@ -19,6 +19,12 @@
             <DataTemplate DataType="{x:Type viewmodels:MenuViewModel}">
                 <views:MenuView/>
             </DataTemplate>
-        </ContentControl.Resources>
-    </ContentControl>
+        </Grid.Resources>
+        
+        <modalcontrol:Modal Panel.ZIndex="2" IsOpen="{Binding IsModalOpen}">
+            <ContentControl Content="{Binding CurrentModalViewModel}"/>
+        </modalcontrol:Modal>
+
+        <ContentControl Content="{Binding CurrentViewModel}"/>
+    </Grid>
 </Window>

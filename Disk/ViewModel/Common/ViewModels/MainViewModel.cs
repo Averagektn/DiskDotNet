@@ -5,17 +5,29 @@ namespace Disk.ViewModel.Common.ViewModels
     public class MainViewModel : ObserverViewModel
     {
         public ObserverViewModel CurrentViewModel => _navigationStore.CurrentViewModel;
+        public ObserverViewModel? CurrentModalViewModel => _modalNavigationStore.CurrentViewModel;
 
         private readonly NavigationStore _navigationStore;
+        private readonly ModalNavigationStore _modalNavigationStore;
 
-        public MainViewModel(NavigationStore navigationStore)
+        public bool IsModalOpen => _modalNavigationStore.IsOpen;
+
+        public MainViewModel(NavigationStore navigationStore, ModalNavigationStore modalNavigationStore)
         {
             _navigationStore = navigationStore;
+            _modalNavigationStore = modalNavigationStore;
 
             _navigationStore.CurrentViewModelChanged += OnCurrentViewModelChanged;
+            _modalNavigationStore.CurrentViewModelChanged += OnCurrentModalViewModelChanged;
         }
 
         public bool CanNavigateBack() => _navigationStore.NavigateBack();
+
+        private void OnCurrentModalViewModelChanged()
+        {
+            OnPropertyChanged(nameof(CurrentModalViewModel));
+            OnPropertyChanged(nameof(IsModalOpen));
+        }
 
         private void OnCurrentViewModelChanged()
         {

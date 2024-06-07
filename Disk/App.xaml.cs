@@ -1,15 +1,14 @@
 ﻿using Disk.Db.Context;
 using Disk.Repository.Implementation;
 using Disk.Repository.Interface;
-using Disk.Service.Interface;
 using Disk.Service.Implementation;
+using Disk.Service.Interface;
 using Disk.Stores;
 using Disk.ViewModel;
 using Disk.ViewModel.Common.ViewModels;
 using Microsoft.Extensions.DependencyInjection;
-using System.Windows;
-using Microsoft.Extensions.Logging;
 using Serilog;
+using System.Windows;
 
 namespace Disk
 {
@@ -36,6 +35,7 @@ namespace Disk
             _ = services.AddSingleton<Func<Type, ObserverViewModel>>(provider =>
                 type => (ObserverViewModel)provider.GetRequiredService(type));
             _ = services.AddSingleton<NavigationStore>();
+            _ = services.AddSingleton<ModalNavigationStore>();
 
             _ = services.AddSingleton<IAppointmentRepository, AppointmentRepository>();
             _ = services.AddSingleton<IDoctorRepository, DoctorRepository>();
@@ -55,7 +55,8 @@ namespace Disk
 
             _ = services.AddSingleton<MainWindow>(provider =>
             {
-                provider.GetRequiredService<NavigationStore>().SetViewModel<AuthenticationViewModel>();
+                provider.GetRequiredService<ModalNavigationStore>().SetViewModel<AuthenticationViewModel>();
+                provider.GetRequiredService<NavigationStore>().SetViewModel<MenuViewModel>();
                 return new MainWindow()
                 {
                     DataContext = provider.GetRequiredService<MainViewModel>()
