@@ -28,14 +28,16 @@ namespace Disk.ViewModel
 
         private async Task PerformRegistration(object? param)
         {
-            _doctorRepository.PerformRegistration(Doctor);
-            _navigationStore.CurrentViewModel = new MenuViewModel();
+            //_doctorRepository.PerformRegistration(Doctor);
+            //_navigationStore.CurrentViewModel = new MenuViewModel();
+            _navigationStore.SetViewModel<MenuViewModel>();
         }
 
         private async Task PerformAuthorization(object? param)
         {
-            _doctorRepository.PerformAuthorization(Doctor);
-            _navigationStore.CurrentViewModel = new MenuViewModel();
+            //_doctorRepository.PerformAuthorization(Doctor);
+            //_navigationStore.CurrentViewModel = new MenuViewModel();
+            _navigationStore.SetViewModel<MenuViewModel>();
         }
     }
 }

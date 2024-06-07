@@ -2,6 +2,7 @@
 using Disk.Repository.Implementation;
 using Disk.Repository.Interface;
 using Disk.Stores;
+using Disk.View;
 using Disk.ViewModel;
 using Disk.ViewModel.Common.ViewModels;
 using Microsoft.Extensions.DependencyInjection;
@@ -24,6 +25,7 @@ namespace Disk
             var services = new ServiceCollection();
             _ = services.AddDbContext<DiskContext>();
 
+            _ = services.AddSingleton<Func<Type, ObserverViewModel>>(s => type => (ObserverViewModel)s.GetRequiredService(type));
             _ = services.AddSingleton<NavigationStore>();
 
             _ = services.AddSingleton<IAppointmentRepository, AppointmentRepository>();
@@ -35,6 +37,8 @@ namespace Disk
             _ = services.AddSingleton<IPatientRepository, PatientRepository>();
             _ = services.AddSingleton<ISessionRepository, SessionRepository>();
             _ = services.AddSingleton<ISesssionResultRepository, SessionResultRepository>();
+
+            _ = services.AddTransient<MenuViewModel>();
 
             _serviceProvider = services.BuildServiceProvider();
         }

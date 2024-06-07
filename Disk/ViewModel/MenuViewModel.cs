@@ -1,4 +1,5 @@
-﻿using Disk.ViewModel.Common.Commands.Sync;
+﻿using Disk.Repository.Interface;
+using Disk.ViewModel.Common.Commands.Sync;
 using Disk.ViewModel.Common.ViewModels;
 using System.IO;
 using System.Windows;
@@ -19,7 +20,7 @@ namespace Disk.ViewModel
 
         private static Settings Settings => Settings.Default;
 
-        public MenuViewModel()
+        public MenuViewModel(IAppointmentRepository appointmentRepository)
         {
             if (!Directory.Exists(Settings.MAIN_DIR_PATH))
             {
