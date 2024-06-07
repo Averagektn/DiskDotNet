@@ -1,6 +1,4 @@
 ﻿using Disk.ViewModel.Common.ViewModels;
-using System.ComponentModel;
-using System.Windows;
 
 namespace Disk.Stores
 {
@@ -11,12 +9,9 @@ namespace Disk.Stores
 
         public ObserverViewModel CurrentViewModel
         {
+            // uncomment for creating new viewModel on back button click
+            //get => getViewModel.Invoke(ViewModels.Peek().GetType());
             get => ViewModels.Peek();
-            set
-            {
-                ViewModels.Push(value);
-                OnCurrentViewModelChanged();
-            }
         }
 
         public void SetViewModel<TViewModel>()
