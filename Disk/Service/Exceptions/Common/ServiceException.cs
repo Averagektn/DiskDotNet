@@ -1,14 +1,10 @@
-﻿namespace Disk.Service.Exceptions.Common
+﻿using Disk.Exceptions;
+
+namespace Disk.Service.Exceptions.Common
 {
-    public class ServiceException : Exception
+    public class ServiceException : BaseException
     {
-        public string Output { get; protected set; } = string.Empty;
-
         public ServiceException(string message) : base(message) { }
-
-        public ServiceException(string output, string message) : base(message) 
-        {
-            Output = output;
-        }
+        public ServiceException(string output, string message) : base(output, message) { }
     }
 }
