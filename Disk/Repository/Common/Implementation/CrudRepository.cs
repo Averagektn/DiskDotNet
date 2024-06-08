@@ -10,13 +10,29 @@ namespace Disk.Repository.Common.Implementation
         public void Add(T entity)
         {
             table.Add(entity);
-            context.SaveChanges();
+            try
+            {
+                context.SaveChanges();
+            }
+            catch (DbUpdateException)
+            {
+                context.Remove(entity);
+                throw;
+            }
         }
 
         public async Task AddAsync(T entity)
         {
             await table.AddAsync(entity);
-            await context.SaveChangesAsync();
+            try
+            {
+                await context.SaveChangesAsync();
+            }
+            catch (DbUpdateException)
+            {
+                context.Remove(entity);
+                throw;
+            }
         }
 
         public void Delete(T entity)
@@ -37,12 +53,12 @@ namespace Disk.Repository.Common.Implementation
 
         public T GetById(long id)
         {
-            return table.Find(id) ?? throw new EntityNotFoundException();
+            return table.Find(id) ?? throw new EntityNotFoundException($"No such {typeof(T)} with id {id}");
         }
 
         public async Task<T> GetByIdAsync(long id)
         {
-            return await table.FindAsync(id) ?? throw new EntityNotFoundException();
+            return await table.FindAsync(id) ?? throw new EntityNotFoundException($"No such {typeof(T)} with id {id}");
         }
 
         public void Update(T entity)
