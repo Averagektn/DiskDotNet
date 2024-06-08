@@ -4,6 +4,6 @@ namespace Disk.Sessions
 {
     public static class AppSession
     {
-        public static Doctor Doctor { get; set; }
+        public static Doctor Doctor { get; set; } = new();
     }
 }
