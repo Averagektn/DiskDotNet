@@ -28,6 +28,15 @@
             <DataTemplate DataType="{x:Type viewmodels:SettingsViewModel}">
                 <views:SettingsView/>
             </DataTemplate>
+            <DataTemplate DataType="{x:Type viewmodels:PatientsViewModel}">
+                <views:PatientsView/>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type viewmodels:AddPatientViewModel}">
+                <views:AddPatientView/>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type viewmodels:AppointmentsViewModel}">
+                <views:AppointmentsView/>
+            </DataTemplate>
         </Grid.Resources>
         
         <modalcontrol:Modal Panel.ZIndex="2" IsOpen="{Binding IsModalOpen}">

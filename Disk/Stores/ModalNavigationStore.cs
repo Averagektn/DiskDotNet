@@ -5,9 +5,15 @@ namespace Disk.Stores
     public class ModalNavigationStore(Func<Type, ObserverViewModel> getViewModel)
     {
         public bool IsOpen => CurrentViewModel != null;
+        public bool CanClose => CanCloseStack.Count != 0 && CanCloseStack.Peek();
+
+        private readonly Stack<bool> CanCloseStack = [];
+        public readonly Stack<ObserverViewModel> ViewModels = [];
+        public event Action? CurrentViewModelChanged;
 
         public void Close()
         {
+            CanCloseStack.Pop();
             ViewModels.Pop();
             OnCurrentViewModelChanged();
         }
@@ -17,10 +23,6 @@ namespace Disk.Stores
             CurrentViewModelChanged?.Invoke();
         }
 
-
-        public readonly Stack<ObserverViewModel> ViewModels = [];
-        public event Action? CurrentViewModelChanged;
-
         public ObserverViewModel? CurrentViewModel
         {
             // uncomment for creating new viewModel on back button click
@@ -28,24 +30,11 @@ namespace Disk.Stores
             get => ViewModels.Count == 0 ? null : ViewModels.Peek();
         }
 
-        public void SetViewModel<TViewModel>()
+        public void SetViewModel<TViewModel>(bool canClose = false)
         {
+            CanCloseStack.Push(canClose);
             ViewModels.Push(getViewModel.Invoke(typeof(TViewModel)));
             OnCurrentViewModelChanged();
-        }
-
-        public bool NavigateBack()
-        {
-            _ = ViewModels.Pop();
-            if (ViewModels.Count == 0)
-            {
-                return false;
-            }
-            else
-            {
-                OnCurrentViewModelChanged();
-                return true;
-            }
         }
     }
 }

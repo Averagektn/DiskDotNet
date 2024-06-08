@@ -14,7 +14,15 @@ namespace Disk.Stores
             get => ViewModels.Peek();
         }
 
-        public void SetViewModel<TViewModel>()
+        public void SetViewModel<TViewModel>(Action<TViewModel> parametrizeViewModel) where TViewModel : class
+        {
+            var viewModel = getViewModel.Invoke(typeof(TViewModel));
+            parametrizeViewModel((viewModel as TViewModel)!);
+            ViewModels.Push(viewModel);
+            OnCurrentViewModelChanged();
+        }
+
+        public void SetViewModel<TViewModel>() where TViewModel : class
         {
             ViewModels.Push(getViewModel.Invoke(typeof(TViewModel)));
             OnCurrentViewModelChanged();
