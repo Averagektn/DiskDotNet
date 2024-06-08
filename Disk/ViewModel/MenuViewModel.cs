@@ -53,6 +53,7 @@ namespace Disk.ViewModel
             //Application.Current.MainWindow.Hide();
             //_ = new MapCreator().ShowDialog();
             //Application.Current.MainWindow.Show();
+            navigationStore.SetViewModel<MapCreatorViewModel>();
         }
 
         private void ToPatients(object? parameter)
