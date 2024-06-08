@@ -55,9 +55,7 @@ namespace Disk.ViewModel
 
         private void ToPatients(object? parameter)
         {
-            //Application.Current.MainWindow.Hide();
-            //_ = new UserDataForm().ShowDialog();
-            //Application.Current.MainWindow.Show();
+            navigationStore.SetViewModel<PatientsViewModel>();
         }
 
         private void ToSettings(object? parameter)
