@@ -5,8 +5,76 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Disk.View" xmlns:viewmodel="clr-namespace:Disk.ViewModel" d:DataContext="{d:DesignInstance Type=viewmodel:AddPatientViewModel}"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
-    <Grid>
-            
-    </Grid>
+             d:DesignHeight="600" d:DesignWidth="800">
+    <UserControl.Resources>
+        <ResourceDictionary Source="/Style/BtnStyles.xaml"/>
+    </UserControl.Resources>
+
+    <StackPanel Grid.Column="0" HorizontalAlignment="Center" CanVerticallyScroll="True">
+        <TextBlock Text="Фамилия" 
+            Margin="0,15"
+            HorizontalAlignment="Left"/>
+        <TextBox Padding="0,5"
+            Width="255"
+            BorderThickness="0,0,0,1"
+            HorizontalAlignment="Left"
+            Text="{Binding Patient.Surname}"/>
+
+        <TextBlock Text="Имя" 
+            Margin="0,15"
+            HorizontalAlignment="Left"/>
+        <TextBox Padding="0,5"
+            Width="255"
+            BorderThickness="0,0,0,1"
+            HorizontalAlignment="Left"
+            Text="{Binding Patient.Name}"/>
+
+        <TextBlock Text="Отчество" 
+            Margin="0,15"
+            HorizontalAlignment="Left"/>
+        <TextBox Padding="0,5"
+            Width="255"
+            BorderThickness="0,0,0,1"
+            HorizontalAlignment="Left"
+            Text="{Binding Patient.Patronymic}"/>
+
+        <TextBlock Text="Дата рождения" 
+            Margin="0,15"
+            HorizontalAlignment="Left"/>
+        <DatePicker SelectedDate="{Binding Patient.DateOfBirth}"          Width="255"
+            BorderThickness="0,0,0,1"
+            HorizontalAlignment="Left" />
+
+        <TextBlock Text="Мобильный телефон" 
+            Margin="0,15"
+            HorizontalAlignment="Left"/>
+        <TextBox Padding="0,5"
+            Width="255"
+            BorderThickness="0,0,0,1"
+            HorizontalAlignment="Left"
+            Text="{Binding Patient.PhoneMobile}"/>
+
+        <TextBlock Text="Домашний телефон" 
+            Margin="0,15"
+            HorizontalAlignment="Left"/>
+        <TextBox Padding="0,5"
+            Width="255"
+            BorderThickness="0,0,0,1"
+            HorizontalAlignment="Left"
+            Text="{Binding Patient.PhoneHome}"/>
+
+        <Button Content="Добавить пациента" 
+                HorizontalAlignment="Center"
+                VerticalAlignment="Bottom" Width="200"
+                Height="50"
+                Margin="0 20 0 0"                    
+                Foreground="White"
+                Background="Black"
+                Command="{Binding AddPatientCommand}">
+            <Button.Style>
+                <Style TargetType="Button" BasedOn="{StaticResource GradientButtonStyle}"/>
+            </Button.Style>
+        </Button>
+    </StackPanel>
+
 </UserControl>
