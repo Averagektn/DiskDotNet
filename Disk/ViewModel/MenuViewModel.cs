@@ -50,9 +50,6 @@ namespace Disk.ViewModel
 
         private void ToMapContructor(object? parameter)
         {
-            //Application.Current.MainWindow.Hide();
-            //_ = new MapCreator().ShowDialog();
-            //Application.Current.MainWindow.Show();
             navigationStore.SetViewModel<MapCreatorViewModel>();
         }
 
@@ -72,9 +69,7 @@ namespace Disk.ViewModel
 
         private void ToCalibration(object? parameter)
         {
-            //Application.Current.MainWindow.Hide();
-            //_ = new CalibrationWindow().ShowDialog();
-            //Application.Current.MainWindow.Show();
+            navigationStore.SetViewModel<CalibrationViewModel>();
         }
 
         private void Quit(object? parameter) => Application.Current.MainWindow.Close();

@@ -54,6 +54,7 @@ namespace Disk
             _ = services.AddTransient<AuthenticationViewModel>();
             _ = services.AddTransient<MapCreatorViewModel>();
             _ = services.AddTransient<MapNamePickerViewModel>();
+            _ = services.AddTransient<CalibrationViewModel>();
 
             _ = services.AddSingleton<MainWindow>(provider =>
             {

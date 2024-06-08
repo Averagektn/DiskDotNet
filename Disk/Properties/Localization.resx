@@ -117,36 +117,6 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Calibration.AngleX" xml:space="preserve">
-    <value>X axis angle</value>
-  </data>
-  <data name="Calibration.AngleY" xml:space="preserve">
-    <value>Y axis angle</value>
-  </data>
-  <data name="Calibration.Apply" xml:space="preserve">
-    <value>Apply</value>
-  </data>
-  <data name="Calibration.Centralize" xml:space="preserve">
-    <value>Centralize</value>
-  </data>
-  <data name="Calibration.ConnectionLost" xml:space="preserve">
-    <value>Connection lost</value>
-  </data>
-  <data name="Calibration.SetX" xml:space="preserve">
-    <value>Set X coordinate</value>
-  </data>
-  <data name="Calibration.SetY" xml:space="preserve">
-    <value>Set Y coordinate</value>
-  </data>
-  <data name="Calibration.Start" xml:space="preserve">
-    <value>Start calibration</value>
-  </data>
-  <data name="Calibration.Title" xml:space="preserve">
-    <value>Disk. Calibration</value>
-  </data>
-  <data name="MapCreator.Title" xml:space="preserve">
-    <value>Disk. Map creator</value>
-  </data>
   <data name="Paint.AngleDistance" xml:space="preserve">
     <value>Distance (in angles)</value>
   </data>

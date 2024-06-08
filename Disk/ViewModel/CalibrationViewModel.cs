@@ -1,4 +1,6 @@
 ﻿using Disk.Data.Impl;
+using Disk.Properties.Langs.Calibration;
+using Disk.Stores;
 using Disk.ViewModel.Common.Commands.Sync;
 using Disk.ViewModel.Common.ViewModels;
 using System.Net;
@@ -53,8 +55,12 @@ namespace Disk.ViewModel
 
         private bool IsRunningThread = true;
 
-        public CalibrationViewModel()
+        private readonly NavigationStore _navigationStore;
+
+        public CalibrationViewModel(NavigationStore navigationStore)
         {
+            _navigationStore = navigationStore;
+
             _xCoord = $"{XAngle:F2}";
             _yCoord = $"{YAngle:F2}";
 
@@ -98,8 +104,8 @@ namespace Disk.ViewModel
             }
             catch
             {
-                _ = MessageBox.Show(Properties.Localization.Calibration_ConnectionLost);
-                Application.Current.Windows.OfType<CalibrationWindow>().First().Close();
+                _ = MessageBox.Show(CalibrationLocalization.ConnectionLost);
+                _navigationStore.NavigateBack();
             }
         }
 
@@ -151,7 +157,7 @@ namespace Disk.ViewModel
             Settings.ANGLE_Y_SHIFT = YShift;
 
             Settings.Save();
-            Application.Current.Windows.OfType<CalibrationWindow>().First().Close();
+            _navigationStore.NavigateBack();
         }
     }
 }

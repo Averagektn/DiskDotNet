@@ -59,6 +59,11 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>AuthenticationLocalization.resx</DependentUpon>
     </Compile>
+    <Compile Update="Properties\Langs\Calibration\CalibrationLocalization.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>CalibrationLocalization.resx</DependentUpon>
+    </Compile>
     <Compile Update="Properties\Langs\MapNamePicker\MapNamePickerLocalization.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
@@ -82,6 +87,13 @@
       <LastGenOutput>AuthenticationLocalization.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Update="Properties\Langs\Authentication\AuthenticationLocalization.ru-RU.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Properties\Langs\Calibration\CalibrationLocalization.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>CalibrationLocalization.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Properties\Langs\Calibration\CalibrationLocalization.ru-RU.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Properties\Langs\MapNamePicker\MapNamePickerLocalization.resx">
