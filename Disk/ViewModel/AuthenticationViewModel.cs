@@ -14,7 +14,8 @@ using System.Windows.Media;
 
 namespace Disk.ViewModel
 {
-    public class AuthenticationViewModel : PopupViewModel
+    public class AuthenticationViewModel(IAuthenticationService authenticationService, ModalNavigationStore modalNavigationStore) 
+        : PopupViewModel
     {
         public Doctor Doctor { get; set; } = new() { Name = string.Empty, Surname = string.Empty, Password = string.Empty };
 
@@ -27,34 +28,19 @@ namespace Disk.ViewModel
         private Brush _bgPassword = new SolidColorBrush(Colors.White);
         public Brush BgPassword { get => _bgPassword; set => SetProperty(ref _bgPassword, value); }
 
-        public ICommand AuthorizationCommand { get; set; }
-        public ICommand RegistrationCommand { get; set; }
-        public ICommand ReturnWhiteNameCommand { get; set; }
-        public ICommand ReturnWhiteSurnameCommand { get; set; }
-        public ICommand ReturnWhitePasswordCommand { get; set; }
-
-        private readonly ModalNavigationStore _modalNavigationStore;
-        private readonly IAuthenticationService _authenticationService;
-
-        public AuthenticationViewModel(IAuthenticationService authenticationService, ModalNavigationStore modalNavigationStore)
-        {
-            _authenticationService = authenticationService;
-            _modalNavigationStore = modalNavigationStore;
-
-            AuthorizationCommand = new AsyncCommand(PerformAuthorization);
-            RegistrationCommand = new AsyncCommand(PerformRegistration);
-            ReturnWhiteNameCommand = new Command(ReturnWhiteName);
-            ReturnWhiteSurnameCommand = new Command(ReturnWhiteSurname);
-            ReturnWhitePasswordCommand = new Command(ReturnWhitePassword);
-        }
+        public ICommand AuthorizationCommand => new AsyncCommand(PerformAuthorization);
+        public ICommand RegistrationCommand => new AsyncCommand(PerformRegistration);
+        public ICommand ReturnWhiteNameCommand => new Command(ReturnWhiteName);
+        public ICommand ReturnWhiteSurnameCommand => new Command(ReturnWhiteSurname);
+        public ICommand ReturnWhitePasswordCommand => new Command(ReturnWhitePassword);
 
         private async Task PerformRegistration(object? param)
         {
             try
             {
-                _ = await _authenticationService.PerformRegistrationAsync(Doctor);
+                _ = await authenticationService.PerformRegistrationAsync(Doctor);
                 Application.Current.Properties["doctor"] = Doctor;
-                _modalNavigationStore.Close();
+                modalNavigationStore.Close();
             }
             catch (InvalidNameException ex)
             {
@@ -89,7 +75,7 @@ namespace Disk.ViewModel
 
             try
             {
-                isSuccessfulAuth = await _authenticationService.PerformAuthorizationAsync(Doctor);
+                isSuccessfulAuth = await authenticationService.PerformAuthorizationAsync(Doctor);
                 isQuerySent = true;
             }
             catch (InvalidNameException ex)
@@ -120,7 +106,7 @@ namespace Disk.ViewModel
             if (isQuerySent && isSuccessfulAuth)
             {
                 Application.Current.Properties["doctor"] = Doctor;
-                _modalNavigationStore.Close();
+                modalNavigationStore.Close();
             }
             else if (isQuerySent)
             {
