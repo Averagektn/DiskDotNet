@@ -4,7 +4,6 @@ using Disk.Repository.Interface;
 using Disk.Service.Implementation;
 using Disk.Service.Interface;
 using Disk.Stores;
-using Disk.View;
 using Disk.ViewModel;
 using Disk.ViewModel.Common.ViewModels;
 using Microsoft.Extensions.DependencyInjection;
@@ -54,6 +53,7 @@ namespace Disk
             _ = services.AddTransient<MenuViewModel>();
             _ = services.AddTransient<AuthenticationViewModel>();
             _ = services.AddTransient<MapCreatorViewModel>();
+            _ = services.AddTransient<MapNamePickerViewModel>();
 
             _ = services.AddSingleton<MainWindow>(provider =>
             {

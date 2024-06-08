@@ -126,6 +126,9 @@
   <data name="DbError" xml:space="preserve">
     <value>Database error</value>
   </data>
+  <data name="Duplication" xml:space="preserve">
+    <value>Such user alredy exists</value>
+  </data>
   <data name="EmptyName" xml:space="preserve">
     <value>Name is empty</value>
   </data>

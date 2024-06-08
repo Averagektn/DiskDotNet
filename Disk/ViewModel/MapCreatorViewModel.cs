@@ -1,4 +1,6 @@
 ﻿using Disk.Data.Impl;
+using Disk.Sessions;
+using Disk.Stores;
 using Disk.ViewModel.Common.ViewModels;
 using Disk.Visual.Impl;
 using System.Windows;
@@ -8,10 +10,8 @@ using Settings = Disk.Properties.Config.Config;
 
 namespace Disk.ViewModel
 {
-    public class MapCreatorViewModel : ObserverViewModel
+    public class MapCreatorViewModel(ModalNavigationStore modalNavigationStore) : ObserverViewModel
     {
-        public int MapId { get; set; } = Settings.Default.MAP_ID;
-
         private static int IniWidth => Settings.Default.SCREEN_INI_WIDTH;
         private static int IniHeight => Settings.Default.SCREEN_INI_HEIGHT;
 
@@ -38,20 +38,14 @@ namespace Disk.ViewModel
 
         public void SaveMap(double actualWidth, double actualHeight)
         {
-            if (_targets.Count != 0)
+            foreach (var target in _targets)
             {
-                using var writer = Logger.GetLogger($"maps\\map_{MapId++}.map");
-
-                foreach (var target in _targets)
-                {
-                    writer.LogLn(new Point2D<float>(
-                        (float)(target.Center.X / actualWidth),
-                        (float)(target.Center.Y / actualHeight)));
-                }
-
-                Settings.Default.MAP_ID = MapId;
-                Settings.Default.Save();
+                MapSession.Map.Add(new Point2D<float>(
+                    (float)(target.Center.X / actualWidth),
+                    (float)(target.Center.Y / actualHeight)));
             }
+
+            modalNavigationStore.SetViewModel<MapNamePickerViewModel>();
         }
 
         public void RemoveTarget(UIElementCollection screenTargets, Point mousePos)

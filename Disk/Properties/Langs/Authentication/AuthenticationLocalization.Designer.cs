@@ -88,6 +88,15 @@ namespace Disk.Properties.Langs.Authentication {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Such user alredy exists.
+        /// </summary>
+        public static string Duplication {
+            get {
+                return ResourceManager.GetString("Duplication", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Name is empty.
         /// </summary>
         public static string EmptyName {

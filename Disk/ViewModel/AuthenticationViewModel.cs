@@ -1,14 +1,16 @@
 ﻿using Disk.Entities;
+using Disk.Exceptions;
 using Disk.Properties.Langs.Authentication;
+using Disk.Repository.Exceptions;
 using Disk.Service.Exceptions;
 using Disk.Service.Exceptions.Common;
 using Disk.Service.Interface;
+using Disk.Sessions;
 using Disk.Stores;
 using Disk.ViewModel.Common.Commands.Async;
 using Disk.ViewModel.Common.Commands.Sync;
 using Disk.ViewModel.Common.ViewModels;
 using Serilog;
-using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
 
@@ -39,7 +41,7 @@ namespace Disk.ViewModel
             try
             {
                 _ = await authenticationService.PerformRegistrationAsync(Doctor);
-                Application.Current.Properties["doctor"] = Doctor;
+                AppSession.Doctor = Doctor;
                 modalNavigationStore.Close();
             }
             catch (InvalidNameException ex)
@@ -58,6 +60,10 @@ namespace Disk.ViewModel
                 await ShowPopupAndLog(ex, AuthenticationLocalization.RegistrationError);
             }
             catch (ServiceException ex)
+            {
+                await ShowPopupAndLog(ex, AuthenticationLocalization.RegistrationError);
+            }
+            catch (DuplicateEntityException ex)
             {
                 await ShowPopupAndLog(ex, AuthenticationLocalization.RegistrationError);
             }
@@ -105,7 +111,7 @@ namespace Disk.ViewModel
 
             if (isQuerySent && isSuccessfulAuth)
             {
-                Application.Current.Properties["doctor"] = Doctor;
+                AppSession.Doctor = Doctor;
                 modalNavigationStore.Close();
             }
             else if (isQuerySent)
@@ -114,7 +120,7 @@ namespace Disk.ViewModel
             }
         }
 
-        private async Task ShowPopupAndLog(ServiceException ex, string header)
+        private async Task ShowPopupAndLog(BaseException ex, string header)
         {
             await ShowPopup(header, ex.Output);
             Log.Logger.Error(ex.Message);

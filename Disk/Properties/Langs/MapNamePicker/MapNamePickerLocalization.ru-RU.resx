@@ -117,49 +117,19 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="AuthorizationError" xml:space="preserve">
-    <value>Ошибка авторизации</value>
-  </data>
-  <data name="Authorize" xml:space="preserve">
-    <value>Войти</value>
-  </data>
-  <data name="DbError" xml:space="preserve">
-    <value>Ошибка базы данных</value>
-  </data>
-  <data name="Duplication" xml:space="preserve">
-    <value>Такой пользователь уже существует</value>
+  <data name="Add" xml:space="preserve">
+    <value>Добавить</value>
   </data>
   <data name="EmptyName" xml:space="preserve">
-    <value>Имя не введено</value>
+    <value>Не введено имя карты</value>
   </data>
-  <data name="EmptySurname" xml:space="preserve">
-    <value>Фамилия не введена</value>
+  <data name="MapName" xml:space="preserve">
+    <value>Название карты</value>
   </data>
-  <data name="Name" xml:space="preserve">
-    <value>Имя</value>
+  <data name="NameDuplication" xml:space="preserve">
+    <value>Такое название карты уже существует</value>
   </data>
-  <data name="NotFound" xml:space="preserve">
-    <value>Пользователь не найден</value>
-  </data>
-  <data name="Password" xml:space="preserve">
-    <value>Пароль</value>
-  </data>
-  <data name="Patronymic" xml:space="preserve">
-    <value>Отчество</value>
-  </data>
-  <data name="Register" xml:space="preserve">
-    <value>Зарегистрироваться</value>
-  </data>
-  <data name="RegistrationError" xml:space="preserve">
-    <value>Ошибка регистрации</value>
-  </data>
-  <data name="ShortPassword" xml:space="preserve">
-    <value>Пароль короче 8 символов</value>
-  </data>
-  <data name="Surname" xml:space="preserve">
-    <value>Фамилия</value>
-  </data>
-  <data name="Title" xml:space="preserve">
-    <value>Вход</value>
+  <data name="SavingError" xml:space="preserve">
+    <value>Ошибка сохранения</value>
   </data>
 </root>

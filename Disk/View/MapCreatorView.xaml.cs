@@ -1,5 +1,4 @@
 ﻿using Disk.ViewModel;
-using Microsoft.Extensions.DependencyInjection;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -11,22 +10,30 @@ namespace Disk.View
     /// </summary>
     public partial class MapCreatorView : UserControl
     {
+        private MapCreatorViewModel? _viewModel;
+
         public MapCreatorView()
         {
             InitializeComponent();
 
-            Unloaded += OnClose;
+            Unloaded += OnUnloaded;
             MouseLeftButtonDown += OnMouseLeftButtonDown;
             MouseRightButtonDown += OnMouseRightButtonDown;
             MouseDoubleClick += OnMouseDoubleClick;
             MouseMove += OnMouseMove;
             SizeChanged += OnSizeChanged;
+            Loaded += OnLoaded;
+        }
+
+        private void OnLoaded(object sender, RoutedEventArgs e)
+        {
+            _viewModel = DataContext as MapCreatorViewModel;
         }
 
         private void OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             var mousePos = e.GetPosition(sender as UIElement);
-            (DataContext as MapCreatorViewModel)?.SelectTarget(mousePos);
+            _viewModel?.SelectTarget(mousePos);
         }
 
         private void OnMouseMove(object sender, MouseEventArgs e)
@@ -36,21 +43,20 @@ namespace Disk.View
                 var mousePos = e.GetPosition(sender as UIElement);
                 if (AllowedArea.FillContains(mousePos))
                 {
-                    (DataContext as MapCreatorViewModel)?.MoveTarget(mousePos);
+                    _viewModel?.MoveTarget(mousePos);
                 }
             }
         }
 
-        private void OnClose(object? sender, RoutedEventArgs e)
+        private void OnUnloaded(object? sender, RoutedEventArgs e)
         {
-            MessageBox.Show("A");
-            (DataContext as MapCreatorViewModel)?.SaveMap(ActualWidth, ActualHeight);
+            _viewModel?.SaveMap(ActualWidth, ActualHeight);
         }
 
         private void OnMouseRightButtonDown(object sender, MouseButtonEventArgs e)
         {
             var mousePos = e.GetPosition(sender as UIElement);
-            (DataContext as MapCreatorViewModel)?.RemoveTarget(PaintArea.Children, mousePos);
+            _viewModel?.RemoveTarget(PaintArea.Children, mousePos);
         }
 
         private void OnSizeChanged(object sender, SizeChangedEventArgs e)
@@ -59,7 +65,7 @@ namespace Disk.View
             AllowedArea.RadiusY = ActualHeight / 2;
             AllowedArea.Center = new(ActualWidth / 2, ActualHeight / 2);
 
-            (DataContext as MapCreatorViewModel)?.ScaleTargets(RenderSize);
+            _viewModel?.ScaleTargets(RenderSize);
         }
 
         private void OnMouseDoubleClick(object sender, MouseButtonEventArgs e)
@@ -70,7 +76,7 @@ namespace Disk.View
 
             if (e.ChangedButton == MouseButton.Left && AllowedArea.FillContains(new Point(x, y)))
             {
-                (DataContext as MapCreatorViewModel)?.AddTarget(mousePos, RenderSize, PaintArea);
+                _viewModel?.AddTarget(mousePos, RenderSize, PaintArea);
             }
         }
     }
