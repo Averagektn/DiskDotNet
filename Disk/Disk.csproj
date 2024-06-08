@@ -74,6 +74,11 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>MenuLocalization.resx</DependentUpon>
     </Compile>
+    <Compile Update="Properties\Langs\Patients\PatientsLocalization.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>PatientsLocalization.resx</DependentUpon>
+    </Compile>
     <Compile Update="Properties\Localization.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
@@ -106,6 +111,13 @@
     <EmbeddedResource Update="Properties\Langs\Menu\MenuLocalization.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>MenuLocalization.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Properties\Langs\Patients\PatientsLocalization.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>PatientsLocalization.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Properties\Langs\Patients\PatientsLocalization.ru-RU.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Properties\Localization.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>

@@ -4,30 +4,30 @@
              xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:lang="clr-namespace:Disk.Properties.Langs.Patients" 
              xmlns:local="clr-namespace:Disk.View" xmlns:viewmodel="clr-namespace:Disk.ViewModel" d:DataContext="{d:DesignInstance Type=viewmodel:PatientsViewModel}"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <StackPanel>
         <Menu Height="20" VerticalAlignment="Top">
-            <MenuItem Header="Пациенты">
-                <MenuItem Header="Добавить..." Command="{Binding AddPatientCommand}"/>
+            <MenuItem Header="{x:Static lang:PatientsLocalization.MenuHeader}">
+                <MenuItem Header="{x:Static lang:PatientsLocalization.Add}" Command="{Binding AddPatientCommand}"/>
             </MenuItem>
         </Menu>
         <StackPanel Orientation="Horizontal">
-            <TextBlock Text="Поиск (ФИО):" 
+            <TextBlock Text="{x:Static lang:PatientsLocalization.SearchHeader}" 
                    FontSize="20"
                    Grid.Row="2"
                    Margin="0,15"
                    HorizontalAlignment="Left"/>
-            <TextBox Name="SearchBox" Margin="15"
-            Grid.Column="3"
-                  Grid.Row="3"
-                  Padding="0,5"
-                     Width="650"
-                  BorderThickness="0,0,0,1"
-                  HorizontalAlignment="Left"
-                  Text="{Binding SearchText}"
-                  Background="LightGray">
+            <TextBox
+                   Margin="15"
+                   Padding="0,5"
+                   Width="650"
+                   BorderThickness="0,0,0,1"
+                   HorizontalAlignment="Left"
+                   Text="{Binding SearchText}"
+                   Background="LightGray">
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="TextChanged">
                         <i:InvokeCommandAction Command="{Binding SearchCommand}" />
@@ -41,13 +41,12 @@
                   SelectedItem="{Binding SelectedPatient}" 
                   IsReadOnly="True">
             <DataGrid.Columns>
-                <DataGridTextColumn Width="1*" Header="Имя" Binding="{Binding Name}" />
-                <DataGridTextColumn Width="1*" Header="Фамилия" Binding="{Binding Surname}" />
-                <DataGridTextColumn Width="1*" Header="Отчество" Binding="{Binding Patronymic}" />
-                <DataGridTextColumn Width="1*" Header="Адрес" Binding="{Binding Address}" />
-                <DataGridTextColumn Width="1*" Header="Дата рождения" Binding="{Binding DateOfBirth}" />
-                <DataGridTextColumn Width="1*" Header="Мобильный телефон" Binding="{Binding PhoneMobile}" />
-                <DataGridTextColumn Width="1*" Header="Домашний телефон" Binding="{Binding PhoneHome}" />
+                <DataGridTextColumn Width="1*" Header="{x:Static lang:PatientsLocalization.Name}" Binding="{Binding Name}" />
+                <DataGridTextColumn Width="1*" Header="{x:Static lang:PatientsLocalization.Surname}" Binding="{Binding Surname}" />
+                <DataGridTextColumn Width="1*" Header="{x:Static lang:PatientsLocalization.Patronymic}" Binding="{Binding Patronymic}" />
+                <DataGridTextColumn Width="1*" Header="{x:Static lang:PatientsLocalization.DateOfBirth}" Binding="{Binding DateOfBirth}" />
+                <DataGridTextColumn Width="1*" Header="{x:Static lang:PatientsLocalization.MobilePhone}" Binding="{Binding PhoneMobile}" />
+                <DataGridTextColumn Width="1*" Header="{x:Static lang:PatientsLocalization.HomePhone}" Binding="{Binding PhoneHome}" />
             </DataGrid.Columns>
             <i:Interaction.Triggers>
                 <i:EventTrigger EventName="MouseDoubleClick">
