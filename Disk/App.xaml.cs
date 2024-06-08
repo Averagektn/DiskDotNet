@@ -48,6 +48,7 @@ namespace Disk
             _ = services.AddSingleton<ISesssionResultRepository, SessionResultRepository>();
 
             _ = services.AddSingleton<IAuthenticationService, AuthenticationService>();
+            _ = services.AddSingleton<IPatientService, PatientService>();
 
             _ = services.AddTransient<MainViewModel>();
             _ = services.AddTransient<MenuViewModel>();

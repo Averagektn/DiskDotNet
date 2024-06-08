@@ -41,8 +41,10 @@
         <TextBlock Text="Дата рождения" 
             Margin="0,15"
             HorizontalAlignment="Left"/>
-        <DatePicker SelectedDate="{Binding Patient.DateOfBirth}"          Width="255"
+        <DatePicker SelectedDate="{Binding Patient.DateOfBirth}"          
+            Width="255"
             BorderThickness="0,0,0,1"
+            SelectedDateFormat="Short"
             HorizontalAlignment="Left" />
 
         <TextBlock Text="Мобильный телефон" 
@@ -71,6 +73,19 @@
                 Foreground="White"
                 Background="Black"
                 Command="{Binding AddPatientCommand}">
+            <Button.Style>
+                <Style TargetType="Button" BasedOn="{StaticResource GradientButtonStyle}"/>
+            </Button.Style>
+        </Button>
+
+        <Button Content="Отмена" 
+                HorizontalAlignment="Center"
+                VerticalAlignment="Bottom" Width="200"
+                Height="50"
+                Margin="0 20 0 0"                    
+                Foreground="White"
+                Background="Black"
+                Command="{Binding CancelCommand}">
             <Button.Style>
                 <Style TargetType="Button" BasedOn="{StaticResource GradientButtonStyle}"/>
             </Button.Style>

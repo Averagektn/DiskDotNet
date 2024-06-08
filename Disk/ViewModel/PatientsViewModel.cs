@@ -9,6 +9,7 @@ using System.Windows.Input;
 
 namespace Disk.ViewModel
 {
+    // ADD RELOAD BUTTON
     public class PatientsViewModel : ObserverViewModel
     {
         public ICommand AddPatientCommand => new Command(ToAddPatient);
