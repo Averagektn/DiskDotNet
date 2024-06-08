@@ -30,62 +30,72 @@
         <Image Grid.RowSpan="2" Source="Properties/logo.jpg" HorizontalAlignment="Left"/>
 
         <Viewbox Grid.Row="1" Grid.Column="1">
-            <Button Command="{Binding StartClick}" Content="{x:Static lang:Localization.Menu_StartGame}">
+            <Button Command="{Binding StartClick}" Content="{x:Static lang:Localization.Menu_StartGame}"                     
+                    Foreground="White"
+                    Background="Black"
+                    Margin="0,25"
+                    Height="35"
+                    Width="250"
+                    FontSize="20">
                 <Button.Style>
                     <Style TargetType="Button" BasedOn="{StaticResource GradientButtonStyle}"/>
                 </Button.Style>
-                <Button.FontSize>20</Button.FontSize>
-                <Button.Margin>10, 15, 10, 15</Button.Margin>
-                <Button.Width>200</Button.Width>
-                <Button.Height>50</Button.Height>
             </Button>
         </Viewbox>
 
         <Viewbox Grid.Row="2" Grid.Column="1">
-            <Button Command="{Binding SettingsClick}" Content="{x:Static lang:Localization.Menu_Settings}">
+            <Button Command="{Binding SettingsClick}" Content="{x:Static lang:Localization.Menu_Settings}"
+                    Foreground="White"
+                    Background="Black"
+                    Margin="0,25"
+                    Height="35"
+                    Width="250"
+                    FontSize="20">
                 <Button.Style>
                     <Style TargetType="Button" BasedOn="{StaticResource GradientButtonStyle}"/>
                 </Button.Style>
-                <Button.FontSize>20</Button.FontSize>
-                <Button.Margin>10, 15, 10, 15</Button.Margin>
-                <Button.Width>200</Button.Width>
-                <Button.Height>50</Button.Height>
             </Button>
         </Viewbox>
 
         <Viewbox Grid.Row="3" Grid.Column="1">
-            <Button Command="{Binding CalibrationClick}" Content="{x:Static lang:Localization.Menu_Calibration}">
+            <Button Command="{Binding CalibrationClick}" Content="{x:Static lang:Localization.Menu_Calibration}"
+                    Foreground="White"
+                    Background="Black"
+                    Margin="0,25"
+                    Height="35"
+                    Width="250"
+                    FontSize="20">
                 <Button.Style>
                     <Style TargetType="Button" BasedOn="{StaticResource GradientButtonStyle}"/>
                 </Button.Style>
-                <Button.FontSize>20</Button.FontSize>
-                <Button.Margin>10, 15, 10, 15</Button.Margin>
-                <Button.Width>200</Button.Width>
-                <Button.Height>50</Button.Height>
             </Button>
         </Viewbox>
 
         <Viewbox Grid.Row="4" Grid.Column="1">
-            <Button Command="{Binding MapConstructorClick}" Content="{x:Static lang:Localization.Menu_MapConstructor}">
+            <Button Command="{Binding MapConstructorClick}" Content="{x:Static lang:Localization.Menu_MapConstructor}"
+                    Foreground="White"
+                    Background="Black"
+                    Margin="0,25"
+                    Height="35"
+                    Width="250"
+                    FontSize="20">
                 <Button.Style>
                     <Style TargetType="Button" BasedOn="{StaticResource GradientButtonStyle}"/>
                 </Button.Style>
-                <Button.FontSize>20</Button.FontSize>
-                <Button.Margin>10, 15, 10, 15</Button.Margin>
-                <Button.Width>200</Button.Width>
-                <Button.Height>50</Button.Height>
             </Button>
         </Viewbox>
 
         <Viewbox Grid.Row="5" Grid.Column="1">
-            <Button Command="{Binding QuitClick}" Content="{x:Static lang:Localization.Menu_Quit}">
+            <Button Command="{Binding QuitClick}" Content="{x:Static lang:Localization.Menu_Quit}"
+                    Foreground="White"
+                    Background="Black"
+                    Margin="0,25"
+                    Height="35"
+                    Width="250"
+                    FontSize="20">
                 <Button.Style>
                     <Style TargetType="Button" BasedOn="{StaticResource GradientButtonStyle}"/>
                 </Button.Style>
-                <Button.FontSize>20</Button.FontSize>
-                <Button.Margin>10, 15, 10, 15</Button.Margin>
-                <Button.Width>200</Button.Width>
-                <Button.Height>50</Button.Height>
             </Button>
         </Viewbox>
 
@@ -94,6 +104,7 @@
                 <MenuItem Header="English" Command="{Binding ChangeLanguage}" CommandParameter="en-US"/>
                 <MenuItem Header="Русский" Command="{Binding ChangeLanguage}" CommandParameter="ru-RU"/>
             </MenuItem>
+            <MenuItem Header="Выйти из профиля" Command="{Binding LogoutCommand}"/>
         </Menu>
     </Grid>
 </UserControl>

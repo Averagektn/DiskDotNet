@@ -8,10 +8,8 @@ using Settings = Disk.Properties.Config.Config;
 
 namespace Disk.ViewModel
 {
-    public class MenuViewModel : ObserverViewModel
+    public class MenuViewModel(NavigationStore navigationStore, ModalNavigationStore modalNavigationStore) : ObserverViewModel
     {
-        private readonly NavigationStore _navigationStore;
-
         // Actions
         public ICommand ChangeLanguage => new Command(ChangeLanguageClick);
         public ICommand MapConstructorClick => new Command(OnMapContructorClick);
@@ -19,23 +17,9 @@ namespace Disk.ViewModel
         public ICommand StartClick => new Command(OnStartClick);
         public ICommand QuitClick => new Command(OnQuitClick);
         public ICommand CalibrationClick => new Command(OnCalibrationClick);
+        public ICommand LogoutCommand => new Command(Logout);
 
         private static Settings Settings => Settings.Default;
-
-        public MenuViewModel(NavigationStore navigationStore)
-        {
-            _navigationStore = navigationStore;
-
-            if (!Directory.Exists(Settings.MAIN_DIR_PATH))
-            {
-                _ = Directory.CreateDirectory(Settings.MAIN_DIR_PATH);
-            }
-
-            if (!Directory.Exists(Settings.MAPS_DIR_PATH))
-            {
-                _ = Directory.CreateDirectory(Settings.MAPS_DIR_PATH);
-            }
-        }
 
         private void ChangeLanguageClick(object? parameter)
         {
@@ -91,5 +75,9 @@ namespace Disk.ViewModel
         }
 
         private void OnQuitClick(object? parameter) => Application.Current.MainWindow.Close();
+        private void Logout(object? parameter)
+        {
+            modalNavigationStore.SetViewModel<AuthenticationViewModel>();
+        }
     }
 }

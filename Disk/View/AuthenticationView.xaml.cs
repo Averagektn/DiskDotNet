@@ -12,8 +12,6 @@ namespace Disk.View
         public AuthenticationView()
         {
             InitializeComponent();
-            Application.Current.MainWindow.Width = 600;
-            Application.Current.MainWindow.Height = 600;
         }
 
         private void LoginBtn_Click(object sender, RoutedEventArgs e)
