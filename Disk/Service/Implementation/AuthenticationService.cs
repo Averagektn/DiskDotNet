@@ -1,5 +1,6 @@
 ﻿using Disk.Entities;
 using Disk.Properties.Langs.Authentication;
+using Disk.Repository.Exceptions;
 using Disk.Repository.Exceptions.Common;
 using Disk.Repository.Interface;
 using Disk.Service.Exceptions;
@@ -26,7 +27,7 @@ namespace Disk.Service.Implementation
             }
             catch (RepositoryException ex)
             {
-                Log.Error(ex.Message);
+                Log.Fatal(ex.Message);
                 throw new ServiceException(AuthenticationLocalization.DbError, ex.Message);
             }
 
@@ -44,9 +45,14 @@ namespace Disk.Service.Implementation
                 doctor.Password = Encoding.Default.GetString(hash);
                 result = await doctorRepository.PerformRegistrationAsync(doctor);
             }
-            catch (RepositoryException ex)
+            catch (DuplicateEntityException ex)
             {
                 Log.Error(ex.Message);
+                throw;
+            }
+            catch (RepositoryException ex)
+            {
+                Log.Fatal(ex.Message);
                 throw new ServiceException(AuthenticationLocalization.DbError, ex.Message);
             }
 
