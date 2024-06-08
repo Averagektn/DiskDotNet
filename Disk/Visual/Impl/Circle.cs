@@ -12,7 +12,7 @@ namespace Disk.Visual.Impl
     /// <summary>
     ///     Represents a Circle figure that implements the IFigure interface
     /// </summary>
-    class Circle : IFigure
+    public class Circle : IFigure
     {
         /// <summary>
         ///     Gets or sets the center point of the circle
