@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:lang="clr-namespace:Disk.Properties" 
+             xmlns:lang="clr-namespace:Disk.Properties.Langs.Menu" 
              xmlns:local="clr-namespace:Disk.View" xmlns:viewmodel="clr-namespace:Disk.ViewModel" d:DataContext="{d:DesignInstance Type=viewmodel:MenuViewModel}"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
@@ -30,7 +30,7 @@
         <Image Grid.RowSpan="2" Source="Properties/logo.jpg" HorizontalAlignment="Left"/>
 
         <Viewbox Grid.Row="1" Grid.Column="1">
-            <Button Command="{Binding StartClick}" Content="{x:Static lang:Localization.Menu_StartGame}"                     
+            <Button Command="{Binding ToPatientsCommand}" Content="{x:Static lang:MenuLocalization.Patients}"                     
                     Foreground="White"
                     Background="Black"
                     Margin="0,25"
@@ -44,7 +44,7 @@
         </Viewbox>
 
         <Viewbox Grid.Row="2" Grid.Column="1">
-            <Button Command="{Binding SettingsClick}" Content="{x:Static lang:Localization.Menu_Settings}"
+            <Button Command="{Binding ToSettingsCommand}" Content="{x:Static lang:MenuLocalization.Settings}"
                     Foreground="White"
                     Background="Black"
                     Margin="0,25"
@@ -58,7 +58,7 @@
         </Viewbox>
 
         <Viewbox Grid.Row="3" Grid.Column="1">
-            <Button Command="{Binding CalibrationClick}" Content="{x:Static lang:Localization.Menu_Calibration}"
+            <Button Command="{Binding ToCalibrationCommand}" Content="{x:Static lang:MenuLocalization.Calibration}"
                     Foreground="White"
                     Background="Black"
                     Margin="0,25"
@@ -72,7 +72,7 @@
         </Viewbox>
 
         <Viewbox Grid.Row="4" Grid.Column="1">
-            <Button Command="{Binding MapConstructorClick}" Content="{x:Static lang:Localization.Menu_MapConstructor}"
+            <Button Command="{Binding ToMapConstructorCommand}" Content="{x:Static lang:MenuLocalization.MapConstructor}"
                     Foreground="White"
                     Background="Black"
                     Margin="0,25"
@@ -86,7 +86,7 @@
         </Viewbox>
 
         <Viewbox Grid.Row="5" Grid.Column="1">
-            <Button Command="{Binding QuitClick}" Content="{x:Static lang:Localization.Menu_Quit}"
+            <Button Command="{Binding QuitCommand}" Content="{x:Static lang:MenuLocalization.Quit}"
                     Foreground="White"
                     Background="Black"
                     Margin="0,25"
@@ -100,11 +100,11 @@
         </Viewbox>
 
         <Menu Height="20" VerticalAlignment="Top">
-            <MenuItem Header="{x:Static lang:Localization.Menu_Language}">
-                <MenuItem Header="English" Command="{Binding ChangeLanguage}" CommandParameter="en-US"/>
-                <MenuItem Header="Русский" Command="{Binding ChangeLanguage}" CommandParameter="ru-RU"/>
+            <MenuItem Header="{x:Static lang:MenuLocalization.Language}">
+                <MenuItem Header="English" Command="{Binding ChangeLanguageCommand}" CommandParameter="en-US"/>
+                <MenuItem Header="Русский" Command="{Binding ChangeLanguageCommand}" CommandParameter="ru-RU"/>
             </MenuItem>
-            <MenuItem Header="Выйти из профиля" Command="{Binding LogoutCommand}"/>
+            <MenuItem Header="{x:Static lang:MenuLocalization.Logout}" Command="{Binding LogoutCommand}"/>
         </Menu>
     </Grid>
 </UserControl>

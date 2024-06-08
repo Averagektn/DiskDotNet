@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Disk.Properties.Langs {
+namespace Disk.Properties.Langs.Authentication {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace Disk.Properties.Langs {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Disk.Properties.Langs.AuthenticationLocalization", typeof(AuthenticationLocalization).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Disk.Properties.Langs.Authentication.AuthenticationLocalization", typeof(AuthenticationLocalization).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;

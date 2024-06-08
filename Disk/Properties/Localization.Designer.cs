@@ -151,69 +151,6 @@ namespace Disk.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Calibration.
-        /// </summary>
-        public static string Menu_Calibration {
-            get {
-                return ResourceManager.GetString("Menu.Calibration", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Language.
-        /// </summary>
-        public static string Menu_Language {
-            get {
-                return ResourceManager.GetString("Menu.Language", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Map creator.
-        /// </summary>
-        public static string Menu_MapConstructor {
-            get {
-                return ResourceManager.GetString("Menu.MapConstructor", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Quit.
-        /// </summary>
-        public static string Menu_Quit {
-            get {
-                return ResourceManager.GetString("Menu.Quit", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Settings.
-        /// </summary>
-        public static string Menu_Settings {
-            get {
-                return ResourceManager.GetString("Menu.Settings", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Start.
-        /// </summary>
-        public static string Menu_StartGame {
-            get {
-                return ResourceManager.GetString("Menu.StartGame", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Disk.
-        /// </summary>
-        public static string Menu_Title {
-            get {
-                return ResourceManager.GetString("Menu.Title", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Distance (in angles).
         /// </summary>
         public static string Paint_AngleDistance {

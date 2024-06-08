@@ -53,10 +53,15 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Config.settings</DependentUpon>
     </Compile>
-    <Compile Update="Properties\Langs\AuthenticationLocalization.Designer.cs">
+    <Compile Update="Properties\Langs\Authentication\AuthenticationLocalization.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>AuthenticationLocalization.resx</DependentUpon>
+    </Compile>
+    <Compile Update="Properties\Langs\Menu\MenuLocalization.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>MenuLocalization.resx</DependentUpon>
     </Compile>
     <Compile Update="Properties\Localization.Designer.cs">
       <DesignTime>True</DesignTime>
@@ -66,12 +71,16 @@
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Update="Properties\Langs\AuthenticationLocalization.resx">
+    <EmbeddedResource Update="Properties\Langs\Authentication\AuthenticationLocalization.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>AuthenticationLocalization.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Update="Properties\Langs\AuthenticationLocalization.ru-RU.resx">
+    <EmbeddedResource Update="Properties\Langs\Authentication\AuthenticationLocalization.ru-RU.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Properties\Langs\Menu\MenuLocalization.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>MenuLocalization.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Update="Properties\Localization.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>

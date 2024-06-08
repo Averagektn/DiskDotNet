@@ -6,7 +6,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Disk.View" xmlns:viewmodel="clr-namespace:Disk.ViewModel" d:DataContext="{d:DesignInstance Type=viewmodel:AuthenticationViewModel}"
              xmlns:styles="clr-namespace:Disk.Style"
-             xmlns:lang="clr-namespace:Disk.Properties.Langs"
+             xmlns:lang="clr-namespace:Disk.Properties.Langs.Authentication"
              mc:Ignorable="d" 
              d:DesignHeight="600" d:DesignWidth="600">
     <UserControl.Resources>

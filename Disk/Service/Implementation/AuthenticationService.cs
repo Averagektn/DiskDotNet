@@ -1,5 +1,5 @@
 ﻿using Disk.Entities;
-using Disk.Properties.Langs;
+using Disk.Properties.Langs.Authentication;
 using Disk.Repository.Exceptions.Common;
 using Disk.Repository.Interface;
 using Disk.Service.Exceptions;

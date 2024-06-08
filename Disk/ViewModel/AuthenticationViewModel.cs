@@ -1,5 +1,5 @@
 ﻿using Disk.Entities;
-using Disk.Properties.Langs;
+using Disk.Properties.Langs.Authentication;
 using Disk.Service.Exceptions;
 using Disk.Service.Exceptions.Common;
 using Disk.Service.Interface;
@@ -14,7 +14,7 @@ using System.Windows.Media;
 
 namespace Disk.ViewModel
 {
-    public class AuthenticationViewModel(IAuthenticationService authenticationService, ModalNavigationStore modalNavigationStore) 
+    public class AuthenticationViewModel(IAuthenticationService authenticationService, ModalNavigationStore modalNavigationStore)
         : PopupViewModel
     {
         public Doctor Doctor { get; set; } = new() { Name = string.Empty, Surname = string.Empty, Password = string.Empty };
