@@ -168,9 +168,6 @@
   <data name="Paint.WindRoseForTarget" xml:space="preserve">
     <value>Роза ветров для цели</value>
   </data>
-  <data name="Settings.Title" xml:space="preserve">
-    <value>Диск. Настройки</value>
-  </data>
   <data name="UserData.Birthday" xml:space="preserve">
     <value>Дата рождения</value>
   </data>

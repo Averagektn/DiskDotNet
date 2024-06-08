@@ -1,14 +1,19 @@
-﻿using System.Windows;
-
+﻿using Disk.ViewModel;
+using System.Windows;
+using System.Windows.Controls;
 using Settings = Disk.Properties.Config.Config;
 
-namespace Disk
+namespace Disk.View
 {
-    public partial class SettingsWindow : Window
+    /// <summary>
+    /// Interaction logic for SettingsView.xaml
+    /// </summary>
+    public partial class SettingsView : UserControl
     {
+        private SettingsViewModel? ViewModel => DataContext as SettingsViewModel;
         private static Settings Settings => Settings.Default;
 
-        public SettingsWindow()
+        public SettingsView()
         {
             InitializeComponent();
 
@@ -87,15 +92,15 @@ namespace Disk
             }
             catch (FormatException)
             {
-                MessageBox.Show("Введено некорректное значение");
+                _ = MessageBox.Show("Введено некорректное значение");
             }
             finally
             {
                 Settings.Save();
-                Close();
+                ViewModel?.Close();
             }
         }
 
-        private void OnCancelClick(object sender, RoutedEventArgs e) => Close();
+        private void OnCancelClick(object sender, RoutedEventArgs e) => ViewModel?.Close();
     }
 }

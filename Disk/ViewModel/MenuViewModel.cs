@@ -62,9 +62,7 @@ namespace Disk.ViewModel
 
         private void ToSettings(object? parameter)
         {
-            //Application.Current.MainWindow.Hide();
-            //_ = new SettingsWindow().ShowDialog();
-            //Application.Current.MainWindow.Show();
+            navigationStore.SetViewModel<SettingsViewModel>();
         }
 
         private void ToCalibration(object? parameter)

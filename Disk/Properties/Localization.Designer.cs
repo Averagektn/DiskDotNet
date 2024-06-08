@@ -214,15 +214,6 @@ namespace Disk.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Disk. Settings.
-        /// </summary>
-        public static string Settings_Title {
-            get {
-                return ResourceManager.GetString("Settings.Title", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Birthday.
         /// </summary>
         public static string UserData_Birthday {
