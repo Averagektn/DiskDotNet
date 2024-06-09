@@ -1,6 +1,7 @@
 ﻿using Disk.Entities;
 using Disk.Repository.Interface;
 using Disk.Service.Interface;
+using Disk.Service.Exceptions;
 
 namespace Disk.Service.Implementation
 {
@@ -22,10 +23,41 @@ namespace Disk.Service.Implementation
             }
         }
 
-        private bool Validate(Patient patient)
+        private static bool Validate(Patient patient)
         {
-            // validate phone number
-            // validate date
+            if (patient.DateOfBirth == string.Empty)
+            {
+                throw new InvalidDateException("");
+            }
+            if (patient.PhoneMobile == string.Empty)
+            {
+                throw new InvalidPhoneNumberException("Phone is empty");
+            }
+            if (patient.PhoneHome == string.Empty)
+            {
+                throw new InvalidHomePhoneException("Home phone is empty");
+            }
+            if (patient.Surname == string.Empty)
+            {
+                throw new InvalidSurnameException("");
+            }
+            if (patient.Name == string.Empty)
+            {
+                throw new InvalidNameException("");
+            }
+
+            const int mobilePhoneLength = 13;
+            patient.DateOfBirth = DateTime.Parse(patient.DateOfBirth).ToShortDateString();
+            var date = DateTime.Parse(patient.DateOfBirth);
+  
+            if (date.Date >= DateTime.Now.Date)
+            {
+                throw new InvalidDateException("Invalid date", "Patient add date exception");
+            }
+            if (!patient.PhoneMobile.StartsWith("+375") || patient.PhoneMobile.Length < mobilePhoneLength)
+            {
+                throw new InvalidPhoneNumberException("Invalid mobile phone", "Patient mobile phone exception");
+            }
             return true;
         }
     }
