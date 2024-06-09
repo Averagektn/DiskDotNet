@@ -35,11 +35,11 @@
         </Viewbox>
 
         <Viewbox Grid.Row="2" Grid.Column="1" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="10">
-            <RadioButton Name="RbRose" Content="{x:Static lang:Localization.Paint_WindRose}" FontSize="20" GroupName="DataType" IsChecked="True" Visibility="Hidden"/>
+            <RadioButton Name="RbRose" Content="{x:Static lang:Localization.Paint_WindRose}" GroupName="DataType" IsChecked="True" Visibility="Hidden"/>
         </Viewbox>
 
         <Viewbox Grid.Row="3" Grid.Column="1" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="10">
-            <RadioButton Name="RbPath" Content="{x:Static lang:Localization.Paint_Path}" FontSize="20" GroupName="DataType" Visibility="Hidden"/>
+            <RadioButton Name="RbPath" Content="{x:Static lang:Localization.Paint_Path}" GroupName="DataType" Visibility="Hidden"/>
         </Viewbox>
 
         <Viewbox Grid.Row="4" Grid.Column="1" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="10">

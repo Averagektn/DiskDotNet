@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Disk.View" xmlns:viewmodel="clr-namespace:Disk.ViewModel" d:DataContext="{d:DesignInstance Type=viewmodel:AddNoteViewModel}"
+             xmlns:lang="clr-namespace:Disk.Properties.Langs.AddNote" 
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <UserControl.Resources>
@@ -11,7 +12,7 @@
     </UserControl.Resources>
 
     <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
-        <TextBlock Text="Заметка" 
+        <TextBlock Text="{x:Static lang:AddNoteLocalization.Note}" 
                Margin="10,15"
                HorizontalAlignment="Left"/>
         <TextBox Margin="10 0" Padding="0,5"
@@ -20,7 +21,7 @@
               HorizontalAlignment="Left"
               Text="{Binding Note.Text}"/>
 
-        <Button Content="Добавить" Command="{Binding AddNoteCommand}"                    
+        <Button Content="{x:Static lang:AddNoteLocalization.Add}" Command="{Binding AddNoteCommand}"                    
                 Foreground="White"
                     Background="Black"
                     Margin="0 10"
@@ -31,7 +32,7 @@
             </Button.Style>
         </Button>
 
-        <Button Content="Отмена" Command="{Binding CancelCommand}"                    
+        <Button Content="{x:Static lang:AddNoteLocalization.Cancel}" Command="{Binding CancelCommand}"                    
                 Foreground="White"
                     Background="Black"
                     Height="35"
