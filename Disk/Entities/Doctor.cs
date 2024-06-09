@@ -17,4 +17,6 @@ public partial class Doctor
     public virtual ICollection<Map> Maps { get; set; } = [];
 
     public virtual ICollection<Note> Notes { get; set; } = [];
+
+    public override string ToString() => $"{Surname} {Name} {Patronymic}";
 }
