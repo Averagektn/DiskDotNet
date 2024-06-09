@@ -3,10 +3,98 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:Disk.View" xmlns:viewmodel="clr-namespace:Disk.ViewModel" d:DataContext="{d:DesignInstance Type=viewmodel:AppointmentsViewModel}"
+             xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+             xmlns:lang="clr-namespace:Disk.Properties.Langs.AppointementsList" 
+             xmlns:local="clr-namespace:Disk.View" xmlns:viewmodel="clr-namespace:Disk.ViewModel" d:DataContext="{d:DesignInstance Type=viewmodel:AppointmentsListViewModel}"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.Resources>
+        <ResourceDictionary Source="/Style/BtnStyles.xaml"/>
+    </UserControl.Resources>
+
     <Grid>
-            
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="3*"/>
+            <ColumnDefinition Width="3*"/>
+            <ColumnDefinition Width="5*"/>
+        </Grid.ColumnDefinitions>
+        <StackPanel Grid.Column="0">
+            <TextBlock Text="Фамилия" Margin="10 0" FontSize="20"/>
+            <TextBlock Text="{Binding Patient.Surname}" Margin="10 0" FontSize="20"/>
+            <TextBlock Text="Имя" Margin="10 0" FontSize="20"/>
+            <TextBlock Text="{Binding Patient.Name}" Margin="10 0" FontSize="20"/>
+            <TextBlock Text="Отчество" Margin="10 0" FontSize="20"/>
+            <TextBlock Text="{Binding Patient.Patronymic}" Margin="10 0" FontSize="20"/>
+            <TextBlock Text="Мобильный телефон" Margin="10 0" FontSize="20"/>
+            <TextBlock Text="{Binding Patient.PhoneMobile}" Margin="10 0" FontSize="20"/>
+            <TextBlock Text="Домашний телефон" Margin="10 0" FontSize="20"/>
+            <TextBlock Text="{Binding Patient.PhoneHome}" Margin="10 0 " FontSize="20"/>
+            <TextBlock Text="Дата рождения" Margin="10 0" FontSize="20"/>
+            <TextBlock Text="{Binding Patient.DateOfBirth}" Margin="10 0" FontSize="20"/>
+        </StackPanel>
+
+        <ScrollViewer Grid.Column="1" VerticalScrollBarVisibility="Auto">
+            <StackPanel>
+                <TextBlock Text="Встречи" Margin="0 10 0 0"/>
+                <DataGrid  ScrollViewer.VerticalScrollBarVisibility="Auto" x:Name="AppointmentsDataGrid" 
+                    Margin="5 0"
+                    ItemsSource="{Binding Appointments}" 
+                    AutoGenerateColumns="False" 
+                    SelectedItem="{Binding SelectedAppointment}" 
+                    IsReadOnly="True"> 
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Width="1*" Header="Врач" Binding="{Binding DoctorNavigation}" />
+                        <DataGridTextColumn Width="1*" Header="Время" Binding="{Binding Time}" />
+                    </DataGrid.Columns>
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="MouseDoubleClick">
+                            <i:InvokeCommandAction Command="{Binding ToAppointmentCommand}" />
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                </DataGrid>
+
+                <Button
+                    Content="Начать встречу" 
+                    Foreground="White"
+                    Background="Black"
+                    Margin="0,25"
+                    Height="35"
+                    Command="{Binding StartAppointmentCommand}">
+                    <Button.Style>
+                        <Style TargetType="Button" BasedOn="{StaticResource GradientButtonStyle}"/>
+                    </Button.Style>
+                </Button>
+            </StackPanel>
+
+        </ScrollViewer>
+        
+        <ScrollViewer Grid.Column="2" VerticalScrollBarVisibility="Auto">
+            <StackPanel>
+                <TextBlock Text="Заметки" Margin="0 10 0 0"/>
+                <DataGrid 
+                    ScrollViewer.VerticalScrollBarVisibility="Auto"
+                  Margin="5 0"
+                  ItemsSource="{Binding Notes}" 
+                  AutoGenerateColumns="False" 
+                  IsReadOnly="True">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Width="1*" Header="Врач" Binding="{Binding DoctorNavigation}" />
+                        <DataGridTextColumn Width="1*" Header="Текст" Binding="{Binding Text}" />
+                    </DataGrid.Columns>
+                </DataGrid>
+
+                <Button
+                    Content="Добавить заметку" 
+                    Foreground="White"
+                    Background="Black"
+                    Margin="0,25"
+                    Height="35"
+                    Command="{Binding AddNoteCommand}">
+                    <Button.Style>
+                        <Style TargetType="Button" BasedOn="{StaticResource GradientButtonStyle}"/>
+                    </Button.Style>
+                </Button>
+            </StackPanel>
+        </ScrollViewer>
     </Grid>
 </UserControl>
