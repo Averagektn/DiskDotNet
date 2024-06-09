@@ -65,7 +65,7 @@ namespace Disk
             {
                 provider.GetRequiredService<ModalNavigationStore>().SetViewModel<AuthenticationViewModel>();
                 provider.GetRequiredService<NavigationStore>().SetViewModel<MenuViewModel>();
-                return new MainWindow()
+                return new()
                 {
                     DataContext = provider.GetRequiredService<MainViewModel>()
                 };
