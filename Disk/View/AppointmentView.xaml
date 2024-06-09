@@ -37,7 +37,7 @@
                 <DataGridTextColumn Width="1*" Header="Счет" Binding="{Binding SessionResult.Score}" />
             </DataGrid.Columns>
             <i:Interaction.Triggers>
-                <i:EventTrigger EventName="Selected">
+                <i:EventTrigger EventName="SelectionChanged">
                     <i:InvokeCommandAction Command="{Binding SessionSelectedCommand}" />
                 </i:EventTrigger>
             </i:Interaction.Triggers>
