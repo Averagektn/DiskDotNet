@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Disk.View" xmlns:viewmodel="clr-namespace:Disk.ViewModel" d:DataContext="{d:DesignInstance Type=viewmodel:StartSessionViewModel}"
+             xmlns:lang="clr-namespace:Disk.Properties.Langs.StartSession" 
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <UserControl.Resources>
@@ -11,7 +12,7 @@
     </UserControl.Resources>
 
     <StackPanel HorizontalAlignment="Center">
-        <TextBlock Text="Карта" 
+        <TextBlock Text="{x:Static lang:StartSessionLocalization.Map}" 
                Margin="0,15"
                HorizontalAlignment="Left"/>
         <ComboBox 
@@ -20,7 +21,7 @@
                 ItemsSource="{Binding Maps}" 
                 SelectedItem="{Binding SelectedMap}"/>
 
-        <Button Content="Начать сессию" 
+        <Button Content="{x:Static lang:StartSessionLocalization.Start}" 
                     Foreground="White"
                     Background="Black"
                     Margin="0,25"
