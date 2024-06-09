@@ -25,25 +25,25 @@ namespace Disk.Service.Implementation
 
         private static bool Validate(Patient patient)
         {
+            if (patient.Surname == string.Empty)
+            {
+                throw new InvalidSurnameException("Surname is empty");
+            }
+            if (patient.Name == string.Empty)
+            {
+                throw new InvalidNameException("Name is empty");
+            }
             if (patient.DateOfBirth == string.Empty)
             {
-                throw new InvalidDateException("");
+                throw new InvalidDateException("Empty date");
             }
             if (patient.PhoneMobile == string.Empty)
             {
-                throw new InvalidPhoneNumberException("Phone is empty");
+                throw new InvalidPhoneNumberException("Mobile phone is empty");
             }
             if (patient.PhoneHome == string.Empty)
             {
                 throw new InvalidHomePhoneException("Home phone is empty");
-            }
-            if (patient.Surname == string.Empty)
-            {
-                throw new InvalidSurnameException("");
-            }
-            if (patient.Name == string.Empty)
-            {
-                throw new InvalidNameException("");
             }
 
             const int mobilePhoneLength = 13;
@@ -52,11 +52,11 @@ namespace Disk.Service.Implementation
   
             if (date.Date >= DateTime.Now.Date)
             {
-                throw new InvalidDateException("Invalid date", "Patient add date exception");
+                throw new InvalidDateException("Patient add date exception");
             }
             if (!patient.PhoneMobile.StartsWith("+375") || patient.PhoneMobile.Length < mobilePhoneLength)
             {
-                throw new InvalidPhoneNumberException("Invalid mobile phone", "Patient mobile phone exception");
+                throw new InvalidPhoneNumberException("Patient mobile phone exception");
             }
             return true;
         }
