@@ -122,8 +122,11 @@ namespace Listener
             Socket.Receive(coordZ);
 
             var x = -BitConverter.ToSingle(coordX, 0);
+            Console.WriteLine($"Received x {x}");
             var y = BitConverter.ToSingle(coordY, 0);
+            Console.WriteLine($"Received y {y}");
             var z = BitConverter.ToSingle(coordZ, 0);
+            Console.WriteLine($"Received z {z}");
 
             return $"{x} {y} {z}";
         }

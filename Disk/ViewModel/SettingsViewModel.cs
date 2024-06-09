@@ -1,21 +1,13 @@
-﻿using System.ComponentModel;
-using System.Runtime.CompilerServices;
+﻿using Disk.Stores;
+using Disk.ViewModel.Common.ViewModels;
 
 namespace Disk.ViewModel
 {
-    public class SettingsViewModel : INotifyPropertyChanged
+    public class SettingsViewModel(NavigationStore navigationStore) : ObserverViewModel
     {
-        public event PropertyChangedEventHandler? PropertyChanged;
-        protected bool SetProperty<T>(ref T field, T newValue, [CallerMemberName] string? propertyName = null)
+        public void Close()
         {
-            if (!(object.Equals(field, newValue)))
-            {
-                field = (newValue);
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-                return true;
-            }
-
-            return false;
+            navigationStore.NavigateBack();
         }
     }
 }

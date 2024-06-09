@@ -117,57 +117,6 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Calibration.AngleX" xml:space="preserve">
-    <value>Угол по оси X</value>
-  </data>
-  <data name="Calibration.AngleY" xml:space="preserve">
-    <value>Угол по оси Y</value>
-  </data>
-  <data name="Calibration.Apply" xml:space="preserve">
-    <value>Применить</value>
-  </data>
-  <data name="Calibration.Centralize" xml:space="preserve">
-    <value>Центрировать</value>
-  </data>
-  <data name="Calibration.ConnectionLost" xml:space="preserve">
-    <value>Потеряно соединение</value>
-  </data>
-  <data name="Calibration.SetX" xml:space="preserve">
-    <value>Зафиксировать X</value>
-  </data>
-  <data name="Calibration.SetY" xml:space="preserve">
-    <value>Зафиксировать Y</value>
-  </data>
-  <data name="Calibration.Start" xml:space="preserve">
-    <value>Начать калибровку</value>
-  </data>
-  <data name="Calibration.Title" xml:space="preserve">
-    <value>Диск. Калибровка</value>
-  </data>
-  <data name="MapCreator.Title" xml:space="preserve">
-    <value>Диск. Конструктор карт</value>
-  </data>
-  <data name="Menu.Calibration" xml:space="preserve">
-    <value>Калибровка</value>
-  </data>
-  <data name="Menu.Language" xml:space="preserve">
-    <value>Язык</value>
-  </data>
-  <data name="Menu.MapConstructor" xml:space="preserve">
-    <value>Конструктор карт</value>
-  </data>
-  <data name="Menu.Quit" xml:space="preserve">
-    <value>Выйти</value>
-  </data>
-  <data name="Menu.Settings" xml:space="preserve">
-    <value>Настройки</value>
-  </data>
-  <data name="Menu.StartGame" xml:space="preserve">
-    <value>Начать</value>
-  </data>
-  <data name="Menu.Title" xml:space="preserve">
-    <value>Диск</value>
-  </data>
   <data name="Paint.AngleDistance" xml:space="preserve">
     <value>Расстояние (в углах)</value>
   </data>
@@ -218,9 +167,6 @@
   </data>
   <data name="Paint.WindRoseForTarget" xml:space="preserve">
     <value>Роза ветров для цели</value>
-  </data>
-  <data name="Settings.Title" xml:space="preserve">
-    <value>Диск. Настройки</value>
   </data>
   <data name="UserData.Birthday" xml:space="preserve">
     <value>Дата рождения</value>

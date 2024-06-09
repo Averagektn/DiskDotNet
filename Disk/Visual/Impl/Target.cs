@@ -18,7 +18,7 @@ namespace Disk.Visual.Impl
     /// <param name="iniSize">
     ///     The initial size of the target
     /// </param>
-    class Target(Point2D<int> center, int radius, Size iniSize) : User(center, radius, 0, Brushes.White, iniSize)
+    public class Target(Point2D<int> center, int radius, Size iniSize) : User(center, radius, 0, Brushes.White, iniSize)
     {
         /// <summary>
         ///     Gets the maximum radius of the target

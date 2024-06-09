@@ -1,60 +1,38 @@
-﻿using System.ComponentModel;
-using System.IO;
-using System.Runtime.CompilerServices;
+﻿using Disk.Stores;
+using Disk.ViewModel.Common.Commands.Sync;
+using Disk.ViewModel.Common.ViewModels;
 using System.Windows;
 using System.Windows.Input;
 using Settings = Disk.Properties.Config.Config;
 
 namespace Disk.ViewModel
 {
-    public class MenuViewModel : INotifyPropertyChanged
+    public class MenuViewModel(NavigationStore navigationStore, ModalNavigationStore modalNavigationStore) : ObserverViewModel
     {
         // Actions
-        public ICommand ChangeLanguage => new Command(ChangeLanguageClick);
-        public ICommand MapConstructorClick => new Command(OnMapContructorClick);
-        public ICommand SettingsClick => new Command(OnSettingsClick);
-        public ICommand StartClick => new Command(OnStartClick);
-        public ICommand QuitClick => new Command(OnQuitClick);
-        public ICommand CalibrationClick => new Command(OnCalibrationClick);
+        public ICommand ChangeLanguageCommand => new Command(ChangeLanguage);
+        public ICommand ToMapConstructorCommand => new Command(ToMapContructor);
+        public ICommand ToSettingsCommand => new Command(ToSettings);
+        public ICommand ToPatientsCommand => new Command(ToPatients);
+        public ICommand QuitCommand => new Command(Quit);
+        public ICommand ToCalibrationCommand => new Command(ToCalibration);
+        public ICommand LogoutCommand => new Command(Logout);
 
         private static Settings Settings => Settings.Default;
 
-        public MenuViewModel()
-        {
-            if (!Directory.Exists(Settings.MAIN_DIR_PATH))
-            {
-                Directory.CreateDirectory(Settings.MAIN_DIR_PATH);
-            }
-
-            if (!Directory.Exists(Settings.MAPS_DIR_PATH))
-            {
-                Directory.CreateDirectory(Settings.MAPS_DIR_PATH);
-            }
-        }
-
-        public event PropertyChangedEventHandler? PropertyChanged;
-        protected bool SetProperty<T>(ref T field, T newValue, [CallerMemberName] string? propertyName = null)
-        {
-            if (!Equals(field, newValue))
-            {
-                field = (newValue);
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-                return true;
-            }
-
-            return false;
-        }
-
-        private void ChangeLanguageClick(object? parameter)
+        private void ChangeLanguage(object? parameter)
         {
             if (parameter is not null)
             {
                 var selectedLanguage = parameter.ToString();
 
-                Settings.LANGUAGE = selectedLanguage;
-                Settings.Save();
+                if (Settings.LANGUAGE != selectedLanguage)
+                {
+                    Settings.LANGUAGE = selectedLanguage;
+                    Settings.Save();
 
-                RestartApplication();
+                    RestartApplication();
+                }
             }
         }
 
@@ -64,40 +42,33 @@ namespace Disk.ViewModel
 
             if (appPath is not null)
             {
-                System.Diagnostics.Process.Start(appPath);
+                _ = System.Diagnostics.Process.Start(appPath);
             }
 
             Application.Current.Shutdown();
         }
 
-        private void OnMapContructorClick(object? parameter)
+        private void ToMapContructor(object? parameter)
         {
-            Application.Current.MainWindow.Hide();
-            new MapCreator().ShowDialog();
-            Application.Current.MainWindow.Show();
+            navigationStore.SetViewModel<MapCreatorViewModel>();
         }
 
-        private void OnStartClick(object? parameter)
+        private void ToPatients(object? parameter)
         {
-            Application.Current.MainWindow.Hide();
-            new UserDataForm().ShowDialog();
-            Application.Current.MainWindow.Show();
+            navigationStore.SetViewModel<PatientsViewModel>();
         }
 
-        private void OnSettingsClick(object? parameter)
+        private void ToSettings(object? parameter)
         {
-            Application.Current.MainWindow.Hide();
-            new SettingsWindow().ShowDialog();
-            Application.Current.MainWindow.Show();
+            navigationStore.SetViewModel<SettingsViewModel>();
         }
 
-        private void OnCalibrationClick(object? parameter)
+        private void ToCalibration(object? parameter)
         {
-            Application.Current.MainWindow.Hide();
-            new CalibrationWindow().ShowDialog();
-            Application.Current.MainWindow.Show();
+            navigationStore.SetViewModel<CalibrationViewModel>();
         }
 
-        private void OnQuitClick(object? parameter) => Application.Current.MainWindow.Close();
+        private void Quit(object? parameter) => Application.Current.MainWindow.Close();
+        private void Logout(object? parameter) => modalNavigationStore.SetViewModel<AuthenticationViewModel>();
     }
 }

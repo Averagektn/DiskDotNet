@@ -1,0 +1,70 @@
+﻿<UserControl x:Class="Disk.View.AppointmentView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+             xmlns:lang="clr-namespace:Disk.Properties.Langs.Appointment" 
+             xmlns:local="clr-namespace:Disk.View" xmlns:viewmodel="clr-namespace:Disk.ViewModel" d:DataContext="{d:DesignInstance Type=viewmodel:AppointmentViewModel}"
+             mc:Ignorable="d" 
+             d:DesignHeight="500" d:DesignWidth="800">
+    <UserControl.Resources>
+        <ResourceDictionary Source="/Style/BtnStyles.xaml"/>
+    </UserControl.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="7*"/>
+            <RowDefinition Height="6*"/>
+            <RowDefinition Height="2*"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock Grid.Row="0" Text="{Binding Patient}" Margin="5"/>
+
+        <TextBlock Grid.Row="1" Text="{Binding Doctor}" Margin="5"/>
+
+        <DataGrid Grid.Row="2" 
+                  ScrollViewer.VerticalScrollBarVisibility="Auto" 
+                  ItemsSource="{Binding Sessions}" 
+                  AutoGenerateColumns="False"
+                  SelectedItem="{Binding SelectedSession}">
+            <DataGrid.Columns>
+                <DataGridTextColumn Width="1*" Header="{x:Static lang:AppointmentLocalization.DateTime}" Binding="{Binding DateTime}" />
+                <DataGridTextColumn Width="1*" Header="{x:Static lang:AppointmentLocalization.Deviation}" Binding="{Binding SessionResult.Deviation}" />
+                <DataGridTextColumn Width="1*" Header="{x:Static lang:AppointmentLocalization.Dispersion}" Binding="{Binding SessionResult.Dispersion}" />
+                <DataGridTextColumn Width="1*" Header="{x:Static lang:AppointmentLocalization.MathExp}" Binding="{Binding SessionResult.MathExp}" />
+                <DataGridTextColumn Width="1*" Header="{x:Static lang:AppointmentLocalization.Score}" Binding="{Binding SessionResult.Score}" />
+            </DataGrid.Columns>
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="SelectionChanged">
+                    <i:InvokeCommandAction Command="{Binding SessionSelectedCommand}" />
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
+        </DataGrid>
+
+        <DataGrid Grid.Row="3" ItemsSource="{Binding PathsToTargets}" AutoGenerateColumns="False" ScrollViewer.VerticalScrollBarVisibility="Auto">
+            <DataGrid.Columns>
+                <DataGridTextColumn Width="1*" Header="{x:Static lang:AppointmentLocalization.AngleDistance}" Binding="{Binding AngleDistance}" />
+                <DataGridTextColumn Width="1*" Header="{x:Static lang:AppointmentLocalization.AngleSpeed}" Binding="{Binding AngleSpeed}" />
+                <DataGridTextColumn Width="1*" Header="{x:Static lang:AppointmentLocalization.ApproachSpeed}" Binding="{Binding ApproachSpeed}" />
+                <DataGridTextColumn Width="1*" Header="{x:Static lang:AppointmentLocalization.Time}" Binding="{Binding Time}" />
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <Button IsEnabled="{Binding IsNewAppointment}" 
+                Grid.Row="4" 
+                Content="{x:Static lang:AppointmentLocalization.Start}" 
+                Command="{Binding StartSessionCommand}"                    
+                Margin="0 10"
+                Foreground="White"
+                Background="Black"
+                Height="35"
+                Width="250">
+            <Button.Style>
+                <Style TargetType="Button" BasedOn="{StaticResource GradientButtonStyle}"/>
+            </Button.Style>
+        </Button>
+    </Grid>
+</UserControl>

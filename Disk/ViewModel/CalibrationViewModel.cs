@@ -1,7 +1,9 @@
 ﻿using Disk.Data.Impl;
-using System.ComponentModel;
+using Disk.Properties.Langs.Calibration;
+using Disk.Stores;
+using Disk.ViewModel.Common.Commands.Sync;
+using Disk.ViewModel.Common.ViewModels;
 using System.Net;
-using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Threading;
@@ -9,7 +11,7 @@ using Settings = Disk.Properties.Config.Config;
 
 namespace Disk.ViewModel
 {
-    public class CalibrationViewModel : INotifyPropertyChanged
+    public class CalibrationViewModel : ObserverViewModel
     {
         // Properties
         public string XCoord { get => _xCoord; set => SetProperty(ref _xCoord, value); }
@@ -53,21 +55,12 @@ namespace Disk.ViewModel
 
         private bool IsRunningThread = true;
 
-        public event PropertyChangedEventHandler? PropertyChanged;
-        protected bool SetProperty<T>(ref T field, T newValue, [CallerMemberName] string? propertyName = null)
-        {
-            if (!Equals(field, newValue))
-            {
-                field = (newValue);
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-                return true;
-            }
+        private readonly NavigationStore _navigationStore;
 
-            return false;
-        }
-
-        public CalibrationViewModel()
+        public CalibrationViewModel(NavigationStore navigationStore)
         {
+            _navigationStore = navigationStore;
+
             _xCoord = $"{XAngle:F2}";
             _yCoord = $"{YAngle:F2}";
 
@@ -111,8 +104,8 @@ namespace Disk.ViewModel
             }
             catch
             {
-                MessageBox.Show(Properties.Localization.Calibration_ConnectionLost);
-                Application.Current.Windows.OfType<CalibrationWindow>().First().Close();
+                _ = MessageBox.Show(CalibrationLocalization.ConnectionLost);
+                _navigationStore.NavigateBack();
             }
         }
 
@@ -164,7 +157,7 @@ namespace Disk.ViewModel
             Settings.ANGLE_Y_SHIFT = YShift;
 
             Settings.Save();
-            Application.Current.Windows.OfType<CalibrationWindow>().First().Close();
+            _navigationStore.NavigateBack();
         }
     }
 }

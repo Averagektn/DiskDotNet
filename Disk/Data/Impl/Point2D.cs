@@ -9,7 +9,7 @@ namespace Disk.Data.Impl
     /// <typeparam name="CoordType">
     ///     The type of the coordinates
     /// </typeparam>
-    class Point2D<CoordType> : IEquatable<Point2D<CoordType>> where CoordType : IConvertible, new()
+    public class Point2D<CoordType> : IEquatable<Point2D<CoordType>> where CoordType : IConvertible, new()
     {
         /// <summary>
         ///     Gets or sets the X coordinate of the point
