@@ -60,6 +60,8 @@ namespace Disk
             _ = services.AddTransient<PatientsViewModel>();
             _ = services.AddTransient<AddPatientViewModel>();
             _ = services.AddTransient<AppointmentsViewModel>();
+            _ = services.AddTransient<AppointmentViewModel>();
+            _ = services.AddTransient<AddNoteViewModel>();
 
             _ = services.AddSingleton<MainWindow>(provider =>
             {
