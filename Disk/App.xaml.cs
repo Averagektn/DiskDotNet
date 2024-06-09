@@ -59,7 +59,7 @@ namespace Disk
             _ = services.AddTransient<SettingsViewModel>();
             _ = services.AddTransient<PatientsViewModel>();
             _ = services.AddTransient<AddPatientViewModel>();
-            _ = services.AddTransient<AppointmentsViewModel>();
+            _ = services.AddTransient<AppointmentsListViewModel>();
             _ = services.AddTransient<AppointmentViewModel>();
             _ = services.AddTransient<AddNoteViewModel>();
 

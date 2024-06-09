@@ -26,7 +26,7 @@
                    Width="650"
                    BorderThickness="0,0,0,1"
                    HorizontalAlignment="Left"
-                   Text="{Binding SearchText}"
+                   Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}"
                    Background="LightGray">
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="TextChanged">
@@ -41,8 +41,8 @@
                   SelectedItem="{Binding SelectedPatient}" 
                   IsReadOnly="True">
             <DataGrid.Columns>
-                <DataGridTextColumn Width="1*" Header="{x:Static lang:PatientsLocalization.Name}" Binding="{Binding Name}" />
                 <DataGridTextColumn Width="1*" Header="{x:Static lang:PatientsLocalization.Surname}" Binding="{Binding Surname}" />
+                <DataGridTextColumn Width="1*" Header="{x:Static lang:PatientsLocalization.Name}" Binding="{Binding Name}" />
                 <DataGridTextColumn Width="1*" Header="{x:Static lang:PatientsLocalization.Patronymic}" Binding="{Binding Patronymic}" />
                 <DataGridTextColumn Width="1*" Header="{x:Static lang:PatientsLocalization.DateOfBirth}" Binding="{Binding DateOfBirth}" />
                 <DataGridTextColumn Width="1*" Header="{x:Static lang:PatientsLocalization.MobilePhone}" Binding="{Binding PhoneMobile}" />

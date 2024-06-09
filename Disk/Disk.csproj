@@ -54,10 +54,25 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Config.settings</DependentUpon>
     </Compile>
+    <Compile Update="Properties\Langs\AddNote\AddNoteLocalization.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>AddNoteLocalization.resx</DependentUpon>
+    </Compile>
     <Compile Update="Properties\Langs\AddPatient\AddPatientLocalization.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>AddPatientLocalization.resx</DependentUpon>
+    </Compile>
+    <Compile Update="Properties\Langs\AppointementsList\AppointmentsListLocalization.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>AppointmentsListLocalization.resx</DependentUpon>
+    </Compile>
+    <Compile Update="Properties\Langs\Appointment\AppointmentLocalization.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>AppointmentLocalization.resx</DependentUpon>
     </Compile>
     <Compile Update="Properties\Langs\Authentication\AuthenticationLocalization.Designer.cs">
       <DesignTime>True</DesignTime>
@@ -92,11 +107,32 @@
   </ItemGroup>
 
   <ItemGroup>
+    <EmbeddedResource Update="Properties\Langs\AddNote\AddNoteLocalization.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>AddNoteLocalization.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Properties\Langs\AddNote\AddNoteLocalization.ru-RU.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
     <EmbeddedResource Update="Properties\Langs\AddPatient\AddPatientLocalization.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>AddPatientLocalization.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Update="Properties\Langs\AddPatient\AddPatientLocalization.ru-RU.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Properties\Langs\AppointementsList\AppointmentsListLocalization.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>AppointmentsListLocalization.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Properties\Langs\AppointementsList\AppointmentsListLocalization.ru-RU.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Properties\Langs\Appointment\AppointmentLocalization.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>AppointmentLocalization.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Properties\Langs\Appointment\AppointmentLocalization.ru-RU.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Properties\Langs\Authentication\AuthenticationLocalization.resx">

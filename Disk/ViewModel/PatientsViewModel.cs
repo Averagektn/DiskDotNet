@@ -5,17 +5,19 @@ using Disk.Stores;
 using Disk.ViewModel.Common.Commands.Sync;
 using Disk.ViewModel.Common.ViewModels;
 using System.Collections.ObjectModel;
+using System.IO.Packaging;
 using System.Windows.Input;
 
 namespace Disk.ViewModel
 {
     public class PatientsViewModel : ObserverViewModel
     {
-        public ICommand AddPatientCommand => new Command(ToAddPatient);
+        public ICommand AddPatientCommand 
+            => new Command(_ => _modalNavigationStore.SetViewModel<AddPatientViewModel>(canClose: true));
         public ICommand SearchCommand => new Command(Search);
         public ICommand SelectPatientCommand => new Command(SelectPatient);
 
-        public ObservableCollection<Patient> SortedPatients { get; set; } = [];
+        public ObservableCollection<Patient> SortedPatients { get; set; }
         public List<Patient> Patients { get; set; }
         public Patient? SelectedPatient { get; set; }
         public string SearchText { get; set; } = string.Empty;
@@ -24,22 +26,15 @@ namespace Disk.ViewModel
         private readonly ModalNavigationStore _modalNavigationStore;
         private readonly IPatientRepository _patientRepository;
 
-        public PatientsViewModel(NavigationStore navigationStore, ModalNavigationStore modalNavigationStore, IPatientRepository patientRepository)
+        public PatientsViewModel(NavigationStore navigationStore, ModalNavigationStore modalNavigationStore, 
+            IPatientRepository patientRepository)
         {
             _navigationStore = navigationStore;
             _modalNavigationStore = modalNavigationStore;
             _patientRepository = patientRepository;
 
             Patients = _patientRepository.GetAll().ToList();
-            foreach (var patient in Patients)
-            {
-                SortedPatients.Add(patient);
-            }
-        }
-
-        private void ToAddPatient(object? arg)
-        {
-            _modalNavigationStore.SetViewModel<AddPatientViewModel>(canClose: true);
+            SortedPatients = new(Patients);
         }
 
         private void Search(object? arg)
@@ -57,7 +52,7 @@ namespace Disk.ViewModel
         private void SelectPatient(object? obj)
         {
             AppointmentSession.Patient = SelectedPatient!;
-            _navigationStore.SetViewModel<AppointmentsViewModel>();
+            _navigationStore.SetViewModel<AppointmentsListViewModel>(vm => vm.Patient = SelectedPatient!);
         }
     }
 }
