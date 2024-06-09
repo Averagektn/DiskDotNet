@@ -3,5 +3,5 @@ using Disk.Repository.Common;
 
 namespace Disk.Repository.Interface
 {
-    public interface ISesssionResultRepository : ICrudRepository<SessionResult> { }
+    public interface ISessionResultRepository : ICrudRepository<SessionResult> { }
 }
