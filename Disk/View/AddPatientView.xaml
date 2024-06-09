@@ -65,7 +65,6 @@
             Width="255"
             Margin="10 5"
             BorderThickness="0,0,0,1"
-            SelectedDateFormat="Short"
             HorizontalAlignment="Left" 
             Background="{Binding BgDateOfBirth}">
             <i:Interaction.Triggers>
