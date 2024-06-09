@@ -36,5 +36,14 @@ namespace Disk.Stores
             ViewModels.Push(getViewModel.Invoke(typeof(TViewModel)));
             OnCurrentViewModelChanged();
         }
+
+        public void SetViewModel<TViewModel>(Action<TViewModel> parametrizeViewModel, bool canClose = false) where TViewModel : class
+        {
+            var viewModel = getViewModel.Invoke(typeof(TViewModel));
+            parametrizeViewModel((viewModel as TViewModel)!);
+            ViewModels.Push(viewModel);
+            CanCloseStack.Push(canClose);
+            OnCurrentViewModelChanged();
+        }
     }
 }

@@ -12,13 +12,17 @@ namespace Disk.ViewModel
 {
     public class PatientsViewModel : ObserverViewModel
     {
-        public ICommand AddPatientCommand 
-            => new Command(_ => _modalNavigationStore.SetViewModel<AddPatientViewModel>(canClose: true));
+        public ICommand AddPatientCommand
+            => new Command(_ => _modalNavigationStore.SetViewModel<AddPatientViewModel>
+            (
+                vm => vm.OnAdd += patient => SortedPatients.Add(patient),
+                canClose: true)
+            );
         public ICommand SearchCommand => new Command(Search);
         public ICommand SelectPatientCommand => new Command(SelectPatient);
 
         public ObservableCollection<Patient> SortedPatients { get; set; }
-        public List<Patient> Patients { get; set; }
+        public List<Patient> Patients => _patientRepository.GetAll().ToList();
         public Patient? SelectedPatient { get; set; }
         public string SearchText { get; set; } = string.Empty;
 
@@ -33,7 +37,6 @@ namespace Disk.ViewModel
             _modalNavigationStore = modalNavigationStore;
             _patientRepository = patientRepository;
 
-            Patients = _patientRepository.GetAll().ToList();
             SortedPatients = new(Patients);
         }
 
