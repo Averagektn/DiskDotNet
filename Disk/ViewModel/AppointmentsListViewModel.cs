@@ -14,8 +14,8 @@ namespace Disk.ViewModel
             IAppointmentRepository appointmentRepository, INoteRepository noteRepository) : ObserverViewModel
     {
         public Patient Patient { get; set; } = null!;
-        public ObservableCollection<Note> Notes { get; set; } = new(noteRepository.GetAll());
-        public ObservableCollection<Appointment> Appointments { get; set; } = new(appointmentRepository.GetAll());
+        public ObservableCollection<Note> Notes { get; set; } = null!;
+        public ObservableCollection<Appointment> Appointments { get; set; } = null!;
 
         public Appointment? SelectedAppointment { get; set; }
 
@@ -23,6 +23,12 @@ namespace Disk.ViewModel
         public ICommand StartAppointmentCommand => new AsyncCommand(StartAppointmentAsync);
         public ICommand ToAppointmentCommand =>
             new Command(_ => navigationStore.SetViewModel<AppointmentViewModel>(vm => vm.Appointment = SelectedAppointment!));
+
+        public async Task LoadData()
+        {
+            Appointments = new(await appointmentRepository.GetPatientAppointmentsAsync(Patient.Id));
+            Notes = new(await noteRepository.GetPatientNotesAsync(Patient.Id));
+        }
 
         private async Task StartAppointmentAsync(object? arg)
         {
