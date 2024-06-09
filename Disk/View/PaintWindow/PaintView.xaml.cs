@@ -1,18 +1,22 @@
-﻿using Disk.Calculations.Impl.Converters;
-using Disk.Data.Impl;
+﻿using Disk.Data.Impl;
+using Disk.Visual.Impl;
+using Disk.Visual.Interface;
 using System.Diagnostics;
+using System.Formats.Tar;
 using System.IO;
 using System.Net;
 using System.Windows;
+using System.Windows.Controls;
+using static System.Formats.Asn1.AsnWriter;
 using Localization = Disk.Properties.Localization;
 using Settings = Disk.Properties.Config;
 
-namespace Disk.View.PaintWindowPart
+namespace Disk.View.PaintWindow
 {
     /// <summary>
-    ///     Interaction logic for PaintWindow.xaml
+    /// Interaction logic for PaintWindowView.xaml
     /// </summary>
-    public partial class PaintWindow : Window
+    public partial class PaintView : UserControl
     {
         private void ShotTimerElapsed(object? sender, EventArgs e)
         {
@@ -56,7 +60,8 @@ namespace Disk.View.PaintWindowPart
                             {Localization.Paint_AngleDistance}: {distance:F2}
                             {Localization.Paint_AngleSpeed}: {avgSpeed:F2}
                             {Localization.Paint_ApproachSpeed}: {approachSpeed:F2}
-                            """;
+                            """
+                    ;
 
                     TblTime.Text = message;
                     using (var log = Logger.GetLogger(TargetReachedLogName))
@@ -71,7 +76,7 @@ namespace Disk.View.PaintWindowPart
             Score += shotScore;
 
 
-            Title = $"{Localization.Paint_Score}: {Score}";
+            //Title = $"{Localization.Paint_Score}: {Score}";
             TblScore.Text = $"{Localization.Paint_Score}: {Score}";
 
             if (Target.IsFull)
@@ -83,7 +88,7 @@ namespace Disk.View.PaintWindowPart
                 {
                     OnStopClick(this, new());
                 }
-                else 
+                else
                 {
                     var wndCenter = Converter.ToWnd_FromRelative(newCenter);
                     Target.Move(wndCenter);
@@ -131,7 +136,7 @@ namespace Disk.View.PaintWindowPart
             catch
             {
                 MessageBox.Show(Localization.Paint_ConnectionLost);
-                Application.Current.Dispatcher.BeginInvoke(new Action(Close));
+                //Application.Current.Dispatcher.BeginInvoke(new Action(Close));
             }
         }
 
@@ -155,7 +160,7 @@ namespace Disk.View.PaintWindowPart
             else
             {
                 MessageBox.Show(Localization.Paint_EmptyMap);
-                Close();
+                //Close();
             }
 
             UserLogWnd = Logger.GetLogger(UsrWndLog);

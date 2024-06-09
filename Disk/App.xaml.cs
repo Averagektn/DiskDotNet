@@ -45,7 +45,7 @@ namespace Disk
             _ = services.AddSingleton<IPathToTargetRepository, PathToTargetRepository>();
             _ = services.AddSingleton<IPatientRepository, PatientRepository>();
             _ = services.AddSingleton<ISessionRepository, SessionRepository>();
-            _ = services.AddSingleton<ISesssionResultRepository, SessionResultRepository>();
+            _ = services.AddSingleton<ISessionResultRepository, SessionResultRepository>();
 
             _ = services.AddSingleton<IAuthenticationService, AuthenticationService>();
             _ = services.AddSingleton<IPatientService, PatientService>();

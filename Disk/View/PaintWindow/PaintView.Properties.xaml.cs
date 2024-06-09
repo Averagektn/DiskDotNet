@@ -1,9 +1,11 @@
 ﻿using Disk.Calculations.Impl.Converters;
 using Disk.Data.Impl;
+using Disk.ViewModel;
 using Disk.Visual.Impl;
 using Disk.Visual.Interface;
 using System.Diagnostics;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Threading;
 using FilePath = System.IO.Path;
@@ -12,10 +14,12 @@ using Point2DI = Disk.Data.Impl.Point2D<int>;
 using Point3DF = Disk.Data.Impl.Point3D<float>;
 using Settings = Disk.Properties.Config.Config;
 
-namespace Disk.View.PaintWindowPart
+namespace Disk.View.PaintWindow
 {
-    public partial class PaintWindow : Window
+    public partial class PaintView : UserControl
     {
+        private PaintViewModel ViewModel => (PaintViewModel)DataContext;
+
         public const int TargetHP = 20;
 
         public string MapFilePath = string.Empty;
@@ -101,7 +105,7 @@ namespace Disk.View.PaintWindowPart
 
         //private PaintViewModel PaintViewModel => (DataContext as PaintViewModel)!;
 
-        public PaintWindow()
+        public PaintView()
         {
             InitializeComponent();
 
@@ -121,7 +125,7 @@ namespace Disk.View.PaintWindowPart
             };
             ShotTimer.Tick += ShotTimerElapsed;
 
-            Closing += OnClosing;
+            Unloaded += OnClosing;
             Loaded += OnLoaded;
             SizeChanged += OnSizeChanged;
 

@@ -3,9 +3,10 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
              xmlns:local="clr-namespace:Disk.View" xmlns:viewmodel="clr-namespace:Disk.ViewModel" d:DataContext="{d:DesignInstance Type=viewmodel:AppointmentViewModel}"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
+             d:DesignHeight="500" d:DesignWidth="800">
     <UserControl.Resources>
         <ResourceDictionary Source="/Style/BtnStyles.xaml"/>
     </UserControl.Resources>
@@ -16,14 +17,33 @@
             <RowDefinition Height="1*"/>
             <RowDefinition Height="7*"/>
             <RowDefinition Height="6*"/>
-            <RowDefinition Height="1*"/>
+            <RowDefinition Height="2*"/>
         </Grid.RowDefinitions>
 
-        <TextBlock Grid.Row="0" Text="{Binding Patient}"/>
+        <TextBlock Grid.Row="0" Text="{Binding Patient}" Margin="5"/>
 
-        <TextBlock Grid.Row="1" Text="{Binding Doctor}"/>
+        <TextBlock Grid.Row="1" Text="{Binding Doctor}" Margin="5"/>
 
-        <DataGrid Grid.Row="2" ItemsSource="{Binding PathsToTargets}" AutoGenerateColumns="False" ScrollViewer.VerticalScrollBarVisibility="Auto">
+        <DataGrid Grid.Row="2" 
+                  ScrollViewer.VerticalScrollBarVisibility="Auto" 
+                  ItemsSource="{Binding Sessions}" 
+                  AutoGenerateColumns="False"
+                  SelectedItem="{Binding SelectedSession}">
+            <DataGrid.Columns>
+                <DataGridTextColumn Width="1*" Header="Время" Binding="{Binding Date}" />
+                <DataGridTextColumn Width="1*" Header="Отклонение" Binding="{Binding SessionResult.Deviation}" />
+                <DataGridTextColumn Width="1*" Header="Дисперсия" Binding="{Binding SessionResult.Dispersion}" />
+                <DataGridTextColumn Width="1*" Header="Математическое ожидание" Binding="{Binding SessionResult.MathExp}" />
+                <DataGridTextColumn Width="1*" Header="Счет" Binding="{Binding SessionResult.Score}" />
+            </DataGrid.Columns>
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="Selected">
+                    <i:InvokeCommandAction Command="{Binding SessionSelectedCommand}" />
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
+        </DataGrid>
+
+        <DataGrid Grid.Row="3" ItemsSource="{Binding PathsToTargets}" AutoGenerateColumns="False" ScrollViewer.VerticalScrollBarVisibility="Auto">
             <DataGrid.Columns>
                 <DataGridTextColumn Width="1*" Header="Угловое расстояние" Binding="{Binding AngleDistance}" />
                 <DataGridTextColumn Width="1*" Header="Угловая скорость" Binding="{Binding AngleSpeed}" />
@@ -32,21 +52,15 @@
             </DataGrid.Columns>
         </DataGrid>
 
-        <DataGrid Grid.Row="3" SelectedItem="{Binding Sessions}" ScrollViewer.VerticalScrollBarVisibility="Auto" ItemsSource="{Binding Sessions}" AutoGenerateColumns="False">
-            <DataGrid.Columns>
-                <DataGridTextColumn Width="1*" Header="Время" Binding="{Binding Date}" />
-                <DataGridTextColumn Width="1*" Header="Отклонение" Binding="{Binding SessionResult.Deviation}" />
-                <DataGridTextColumn Width="1*" Header="Дисперсия" Binding="{Binding SessionResult.Dispersion}" />
-                <DataGridTextColumn Width="1*" Header="Математическое ожидание" Binding="{Binding SessionResult.MathExp}" />
-                <DataGridTextColumn Width="1*" Header="Счет" Binding="{Binding SessionResult.Score}" />
-            </DataGrid.Columns>
-        </DataGrid>
-
-        <Button Grid.Row="4" Content="Отмена" Command="{Binding StartSessionCommand}"                    
+        <Button IsEnabled="{Binding IsNewAppointment}" 
+                Grid.Row="4" 
+                Content="Начать сбор данных" 
+                Command="{Binding StartSessionCommand}"                    
+                Margin="0 10"
                 Foreground="White"
-                    Background="Black"
-                    Height="35"
-                    Width="250">
+                Background="Black"
+                Height="35"
+                Width="250">
             <Button.Style>
                 <Style TargetType="Button" BasedOn="{StaticResource GradientButtonStyle}"/>
             </Button.Style>

@@ -15,9 +15,9 @@ using Path = Disk.Visual.Impl.Path;
 using PolarPointF = Disk.Data.Impl.PolarPoint<float>;
 using Settings = Disk.Properties.Config.Config;
 
-namespace Disk.View.PaintWindowPart
+namespace Disk.View.PaintWindow
 {
-    public partial class PaintWindow : Window
+    public partial class PaintView : UserControl
     {
         private void ShowStats()
         {
@@ -74,7 +74,7 @@ namespace Disk.View.PaintWindowPart
             MapReader.Dispose();
         }
 
-        private void OnClosing(object? sender, CancelEventArgs e) => StopGame();
+        private void OnClosing(object? sender, RoutedEventArgs e) => StopGame();
 
         private void OnSizeChanged(object sender, RoutedEventArgs e)
         {
