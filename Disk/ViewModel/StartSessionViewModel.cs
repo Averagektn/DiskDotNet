@@ -16,6 +16,8 @@ namespace Disk.ViewModel
     public class StartSessionViewModel(NavigationStore navigationStore, ISessionRepository sessionRepository, 
         IMapRepository mapRepository) : ObserverViewModel
     {
+        public event Action? OnSessionOver;
+
         public ObservableCollection<Map> Maps => new(mapRepository.GetAll());
         public Map? SelectedMap { get; set; }
         public ICommand StartSessionCommand => new Command(StartSession);
@@ -41,15 +43,17 @@ namespace Disk.ViewModel
             AppointmentSession.CurrentSession = session;
 
             _ = navigationStore.NavigateBack();
-            _ = navigationStore.NavigateBack();
+            //_ = navigationStore.NavigateBack();
             // to paint view
 
-            navigationStore.SetViewModel<PaintViewModel>(vm => {
+            navigationStore.SetViewModel<PaintViewModel>(vm => 
+            {
                 vm.CurrPath = $"{Settings.MAIN_DIR_PATH}{Path.DirectorySeparatorChar}" +
                     $"{AppointmentSession.Patient.Surname} {AppointmentSession.Patient.Name}{Path.DirectorySeparatorChar}" +
                     $"{DateTime.Now:dd.MM.yyyy HH-mm-ss}";
                 vm.TargetCenters = JsonConvert.DeserializeObject<List<Point2D<float>>>(SelectedMap.CoordinatesJson) ?? [];
-                });
+                vm.OnSessionOver += OnSessionOver;
+            });
         }
     }
 }

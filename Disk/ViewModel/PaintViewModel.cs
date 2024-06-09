@@ -10,6 +10,7 @@ namespace Disk.ViewModel
     public class PaintViewModel(NavigationStore navigationStore, IPathToTargetRepository pathToTargetRepository, 
         IPathInTargetRepository pathInTargetRepository, ISessionResultRepository sessionResultRepository) : ObserverViewModel
     {
+        public event Action? OnSessionOver;
         public string CurrPath { get; set; } = null!;
         private int targetId;
         public List<Point2D<float>> TargetCenters = null!;
@@ -28,6 +29,7 @@ namespace Disk.ViewModel
         {
             sessionResult.Id = AppointmentSession.CurrentSession.Id;
             sessionResultRepository.Add(sessionResult);
+            OnSessionOver?.Invoke();
         }
 
         public void SavePathToTarget(PathToTarget pathToTarget)

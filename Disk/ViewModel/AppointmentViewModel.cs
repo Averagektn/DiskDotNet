@@ -21,7 +21,8 @@ namespace Disk.ViewModel
             = new(sessionRepository.GetSessionsWithResultsByAppointment(AppointmentSession.Appointment.Id));
         public ObservableCollection<PathToTarget> PathsToTargets { get; set; } = [];
 
-        public ICommand StartSessionCommand => new Command(_ => _navigationStore.SetViewModel<StartSessionViewModel>());
+        public ICommand StartSessionCommand 
+            => new Command(_ => _navigationStore.SetViewModel<StartSessionViewModel>(vm => vm.OnSessionOver += Update));
         public ICommand SessionSelectedCommand => new Command(SessionSelected);
 
         private readonly NavigationStore _navigationStore = navigationStore;
@@ -36,5 +37,15 @@ namespace Disk.ViewModel
             }
         }
 
+        private void Update()
+        {
+            Sessions.Clear();
+            var sessions = sessionRepository.GetSessionsWithResultsByAppointment(AppointmentSession.Appointment.Id);
+
+            foreach (var session in sessions)
+            {
+                Sessions.Add(session);
+            }
+        }
     }
 }
