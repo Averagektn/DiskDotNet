@@ -15,4 +15,6 @@ public partial class Map
     public virtual Doctor CreatedByNavigation { get; set; } = null!;
 
     public virtual ICollection<Session> Sessions { get; set; } = [];
+
+    public override string ToString() => Name;
 }

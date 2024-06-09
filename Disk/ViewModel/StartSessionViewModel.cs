@@ -1,31 +1,40 @@
-﻿using Disk.Entities;
+﻿using Disk.Data.Impl;
+using Disk.Entities;
 using Disk.Repository.Interface;
 using Disk.Sessions;
 using Disk.Stores;
 using Disk.ViewModel.Common.Commands.Sync;
 using Disk.ViewModel.Common.ViewModels;
+using Newtonsoft.Json;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Windows.Input;
+using Settings = Disk.Properties.Config.Config;
 
 namespace Disk.ViewModel
 {
-    public class StartSessionViewModel(NavigationStore navigationStore, ISessionRepository sessionRepository) : ObserverViewModel
+    public class StartSessionViewModel(NavigationStore navigationStore, ISessionRepository sessionRepository, 
+        IMapRepository mapRepository) : ObserverViewModel
     {
-        public ObservableCollection<Map> Maps { get; set; } = [];
+        public ObservableCollection<Map> Maps => new(mapRepository.GetAll());
         public Map? SelectedMap { get; set; }
         public ICommand StartSessionCommand => new Command(StartSession);
+        private static Settings Settings => Settings.Default;
 
         private void StartSession(object? obj)
         {
+            if (SelectedMap is null)
+            {
+                return;
+            }
+
             var session = new Session()
             {
                 Appointment = AppointmentSession.Appointment.Id,
                 DateTime = DateTime.Now.ToString(),
-                LogFilePath = "",
-                /*LogFilePath =
-                $"{Settings.MAIN_DIR_PATH}{Path.DirectorySeparatorChar}" +
-                $"{Patient.Surname} {Patient.Name}{Path.DirectorySeparatorChar}" +
-                $"{DateTime.Now}",*/
+                LogFilePath = $"{Settings.MAIN_DIR_PATH}{Path.DirectorySeparatorChar}" +
+                    $"{AppointmentSession.Patient.Surname} {AppointmentSession.Patient.Name}{Path.DirectorySeparatorChar}" +
+                    $"{DateTime.Now:dd.MM.yyyy HH-mm-ss}",
                 Map = SelectedMap!.Id,
             };
             sessionRepository.Add(session);
@@ -35,16 +44,12 @@ namespace Disk.ViewModel
             _ = navigationStore.NavigateBack();
             // to paint view
 
-            /*            new PaintWindow()
-                        {
-                            DbTargetFilePath = SelectedTargetFile.Filepath,
-                            DbMapCenters = JsonConvert.DeserializeObject<List<Point2D<float>>>(SelectedMap.CoordinatesJson) ?? [],
-                            CurrPath =
-                $"{Settings.MAIN_DIR_PATH}{Path.DirectorySeparatorChar}" +
-                $"{Patient.Surname} {Patient.Name}{Path.DirectorySeparatorChar}" +
-                $"{DateTime.Now:dd.MM.yyyy HH-mm-ss}",
-                        }
-            .ShowDialog();*/
+            navigationStore.SetViewModel<PaintViewModel>(vm => {
+                vm.CurrPath = $"{Settings.MAIN_DIR_PATH}{Path.DirectorySeparatorChar}" +
+                    $"{AppointmentSession.Patient.Surname} {AppointmentSession.Patient.Name}{Path.DirectorySeparatorChar}" +
+                    $"{DateTime.Now:dd.MM.yyyy HH-mm-ss}";
+                vm.TargetCenters = JsonConvert.DeserializeObject<List<Point2D<float>>>(SelectedMap.CoordinatesJson) ?? [];
+                });
         }
     }
 }

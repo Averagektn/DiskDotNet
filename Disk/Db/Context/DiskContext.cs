@@ -128,7 +128,7 @@ public partial class DiskContext : DbContext
 
             _ = entity.Property(e => e.Session).HasColumnName("ptt_session");
             _ = entity.Property(e => e.TargetNum).HasColumnName("ptt_target_num");
-            _ = entity.Property(e => e.AngeDistance).HasColumnName("ptt_ange_distance");
+            _ = entity.Property(e => e.AngleDistance).HasColumnName("ptt_ange_distance");
             _ = entity.Property(e => e.AngleSpeed).HasColumnName("ptt_angle_speed");
             _ = entity.Property(e => e.ApproachSpeed).HasColumnName("ptt_approach_speed");
             _ = entity.Property(e => e.CoordinatesJson).HasColumnName("ptt_coordinates_json");

@@ -1,5 +1,6 @@
 ﻿using Disk.Calculations.Impl.Converters;
 using Disk.Data.Impl;
+using Disk.Entities;
 using Disk.ViewModel;
 using Disk.Visual.Impl;
 using Disk.Visual.Interface;
@@ -20,10 +21,14 @@ namespace Disk.View.PaintWindow
     {
         private PaintViewModel ViewModel => (PaintViewModel)DataContext;
 
+        public List<Point2DF> PathToTargetCoords = [];
+        public List<Point2DF> PathInTargetCoords = [];
+        public SessionResult SessionResult { get; set; } = new();
+
         public const int TargetHP = 20;
 
         public string MapFilePath = string.Empty;
-        public string CurrPath = string.Empty;
+        public string CurrPath => ViewModel.CurrPath;
 
         private static readonly object LockObject = new();
 
@@ -58,7 +63,7 @@ namespace Disk.View.PaintWindow
         private Logger UserLogAng = null!;
         private Logger UserMovementLog = null!;
 
-        private FileReader<float> MapReader = null!;
+        //private FileReader<float> MapReader = null!;
 
         private readonly UserPicture User = null!;
         //private User? User;

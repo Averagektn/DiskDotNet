@@ -8,7 +8,7 @@ public partial class PathToTarget
 
     public string CoordinatesJson { get; set; } = null!;
 
-    public double AngeDistance { get; set; }
+    public double AngleDistance { get; set; }
 
     public double AngleSpeed { get; set; }
 

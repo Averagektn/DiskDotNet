@@ -1,6 +1,9 @@
 ﻿using Disk.Data.Impl;
+using Disk.Entities;
+using Disk.Sessions;
 using Disk.Visual.Impl;
 using Disk.Visual.Interface;
+using Newtonsoft.Json;
 using System.Diagnostics;
 using System.Formats.Tar;
 using System.IO;
@@ -20,11 +23,13 @@ namespace Disk.View.PaintWindow
     {
         private void ShotTimerElapsed(object? sender, EventArgs e)
         {
-
-            var shotScore = Target.ReceiveShot(User.Shot());
+            var shot = User.Shot();
+            var shotScore = Target.ReceiveShot(shot);
+            var a = Converter.ToAngle_FromWnd(shot);
 
             if (shotScore != 0 && Stopwatch.IsRunning)
             {
+                PathToTargetCoords.Add(a);
                 Stopwatch.Stop();
 
                 if (StartPoint is not null)
@@ -49,10 +54,23 @@ namespace Disk.View.PaintWindow
                         }
                     }
 
-                    var touchPoint = Converter.ToAngle_FromWnd(User.Center);
+                    var touchPoint = Converter?.ToAngle_FromWnd(User.Center);
                     var time = Stopwatch.Elapsed.TotalSeconds;
                     var avgSpeed = distance / time;
                     var approachSpeed = StartPoint.GetDistance(touchPoint!) / time;
+
+                    var ptt = new PathToTarget()
+                    {
+                        AngleDistance = distance,
+                        AngleSpeed = avgSpeed,
+                        ApproachSpeed = approachSpeed,
+                        CoordinatesJson = JsonConvert.SerializeObject(PathToTargetCoords),
+                        TargetNum = TargetID,
+                        Session = AppointmentSession.CurrentSession.Id,
+                        Time = time
+                    };
+                    ViewModel.SavePathToTarget(ptt);
+                    PathToTargetCoords = [];
 
                     var message =
                         $"""
@@ -72,6 +90,10 @@ namespace Disk.View.PaintWindow
                     TargetID++;
                 }
             }
+            else
+            {
+                PathInTargetCoords.Add(a);
+            }
 
             Score += shotScore;
 
@@ -81,7 +103,16 @@ namespace Disk.View.PaintWindow
 
             if (Target.IsFull)
             {
-                var newCenter = MapReader.GetXY();
+                var pit = new PathInTarget()
+                {
+                    CoordinatesJson = JsonConvert.SerializeObject(PathInTargetCoords),
+                    Session = AppointmentSession.CurrentSession.Id,
+                    TargetId = TargetID,
+                };
+                ViewModel.SavePathInTarget(pit);
+
+                PathInTargetCoords = [];
+                var newCenter = ViewModel.GetNextTargetCenter();
                 Target.Reset();
 
                 if (newCenter is null)
@@ -137,6 +168,8 @@ namespace Disk.View.PaintWindow
             {
                 MessageBox.Show(Localization.Paint_ConnectionLost);
                 //Application.Current.Dispatcher.BeginInvoke(new Action(Close));
+                Application.Current.Dispatcher.BeginInvoke(new Action(ViewModel.NavigateToAppoinment));
+                
             }
         }
 
@@ -149,19 +182,21 @@ namespace Disk.View.PaintWindow
                 Directory.CreateDirectory(CurrPath);
             }
 
-            if (MapFilePath != string.Empty)
+            //if (MapFilePath != string.Empty)
             {
-                MapReader = FileReader<float>.Open(MapFilePath);
-                var center = MapReader.GetXY() ?? new(0.5f, 0.5f);
+                //MapReader = FileReader<float>.Open(MapFilePath);
+                //var center = MapReader.GetXY() ?? new(0.5f, 0.5f);
+                var center = ViewModel.GetNextTargetCenter() ?? new(0.5f, 0.5f);
                 Target = new(Converter.ToWnd_FromRelative(center),
                     Settings.TARGET_INI_RADIUS + 5, SCREEN_INI_SIZE, TargetHP);
                 TargetCenters.Add(center);
             }
-            else
+/*            else
             {
                 MessageBox.Show(Localization.Paint_EmptyMap);
+                ViewModel.NavigateToAppoinment();
                 //Close();
-            }
+            }*/
 
             UserLogWnd = Logger.GetLogger(UsrWndLog);
             UserLogAng = Logger.GetLogger(UsrAngLog);

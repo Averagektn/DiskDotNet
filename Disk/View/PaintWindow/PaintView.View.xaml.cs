@@ -31,13 +31,19 @@ namespace Disk.View.PaintWindow
                 var dispersion = Calculator2D.Dispersion(dataset);
                 var deviation = Calculator2D.StandartDeviation(dataset);
 
-/*                MessageBox.Show(
-                $"""
-                 {Localization.Paint_Score}: {Score}
-                 {Localization.Paint_MathExp}: {mx}
-                 {Localization.Paint_Dispersion}: {dispersion}
-                 {Localization.Paint_StandartDeviation}: {deviation}
-                 """);*/
+                SessionResult.MathExp = (mx.XDbl + mx.YDbl) / 2;
+                SessionResult.Dispersion = (dispersion.XDbl + dispersion.YDbl) / 2;
+                SessionResult.Deviation = (deviation.XDbl + dispersion.YDbl) / 2;
+                SessionResult.Score = Score;
+                ViewModel.SaveSessionResult(SessionResult);
+
+                /*                MessageBox.Show(
+                                $"""
+                                 {Localization.Paint_Score}: {Score}
+                                 {Localization.Paint_MathExp}: {mx}
+                                 {Localization.Paint_Dispersion}: {dispersion}
+                                 {Localization.Paint_StandartDeviation}: {deviation}
+                                 """);*/
 
                 MessageBox.Show(Localization.Paint_Over);
             }
@@ -71,10 +77,13 @@ namespace Disk.View.PaintWindow
             UserLogWnd.Dispose();
             UserLogCen.Dispose();
             UserMovementLog.Dispose();
-            MapReader.Dispose();
+            //MapReader.Dispose();
         }
 
-        private void OnClosing(object? sender, RoutedEventArgs e) => StopGame();
+        private void OnClosing(object? sender, RoutedEventArgs e) 
+        { 
+            StopGame(); 
+        }
 
         private void OnSizeChanged(object sender, RoutedEventArgs e)
         {
