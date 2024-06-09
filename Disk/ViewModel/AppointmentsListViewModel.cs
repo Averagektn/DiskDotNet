@@ -43,7 +43,11 @@ namespace Disk.ViewModel
 
             AppointmentSession.Appointment = appointment;
 
-            navigationStore.SetViewModel<AppointmentViewModel>(vm => vm.Appointment = appointment);
+            navigationStore.SetViewModel<AppointmentViewModel>(vm => 
+            {
+                vm.Appointment = appointment;
+                vm.IsNewAppointment = true;
+            });
         }
     }
 }

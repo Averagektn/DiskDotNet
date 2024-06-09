@@ -1,6 +1,5 @@
 ﻿using Disk.Calculations.Impl.Converters;
 using Disk.Data.Impl;
-using Disk.ViewModel;
 using Disk.Visual.Impl;
 using Disk.Visual.Interface;
 using System.Diagnostics;
@@ -13,7 +12,7 @@ using Point2DI = Disk.Data.Impl.Point2D<int>;
 using Point3DF = Disk.Data.Impl.Point3D<float>;
 using Settings = Disk.Properties.Config.Config;
 
-namespace Disk
+namespace Disk.View.PaintWindowPart
 {
     public partial class PaintWindow : Window
     {
@@ -70,12 +69,9 @@ namespace Disk
         {
             get
             {
-                if (CurrentPos is null)
-                {
-                    return User.Center;
-                }
-
-                return Converter.ToWndCoord(
+                return CurrentPos is null
+                    ? User.Center
+                    : Converter.ToWndCoord(
                     new Point2DF(CurrentPos.X - Settings.ANGLE_X_SHIFT, CurrentPos.Y - Settings.ANGLE_Y_SHIFT));
             }
         }

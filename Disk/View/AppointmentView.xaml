@@ -6,7 +6,50 @@
              xmlns:local="clr-namespace:Disk.View" xmlns:viewmodel="clr-namespace:Disk.ViewModel" d:DataContext="{d:DesignInstance Type=viewmodel:AppointmentViewModel}"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.Resources>
+        <ResourceDictionary Source="/Style/BtnStyles.xaml"/>
+    </UserControl.Resources>
+
     <Grid>
-            
+        <Grid.RowDefinitions>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="7*"/>
+            <RowDefinition Height="6*"/>
+            <RowDefinition Height="1*"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock Grid.Row="0" Text="{Binding Patient}"/>
+
+        <TextBlock Grid.Row="1" Text="{Binding Doctor}"/>
+
+        <DataGrid Grid.Row="2" ItemsSource="{Binding PathsToTargets}" AutoGenerateColumns="False" ScrollViewer.VerticalScrollBarVisibility="Auto">
+            <DataGrid.Columns>
+                <DataGridTextColumn Width="1*" Header="Угловое расстояние" Binding="{Binding AngleDistance}" />
+                <DataGridTextColumn Width="1*" Header="Угловая скорость" Binding="{Binding AngleSpeed}" />
+                <DataGridTextColumn Width="1*" Header="Скорость сближения" Binding="{Binding ApproachSpeed}" />
+                <DataGridTextColumn Width="1*" Header="Время" Binding="{Binding Time}" />
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <DataGrid Grid.Row="3" SelectedItem="{Binding Sessions}" ScrollViewer.VerticalScrollBarVisibility="Auto" ItemsSource="{Binding Sessions}" AutoGenerateColumns="False">
+            <DataGrid.Columns>
+                <DataGridTextColumn Width="1*" Header="Время" Binding="{Binding Date}" />
+                <DataGridTextColumn Width="1*" Header="Отклонение" Binding="{Binding SessionResult.Deviation}" />
+                <DataGridTextColumn Width="1*" Header="Дисперсия" Binding="{Binding SessionResult.Dispersion}" />
+                <DataGridTextColumn Width="1*" Header="Математическое ожидание" Binding="{Binding SessionResult.MathExp}" />
+                <DataGridTextColumn Width="1*" Header="Счет" Binding="{Binding SessionResult.Score}" />
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <Button Grid.Row="4" Content="Отмена" Command="{Binding StartSessionCommand}"                    
+                Foreground="White"
+                    Background="Black"
+                    Height="35"
+                    Width="250">
+            <Button.Style>
+                <Style TargetType="Button" BasedOn="{StaticResource GradientButtonStyle}"/>
+            </Button.Style>
+        </Button>
     </Grid>
 </UserControl>

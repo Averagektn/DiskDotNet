@@ -5,7 +5,9 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Disk" xmlns:viewmodel="clr-namespace:Disk.ViewModel.Common.ViewModels" d:DataContext="{d:DesignInstance Type=viewmodel:MainViewModel}"
         xmlns:viewmodels="clr-namespace:Disk.ViewModel"
-        xmlns:views="clr-namespace:Disk.View" xmlns:modalcontrol="clr-namespace:ModalControl;assembly=ModalControl"
+        xmlns:views="clr-namespace:Disk.View" 
+        xmlns:modalcontrol="clr-namespace:ModalControl;assembly=ModalControl"
+        xmlns:paintview="clr-namespace:Disk.View.PaintWindowPart"
         mc:Ignorable="d"
         Title="DiskApp" Height="800" Width="800">
     <Grid>
@@ -42,6 +44,12 @@
             </DataTemplate>
             <DataTemplate DataType="{x:Type viewmodels:AppointmentViewModel}">
                 <views:AppointmentView/>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type viewmodels:StartSessionViewModel}">
+                <views:StartSessionView/>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type viewmodels:PaintViewModel}">
+                <paintview:PaintWindow/>
             </DataTemplate>
         </Grid.Resources>
         

@@ -7,7 +7,7 @@ using System.Windows;
 using Localization = Disk.Properties.Localization;
 using Settings = Disk.Properties.Config;
 
-namespace Disk
+namespace Disk.View.PaintWindowPart
 {
     /// <summary>
     ///     Interaction logic for PaintWindow.xaml

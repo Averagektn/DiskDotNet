@@ -15,7 +15,7 @@ using Path = Disk.Visual.Impl.Path;
 using PolarPointF = Disk.Data.Impl.PolarPoint<float>;
 using Settings = Disk.Properties.Config.Config;
 
-namespace Disk
+namespace Disk.View.PaintWindowPart
 {
     public partial class PaintWindow : Window
     {
