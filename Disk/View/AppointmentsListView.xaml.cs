@@ -18,9 +18,9 @@ namespace Disk.View
     /// <summary>
     /// Interaction logic for AppointmentsView.xaml
     /// </summary>
-    public partial class AppointmentsView : UserControl
+    public partial class AppointmentsListView : UserControl
     {
-        public AppointmentsView()
+        public AppointmentsListView()
         {
             InitializeComponent();
         }
