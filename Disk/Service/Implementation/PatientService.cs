@@ -2,6 +2,7 @@
 using Disk.Repository.Interface;
 using Disk.Service.Interface;
 using Disk.Service.Exceptions;
+using System.Globalization;
 
 namespace Disk.Service.Implementation
 {
@@ -47,7 +48,7 @@ namespace Disk.Service.Implementation
             }
 
             const int mobilePhoneLength = 13;
-            patient.DateOfBirth = DateTime.Parse(patient.DateOfBirth).ToShortDateString();
+            patient.DateOfBirth = DateTime.Parse(patient.DateOfBirth, CultureInfo.InvariantCulture).ToShortDateString();
             var date = DateTime.Parse(patient.DateOfBirth);
   
             if (date.Date >= DateTime.Now.Date)

@@ -105,8 +105,6 @@ namespace Disk.ViewModel
             if (success)
             {
                 OnAdd?.Invoke(Patient);
-                _ = navigationStore.NavigateBack();
-                navigationStore.SetViewModel<PatientsViewModel>();
                 modalNavigationStore.Close();
             }
         }
