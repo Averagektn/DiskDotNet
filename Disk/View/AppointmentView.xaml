@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+             xmlns:lang="clr-namespace:Disk.Properties.Langs.Appointment" 
              xmlns:local="clr-namespace:Disk.View" xmlns:viewmodel="clr-namespace:Disk.ViewModel" d:DataContext="{d:DesignInstance Type=viewmodel:AppointmentViewModel}"
              mc:Ignorable="d" 
              d:DesignHeight="500" d:DesignWidth="800">
@@ -30,11 +31,11 @@
                   AutoGenerateColumns="False"
                   SelectedItem="{Binding SelectedSession}">
             <DataGrid.Columns>
-                <DataGridTextColumn Width="1*" Header="Время" Binding="{Binding Date}" />
-                <DataGridTextColumn Width="1*" Header="Отклонение" Binding="{Binding SessionResult.Deviation}" />
-                <DataGridTextColumn Width="1*" Header="Дисперсия" Binding="{Binding SessionResult.Dispersion}" />
-                <DataGridTextColumn Width="1*" Header="Математическое ожидание" Binding="{Binding SessionResult.MathExp}" />
-                <DataGridTextColumn Width="1*" Header="Счет" Binding="{Binding SessionResult.Score}" />
+                <DataGridTextColumn Width="1*" Header="{x:Static lang:AppointmentLocalization.DateTime}" Binding="{Binding DateTime}" />
+                <DataGridTextColumn Width="1*" Header="{x:Static lang:AppointmentLocalization.Deviation}" Binding="{Binding SessionResult.Deviation}" />
+                <DataGridTextColumn Width="1*" Header="{x:Static lang:AppointmentLocalization.Dispersion}" Binding="{Binding SessionResult.Dispersion}" />
+                <DataGridTextColumn Width="1*" Header="{x:Static lang:AppointmentLocalization.MathExp}" Binding="{Binding SessionResult.MathExp}" />
+                <DataGridTextColumn Width="1*" Header="{x:Static lang:AppointmentLocalization.Score}" Binding="{Binding SessionResult.Score}" />
             </DataGrid.Columns>
             <i:Interaction.Triggers>
                 <i:EventTrigger EventName="SelectionChanged">
@@ -45,16 +46,16 @@
 
         <DataGrid Grid.Row="3" ItemsSource="{Binding PathsToTargets}" AutoGenerateColumns="False" ScrollViewer.VerticalScrollBarVisibility="Auto">
             <DataGrid.Columns>
-                <DataGridTextColumn Width="1*" Header="Угловое расстояние" Binding="{Binding AngleDistance}" />
-                <DataGridTextColumn Width="1*" Header="Угловая скорость" Binding="{Binding AngleSpeed}" />
-                <DataGridTextColumn Width="1*" Header="Скорость сближения" Binding="{Binding ApproachSpeed}" />
-                <DataGridTextColumn Width="1*" Header="Время" Binding="{Binding Time}" />
+                <DataGridTextColumn Width="1*" Header="{x:Static lang:AppointmentLocalization.AngleDistance}" Binding="{Binding AngleDistance}" />
+                <DataGridTextColumn Width="1*" Header="{x:Static lang:AppointmentLocalization.AngleSpeed}" Binding="{Binding AngleSpeed}" />
+                <DataGridTextColumn Width="1*" Header="{x:Static lang:AppointmentLocalization.ApproachSpeed}" Binding="{Binding ApproachSpeed}" />
+                <DataGridTextColumn Width="1*" Header="{x:Static lang:AppointmentLocalization.Time}" Binding="{Binding Time}" />
             </DataGrid.Columns>
         </DataGrid>
 
         <Button IsEnabled="{Binding IsNewAppointment}" 
                 Grid.Row="4" 
-                Content="Начать сбор данных" 
+                Content="{x:Static lang:AppointmentLocalization.Start}" 
                 Command="{Binding StartSessionCommand}"                    
                 Margin="0 10"
                 Foreground="White"
