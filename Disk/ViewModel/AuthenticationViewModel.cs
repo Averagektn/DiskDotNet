@@ -32,9 +32,9 @@ namespace Disk.ViewModel
 
         public ICommand AuthorizationCommand => new AsyncCommand(PerformAuthorization);
         public ICommand RegistrationCommand => new AsyncCommand(PerformRegistration);
-        public ICommand ReturnWhiteNameCommand => new Command(ReturnWhiteName);
-        public ICommand ReturnWhiteSurnameCommand => new Command(ReturnWhiteSurname);
-        public ICommand ReturnWhitePasswordCommand => new Command(ReturnWhitePassword);
+        public ICommand ReturnWhiteNameCommand => new Command(_ => BgName = new SolidColorBrush(Colors.White));
+        public ICommand ReturnWhiteSurnameCommand => new Command(_ => BgSurname = new SolidColorBrush(Colors.White));
+        public ICommand ReturnWhitePasswordCommand => new Command(_ => BgPassword = new SolidColorBrush(Colors.White));
 
         private async Task PerformRegistration(object? param)
         {
@@ -125,9 +125,5 @@ namespace Disk.ViewModel
             await ShowPopup(header, ex.Output);
             Log.Logger.Error(ex.Message);
         }
-
-        private void ReturnWhiteName(object? param) => BgName = new SolidColorBrush(Colors.White);
-        private void ReturnWhiteSurname(object? param) => BgSurname = new SolidColorBrush(Colors.White);
-        private void ReturnWhitePassword(object? param) => BgPassword = new SolidColorBrush(Colors.White);
     }
 }
