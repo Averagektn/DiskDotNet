@@ -17,7 +17,7 @@ namespace Disk.Service.Implementation
         public async Task<bool> PerformAuthorizationAsync(Doctor doctor)
         {
             bool result;
-            _ = ValidateDoctor(doctor);
+            Validate(doctor);
 
             try
             {
@@ -37,7 +37,7 @@ namespace Disk.Service.Implementation
         public async Task<Doctor> PerformRegistrationAsync(Doctor doctor)
         {
             Doctor result;
-            _ = ValidateDoctor(doctor);
+            Validate(doctor);
 
             try
             {
@@ -59,7 +59,7 @@ namespace Disk.Service.Implementation
             return result;
         }
 
-        private static bool ValidateDoctor(Doctor doctor)
+        private static void Validate(Doctor doctor)
         {
             if (doctor.Surname.Trim().Length == 0)
             {
@@ -76,8 +76,6 @@ namespace Disk.Service.Implementation
                 Log.Error("Invalid password");
                 throw new InvalidPasswordException(AuthenticationLocalization.ShortPassword, "Invalid passsword length");
             }
-
-            return true;
         }
     }
 }
