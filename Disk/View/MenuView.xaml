@@ -4,9 +4,13 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:lang="clr-namespace:Disk.Properties.Langs.Menu" 
-             xmlns:local="clr-namespace:Disk.View" xmlns:viewmodel="clr-namespace:Disk.ViewModel" d:DataContext="{d:DesignInstance Type=viewmodel:MenuViewModel}"
+             xmlns:local="clr-namespace:Disk.View" 
+             xmlns:viewmodel="clr-namespace:Disk.ViewModel" 
+             d:DataContext="{d:DesignInstance Type=viewmodel:MenuViewModel}"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
+             d:DesignHeight="450" 
+             d:DesignWidth="800">
+    
     <UserControl.Resources>
         <ResourceDictionary Source="/Style/BtnStyles.xaml"/>
     </UserControl.Resources>
@@ -22,21 +26,23 @@
             <RowDefinition Height="1*"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="1*"/>
-            <ColumnDefinition Width="2*"/>
-            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
-        <Image Grid.RowSpan="2" Source="Properties/logo.jpg" HorizontalAlignment="Left"/>
+        <Image 
+            Grid.RowSpan="2" 
+            Source="/Properties/logo.jpg" 
+            HorizontalAlignment="Left" 
+            MaxHeight="225" 
+            MaxWidth="225"/>
 
         <Viewbox Grid.Row="1" Grid.Column="1">
-            <Button Command="{Binding ToPatientsCommand}" Content="{x:Static lang:MenuLocalization.Patients}"                     
-                    Foreground="White"
-                    Background="Black"
-                    Margin="0,25"
-                    Height="35"
-                    Width="250"
-                    FontSize="20">
+            <Button 
+                Command="{Binding ToPatientsCommand}" 
+                Content="{x:Static lang:MenuLocalization.Patients}"                     
+                Margin="0 15">
                 <Button.Style>
                     <Style TargetType="Button" BasedOn="{StaticResource GradientButtonStyle}"/>
                 </Button.Style>
@@ -44,13 +50,10 @@
         </Viewbox>
 
         <Viewbox Grid.Row="2" Grid.Column="1">
-            <Button Command="{Binding ToSettingsCommand}" Content="{x:Static lang:MenuLocalization.Settings}"
-                    Foreground="White"
-                    Background="Black"
-                    Margin="0,25"
-                    Height="35"
-                    Width="250"
-                    FontSize="20">
+            <Button 
+                Command="{Binding ToSettingsCommand}" 
+                Content="{x:Static lang:MenuLocalization.Settings}"
+                Margin="0 15">
                 <Button.Style>
                     <Style TargetType="Button" BasedOn="{StaticResource GradientButtonStyle}"/>
                 </Button.Style>
@@ -58,13 +61,10 @@
         </Viewbox>
 
         <Viewbox Grid.Row="3" Grid.Column="1">
-            <Button Command="{Binding ToCalibrationCommand}" Content="{x:Static lang:MenuLocalization.Calibration}"
-                    Foreground="White"
-                    Background="Black"
-                    Margin="0,25"
-                    Height="35"
-                    Width="250"
-                    FontSize="20">
+            <Button 
+                Command="{Binding ToCalibrationCommand}" 
+                Content="{x:Static lang:MenuLocalization.Calibration}"
+                Margin="0,15">
                 <Button.Style>
                     <Style TargetType="Button" BasedOn="{StaticResource GradientButtonStyle}"/>
                 </Button.Style>
@@ -72,13 +72,10 @@
         </Viewbox>
 
         <Viewbox Grid.Row="4" Grid.Column="1">
-            <Button Command="{Binding ToMapConstructorCommand}" Content="{x:Static lang:MenuLocalization.MapConstructor}"
-                    Foreground="White"
-                    Background="Black"
-                    Margin="0,25"
-                    Height="35"
-                    Width="250"
-                    FontSize="20">
+            <Button 
+                Command="{Binding ToMapConstructorCommand}" 
+                Content="{x:Static lang:MenuLocalization.MapConstructor}"
+                    Margin="0 15">
                 <Button.Style>
                     <Style TargetType="Button" BasedOn="{StaticResource GradientButtonStyle}"/>
                 </Button.Style>
@@ -86,20 +83,17 @@
         </Viewbox>
 
         <Viewbox Grid.Row="5" Grid.Column="1">
-            <Button Command="{Binding QuitCommand}" Content="{x:Static lang:MenuLocalization.Quit}"
-                    Foreground="White"
-                    Background="Black"
-                    Margin="0,25"
-                    Height="35"
-                    Width="250"
-                    FontSize="20">
+            <Button 
+                Command="{Binding QuitCommand}" 
+                Content="{x:Static lang:MenuLocalization.Quit}"
+                Margin="0 15">
                 <Button.Style>
                     <Style TargetType="Button" BasedOn="{StaticResource GradientButtonStyle}"/>
                 </Button.Style>
             </Button>
         </Viewbox>
 
-        <Menu Height="20" VerticalAlignment="Top">
+        <Menu Height="20" VerticalAlignment="Top" HorizontalAlignment="Left" Width="200">
             <MenuItem Header="{x:Static lang:MenuLocalization.Language}">
                 <MenuItem Header="English" Command="{Binding ChangeLanguageCommand}" CommandParameter="en-US"/>
                 <MenuItem Header="Русский" Command="{Binding ChangeLanguageCommand}" CommandParameter="ru-RU"/>

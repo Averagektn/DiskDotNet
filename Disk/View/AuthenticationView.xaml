@@ -4,139 +4,179 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:Disk.View" xmlns:viewmodel="clr-namespace:Disk.ViewModel" d:DataContext="{d:DesignInstance Type=viewmodel:AuthenticationViewModel}"
+             xmlns:local="clr-namespace:Disk.View" 
+             xmlns:viewmodel="clr-namespace:Disk.ViewModel" 
              xmlns:styles="clr-namespace:Disk.Style"
              xmlns:lang="clr-namespace:Disk.Properties.Langs.Authentication"
-             mc:Ignorable="d" 
-             d:DesignHeight="600" d:DesignWidth="600">
+             d:DataContext="{d:DesignInstance Type=viewmodel:AuthenticationViewModel}"
+             mc:Ignorable="d">
+    
     <UserControl.Resources>
         <ResourceDictionary Source="/Style/BtnStyles.xaml"/>
     </UserControl.Resources>
 
-    <Border Width="300"
-            Height="550"
-            Background="White"
-            CornerRadius="6">
-        <Border.Effect>
-            <DropShadowEffect BlurRadius="15"
-                              Direction ="-90" 
-                              RenderingBias ="Quality" 
-                              ShadowDepth ="2" 
-                              Color ="Gray" />
-        </Border.Effect>
-        <StackPanel Orientation="Vertical"
-                    Margin="20" CanVerticallyScroll="True">
-            <styles:Popup VerticalAlignment="Top" PopupHeader="{Binding PopupHeader}" PopupMessage="{Binding PopupMessage}" IsPopupOpen="{Binding IsShowPopup}" />
-            <TextBlock Text="{x:Static lang:AuthenticationLocalization.Title}" 
-                       FontSize="25"
-                       HorizontalAlignment="Center"
-                       VerticalAlignment="Top"
-                       FontWeight="Bold"
-                       Padding="10"/>
-            <Grid VerticalAlignment="Center">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="*"/>
-                    <RowDefinition Height="*"/>
-                    <RowDefinition Height="*"/>
-                    <RowDefinition Height="*"/>
-                    <RowDefinition Height="*"/>
-                    <RowDefinition Height="*"/>
-                    <RowDefinition Height="*"/>
-                    <RowDefinition Height="*"/>
-                </Grid.RowDefinitions>
-                <TextBlock Text="{x:Static lang:AuthenticationLocalization.Surname}" 
-                   Grid.Row="0"
-                   Margin="0,15"
-                   HorizontalAlignment="Left"/>
-                <TextBox  Grid.Column="1"
-                          Grid.Row="1"
-                          Padding="0,5"
-                          Width="255"
-                          BorderThickness="0,0,0,1"
-                          HorizontalAlignment="Left"
-                          Text="{Binding Doctor.Surname}"
-                          Background="{Binding BgSurname}">
-                    <i:Interaction.Triggers>
-                        <i:EventTrigger EventName="GotFocus">
-                            <i:InvokeCommandAction Command="{Binding ReturnWhiteSurnameCommand}" />
-                        </i:EventTrigger>
-                    </i:Interaction.Triggers>
-                </TextBox>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="8*"/>
+            <RowDefinition Height="1*"/>
+        </Grid.RowDefinitions>
 
-                <TextBlock Text="{x:Static lang:AuthenticationLocalization.Name}" 
-                          Grid.Row="2"
-                          Margin="0,15"
-                          HorizontalAlignment="Left"/>
-                <TextBox  Grid.Column="3"
-                          Grid.Row="3"
-                          Padding="0,5"
-                          Width="255"
-                          BorderThickness="0,0,0,1"
-                          HorizontalAlignment="Left"
-                          Text="{Binding Doctor.Name}"
-                          Background="{Binding BgName}">
-                    <i:Interaction.Triggers>
-                        <i:EventTrigger EventName="GotFocus">
-                            <i:InvokeCommandAction Command="{Binding ReturnWhiteNameCommand}" />
-                        </i:EventTrigger>
-                    </i:Interaction.Triggers>
-                </TextBox>
+        <Viewbox Grid.Row="1"  HorizontalAlignment="Center" VerticalAlignment="Center">
+            <Border 
+                Background="White"
+                CornerRadius="6">
+                <Border.Effect>
+                    <DropShadowEffect 
+                        BlurRadius="15"              
+                        Direction ="-90" 
+                        RenderingBias ="Quality" 
+                        ShadowDepth ="2" 
+                        Color ="Gray"/>
+                </Border.Effect>
 
-                <TextBlock Text="{x:Static lang:AuthenticationLocalization.Patronymic}" 
-                          Grid.Row="4"
-                          Margin="0,15"
-                          HorizontalAlignment="Left"/>
-                <TextBox  Grid.Column="5"
-                          Grid.Row="5"
-                          Padding="0,5"
-                          Width="255"
-                          BorderThickness="0,0,0,1"
-                          HorizontalAlignment="Left"
-                          Text="{Binding Doctor.Patronymic}"/>
 
-                <TextBlock Text="{x:Static lang:AuthenticationLocalization.Password}" 
-                           Grid.Row="6"
-                           Margin="0,15"
-                           HorizontalAlignment="Left"/>
-                <PasswordBox x:Name="PasswordBox" 
-                          Grid.Row="7"
-                          Padding="0,5"                           
-                          Width="255"
-                          BorderThickness="0,0,0,1"
-                          HorizontalAlignment="Left"
-                          Background="{Binding BgPassword}">
-                    <i:Interaction.Triggers>
-                        <i:EventTrigger EventName="GotFocus">
-                            <i:InvokeCommandAction Command="{Binding ReturnWhitePasswordCommand}" />
-                        </i:EventTrigger>
-                    </i:Interaction.Triggers>
-                </PasswordBox>
-            </Grid>
-            <Button x:Name="LoginBtn" 
-                    Content="{x:Static lang:AuthenticationLocalization.Authorize}" 
-                    Foreground="White"
-                    Background="Black"
-                    Margin="0,25"
-                    Height="35"
-                    Width="250"
-                    Click="LoginBtn_Click">
-                <Button.Style>
-                    <Style TargetType="Button" BasedOn="{StaticResource GradientButtonStyle}"/>
-                </Button.Style>
-            </Button>
+                <StackPanel 
+                    Background="Transparent"
+                    Orientation="Vertical"
+                    Margin="10 0">
 
-            <Button x:Name="RegistrationBtn" 
-                    Content="{x:Static lang:AuthenticationLocalization.Register}" 
-                    Foreground="White"
-                    Background="Black"
-                    Margin="0,25"
-                    Height="35"
-                    Width="250"
-                    Click="RegistrationBtn_Click">
-                <Button.Style>
-                    <Style TargetType="Button" BasedOn="{StaticResource GradientButtonStyle}"/>
-                </Button.Style>
-            </Button>
-        </StackPanel>
-    </Border>
+
+                    <styles:Popup 
+                    PopupHeader="{Binding PopupHeader}" 
+                    PopupMessage="{Binding PopupMessage}" 
+                    IsPopupOpen="{Binding IsShowPopup}" />
+
+                    <TextBlock 
+                    Background="Transparent"
+                    Text="{x:Static lang:AuthenticationLocalization.Title}" 
+                    FontSize="25"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Top"
+                    FontWeight="Bold"
+                    Padding="10"/>
+
+                    <Grid VerticalAlignment="Center">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+
+
+                        <TextBlock 
+                            Text="{x:Static lang:AuthenticationLocalization.Surname}" 
+                            Grid.Row="0"
+                            Margin="0 15"
+                            HorizontalAlignment="Left"
+                            FontSize="20"/>
+
+                        <TextBox  
+                            Grid.Column="1"
+                            Grid.Row="1"
+                            Padding="0 5"
+                            Width="255"
+                            FontSize="15"
+                            BorderThickness="0 0 0 1"
+                            HorizontalAlignment="Left"
+                            Text="{Binding Doctor.Surname}"
+                            Background="{Binding BgSurname}">
+                            <i:Interaction.Triggers>
+                                <i:EventTrigger EventName="GotFocus">
+                                    <i:InvokeCommandAction Command="{Binding ReturnWhiteSurnameCommand}" />
+                                </i:EventTrigger>
+                            </i:Interaction.Triggers>
+                        </TextBox>
+
+                        <TextBlock 
+                            Text="{x:Static lang:AuthenticationLocalization.Name}" 
+                            Grid.Row="2"
+                            Margin="0 15"
+                            HorizontalAlignment="Left"
+                            FontSize="20"/>
+
+                        <TextBox  
+                            Grid.Column="3"
+                            Grid.Row="3"
+                            Padding="0 5"
+                            Width="255"
+                            FontSize="15"
+                            BorderThickness="0 0 0 1"
+                            HorizontalAlignment="Left"
+                            Text="{Binding Doctor.Name}"
+                            Background="{Binding BgName}">
+                            <i:Interaction.Triggers>
+                                <i:EventTrigger EventName="GotFocus">
+                                    <i:InvokeCommandAction Command="{Binding ReturnWhiteNameCommand}" />
+                                </i:EventTrigger>
+                            </i:Interaction.Triggers>
+                        </TextBox>
+
+                        <TextBlock 
+                            Text="{x:Static lang:AuthenticationLocalization.Patronymic}" 
+                            Grid.Row="4"
+                            Margin="0 15"
+                            HorizontalAlignment="Left"
+                            FontSize="20"/>
+
+                        <TextBox  
+                            Grid.Column="5"
+                            Grid.Row="5"
+                            Padding="0 5"
+                            Width="255"
+                            FontSize="15"
+                            BorderThickness="0 0 0 1"
+                            HorizontalAlignment="Left"
+                            Text="{Binding Doctor.Patronymic}"/>
+
+                        <TextBlock 
+                            Text="{x:Static lang:AuthenticationLocalization.Password}" 
+                            Grid.Row="6"
+                            Margin="0 15"    
+                            HorizontalAlignment="Left"
+                            FontSize="20"/>
+
+                        <PasswordBox 
+                            x:Name="PasswordBox" 
+                            Grid.Row="7"
+                            Padding="0 5"                           
+                            Width="255"
+                            FontSize="15"
+                            BorderThickness="0 0 0 1"
+                            HorizontalAlignment="Left"
+                            Background="{Binding BgPassword}">
+                            <i:Interaction.Triggers>
+                                <i:EventTrigger EventName="GotFocus">
+                                    <i:InvokeCommandAction Command="{Binding ReturnWhitePasswordCommand}" />
+                                </i:EventTrigger>
+                            </i:Interaction.Triggers>
+                        </PasswordBox>
+                    </Grid>
+
+                    <Button     
+                        Content="{x:Static lang:AuthenticationLocalization.Authorize}" 
+                        Margin="0 25"
+                        Click="LoginBtn_Click">
+                        <Button.Style>
+                            <Style TargetType="Button" BasedOn="{StaticResource GradientButtonStyle}"/>
+                        </Button.Style>
+                    </Button>
+
+                    <Button 
+                        Content="{x:Static lang:AuthenticationLocalization.Register}" 
+                        Margin="0 25"
+                        Click="RegistrationBtn_Click">
+                        <Button.Style>
+                            <Style TargetType="Button" BasedOn="{StaticResource GradientButtonStyle}"/>
+                        </Button.Style>
+                    </Button>
+                </StackPanel>
+            </Border>
+        </Viewbox>
+    </Grid>
 </UserControl>
