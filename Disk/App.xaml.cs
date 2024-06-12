@@ -23,6 +23,7 @@ namespace Disk
         {
             Thread.CurrentThread.CurrentUICulture =
                 new System.Globalization.CultureInfo(Disk.Properties.Config.Config.Default.LANGUAGE);
+            System.Windows.Media.RenderOptions.ProcessRenderMode = System.Windows.Interop.RenderMode.SoftwareOnly;
 
 
             Log.Logger = new LoggerConfiguration()
