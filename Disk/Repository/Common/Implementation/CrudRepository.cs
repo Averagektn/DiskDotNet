@@ -1,5 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Disk.Repository.Common.Interface;
 using Disk.Repository.Exceptions;
+using Microsoft.EntityFrameworkCore;
 
 namespace Disk.Repository.Common.Implementation
 {
@@ -9,62 +10,52 @@ namespace Disk.Repository.Common.Implementation
 
         public void Add(T entity)
         {
-            table.Add(entity);
+            _ = table.Add(entity);
             try
             {
-                context.SaveChanges();
+                _ = context.SaveChanges();
             }
             catch (DbUpdateException)
             {
-                context.Remove(entity);
+                _ = context.Remove(entity);
                 throw;
             }
         }
 
         public async Task AddAsync(T entity)
         {
-            await table.AddAsync(entity);
+            _ = await table.AddAsync(entity);
             try
             {
-                await context.SaveChangesAsync();
+                _ = await context.SaveChangesAsync();
             }
             catch (DbUpdateException)
             {
-                context.Remove(entity);
+                _ = context.Remove(entity);
                 throw;
             }
         }
 
         public void Delete(T entity)
         {
-            table.Remove(entity);
-            context.SaveChanges();
+            _ = table.Remove(entity);
+            _ = context.SaveChanges();
         }
 
-        public ICollection<T> GetAll()
-        {
-            return table.ToList();
-        }
+        public ICollection<T> GetAll() => table.ToList();
 
-        public async Task<ICollection<T>> GetAllAsync()
-        {
-            return await table.ToListAsync();
-        }
+        public async Task<ICollection<T>> GetAllAsync() => await table.ToListAsync();
 
-        public T GetById(long id)
-        {
-            return table.Find(id) ?? throw new EntityNotFoundException($"No such {typeof(T)} with id {id}");
-        }
+        public T GetById(long id) =>
+            table.Find(id) ?? throw new EntityNotFoundException($"No such {typeof(T)} with id {id}");
 
         public async Task<T> GetByIdAsync(long id)
-        {
-            return await table.FindAsync(id) ?? throw new EntityNotFoundException($"No such {typeof(T)} with id {id}");
-        }
+            => await table.FindAsync(id) ?? throw new EntityNotFoundException($"No such {typeof(T)} with id {id}");
 
         public void Update(T entity)
         {
-            table.Update(entity);
-            context.SaveChanges();
+            _ = table.Update(entity);
+            _ = context.SaveChanges();
         }
     }
 }

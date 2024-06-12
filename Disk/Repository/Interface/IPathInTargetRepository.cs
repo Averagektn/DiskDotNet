@@ -1,5 +1,5 @@
 ﻿using Disk.Entities;
-using Disk.Repository.Common;
+using Disk.Repository.Common.Interface;
 
 namespace Disk.Repository.Interface
 {
