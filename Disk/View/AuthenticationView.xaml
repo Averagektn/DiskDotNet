@@ -163,20 +163,12 @@
                     <Button     
                         Content="{x:Static lang:AuthenticationLocalization.Authorize}" 
                         Margin="0 25"
-                        Click="LoginBtn_Click">
-                        <Button.Style>
-                            <Style TargetType="Button" BasedOn="{StaticResource GradientButtonStyle}"/>
-                        </Button.Style>
-                    </Button>
+                        Click="LoginBtn_Click"/>
 
                     <Button 
                         Content="{x:Static lang:AuthenticationLocalization.Register}" 
                         Margin="0 25"
-                        Click="RegistrationBtn_Click">
-                        <Button.Style>
-                            <Style TargetType="Button" BasedOn="{StaticResource GradientButtonStyle}"/>
-                        </Button.Style>
-                    </Button>
+                        Click="RegistrationBtn_Click"/>
                 </StackPanel>
             </Border>
         </Viewbox>

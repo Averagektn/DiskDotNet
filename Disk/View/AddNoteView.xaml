@@ -26,20 +26,12 @@
                     Background="Black"
                     Margin="0 10"
                     Height="35"
-                    Width="250">
-            <Button.Style>
-                <Style TargetType="Button" BasedOn="{StaticResource GradientButtonStyle}"/>
-            </Button.Style>
-        </Button>
+                    Width="250"/>
 
         <Button Content="{x:Static lang:AddNoteLocalization.Cancel}" Command="{Binding CancelCommand}"                    
                 Foreground="White"
                     Background="Black"
                     Height="35"
-                    Width="250">
-            <Button.Style>
-                <Style TargetType="Button" BasedOn="{StaticResource GradientButtonStyle}"/>
-            </Button.Style>
-        </Button>
+                    Width="250"/>
     </StackPanel>
 </UserControl>

@@ -10,10 +10,6 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" 
              d:DesignWidth="800">
-    
-    <UserControl.Resources>
-        <ResourceDictionary Source="/Style/BtnStyles.xaml"/>
-    </UserControl.Resources>
 
     <Grid>
         <Grid.RowDefinitions>
@@ -42,55 +38,36 @@
             <Button 
                 Command="{Binding ToPatientsCommand}" 
                 Content="{x:Static lang:MenuLocalization.Patients}"                     
-                Margin="0 15">
-                <Button.Style>
-                    <Style TargetType="Button" BasedOn="{StaticResource GradientButtonStyle}"/>
-                </Button.Style>
-            </Button>
+                Margin="0 15"/>
         </Viewbox>
 
         <Viewbox Grid.Row="2" Grid.Column="1">
             <Button 
                 Command="{Binding ToSettingsCommand}" 
                 Content="{x:Static lang:MenuLocalization.Settings}"
-                Margin="0 15">
-                <Button.Style>
-                    <Style TargetType="Button" BasedOn="{StaticResource GradientButtonStyle}"/>
-                </Button.Style>
-            </Button>
+                Margin="0 15"/>
         </Viewbox>
 
         <Viewbox Grid.Row="3" Grid.Column="1">
             <Button 
                 Command="{Binding ToCalibrationCommand}" 
                 Content="{x:Static lang:MenuLocalization.Calibration}"
-                Margin="0,15">
-                <Button.Style>
-                    <Style TargetType="Button" BasedOn="{StaticResource GradientButtonStyle}"/>
-                </Button.Style>
-            </Button>
+                Margin="0,15"/>
         </Viewbox>
 
         <Viewbox Grid.Row="4" Grid.Column="1">
             <Button 
                 Command="{Binding ToMapConstructorCommand}" 
                 Content="{x:Static lang:MenuLocalization.MapConstructor}"
-                    Margin="0 15">
-                <Button.Style>
-                    <Style TargetType="Button" BasedOn="{StaticResource GradientButtonStyle}"/>
-                </Button.Style>
-            </Button>
+                Margin="0 15"/>
+
         </Viewbox>
 
         <Viewbox Grid.Row="5" Grid.Column="1">
             <Button 
                 Command="{Binding QuitCommand}" 
                 Content="{x:Static lang:MenuLocalization.Quit}"
-                Margin="0 15">
-                <Button.Style>
-                    <Style TargetType="Button" BasedOn="{StaticResource GradientButtonStyle}"/>
-                </Button.Style>
-            </Button>
+                Margin="0 15"/>
         </Viewbox>
 
         <Menu Height="20" VerticalAlignment="Top" HorizontalAlignment="Left" Grid.ColumnSpan="3">

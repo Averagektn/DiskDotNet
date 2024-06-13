@@ -34,11 +34,8 @@
         <Button 
             Content="{x:Static lang:MapNamePickerLocalization.Add}" 
             Command="{Binding SaveMapCommand}"                    
-            Margin="0 25">
-            <Button.Style>
-                <Style TargetType="Button" BasedOn="{StaticResource GradientButtonStyle}"/>
-            </Button.Style>
-        </Button>
+            Margin="0 25"/>
+
 
         <popup:Popup 
             IsPopupOpen="{Binding IsShowPopup}" 

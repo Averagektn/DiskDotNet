@@ -39,7 +39,6 @@
                 Content="{x:Static lang:CalibrationLocalization.Start}" 
                 IsEnabled="{Binding StartCalibrationEnabled}" 
                 Command="{Binding StartCalibrationCommand}" 
-                Style="{StaticResource GradientButtonStyle}"
                 Margin="0,25"/>
         </Viewbox>
 
@@ -55,7 +54,6 @@
             <Button 
                 Content="{x:Static lang:CalibrationLocalization.Centralize}" 
                 Command="{Binding CentralizeXCommand}"
-                Style="{StaticResource GradientButtonStyle}"
                 Margin="0,25"/>
         </Viewbox>
 
@@ -63,7 +61,6 @@
             <Button 
                 Content="{x:Static lang:CalibrationLocalization.SetX}" 
                 Command="{Binding CalibrateXCommand}"
-                Style="{StaticResource GradientButtonStyle}"
                 Margin="0,25"/>
         </Viewbox>
 
@@ -80,7 +77,6 @@
             <Button 
                 Content="{x:Static lang:CalibrationLocalization.Centralize}" 
                 Command="{Binding CentralizeYCommand}" 
-                Style="{StaticResource GradientButtonStyle}"
                 Margin="0,25"/>
         </Viewbox>
 
@@ -88,7 +84,6 @@
             <Button 
                 Content="{x:Static lang:CalibrationLocalization.SetY}" 
                 Command="{Binding CalibrateYCommand}"
-                Style="{StaticResource GradientButtonStyle}"
                 Margin="0,25"/>
         </Viewbox>
 
@@ -96,7 +91,6 @@
             <Button 
                 Content="{x:Static lang:CalibrationLocalization.Apply}" 
                 Command="{Binding ApplyCommand}"
-                Style="{StaticResource GradientButtonStyle}"
                 Margin="0,25"/>
         </Viewbox>
     </Grid>

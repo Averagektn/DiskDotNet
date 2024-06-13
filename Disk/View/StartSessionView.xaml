@@ -27,10 +27,6 @@
                     Margin="0,25"
                     Height="35"
                     Width="250"
-                    Command="{Binding StartSessionCommand}">
-            <Button.Style>
-                <Style TargetType="Button" BasedOn="{StaticResource GradientButtonStyle}"/>
-            </Button.Style>
-        </Button>
+                    Command="{Binding StartSessionCommand}"/>
     </StackPanel>
 </UserControl>

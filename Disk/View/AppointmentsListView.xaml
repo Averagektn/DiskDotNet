@@ -59,11 +59,7 @@
                     Background="Black"
                     Margin="0,25"
                     Height="35"
-                    Command="{Binding StartAppointmentCommand}">
-                    <Button.Style>
-                        <Style TargetType="Button" BasedOn="{StaticResource GradientButtonStyle}"/>
-                    </Button.Style>
-                </Button>
+                    Command="{Binding StartAppointmentCommand}"/>
             </StackPanel>
 
         </ScrollViewer>
@@ -89,11 +85,7 @@
                     Background="Black"
                     Margin="0,25"
                     Height="35"
-                    Command="{Binding AddNoteCommand}">
-                    <Button.Style>
-                        <Style TargetType="Button" BasedOn="{StaticResource GradientButtonStyle}"/>
-                    </Button.Style>
-                </Button>
+                    Command="{Binding AddNoteCommand}"/>
             </StackPanel>
         </ScrollViewer>
     </Grid>

@@ -61,10 +61,6 @@
                 Foreground="White"
                 Background="Black"
                 Height="35"
-                Width="250">
-            <Button.Style>
-                <Style TargetType="Button" BasedOn="{StaticResource GradientButtonStyle}"/>
-            </Button.Style>
-        </Button>
+                Width="250"/>
     </Grid>
 </UserControl>

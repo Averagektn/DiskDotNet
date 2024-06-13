@@ -115,11 +115,7 @@
                 Margin="0 20 0 0"                    
                 Foreground="White"
                 Background="Black"
-                Command="{Binding AddPatientCommand}">
-            <Button.Style>
-                <Style TargetType="Button" BasedOn="{StaticResource GradientButtonStyle}"/>
-            </Button.Style>
-        </Button>
+                Command="{Binding AddPatientCommand}"/>
 
         <Button Content="{x:Static lang:AddPatientLocalization.Cancel}" 
                 HorizontalAlignment="Center"
@@ -128,11 +124,8 @@
                 Margin="0 20 0 20"                    
                 Foreground="White"
                 Background="Black"
-                Command="{Binding CancelCommand}">
-            <Button.Style>
-                <Style TargetType="Button" BasedOn="{StaticResource GradientButtonStyle}"/>
-            </Button.Style>
-        </Button>
+                Command="{Binding CancelCommand}"/>
+
         <styles:Popup PopupMessage="{Binding PopupMessage}" 
                       IsPopupOpen="{Binding IsShowPopup}" 
                       PopupHeader="{Binding PopupHeader}"/>
