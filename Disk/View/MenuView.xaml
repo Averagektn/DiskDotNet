@@ -26,9 +26,9 @@
             <RowDefinition Height="1*"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="2*"/>
+            <ColumnDefinition Width="1*"/>
         </Grid.ColumnDefinitions>
 
         <Image 
@@ -93,7 +93,7 @@
             </Button>
         </Viewbox>
 
-        <Menu Height="20" VerticalAlignment="Top" HorizontalAlignment="Left" Width="200">
+        <Menu Height="20" VerticalAlignment="Top" HorizontalAlignment="Left" Grid.ColumnSpan="3">
             <MenuItem Header="{x:Static lang:MenuLocalization.Language}">
                 <MenuItem Header="English" Command="{Binding ChangeLanguageCommand}" CommandParameter="en-US"/>
                 <MenuItem Header="Русский" Command="{Binding ChangeLanguageCommand}" CommandParameter="ru-RU"/>
