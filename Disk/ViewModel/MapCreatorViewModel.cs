@@ -49,10 +49,6 @@ namespace Disk.ViewModel
 
                 modalNavigationStore.SetViewModel<MapNamePickerViewModel>(canClose: true);
             }
-            else
-            {
-                _ = navigationStore.NavigateBack();
-            }
         }
 
         public void RemoveTarget(UIElementCollection screenTargets, Point mousePos)
