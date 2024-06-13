@@ -5,12 +5,12 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
              xmlns:lang="clr-namespace:Disk.Properties.Langs.AppointementsList" 
-             xmlns:local="clr-namespace:Disk.View" xmlns:viewmodel="clr-namespace:Disk.ViewModel" d:DataContext="{d:DesignInstance Type=viewmodel:AppointmentsListViewModel}"
+             xmlns:local="clr-namespace:Disk.View" 
+             xmlns:viewmodel="clr-namespace:Disk.ViewModel" 
+             d:DataContext="{d:DesignInstance Type=viewmodel:AppointmentsListViewModel}"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
-    <UserControl.Resources>
-        <ResourceDictionary Source="/Style/BtnStyles.xaml"/>
-    </UserControl.Resources>
+             d:DesignHeight="450" 
+             d:DesignWidth="800">
 
     <Grid>
         <Grid.ColumnDefinitions>
@@ -19,17 +19,17 @@
             <ColumnDefinition Width="6*"/>
         </Grid.ColumnDefinitions>
         <StackPanel Grid.Column="0">
-            <TextBlock Text="{x:Static lang:AppointmentsListLocalization.Surname}" Margin="10 0" FontSize="20"/>
+            <TextBlock Text="{x:Static lang:AppointmentsListLocalization.Surname}" Margin="10 10" FontSize="20"/>
             <TextBlock Text="{Binding Patient.Surname}" Margin="10 0" FontSize="20"/>
-            <TextBlock Text="{x:Static lang:AppointmentsListLocalization.Name}" Margin="10 0" FontSize="20"/>
+            <TextBlock Text="{x:Static lang:AppointmentsListLocalization.Name}" Margin="10 10" FontSize="20"/>
             <TextBlock Text="{Binding Patient.Name}" Margin="10 0" FontSize="20"/>
-            <TextBlock Text="{x:Static lang:AppointmentsListLocalization.Patronymic}" Margin="10 0" FontSize="20"/>
+            <TextBlock Text="{x:Static lang:AppointmentsListLocalization.Patronymic}" Margin="10 10" FontSize="20"/>
             <TextBlock Text="{Binding Patient.Patronymic}" Margin="10 0" FontSize="20"/>
-            <TextBlock Text="{x:Static lang:AppointmentsListLocalization.MobilePhone}" Margin="10 0" FontSize="20"/>
+            <TextBlock Text="{x:Static lang:AppointmentsListLocalization.MobilePhone}" Margin="10 10" FontSize="20"/>
             <TextBlock Text="{Binding Patient.PhoneMobile}" Margin="10 0" FontSize="20"/>
-            <TextBlock Text="{x:Static lang:AppointmentsListLocalization.HomePhone}" Margin="10 0" FontSize="20"/>
+            <TextBlock Text="{x:Static lang:AppointmentsListLocalization.HomePhone}" Margin="10 10" FontSize="20"/>
             <TextBlock Text="{Binding Patient.PhoneHome}" Margin="10 0 " FontSize="20"/>
-            <TextBlock Text="{x:Static lang:AppointmentsListLocalization.DateOfBirth}" Margin="10 0" FontSize="20"/>
+            <TextBlock Text="{x:Static lang:AppointmentsListLocalization.DateOfBirth}" Margin="10 10" FontSize="20"/>
             <TextBlock Text="{Binding Patient.DateOfBirth}" Margin="10 0" FontSize="20"/>
         </StackPanel>
 
@@ -41,7 +41,7 @@
                     ItemsSource="{Binding Appointments}" 
                     AutoGenerateColumns="False" 
                     SelectedItem="{Binding SelectedAppointment}" 
-                    IsReadOnly="True"> 
+                    IsReadOnly="True">
                     <DataGrid.Columns>
                         <DataGridTextColumn Width="1*" Header="{x:Static lang:AppointmentsListLocalization.Doctor}" Binding="{Binding DoctorNavigation}" />
                         <DataGridTextColumn Width="1*" Header="{x:Static lang:AppointmentsListLocalization.DateTime}" Binding="{Binding DateTime}" />
@@ -55,24 +55,20 @@
 
                 <Button
                     Content="{x:Static lang:AppointmentsListLocalization.StartAppoiment}" 
-                    Foreground="White"
-                    Background="Black"
                     Margin="0,25"
-                    Height="35"
                     Command="{Binding StartAppointmentCommand}"/>
             </StackPanel>
-
         </ScrollViewer>
         
         <ScrollViewer Grid.Column="2" VerticalScrollBarVisibility="Auto">
             <StackPanel>
                 <TextBlock Text="{x:Static lang:AppointmentsListLocalization.NotesHeader}" Margin="0 10 0 0"/>
                 <DataGrid 
-                    ScrollViewer.VerticalScrollBarVisibility="Auto"
-                  Margin="5 0"
-                  ItemsSource="{Binding Notes}" 
-                  AutoGenerateColumns="False" 
-                  IsReadOnly="True">
+                    ScrollViewer.VerticalScrollBarVisibility="Auto"                  
+                    Margin="5 0"                  
+                    ItemsSource="{Binding Notes}"                   
+                    AutoGenerateColumns="False" 
+                    IsReadOnly="True">
                     <DataGrid.Columns>
                         <DataGridTextColumn Width="1*" Header="{x:Static lang:AppointmentsListLocalization.Doctor}" Binding="{Binding DoctorNavigation}" />
                         <DataGridTextColumn Width="1*" Header="{x:Static lang:AppointmentsListLocalization.Text}" Binding="{Binding Text}" />
@@ -81,8 +77,6 @@
 
                 <Button
                     Content="{x:Static lang:AppointmentsListLocalization.AddNote}" 
-                    Foreground="White"
-                    Background="Black"
                     Margin="0,25"
                     Height="35"
                     Command="{Binding AddNoteCommand}"/>

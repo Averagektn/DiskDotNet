@@ -5,7 +5,6 @@ using Disk.Stores;
 using Disk.ViewModel.Common.Commands.Sync;
 using Disk.ViewModel.Common.ViewModels;
 using System.Collections.ObjectModel;
-using System.IO.Packaging;
 using System.Windows.Input;
 
 namespace Disk.ViewModel
@@ -30,7 +29,7 @@ namespace Disk.ViewModel
         private readonly ModalNavigationStore _modalNavigationStore;
         private readonly IPatientRepository _patientRepository;
 
-        public PatientsViewModel(NavigationStore navigationStore, ModalNavigationStore modalNavigationStore, 
+        public PatientsViewModel(NavigationStore navigationStore, ModalNavigationStore modalNavigationStore,
             IPatientRepository patientRepository)
         {
             _navigationStore = navigationStore;
