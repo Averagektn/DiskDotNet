@@ -43,8 +43,6 @@ namespace Disk.ViewModel
             AppointmentSession.CurrentSession = session;
 
             _ = navigationStore.NavigateBack();
-            //_ = navigationStore.NavigateBack();
-            // to paint view
 
             navigationStore.SetViewModel<PaintViewModel>(vm => 
             {

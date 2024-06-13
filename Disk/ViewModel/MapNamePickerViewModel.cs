@@ -1,4 +1,5 @@
-﻿using Disk.Entities;
+﻿using Disk.Data.Impl;
+using Disk.Entities;
 using Disk.Properties.Langs.MapNamePicker;
 using Disk.Repository.Interface;
 using Disk.Sessions;
@@ -16,6 +17,7 @@ namespace Disk.ViewModel
     {
         public ICommand SaveMapCommand => new AsyncCommand(SaveMap);
 
+        public List<Point2D<float>> Map { get; set; } = null!;
         public string MapName { get; set; } = string.Empty;
 
         private async Task SaveMap(object? arg)
@@ -29,7 +31,7 @@ namespace Disk.ViewModel
             var map = new Map()
             {
                 Name = MapName,
-                CoordinatesJson = JsonConvert.SerializeObject(MapSession.Map),
+                CoordinatesJson = JsonConvert.SerializeObject(Map),
                 CreatedAtDateTime = DateTime.Now.ToString(),
                 CreatedBy = AppSession.Doctor.Id
             };
