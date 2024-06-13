@@ -6,7 +6,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Disk.View" 
              xmlns:viewmodel="clr-namespace:Disk.ViewModel" 
-             xmlns:styles="clr-namespace:Disk.Style"
+             xmlns:popup="clr-namespace:Disk.Style"
              xmlns:lang="clr-namespace:Disk.Properties.Langs.Authentication"
              d:DataContext="{d:DesignInstance Type=viewmodel:AuthenticationViewModel}"
              mc:Ignorable="d">
@@ -22,7 +22,9 @@
             <RowDefinition Height="1*"/>
         </Grid.RowDefinitions>
 
-        <Viewbox Grid.Row="1"  HorizontalAlignment="Center" VerticalAlignment="Center">
+        <Viewbox Grid.Row="1" 
+                 HorizontalAlignment="Center" 
+                 VerticalAlignment="Center">
             <Border 
                 Background="White"
                 CornerRadius="6">
@@ -42,19 +44,19 @@
                     Margin="10 0">
 
 
-                    <styles:Popup 
-                    PopupHeader="{Binding PopupHeader}" 
-                    PopupMessage="{Binding PopupMessage}" 
-                    IsPopupOpen="{Binding IsShowPopup}" />
+                    <popup:Popup 
+                        PopupHeader="{Binding PopupHeader}" 
+                        PopupMessage="{Binding PopupMessage}" 
+                        IsPopupOpen="{Binding IsShowPopup}" />
 
                     <TextBlock 
-                    Background="Transparent"
-                    Text="{x:Static lang:AuthenticationLocalization.Title}" 
-                    FontSize="25"
-                    HorizontalAlignment="Center"
-                    VerticalAlignment="Top"
-                    FontWeight="Bold"
-                    Padding="10"/>
+                        Background="Transparent"
+                        Text="{x:Static lang:AuthenticationLocalization.Title}" 
+                        FontSize="25"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Top"
+                        FontWeight="Bold"
+                        Padding="10"/>
 
                     <Grid VerticalAlignment="Center">
                         <Grid.RowDefinitions>

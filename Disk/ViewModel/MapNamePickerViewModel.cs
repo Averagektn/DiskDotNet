@@ -16,8 +16,7 @@ namespace Disk.ViewModel
     {
         public ICommand SaveMapCommand => new AsyncCommand(SaveMap);
 
-        private string _mapName = string.Empty;
-        public string MapName { get => _mapName; set => SetProperty(ref _mapName, value); }
+        public string MapName { get; set; } = string.Empty;
 
         private async Task SaveMap(object? arg)
         {
