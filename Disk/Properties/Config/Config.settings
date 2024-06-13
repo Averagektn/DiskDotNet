@@ -42,10 +42,10 @@
       <Value Profile="(Default)">7</Value>
     </Setting>
     <Setting Name="SCREEN_INI_WIDTH" Type="System.Int32" Scope="Application">
-      <Value Profile="(Default)">600</Value>
+      <Value Profile="(Default)">800</Value>
     </Setting>
     <Setting Name="SCREEN_INI_HEIGHT" Type="System.Int32" Scope="Application">
-      <Value Profile="(Default)">600</Value>
+      <Value Profile="(Default)">800</Value>
     </Setting>
     <Setting Name="ENEMIES_NUM" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">1</Value>
