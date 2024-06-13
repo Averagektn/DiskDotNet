@@ -24,7 +24,7 @@ namespace Disk.ViewModel
             var x = (int)mousePos.X;
             var y = (int)mousePos.Y;
 
-            _movingTarget = _targets.Find(target => target.Contains(new Point2D<int>(x, y)));
+            _movingTarget = _targets.FindLast(target => target.Contains(new Point2D<int>(x, y)));
         }
 
         public void MoveTarget(Point mousePos)
@@ -47,11 +47,11 @@ namespace Disk.ViewModel
                         (float)(target.Center.Y / actualHeight)));
                 }
 
-                modalNavigationStore.SetViewModel<MapNamePickerViewModel>();
+                modalNavigationStore.SetViewModel<MapNamePickerViewModel>(canClose: true);
             }
-            else 
+            else
             {
-                navigationStore.NavigateBack();
+                _ = navigationStore.NavigateBack();
             }
         }
 
