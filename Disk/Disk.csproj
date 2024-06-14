@@ -220,7 +220,6 @@
 
   <ItemGroup>
     <Folder Include="Entities\" />
-    <Folder Include="Behaviors\" />
   </ItemGroup>
 
 </Project>
