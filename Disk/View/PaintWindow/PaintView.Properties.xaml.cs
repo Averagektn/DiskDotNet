@@ -65,7 +65,7 @@ namespace Disk.View.PaintWindow
 
         //private FileReader<float> MapReader = null!;
 
-        private readonly UserPicture User = null!;
+        private readonly User User = null!;
         //private User? User;
 
         private ProgressTarget Target = null!;
@@ -138,8 +138,11 @@ namespace Disk.View.PaintWindow
             RbPath.Checked += RbPath_Checked;
             RbRose.Checked += RbRose_Checked;
 
-            User = new UserPicture("/Properties/pngegg.png", new(SCREEN_INI_CENTER_X, SCREEN_INI_CENTER_Y), Settings.USER_INI_SPEED,
-                new(50, 50), SCREEN_INI_SIZE);
+            User = new User(new(SCREEN_INI_CENTER_X, SCREEN_INI_CENTER_Y), Settings.USER_INI_RADIUS, Settings.USER_INI_SPEED,
+                new SolidColorBrush(Colors.Red), SCREEN_INI_SIZE);
+
+/*            User = new UserPicture("/Properties/pngegg.png", new(SCREEN_INI_CENTER_X, SCREEN_INI_CENTER_Y), Settings.USER_INI_SPEED,
+                new(50, 50), SCREEN_INI_SIZE);*/
             //User = new(new(SCREEN_INI_CENTER_X, SCREEN_INI_CENTER_Y), 5, 5, Brushes.Green, SCREEN_INI_SIZE);
         }
     }

@@ -7,10 +7,10 @@
              xmlns:lang="clr-namespace:Disk.Properties.Langs.Patients" 
              xmlns:local="clr-namespace:Disk.View" xmlns:viewmodel="clr-namespace:Disk.ViewModel" d:DataContext="{d:DesignInstance Type=viewmodel:PatientsViewModel}"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
+             d:DesignHeight="800" d:DesignWidth="800">
 
     <StackPanel>
-        <Menu Height="20" VerticalAlignment="Top">
+        <Menu Height="20" VerticalAlignment="Top" Name="Menu">
              <MenuItem Header="{x:Static lang:PatientsLocalization.MenuHeader}">
                  <MenuItem Header="{x:Static lang:PatientsLocalization.Add}" Command="{Binding AddPatientCommand}"/>
              </MenuItem>
