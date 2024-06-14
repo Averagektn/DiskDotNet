@@ -24,8 +24,6 @@ namespace Disk.View
             double heightScale = e.NewSize.Height / iniHeight;
             double widthScale = e.NewSize.Width / iniWidth;   
             PatientsDataGrid.FontSize = iniFontSize * double.Min(heightScale, widthScale);
-            Menu.FontSize = iniFontSize * double.Min(widthScale, iniHeight);
-            Menu.Height = Menu.FontSize + 10;
         }
     }
 }

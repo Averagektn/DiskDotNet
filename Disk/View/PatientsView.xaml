@@ -9,24 +9,23 @@
              mc:Ignorable="d" 
              d:DesignHeight="800" d:DesignWidth="800">
 
-    <StackPanel>
-        <Menu Height="20" VerticalAlignment="Top" Name="Menu">
-             <MenuItem Header="{x:Static lang:PatientsLocalization.MenuHeader}">
-                 <MenuItem Header="{x:Static lang:PatientsLocalization.Add}" Command="{Binding AddPatientCommand}"/>
-             </MenuItem>
-        </Menu>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="7*"/>
+        </Grid.RowDefinitions>
 
-        <Viewbox>
+        <Viewbox Grid.Row="0">
             <StackPanel Orientation="Horizontal">
                 <TextBlock Text="{x:Static lang:PatientsLocalization.SearchHeader}" 
                        FontSize="20"
                        Grid.Row="2"
-                       Margin="0,15"
+                       Margin="0 15"
                        HorizontalAlignment="Left"/>
                 <TextBox
                        Margin="15"
                        Padding="0,5"
-                       Width="650"
+                       Width="450"
                        BorderThickness="0,0,0,1"
                        HorizontalAlignment="Left"
                        Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}"
@@ -37,10 +36,12 @@
                         </i:EventTrigger>
                     </i:Interaction.Triggers>
                 </TextBox>
+                <Button Content="{x:Static lang:PatientsLocalization.Add}" Command="{Binding AddPatientCommand}"/>
             </StackPanel>
         </Viewbox>
 
-        <DataGrid x:Name="PatientsDataGrid"
+        <DataGrid x:Name="PatientsDataGrid" 
+                  Grid.Row="1"
                   FontSize="15"
                   ItemsSource="{Binding SortedPatients}" 
                   AutoGenerateColumns="False" 
@@ -60,5 +61,5 @@
                 </i:EventTrigger>
             </i:Interaction.Triggers>
         </DataGrid>
-    </StackPanel>
+    </Grid>
 </UserControl>
