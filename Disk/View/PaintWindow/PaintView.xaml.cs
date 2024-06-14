@@ -166,26 +166,11 @@ namespace Disk.View.PaintWindow
 
         private void OnLoaded(object sender, RoutedEventArgs e)
         {
-            Converter = new(ScreenIniSize, new(XAngleSize, YAngleSize));
+            User = ViewModel.GetUser();
 
-            // To VM?
-            if (ViewModel.UserPictureSelected)
-            {
-                User = new UserPicture("/Properties/pngegg.png", new(ScreenIniCenterX, ScreenIniCenterY), Settings.USER_INI_SPEED,
-                    new(50, 50), ScreenIniSize);
-            }
-            else
-            {
-                User = new User(new(ScreenIniCenterX, ScreenIniCenterY), Settings.USER_INI_RADIUS, Settings.USER_INI_SPEED,
-                    UserBrush, ScreenIniSize);
-            }
-            UserMovementLog = Logger.GetLogger(UsrAngLog);
-            User.OnShot += (p) => UserMovementLog.LogLn(Converter.ToAngle_FromWnd(p));
+            Target = ViewModel.GetProgressTarget();
 
-            var center = ViewModel.NextTargetCenter ?? new(0.5f, 0.5f);
-            Target = new(Converter.ToWnd_FromRelative(center),
-                Settings.TARGET_INI_RADIUS + 5, ScreenIniSize, TargetHP);
-            TargetCenters.Add(center);
+            TargetCenters.Add(new((float)Target.Center.XDbl, (float)Target.Center.YDbl));
 
             PathStartingPoint = new(0.0f, 0.0f);            
 

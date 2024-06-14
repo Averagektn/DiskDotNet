@@ -1,5 +1,4 @@
 ﻿using Disk.Calculations.Impl.Converters;
-using Disk.Data.Impl;
 using Disk.Entities;
 using Disk.ViewModel;
 using Disk.Visual.Impl;
@@ -7,9 +6,7 @@ using Disk.Visual.Interface;
 using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Media;
 using System.Windows.Threading;
-using FilePath = System.IO.Path;
 using Point2DF = Disk.Data.Impl.Point2D<float>;
 using Point2DI = Disk.Data.Impl.Point2D<int>;
 using Point3DF = Disk.Data.Impl.Point3D<float>;
@@ -19,6 +16,10 @@ namespace Disk.View.PaintWindow
 {
     public partial class PaintView : UserControl
     {
+        private User User = null!;
+        private ProgressTarget Target = null!;
+        private Converter Converter => ViewModel.Converter;
+
         private PaintViewModel ViewModel => (PaintViewModel)DataContext;
 
         // replace
@@ -32,18 +33,8 @@ namespace Disk.View.PaintWindow
 
         public SessionResult SessionResult { get; set; } = new();
 
-        public const int TargetHP = 20; // to settings
 
-        private static readonly Brush UserBrush =
-            new SolidColorBrush(Color.FromRgb(Settings.USER_COLOR.R, Settings.USER_COLOR.G, Settings.USER_COLOR.B));
-
-        private static readonly Size ScreenIniSize = new(Settings.SCREEN_INI_WIDTH, Settings.SCREEN_INI_HEIGHT);
-        private static readonly int ScreenIniCenterX = (int)ScreenIniSize.Width / 2;
-        private static readonly int ScreenIniCenterY = (int)ScreenIniSize.Height / 2;
-
-        private static readonly float XAngleSize = Settings.X_MAX_ANGLE * 2;
-        private static readonly float YAngleSize = Settings.Y_MAX_ANGLE * 2;
-
+        // Non-verified
         private static Settings Settings => Settings.Default;
 
         private readonly DispatcherTimer ShotTimer;
@@ -58,13 +49,7 @@ namespace Disk.View.PaintWindow
 
         private Point2DF? PathStartingPoint;
 
-        private Logger UserMovementLog = null!;
 
-        private User User = null!;
-
-        private ProgressTarget Target = null!;
-
-        private Converter Converter = null!;
 
         private Point3DF? CurrentPos;
 
@@ -79,14 +64,9 @@ namespace Disk.View.PaintWindow
             }
         }
 
-        private Size ScreenSize => PaintAreaGrid.RenderSize;
-
         private Size PaintPanelSize => PaintRect.RenderSize;
         private int PaintPanelCenterX => (int)PaintPanelSize.Width / 2;
         private int PaintPanelCenterY => (int)PaintPanelSize.Height / 2;
-
-        private string UsrAngLog => $"{ViewModel.CurrPath}{FilePath.DirectorySeparatorChar}{Settings.USER_ANG_LOG_FILE}";
-
         private int Score = 0;
         private int TargetID = 1;
 

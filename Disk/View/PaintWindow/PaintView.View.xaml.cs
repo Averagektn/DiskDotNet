@@ -21,15 +21,11 @@ namespace Disk.View.PaintWindow
     {
         private void ShowStats()
         {
-            using var userAngleReader = FileReader<float>.Open(UsrAngLog, Settings.LOG_SEPARATOR);
-
-            var dataset = userAngleReader.Get2DPoints().ToList();
-
-            if (dataset.Count != 0)
+            if (ViewModel.FullPath.Count != 0)
             {
-                var mx = Calculator2D.MathExp(dataset);
-                var dispersion = Calculator2D.Dispersion(dataset);
-                var deviation = Calculator2D.StandartDeviation(dataset);
+                var mx = Calculator2D.MathExp(ViewModel.FullPath);
+                var dispersion = Calculator2D.Dispersion(ViewModel.FullPath);
+                var deviation = Calculator2D.StandartDeviation(ViewModel.FullPath);
 
                 SessionResult.MathExp = (mx.XDbl + mx.YDbl) / 2;
                 SessionResult.Dispersion = (dispersion.XDbl + dispersion.YDbl) / 2;
@@ -72,8 +68,6 @@ namespace Disk.View.PaintWindow
 
             MoveTimer.Stop();
             ShotTimer.Stop();
-
-            UserMovementLog.Dispose();
         }
 
         private void OnClosing(object? sender, RoutedEventArgs e)
@@ -141,7 +135,7 @@ namespace Disk.View.PaintWindow
 
                         var userPath = new Path
                             (
-                                userPathReader.Get2DPoints(), PaintPanelSize, new SizeF(XAngleSize, YAngleSize),
+                                userPathReader.Get2DPoints(), PaintPanelSize, new SizeF(20.0f/*XAngleSize*/, /*YAngleSize*/20.0f),
                                 new SolidColorBrush
                                 (
                                     Color.FromRgb(Settings.USER_COLOR.R, Settings.USER_COLOR.G, Settings.USER_COLOR.B)
