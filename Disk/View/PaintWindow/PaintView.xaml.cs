@@ -2,15 +2,12 @@
 using Disk.Entities;
 using Disk.Sessions;
 using Disk.Visual.Impl;
-using Disk.Visual.Interface;
 using Newtonsoft.Json;
 using System.Diagnostics;
-using System.Formats.Tar;
 using System.IO;
 using System.Net;
 using System.Windows;
 using System.Windows.Controls;
-using static System.Formats.Asn1.AsnWriter;
 using Localization = Disk.Properties.Localization;
 using Settings = Disk.Properties.Config;
 
@@ -32,9 +29,9 @@ namespace Disk.View.PaintWindow
                 PathToTargetCoords.Add(a);
                 Stopwatch.Stop();
 
-                if (StartPoint is not null)
+                if (PathStartingPoint is not null)
                 {
-                    lock (LockObject)
+/*                    lock (LockObject)
                     {
                         UserMovementLog.Dispose();
                         UserMovementLog = Logger.GetLogger(OnTargetLogName);
@@ -52,16 +49,16 @@ namespace Disk.View.PaintWindow
                             currPoint = nextPoint;
                             nextPoint = reader.GetXY();
                         }
-                    }
+                    }*/
 
                     var touchPoint = Converter?.ToAngle_FromWnd(User.Center);
                     var time = Stopwatch.Elapsed.TotalSeconds;
-                    var avgSpeed = distance / time;
-                    var approachSpeed = StartPoint.GetDistance(touchPoint!) / time;
+                    var avgSpeed = 0;//distance / time;
+                    var approachSpeed = PathStartingPoint.GetDistance(touchPoint!) / time;
 
                     var ptt = new PathToTarget()
                     {
-                        AngleDistance = distance,
+                        AngleDistance = 0,//distance,
                         AngleSpeed = avgSpeed,
                         ApproachSpeed = approachSpeed,
                         CoordinatesJson = JsonConvert.SerializeObject(PathToTargetCoords),
@@ -75,18 +72,18 @@ namespace Disk.View.PaintWindow
                     var message =
                         $"""
                             {Localization.Paint_Time}: {time:F2}
-                            {Localization.Paint_AngleDistance}: {distance:F2}
+                            {Localization.Paint_AngleDistance}: distance:F2
                             {Localization.Paint_AngleSpeed}: {avgSpeed:F2}
                             {Localization.Paint_ApproachSpeed}: {approachSpeed:F2}
                             """
                     ;
 
                     TblTime.Text = message;
-                    using (var log = Logger.GetLogger(TargetReachedLogName))
+/*                    using (var log = Logger.GetLogger(TargetReachedLogName))
                     {
                         log.Log(message);
                     }
-
+*/
                     TargetID++;
                 }
             }
@@ -112,7 +109,7 @@ namespace Disk.View.PaintWindow
                 ViewModel.SavePathInTarget(pit);
 
                 PathInTargetCoords = [];
-                var newCenter = ViewModel.GetNextTargetCenter();
+                var newCenter = ViewModel.NextTargetCenter;
                 Target.Reset();
 
                 if (newCenter is null)
@@ -131,13 +128,7 @@ namespace Disk.View.PaintWindow
 
                     if (User is not null)
                     {
-                        StartPoint = Converter.ToAngle_FromWnd(User.Center);
-                    }
-
-                    lock (LockObject)
-                    {
-                        UserMovementLog?.Dispose();
-                        UserMovementLog = Logger.GetLogger(MovingToTargetLogName);
+                        PathStartingPoint = Converter.ToAngle_FromWnd(User.Center);
                     }
                 }
             }
@@ -169,48 +160,34 @@ namespace Disk.View.PaintWindow
                 MessageBox.Show(Localization.Paint_ConnectionLost);
                 //Application.Current.Dispatcher.BeginInvoke(new Action(Close));
                 Application.Current.Dispatcher.BeginInvoke(new Action(ViewModel.NavigateToAppoinment));
-                
+
             }
         }
 
         private void OnLoaded(object sender, RoutedEventArgs e)
         {
-            Converter = new(SCREEN_INI_SIZE, new(X_ANGLE_SIZE, Y_ANGLE_SIZE));
+            Converter = new(ScreenIniSize, new(XAngleSize, YAngleSize));
 
-            if (!Directory.Exists(CurrPath))
+            // To VM?
+            if (ViewModel.UserPictureSelected)
             {
-                Directory.CreateDirectory(CurrPath);
+                User = new UserPicture("/Properties/pngegg.png", new(ScreenIniCenterX, ScreenIniCenterY), Settings.USER_INI_SPEED,
+                    new(50, 50), ScreenIniSize);
             }
-
-            //if (MapFilePath != string.Empty)
+            else
             {
-                //MapReader = FileReader<float>.Open(MapFilePath);
-                //var center = MapReader.GetXY() ?? new(0.5f, 0.5f);
-                var center = ViewModel.GetNextTargetCenter() ?? new(0.5f, 0.5f);
-                Target = new(Converter.ToWnd_FromRelative(center),
-                    Settings.TARGET_INI_RADIUS + 5, SCREEN_INI_SIZE, TargetHP);
-                TargetCenters.Add(center);
+                User = new User(new(ScreenIniCenterX, ScreenIniCenterY), Settings.USER_INI_RADIUS, Settings.USER_INI_SPEED,
+                    UserBrush, ScreenIniSize);
             }
-/*            else
-            {
-                MessageBox.Show(Localization.Paint_EmptyMap);
-                ViewModel.NavigateToAppoinment();
-                //Close();
-            }*/
-
-            UserLogWnd = Logger.GetLogger(UsrWndLog);
-            UserLogAng = Logger.GetLogger(UsrAngLog);
-            UserLogCen = Logger.GetLogger(UsrCenLog);
-            UserMovementLog = Logger.GetLogger(MovingToTargetLogName);
-
-            StartPoint = new(0.0f, 0.0f);
-
-            /*            User = new("/Properties/WinniePooh.png", new(SCREEN_INI_CENTER_X, SCREEN_INI_CENTER_Y), Settings.USER_INI_SPEED,
-                            new(100, 100), SCREEN_INI_SIZE);*/
-            User.OnShot += UserLogWnd.LogLn;
-            User.OnShot += (p) => UserLogAng.LogLn(Converter.ToAngle_FromWnd(p));
-            User.OnShot += (p) => UserLogCen.LogLn(Converter.ToLogCoord(p));
+            UserMovementLog = Logger.GetLogger(UsrAngLog);
             User.OnShot += (p) => UserMovementLog.LogLn(Converter.ToAngle_FromWnd(p));
+
+            var center = ViewModel.NextTargetCenter ?? new(0.5f, 0.5f);
+            Target = new(Converter.ToWnd_FromRelative(center),
+                Settings.TARGET_INI_RADIUS + 5, ScreenIniSize, TargetHP);
+            TargetCenters.Add(center);
+
+            PathStartingPoint = new(0.0f, 0.0f);            
 
             Drawables.Add(Target); Drawables.Add(User);
             Scalables.Add(Target); Scalables.Add(User); Scalables.Add(Converter);
@@ -225,7 +202,7 @@ namespace Disk.View.PaintWindow
                 elem?.Scale(PaintPanelSize);
             }
 
-            NetworkThread.Start();
+            DiskNetworkThread.Start();
 
             MoveTimer.Start();
             ShotTimer.Start();

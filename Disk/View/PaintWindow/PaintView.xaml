@@ -45,13 +45,11 @@
         <Viewbox Grid.Row="4" Grid.Column="1" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="10">
             <ComboBox Name="CbTargets" Visibility="Hidden" FontSize="20" Width="200"/>
         </Viewbox>
-
-        <Viewbox Grid.Row="5" Grid.Column="0" VerticalAlignment="Bottom" HorizontalAlignment="Right">
-            <TextBlock FontSize="20" Name="TblScore" TextAlignment="Left"/>
-        </Viewbox>
+        
+        <TextBlock FontSize="5" Name="TblScore" TextAlignment="Left"/>
 
         <Viewbox Grid.Row="5" Grid.Column="1" Margin="10 10 10 10">
-            <Button Content="{x:Static lang:Localization.Paint_Stop}" Click="OnStopClick" FontSize="20" Name="BtnStop"/>
+            <Button Content="{x:Static lang:Localization.Paint_Stop}" FontSize="20" Name="BtnStop"/>
         </Viewbox>
 
         <Canvas Name="PaintArea" Grid.RowSpan="6">

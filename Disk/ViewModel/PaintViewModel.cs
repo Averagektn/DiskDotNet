@@ -1,29 +1,30 @@
-﻿using Disk.Data.Impl;
+﻿using Disk.Calculations.Impl.Converters;
+using Disk.Data.Impl;
 using Disk.Entities;
 using Disk.Repository.Interface;
 using Disk.Sessions;
 using Disk.Stores;
 using Disk.ViewModel.Common.ViewModels;
+using Disk.Visual.Impl;
 
 namespace Disk.ViewModel
 {
-    public class PaintViewModel(NavigationStore navigationStore, IPathToTargetRepository pathToTargetRepository, 
-        IPathInTargetRepository pathInTargetRepository, ISessionResultRepository sessionResultRepository) : ObserverViewModel
+    public class PaintViewModel(NavigationStore navigationStore, IPathToTargetRepository pathToTargetRepository,
+        IPathInTargetRepository pathInTargetRepository, ISessionResultRepository sessionResultRepository) : ObserverViewModel, IDisposable
     {
         public event Action? OnSessionOver;
         public string CurrPath { get; set; } = null!;
-        private int targetId;
-        public List<Point2D<float>> TargetCenters = null!;
+        public List<Point2D<float>> TargetCenters { get; set; } = null!;
+        public bool UserPictureSelected { get; set; } = true;
+
+        public int TargetId { get; set; }
 
         public void NavigateToAppoinment()
         {
             navigationStore.SetViewModel<AppointmentViewModel>(vm => vm.Appointment = AppointmentSession.Appointment);
         }
 
-        public Point2D<float>? GetNextTargetCenter()
-        {
-            return TargetCenters.Count <= targetId ? null : TargetCenters[targetId++];
-        }
+        public Point2D<float>? NextTargetCenter => TargetCenters.Count <= TargetId ? null : TargetCenters[TargetId++];
 
         public void SaveSessionResult(SessionResult sessionResult)
         {
@@ -42,6 +43,11 @@ namespace Disk.ViewModel
         {
             pathInTarget.Session = AppointmentSession.CurrentSession.Id;
             pathInTargetRepository.Add(pathInTarget);
+        }
+
+        public void Dispose()
+        {
+            
         }
     }
 }

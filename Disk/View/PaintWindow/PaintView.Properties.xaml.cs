@@ -21,52 +21,46 @@ namespace Disk.View.PaintWindow
     {
         private PaintViewModel ViewModel => (PaintViewModel)DataContext;
 
+        // replace
         public List<Point2DF> PathToTargetCoords = [];
         public List<Point2DF> PathInTargetCoords = [];
+        // with
+        public List<List<Point2DF>> PathsToTargets = [];
+        public List<List<Point2DF>> PathsInTargets = [];
+
+        private readonly List<Point2DF> TargetCenters = [];
+
         public SessionResult SessionResult { get; set; } = new();
 
-        public const int TargetHP = 20;
-
-        public string MapFilePath = string.Empty;
-        public string CurrPath => ViewModel.CurrPath;
-
-        private static readonly object LockObject = new();
+        public const int TargetHP = 20; // to settings
 
         private static readonly Brush UserBrush =
             new SolidColorBrush(Color.FromRgb(Settings.USER_COLOR.R, Settings.USER_COLOR.G, Settings.USER_COLOR.B));
 
-        private static readonly Size SCREEN_INI_SIZE = new(Settings.SCREEN_INI_WIDTH, Settings.SCREEN_INI_HEIGHT);
-        private static readonly int SCREEN_INI_CENTER_X = (int)SCREEN_INI_SIZE.Width / 2;
-        private static readonly int SCREEN_INI_CENTER_Y = (int)SCREEN_INI_SIZE.Height / 2;
+        private static readonly Size ScreenIniSize = new(Settings.SCREEN_INI_WIDTH, Settings.SCREEN_INI_HEIGHT);
+        private static readonly int ScreenIniCenterX = (int)ScreenIniSize.Width / 2;
+        private static readonly int ScreenIniCenterY = (int)ScreenIniSize.Height / 2;
 
-        private static readonly float X_ANGLE_SIZE = Settings.X_MAX_ANGLE * 2;
-        private static readonly float Y_ANGLE_SIZE = Settings.Y_MAX_ANGLE * 2;
+        private static readonly float XAngleSize = Settings.X_MAX_ANGLE * 2;
+        private static readonly float YAngleSize = Settings.Y_MAX_ANGLE * 2;
 
         private static Settings Settings => Settings.Default;
 
         private readonly DispatcherTimer ShotTimer;
         private readonly DispatcherTimer MoveTimer;
 
-        private readonly Thread NetworkThread;
+        private readonly Thread DiskNetworkThread;
 
         private readonly List<IScalable?> Scalables = [];
         private readonly List<IDrawable?> Drawables = [];
 
-        private readonly List<Point2DF> TargetCenters = [];
-
         private Stopwatch Stopwatch = new();
 
-        private Point2DF? StartPoint;
+        private Point2DF? PathStartingPoint;
 
-        private Logger UserLogWnd = null!;
-        private Logger UserLogCen = null!;
-        private Logger UserLogAng = null!;
         private Logger UserMovementLog = null!;
 
-        //private FileReader<float> MapReader = null!;
-
-        private readonly User User = null!;
-        //private User? User;
+        private User User = null!;
 
         private ProgressTarget Target = null!;
 
@@ -86,35 +80,23 @@ namespace Disk.View.PaintWindow
         }
 
         private Size ScreenSize => PaintAreaGrid.RenderSize;
-        private int ScreenCenterX => (int)ScreenSize.Width / 2;
-        private int ScreenCenterY => (int)ScreenSize.Height / 2;
 
         private Size PaintPanelSize => PaintRect.RenderSize;
         private int PaintPanelCenterX => (int)PaintPanelSize.Width / 2;
         private int PaintPanelCenterY => (int)PaintPanelSize.Height / 2;
 
-        private Size DataPanelSize => DataRect.RenderSize;
-
-        private string MovingToTargetLogName => GetMovToTargetFileName(TargetID);
-        private string OnTargetLogName => GetInTargetFileName(TargetID);
-        private string TargetReachedLogName => GetReachedFileName(TargetID);
-
-        private string UsrWndLog => $"{CurrPath}{FilePath.DirectorySeparatorChar}{Settings.USER_WND_LOG_FILE}";
-        private string UsrAngLog => $"{CurrPath}{FilePath.DirectorySeparatorChar}{Settings.USER_ANG_LOG_FILE}";
-        private string UsrCenLog => $"{CurrPath}{FilePath.DirectorySeparatorChar}{Settings.USER_CEN_LOG_FILE}";
+        private string UsrAngLog => $"{ViewModel.CurrPath}{FilePath.DirectorySeparatorChar}{Settings.USER_ANG_LOG_FILE}";
 
         private int Score = 0;
         private int TargetID = 1;
 
         private bool IsGame = true;
 
-        //private PaintViewModel PaintViewModel => (DataContext as PaintViewModel)!;
-
         public PaintView()
         {
             InitializeComponent();
 
-            NetworkThread = new(NetworkReceive);
+            DiskNetworkThread = new(NetworkReceive);
 
             Stopwatch = Stopwatch.StartNew();
 
@@ -137,13 +119,6 @@ namespace Disk.View.PaintWindow
             CbTargets.SelectionChanged += CbTargets_SelectionChanged;
             RbPath.Checked += RbPath_Checked;
             RbRose.Checked += RbRose_Checked;
-
-            User = new User(new(SCREEN_INI_CENTER_X, SCREEN_INI_CENTER_Y), Settings.USER_INI_RADIUS, Settings.USER_INI_SPEED,
-                new SolidColorBrush(Colors.Red), SCREEN_INI_SIZE);
-
-/*            User = new UserPicture("/Properties/pngegg.png", new(SCREEN_INI_CENTER_X, SCREEN_INI_CENTER_Y), Settings.USER_INI_SPEED,
-                new(50, 50), SCREEN_INI_SIZE);*/
-            //User = new(new(SCREEN_INI_CENTER_X, SCREEN_INI_CENTER_Y), 5, 5, Brushes.Green, SCREEN_INI_SIZE);
         }
     }
 }

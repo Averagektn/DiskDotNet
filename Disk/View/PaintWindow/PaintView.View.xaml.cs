@@ -37,13 +37,13 @@ namespace Disk.View.PaintWindow
                 SessionResult.Score = Score;
                 ViewModel.SaveSessionResult(SessionResult);
 
-                /*                MessageBox.Show(
-                                $"""
+                MessageBox.Show(
+                $"""
                                  {Localization.Paint_Score}: {Score}
                                  {Localization.Paint_MathExp}: {mx}
                                  {Localization.Paint_Dispersion}: {dispersion}
                                  {Localization.Paint_StandartDeviation}: {deviation}
-                                 """);*/
+                                 """);
 
                 MessageBox.Show(Localization.Paint_Over);
             }
@@ -66,23 +66,19 @@ namespace Disk.View.PaintWindow
 
             IsGame = false;
 
-            NetworkThread.Join();
+            DiskNetworkThread.Join();
 
             User.ClearOnShot();
 
             MoveTimer.Stop();
             ShotTimer.Stop();
 
-            UserLogAng.Dispose();
-            UserLogWnd.Dispose();
-            UserLogCen.Dispose();
             UserMovementLog.Dispose();
-            //MapReader.Dispose();
         }
 
-        private void OnClosing(object? sender, RoutedEventArgs e) 
-        { 
-            StopGame(); 
+        private void OnClosing(object? sender, RoutedEventArgs e)
+        {
+            StopGame();
         }
 
         private void OnSizeChanged(object sender, RoutedEventArgs e)
@@ -98,13 +94,13 @@ namespace Disk.View.PaintWindow
         }
 
         private string GetInTargetFileName(int id) =>
-            $"{CurrPath}{FilePath.DirectorySeparatorChar}in_tar_{id}.log";
+            $"{ViewModel.CurrPath}{FilePath.DirectorySeparatorChar}in_tar_{id}.log";
 
         private string GetMovToTargetFileName(int id) =>
-            $"{CurrPath}{FilePath.DirectorySeparatorChar}mov_to_tar_{id}.log";
+            $"{ViewModel.CurrPath}{FilePath.DirectorySeparatorChar}mov_to_tar_{id}.log";
 
         private string GetReachedFileName(int id) =>
-            $"{CurrPath}{FilePath.DirectorySeparatorChar}tar_{id}_reached.log";
+            $"{ViewModel.CurrPath}{FilePath.DirectorySeparatorChar}tar_{id}_reached.log";
 
         private void CbTargets_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -145,7 +141,7 @@ namespace Disk.View.PaintWindow
 
                         var userPath = new Path
                             (
-                                userPathReader.Get2DPoints(), PaintPanelSize, new SizeF(X_ANGLE_SIZE, Y_ANGLE_SIZE),
+                                userPathReader.Get2DPoints(), PaintPanelSize, new SizeF(XAngleSize, YAngleSize),
                                 new SolidColorBrush
                                 (
                                     Color.FromRgb(Settings.USER_COLOR.R, Settings.USER_COLOR.G, Settings.USER_COLOR.B)

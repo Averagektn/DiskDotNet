@@ -13,7 +13,7 @@ using Settings = Disk.Properties.Config.Config;
 
 namespace Disk.ViewModel
 {
-    public class StartSessionViewModel(ModalNavigationStore modalNavigationStore, NavigationStore navigationStore, 
+    public class StartSessionViewModel(ModalNavigationStore modalNavigationStore, NavigationStore navigationStore,
         ISessionRepository sessionRepository, IMapRepository mapRepository) : ObserverViewModel
     {
         public event Action? OnSessionOver;
@@ -30,13 +30,19 @@ namespace Disk.ViewModel
                 return;
             }
 
+            var logPath = $"{Settings.MAIN_DIR_PATH}{Path.DirectorySeparatorChar}" +
+                    $"{AppointmentSession.Patient.Surname} {AppointmentSession.Patient.Name}{Path.DirectorySeparatorChar}" +
+                    $"{DateTime.Now:dd.MM.yyyy HH-mm-ss}";
+            if (!Directory.Exists(logPath))
+            {
+                Directory.CreateDirectory(logPath);
+            }
+
             var session = new Session()
             {
                 Appointment = AppointmentSession.Appointment.Id,
                 DateTime = DateTime.Now.ToString(),
-                LogFilePath = $"{Settings.MAIN_DIR_PATH}{Path.DirectorySeparatorChar}" +
-                    $"{AppointmentSession.Patient.Surname} {AppointmentSession.Patient.Name}{Path.DirectorySeparatorChar}" +
-                    $"{DateTime.Now:dd.MM.yyyy HH-mm-ss}",
+                LogFilePath = logPath,
                 Map = SelectedMap!.Id,
             };
             sessionRepository.Add(session);
@@ -44,11 +50,9 @@ namespace Disk.ViewModel
 
             modalNavigationStore.Close();
 
-            navigationStore.SetViewModel<PaintViewModel>(vm => 
+            navigationStore.SetViewModel<PaintViewModel>(vm =>
             {
-                vm.CurrPath = $"{Settings.MAIN_DIR_PATH}{Path.DirectorySeparatorChar}" +
-                    $"{AppointmentSession.Patient.Surname} {AppointmentSession.Patient.Name}{Path.DirectorySeparatorChar}" +
-                    $"{DateTime.Now:dd.MM.yyyy HH-mm-ss}";
+                vm.CurrPath = logPath;
                 vm.TargetCenters = JsonConvert.DeserializeObject<List<Point2D<float>>>(SelectedMap.CoordinatesJson) ?? [];
                 vm.OnSessionOver += OnSessionOver;
             });
