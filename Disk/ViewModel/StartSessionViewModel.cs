@@ -13,8 +13,8 @@ using Settings = Disk.Properties.Config.Config;
 
 namespace Disk.ViewModel
 {
-    public class StartSessionViewModel(NavigationStore navigationStore, ISessionRepository sessionRepository, 
-        IMapRepository mapRepository) : ObserverViewModel
+    public class StartSessionViewModel(ModalNavigationStore modalNavigationStore, NavigationStore navigationStore, 
+        ISessionRepository sessionRepository, IMapRepository mapRepository) : ObserverViewModel
     {
         public event Action? OnSessionOver;
 
@@ -42,7 +42,7 @@ namespace Disk.ViewModel
             sessionRepository.Add(session);
             AppointmentSession.CurrentSession = session;
 
-            _ = navigationStore.NavigateBack();
+            modalNavigationStore.Close();
 
             navigationStore.SetViewModel<PaintViewModel>(vm => 
             {

@@ -9,7 +9,8 @@ using System.Windows.Input;
 
 namespace Disk.ViewModel
 {
-    public class AppointmentViewModel(NavigationStore navigationStore, ISessionRepository sessionRepository) : ObserverViewModel
+    public class AppointmentViewModel(ModalNavigationStore modalNavigationStore, ISessionRepository sessionRepository) 
+        : ObserverViewModel
     {
         public Appointment Appointment { get; set; } = null!;
 
@@ -22,10 +23,8 @@ namespace Disk.ViewModel
         public ObservableCollection<PathToTarget> PathsToTargets { get; set; } = [];
 
         public ICommand StartSessionCommand 
-            => new Command(_ => _navigationStore.SetViewModel<StartSessionViewModel>(vm => vm.OnSessionOver += Update));
+            => new Command(_ => modalNavigationStore.SetViewModel<StartSessionViewModel>(vm => vm.OnSessionOver += Update, canClose: true));
         public ICommand SessionSelectedCommand => new Command(SessionSelected);
-
-        private readonly NavigationStore _navigationStore = navigationStore;
 
         private void SessionSelected(object? obj)
         {

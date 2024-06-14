@@ -10,8 +10,8 @@ using System.Windows.Input;
 
 namespace Disk.ViewModel
 {
-    public class AppointmentsListViewModel(ModalNavigationStore modalNavigationStore, NavigationStore navigationStore,
-            IAppointmentRepository appointmentRepository) : ObserverViewModel
+    public class AppointmentsListViewModel(NavigationStore navigationStore, IAppointmentRepository appointmentRepository) 
+        : ObserverViewModel
     {
         public Patient Patient { get; set; } = null!;
 

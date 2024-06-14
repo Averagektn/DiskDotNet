@@ -46,14 +46,14 @@
             </Grid.RowDefinitions>
 
             <Viewbox Grid.Column="0" Grid.Row="0">
-                <TextBlock FontSize="15" Width="100" Text="{x:Static lang:AppointmentsListLocalization.AppoimentsHeader}" Margin="0 0 0 5"/>
+                <TextBlock FontSize="15" Text="{x:Static lang:AppointmentsListLocalization.AppoimentsHeader}" Margin="0 0 0 5"/>
             </Viewbox>
 
             <Viewbox Grid.Column="1" Grid.Row="0">
                 <Button
-                            Margin="10"
-                            Content="{x:Static lang:AppointmentsListLocalization.StartAppoiment}" 
-                            Command="{Binding StartAppointmentCommand}"/>
+                    Margin="10"
+                    Content="{x:Static lang:AppointmentsListLocalization.StartAppoiment}" 
+                    Command="{Binding StartAppointmentCommand}"/>
             </Viewbox>
 
             <DataGrid 

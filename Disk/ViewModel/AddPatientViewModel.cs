@@ -13,8 +13,7 @@ using System.Windows.Media;
 
 namespace Disk.ViewModel
 {
-    public class AddPatientViewModel(NavigationStore navigationStore, ModalNavigationStore modalNavigationStore,
-        IPatientService patientService) : PopupViewModel
+    public class AddPatientViewModel(ModalNavigationStore modalNavigationStore, IPatientService patientService) : PopupViewModel
     {
         public event Action<Patient>? OnAdd;
 
