@@ -5,7 +5,7 @@ namespace Disk.Calculations.Impl.Converters
     /// <summary>
     ///     Provides conversion between coordinate systems
     /// </summary>
-    internal partial class Converter
+    public partial class Converter
     {
         /// <summary>
         ///     Converts the angle from degree to radian
