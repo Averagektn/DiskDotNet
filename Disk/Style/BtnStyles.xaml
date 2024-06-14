@@ -28,7 +28,7 @@
 
         <Setter Property="Foreground" Value="White"/>
         <Setter Property="FontSize" Value="20"/>
-        <Setter Property="Height" Value="35"/>
+        <Setter Property="Height" Value="50"/>
         <Setter Property="Width" Value="250"/>
         <Setter Property="Background" Value="#4bb342"/>
     </Style>
