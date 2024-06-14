@@ -1,53 +1,32 @@
 ﻿using Disk.Data.Impl;
-using Disk.Visual.Interface;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Markup;
+using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
 namespace Disk.Visual.Impl
 {
-    internal class UserPicture : IFigure
+    internal class UserPicture : User
     {
-        public int Right => (int)(Center.X + _image.Width / 2);
+        public new int Right => (int)(Center.X + (_image.Width / 2));
+        public new int Top => (int)(Center.Y - (_image.Height / 2));
+        public new int Bottom => (int)(Center.Y + (_image.Height / 2));
+        public new int Left => (int)(Center.X - (_image.Width / 2));
 
-        public int Top => (int)(Center.Y - _image.Height / 2);
-
-        public int Bottom => (int)(Center.Y + _image.Height / 2);
-
-        public int Left => (int)(Center.X - _image.Width / 2);
+        protected Size CurrSize { get; private set; }
         protected const double DIAGONAL_CORRECTION = 1.41;
 
-        public Point2D<int> Center { get; private set; }
-
         private readonly Image _image;
-        private int Speed;
         private readonly int IniSpeed;
         private readonly Size IniImageSize;
         protected readonly Size IniSize;
-        protected Size CurrSize { get; private set; }
-
-        public event Action<Point2D<int>>? OnShot;
-
-        public void ClearOnShot()
-        {
-            OnShot = null;
-        }
-
-        public Point2D<int> Shot()
-        {
-            OnShot?.Invoke(Center);
-
-            return Center;
-        }
 
         public UserPicture(string filePath, Point2D<int> center, int speed, Size imageSize, Size iniSize)
+            : base(center, 0, speed, new SolidColorBrush(Colors.Transparent), iniSize)
         {
-            Center = center;
-            Speed = speed;
             IniSize = iniSize;
             CurrSize = iniSize;
-            IniSpeed = speed;
             IniImageSize = imageSize;
             _image = new()
             {
@@ -59,12 +38,12 @@ namespace Disk.Visual.Impl
             };
         }
 
-        public void Draw(IAddChild addChild)
+        public override void Draw(IAddChild addChild)
         {
             addChild.AddChild(_image);
         }
 
-        public void Move(bool moveTop, bool moveRight, bool moveBottom, bool moveLeft)
+        public override void Move(bool moveTop, bool moveRight, bool moveBottom, bool moveLeft)
         {
             int xSpeed = 0;
             int ySpeed = 0;
@@ -114,7 +93,7 @@ namespace Disk.Visual.Impl
             _image.Margin = new(Left, Top, 0, 0);
         }
 
-        public void Move(Point2D<int> center)
+        public override void Move(Point2D<int> center)
         {
             if (center.X <= CurrSize.Width && center.Y <= CurrSize.Height && center.X > 0 && center.Y > 0)
             {
@@ -124,12 +103,12 @@ namespace Disk.Visual.Impl
             }
         }
 
-        public void Remove(UIElementCollection collection)
+        public override void Remove(UIElementCollection collection)
         {
             collection.Remove(_image);
         }
 
-        public void Scale(Size newSize)
+        public override void Scale(Size newSize)
         {
             double coeffX = (double)newSize.Width / IniSize.Width;
             double coeffY = (double)newSize.Height / IniSize.Height;
