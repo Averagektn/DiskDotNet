@@ -18,7 +18,5 @@ public partial class Patient
 
     public virtual ICollection<Appointment> Appointments { get; set; } = [];
 
-    public virtual ICollection<Note> Notes { get; set; } = [];
-
     public override string ToString() => $"{Surname} {Name} {Patronymic}";
 }

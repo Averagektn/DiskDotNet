@@ -121,7 +121,7 @@
     <value>Добавить заметку</value>
   </data>
   <data name="AppoimentsHeader" xml:space="preserve">
-    <value>Встречи</value>
+    <value>Посещения</value>
   </data>
   <data name="DateOfBirth" xml:space="preserve">
     <value>Дата рождения</value>
@@ -148,7 +148,7 @@
     <value>Отчество</value>
   </data>
   <data name="StartAppoiment" xml:space="preserve">
-    <value>Начать встречу</value>
+    <value>Новое посещение</value>
   </data>
   <data name="Surname" xml:space="preserve">
     <value>Фамилия</value>

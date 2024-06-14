@@ -46,9 +46,6 @@
             <DataTemplate DataType="{x:Type viewmodels:AppointmentsListViewModel}">
                 <views:AppointmentsListView/>
             </DataTemplate>
-            <DataTemplate DataType="{x:Type viewmodels:AddNoteViewModel}">
-                <views:AddNoteView/>
-            </DataTemplate>
             <DataTemplate DataType="{x:Type viewmodels:AppointmentViewModel}">
                 <views:AppointmentView/>
             </DataTemplate>
