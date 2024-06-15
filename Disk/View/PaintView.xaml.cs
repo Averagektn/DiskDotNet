@@ -60,8 +60,6 @@ namespace Disk.View.PaintWindow
             Unloaded += (_, _) => StopGame();
             Loaded += OnLoaded;
             SizeChanged += OnSizeChanged;
-
-            CbTargets.SelectionChanged += CbTargets_SelectionChanged;
         }
 
         private void ShotTimerElapsed(object? sender, EventArgs e)
@@ -160,6 +158,18 @@ namespace Disk.View.PaintWindow
         {
             StopGame();
             ViewModel.SaveSessionResult();
+        }
+
+        private void CbTargets_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            PaintArea.Children.Clear();
+
+            if (ViewModel is not null)
+            {
+                var figure = ViewModel.DrawPathOrRose(Target, PaintPanelSize);
+                figure?.Draw(PaintArea);
+                Scalables.Add(figure);
+            }
         }
     }
 }

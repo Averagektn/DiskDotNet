@@ -39,7 +39,7 @@
         </Viewbox>
 
         <Viewbox Grid.Row="2" Grid.Column="1" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="10">
-            <RadioButton Name="RbRose" Content="{x:Static lang:Localization.Paint_WindRose}" GroupName="DataType" IsChecked="True" Visibility="{Binding RoseButtonVisibility}">
+            <RadioButton Name="RbRose" Content="{x:Static lang:Localization.Paint_WindRose}" GroupName="DataType" IsChecked="{Binding IsRoseChecked}" Visibility="{Binding RoseButtonVisibility}">
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="Checked">
                         <i:InvokeCommandAction Command="{Binding RoseSelectedCommand}" />
@@ -49,7 +49,7 @@
         </Viewbox>
 
         <Viewbox Grid.Row="3" Grid.Column="1" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="10">
-            <RadioButton Name="RbPath" Content="{x:Static lang:Localization.Paint_Path}" GroupName="DataType" Visibility="{Binding PathButtonVisibility}">
+            <RadioButton Name="RbPath" Content="{x:Static lang:Localization.Paint_Path}" GroupName="DataType" Visibility="{Binding PathButtonVisibility}" IsChecked="{Binding IsPathChecked}">
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="Checked">
                         <i:InvokeCommandAction Command="{Binding PathSelectedCommand}" />
@@ -59,7 +59,7 @@
         </Viewbox>
 
         <Viewbox Grid.Row="4" Grid.Column="1" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="10">
-            <ComboBox Name="CbTargets" ItemsSource="{Binding PathsAndRoses}" Visibility="{Binding RosesAndPathsVisibility}" FontSize="20" Width="200"/>
+            <ComboBox Name="CbTargets" SelectionChanged="CbTargets_SelectionChanged" SelectedIndex="{Binding SelectedRoseOrPath}" ItemsSource="{Binding PathsAndRoses}" Visibility="{Binding RosesAndPathsVisibility}" FontSize="20" Width="200"/>
         </Viewbox>
         
         <TextBlock FontSize="5" Text="{Binding ScoreString}" TextAlignment="Left"/>

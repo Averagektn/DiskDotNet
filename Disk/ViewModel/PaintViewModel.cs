@@ -9,15 +9,18 @@ using Disk.Stores;
 using Disk.ViewModel.Common.Commands.Sync;
 using Disk.ViewModel.Common.ViewModels;
 using Disk.Visual.Impl;
+using Disk.Visual.Interface;
 using Newtonsoft.Json;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Net;
 using System.Windows;
 using System.Windows.Input;
+using System.Windows.Media;
 using FilePath = System.IO.Path;
 using Localization = Disk.Properties.Localization;
 using Settings = Disk.Properties.Config.Config;
+using SizeF = System.Drawing.SizeF;
 
 namespace Disk.ViewModel
 {
@@ -64,21 +67,79 @@ namespace Disk.ViewModel
         private readonly Stopwatch PathToTargetStopwatch;
 
         // binding
+        public bool IsRoseChecked { get; set; }
+        public bool IsPathChecked { get; set; }
+        public int SelectedRoseOrPath { get; set; }
         public string ScoreString => $"{Localization.Paint_Score}: {Score}";
+
         private string _message = string.Empty;
         public string Message { get => _message; set => SetProperty(ref _message, value); }
+
         private bool _isStopEnabled = true;
         public bool IsStopEnabled { get => _isStopEnabled; set => SetProperty(ref _isStopEnabled, value); }
+
         private Visibility _rosesAndPathsVisibility = Visibility.Hidden;
         public Visibility RosesAndPathsVisibility { get => _rosesAndPathsVisibility; set => SetProperty(ref _rosesAndPathsVisibility, value); }
+
         private Visibility _pathButtonVisibility = Visibility.Hidden;
         public Visibility PathButtonVisibility { get => _pathButtonVisibility; set => SetProperty(ref _pathButtonVisibility, value); }
+
         private Visibility _roseButtonVisibility = Visibility.Hidden;
         public Visibility RoseButtonVisibility { get => _roseButtonVisibility; set => SetProperty(ref _roseButtonVisibility, value); }
 
         // commands
         public ICommand RoseSelectedCommand => new Command(RoseSelected);
         public ICommand PathSelectedCommand => new Command(PathSelected);
+
+        public PaintViewModel(NavigationStore navigationStore, IPathToTargetRepository pathToTargetRepository,
+            IPathInTargetRepository pathInTargetRepository, ISessionResultRepository sessionResultRepository)
+        {
+            DiskNetworkThread = new(ReceiveUserPos);
+            DiskNetworkThread.Start();
+
+            Converter = DrawableFabric.GetConverter();
+
+            _navigationStore = navigationStore;
+            _pathToTargetRepository = pathToTargetRepository;
+            _pathInTargetRepository = pathInTargetRepository;
+            _sessionResultRepository = sessionResultRepository;
+
+            PathToTargetStopwatch = Stopwatch.StartNew();
+        }
+
+        public IStaticFigure? DrawPathOrRose(Target target, Size paintAreaSize)
+        {
+            if (SelectedRoseOrPath == -1)
+            {
+                return null;
+            }
+
+            if (IsRoseChecked)
+            {
+                var angRadius = (Converter.ToAngleX_FromLog(target.Radius) + Converter.ToAngleY_FromLog(target.Radius)) / 2;
+
+                var dataset =
+                    PathsInTargets[SelectedRoseOrPath]
+                    .Select(p =>
+                        new PolarPoint<float>(p.X - TargetCenters[SelectedRoseOrPath].X, p.Y - TargetCenters[SelectedRoseOrPath].Y))
+                    .Where(p => Math.Abs(p.X) > angRadius && Math.Abs(p.Y) > angRadius).ToList();
+
+                return new Graph(dataset, paintAreaSize, Brushes.LightGreen, 8);
+
+            }
+            else if (IsPathChecked)
+            {
+                return new Path
+                    (
+                        PathsInTargets[SelectedRoseOrPath], paintAreaSize, new SizeF((int)Settings.X_MAX_ANGLE, (int)Settings.Y_MAX_ANGLE),
+                        new SolidColorBrush
+                        (
+                            Color.FromRgb(Settings.USER_COLOR.R, Settings.USER_COLOR.G, Settings.USER_COLOR.B)
+                        )
+                    );
+            }
+            return null;
+        }
 
         private void PathSelected(object? obj)
         {
@@ -98,22 +159,6 @@ namespace Disk.ViewModel
             {
                 PathsAndRoses.Add($"{Localization.Paint_WindRoseForTarget} {i}");
             }
-        }
-
-        public PaintViewModel(NavigationStore navigationStore, IPathToTargetRepository pathToTargetRepository,
-            IPathInTargetRepository pathInTargetRepository, ISessionResultRepository sessionResultRepository)
-        {
-            DiskNetworkThread = new(ReceiveUserPos);
-            DiskNetworkThread.Start();
-
-            Converter = DrawableFabric.GetConverter();
-
-            _navigationStore = navigationStore;
-            _pathToTargetRepository = pathToTargetRepository;
-            _pathInTargetRepository = pathInTargetRepository;
-            _sessionResultRepository = sessionResultRepository;
-
-            PathToTargetStopwatch = Stopwatch.StartNew();
         }
 
         public ProgressTarget GetProgressTarget()
@@ -174,8 +219,6 @@ namespace Disk.ViewModel
             _sessionResultRepository.Add(sres);
 
             IsStopEnabled = false;
-
-            RoseSelected(null);
 
             RosesAndPathsVisibility = Visibility.Visible;
             RoseButtonVisibility = Visibility.Visible;

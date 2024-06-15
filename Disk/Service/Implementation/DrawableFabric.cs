@@ -17,7 +17,7 @@ namespace Disk.Service.Implementation
             new SolidColorBrush(Color.FromRgb(Settings.USER_COLOR.R, Settings.USER_COLOR.G, Settings.USER_COLOR.B));
         private static readonly float XAngleSize = Settings.X_MAX_ANGLE * 2;
         private static readonly float YAngleSize = Settings.Y_MAX_ANGLE * 2;
-        private static readonly int TargetHp = 20; // to settings
+        private static readonly int TargetHp = 200; // to settings
 
         public static User GetUser(string userImagePath) =>
             userImagePath != string.Empty
