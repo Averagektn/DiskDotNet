@@ -2,7 +2,7 @@
 using System.Diagnostics;
 using System.Net;
 
-var connection = Connection.GetConnection(IPAddress.Parse("192.168.150.3"), 9998);
+var connection = Connection.GetConnection(IPAddress.Parse("192.168.150.2"), 9998);
 var stopwatch = new Stopwatch();
 
 while (true)

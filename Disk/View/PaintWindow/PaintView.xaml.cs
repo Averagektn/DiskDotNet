@@ -4,7 +4,6 @@ using Disk.Sessions;
 using Disk.Visual.Impl;
 using Newtonsoft.Json;
 using System.Diagnostics;
-using System.IO;
 using System.Net;
 using System.Windows;
 using System.Windows.Controls;
@@ -31,25 +30,25 @@ namespace Disk.View.PaintWindow
 
                 if (PathStartingPoint is not null)
                 {
-/*                    lock (LockObject)
-                    {
-                        UserMovementLog.Dispose();
-                        UserMovementLog = Logger.GetLogger(OnTargetLogName);
-                    }
+                    /*                    lock (LockObject)
+                                        {
+                                            UserMovementLog.Dispose();
+                                            UserMovementLog = Logger.GetLogger(OnTargetLogName);
+                                        }
 
-                    double distance = 0;
-                    using (var reader = FileReader<float>.Open(MovingToTargetLogName))
-                    {
-                        var currPoint = reader.GetXY() ?? StartPoint;
-                        var nextPoint = reader.GetXY();
+                                        double distance = 0;
+                                        using (var reader = FileReader<float>.Open(MovingToTargetLogName))
+                                        {
+                                            var currPoint = reader.GetXY() ?? StartPoint;
+                                            var nextPoint = reader.GetXY();
 
-                        while (nextPoint is not null)
-                        {
-                            distance += currPoint.GetDistance(nextPoint);
-                            currPoint = nextPoint;
-                            nextPoint = reader.GetXY();
-                        }
-                    }*/
+                                            while (nextPoint is not null)
+                                            {
+                                                distance += currPoint.GetDistance(nextPoint);
+                                                currPoint = nextPoint;
+                                                nextPoint = reader.GetXY();
+                                            }
+                                        }*/
 
                     var touchPoint = Converter?.ToAngle_FromWnd(User.Center);
                     var time = Stopwatch.Elapsed.TotalSeconds;
@@ -79,11 +78,11 @@ namespace Disk.View.PaintWindow
                     ;
 
                     TblTime.Text = message;
-/*                    using (var log = Logger.GetLogger(TargetReachedLogName))
-                    {
-                        log.Log(message);
-                    }
-*/
+                    /*                    using (var log = Logger.GetLogger(TargetReachedLogName))
+                                        {
+                                            log.Log(message);
+                                        }
+                    */
                     TargetID++;
                 }
             }
@@ -142,24 +141,6 @@ namespace Disk.View.PaintWindow
             }
         }
 
-        private void NetworkReceive()
-        {
-            try
-            {
-                using var con = Connection.GetConnection(IPAddress.Parse(Settings.IP), Settings.PORT);
-
-                while (IsGame)
-                {
-                    CurrentPos = con.GetXYZ();
-                }
-            }
-            catch
-            {
-                MessageBox.Show(Localization.Paint_ConnectionLost);
-                Application.Current.Dispatcher.BeginInvoke(new Action(ViewModel.NavigateToAppoinment));
-            }
-        }
-
         private void OnLoaded(object sender, RoutedEventArgs e)
         {
             User = ViewModel.GetUser();
@@ -167,7 +148,7 @@ namespace Disk.View.PaintWindow
 
             TargetCenters.Add(new Point2D<float>((float)Target.Center.XDbl, (float)Target.Center.YDbl));
 
-            PathStartingPoint = Converter.ToAngle_FromWnd(User.Center);            
+            PathStartingPoint = Converter.ToAngle_FromWnd(User.Center);
 
             Drawables.Add(Target); Drawables.Add(User);
             Scalables.Add(Target); Scalables.Add(User); Scalables.Add(Converter);
@@ -180,8 +161,6 @@ namespace Disk.View.PaintWindow
             {
                 elem?.Scale(PaintPanelSize);
             }
-
-            DiskNetworkThread.Start();
 
             MoveTimer.Start();
             ShotTimer.Start();

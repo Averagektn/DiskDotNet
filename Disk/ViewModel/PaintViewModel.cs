@@ -8,7 +8,10 @@ using Disk.Sessions;
 using Disk.Stores;
 using Disk.ViewModel.Common.ViewModels;
 using Disk.Visual.Impl;
+using System.Net;
+using System.Windows;
 using FilePath = System.IO.Path;
+using Localization = Disk.Properties.Localization;
 using Settings = Disk.Properties.Config.Config;
 
 namespace Disk.ViewModel
@@ -24,12 +27,17 @@ namespace Disk.ViewModel
         public Converter Converter { get; set; }
 
         public int TargetId { get; set; }
+        private readonly Thread DiskNetworkThread;
 
         // sessions datasets
         public List<Point2D<float>> TargetCenters { get; set; } = null!;
         public List<Point2D<float>> FullPath = [];
         public List<List<Point2D<float>>> PathsToTargets = [];
         public List<List<Point2D<float>>> PathsInTargets = [];
+
+        // cahnging
+        public Point3D<float>? CurrentPos;
+        public bool IsGame = true;
 
         // Unchanged
         private static Settings Settings => Settings.Default;
@@ -45,6 +53,9 @@ namespace Disk.ViewModel
         public PaintViewModel(NavigationStore navigationStore, IPathToTargetRepository pathToTargetRepository,
             IPathInTargetRepository pathInTargetRepository, ISessionResultRepository sessionResultRepository)
         {
+            DiskNetworkThread = new(ReceiveUserPos);
+            DiskNetworkThread.Start();
+
             Converter = DrawableFabric.GetConverter();
 
             _navigationStore = navigationStore;
@@ -72,11 +83,30 @@ namespace Disk.ViewModel
             return user;
         }
 
+        private void ReceiveUserPos()
+        {
+            try
+            {
+                using var con = Connection.GetConnection(IPAddress.Parse(Settings.IP), Settings.PORT);
+
+                while (IsGame)
+                {
+                    CurrentPos = con.GetXYZ();
+                }
+            }
+            catch
+            {
+                _ = MessageBox.Show(Localization.Paint_ConnectionLost);
+                _ = Application.Current.Dispatcher.BeginInvoke(new Action(NavigateToAppoinment));
+            }
+        }
+
         public void NavigateToAppoinment() =>
             _navigationStore.SetViewModel<AppointmentViewModel>(vm => vm.Appointment = AppointmentSession.Appointment);
 
         public Point2D<float>? NextTargetCenter => TargetCenters.Count <= TargetId ? null : TargetCenters[TargetId++];
 
+        // Show message box
         public void SaveSessionResult(int score)
         {
             var mx = Calculator2D.MathExp(FullPath);
@@ -101,7 +131,9 @@ namespace Disk.ViewModel
 
         ~PaintViewModel()
         {
+            IsGame = false;
             UserMovementLog.Dispose();
+            DiskNetworkThread.Join();
         }
     }
 }

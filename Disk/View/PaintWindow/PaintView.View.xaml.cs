@@ -1,9 +1,6 @@
-﻿using Disk.Calculations.Impl;
-using Disk.Calculations.Impl.Converters;
+﻿using Disk.Calculations.Impl.Converters;
 using Disk.Data.Impl;
-using Disk.Sessions;
 using Disk.Visual.Impl;
-using System.ComponentModel;
 using System.Drawing;
 using System.IO;
 using System.Windows;
@@ -20,8 +17,6 @@ namespace Disk.View.PaintWindow
 {
     public partial class PaintView : UserControl
     {
-
-
         private void StopGame()
         {
             Target.Remove(PaintArea.Children);
@@ -32,10 +27,6 @@ namespace Disk.View.PaintWindow
 
             Drawables.Remove(User);
             Scalables.Remove(User);
-
-            IsGame = false;
-
-            DiskNetworkThread.Join();
 
             User.ClearOnShot();
 
@@ -65,9 +56,6 @@ namespace Disk.View.PaintWindow
 
         private string GetMovToTargetFileName(int id) =>
             $"{ViewModel.CurrPath}{FilePath.DirectorySeparatorChar}mov_to_tar_{id}.log";
-
-        private string GetReachedFileName(int id) =>
-            $"{ViewModel.CurrPath}{FilePath.DirectorySeparatorChar}tar_{id}_reached.log";
 
         private void CbTargets_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {

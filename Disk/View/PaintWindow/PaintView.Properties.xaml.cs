@@ -1,5 +1,4 @@
 ﻿using Disk.Calculations.Impl.Converters;
-using Disk.Entities;
 using Disk.ViewModel;
 using Disk.Visual.Impl;
 using Disk.Visual.Interface;
@@ -40,22 +39,19 @@ namespace Disk.View.PaintWindow
         private readonly DispatcherTimer ShotTimer;
         private readonly DispatcherTimer MoveTimer;
 
-        private readonly Thread DiskNetworkThread;
-
         private readonly List<IScalable?> Scalables = [];
         private readonly List<IDrawable?> Drawables = [];
 
         private Stopwatch Stopwatch = new();
         private Point2DF? PathStartingPoint;
-        private Point3DF? CurrentPos;
         private Point2DI? ShiftedWndPos
         {
             get
             {
-                return CurrentPos is null
+                return ViewModel.CurrentPos is null
                     ? User.Center
                     : Converter.ToWndCoord(
-                    new Point2DF(CurrentPos.X - Settings.ANGLE_X_SHIFT, CurrentPos.Y - Settings.ANGLE_Y_SHIFT));
+                    new Point2DF(ViewModel.CurrentPos.X - Settings.ANGLE_X_SHIFT, ViewModel.CurrentPos.Y - Settings.ANGLE_Y_SHIFT));
             }
         }
 
@@ -65,13 +61,10 @@ namespace Disk.View.PaintWindow
         private int Score = 0;
         private int TargetID = 1;
 
-        private bool IsGame = true;
 
         public PaintView()
         {
             InitializeComponent();
-
-            DiskNetworkThread = new(NetworkReceive);
 
             Stopwatch = Stopwatch.StartNew();
 
