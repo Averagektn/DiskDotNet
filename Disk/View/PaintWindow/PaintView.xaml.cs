@@ -1,14 +1,11 @@
-﻿using Disk.Data.Impl;
-using Disk.Entities;
+﻿using Disk.Entities;
 using Disk.Sessions;
 using Disk.Visual.Impl;
 using Newtonsoft.Json;
 using System.Diagnostics;
-using System.Net;
 using System.Windows;
 using System.Windows.Controls;
 using Localization = Disk.Properties.Localization;
-using Settings = Disk.Properties.Config;
 
 namespace Disk.View.PaintWindow
 {
@@ -21,90 +18,59 @@ namespace Disk.View.PaintWindow
         {
             var shot = User.Shot();
             var shotScore = Target.ReceiveShot(shot);
-            var a = Converter.ToAngle_FromWnd(shot);
+            var angleShot = Converter.ToAngle_FromWnd(shot);
 
-            if (shotScore != 0 && Stopwatch.IsRunning)
+            // pit
+            bool isPathInTargetStarts = shotScore != 0 && PathToTargetStopwatch.IsRunning;
+            if (isPathInTargetStarts)
             {
-                PathToTargetCoords.Add(a);
-                Stopwatch.Stop();
+                // final point in path to target
+                PathToTargetCoords.Add(angleShot);
+                PathToTargetStopwatch.Stop();
 
-                if (PathStartingPoint is not null)
-                {
-                    /*                    lock (LockObject)
-                                        {
-                                            UserMovementLog.Dispose();
-                                            UserMovementLog = Logger.GetLogger(OnTargetLogName);
-                                        }
+                var ptt = ViewModel.SwitchToPathInTarget(shot);
+                var message =
+                    $"""
+                        {Localization.Paint_Time}: {ptt.Time:F2}
+                        {Localization.Paint_AngleDistance}: {ptt.AngleDistance:F2}
+                        {Localization.Paint_AngleSpeed}: {ptt.AngleSpeed:F2}
+                        {Localization.Paint_ApproachSpeed}: {ptt.ApproachSpeed:F2}
+                     """;
 
-                                        double distance = 0;
-                                        using (var reader = FileReader<float>.Open(MovingToTargetLogName))
-                                        {
-                                            var currPoint = reader.GetXY() ?? StartPoint;
-                                            var nextPoint = reader.GetXY();
+                TblTime.Text = message;
+            }
 
-                                            while (nextPoint is not null)
-                                            {
-                                                distance += currPoint.GetDistance(nextPoint);
-                                                currPoint = nextPoint;
-                                                nextPoint = reader.GetXY();
-                                            }
-                                        }*/
-
-                    var touchPoint = Converter?.ToAngle_FromWnd(User.Center);
-                    var time = Stopwatch.Elapsed.TotalSeconds;
-                    var avgSpeed = 0;//distance / time;
-                    var approachSpeed = PathStartingPoint.GetDistance(touchPoint!) / time;
-
-                    var ptt = new PathToTarget()
-                    {
-                        AngleDistance = 0,//distance,
-                        AngleSpeed = avgSpeed,
-                        ApproachSpeed = approachSpeed,
-                        CoordinatesJson = JsonConvert.SerializeObject(PathToTargetCoords),
-                        TargetNum = TargetID,
-                        Session = AppointmentSession.CurrentSession.Id,
-                        Time = time
-                    };
-                    ViewModel.SavePathToTarget(ptt);
-                    PathToTargetCoords = [];
-
-                    var message =
-                        $"""
-                            {Localization.Paint_Time}: {time:F2}
-                            {Localization.Paint_AngleDistance}: distance:F2
-                            {Localization.Paint_AngleSpeed}: {avgSpeed:F2}
-                            {Localization.Paint_ApproachSpeed}: {approachSpeed:F2}
-                            """
-                    ;
-
-                    TblTime.Text = message;
-                    /*                    using (var log = Logger.GetLogger(TargetReachedLogName))
-                                        {
-                                            log.Log(message);
-                                        }
-                    */
-                    TargetID++;
-                }
+            bool isPathInTarget = !PathToTargetStopwatch.IsRunning;
+            if (isPathInTarget)
+            {
+                PathInTargetCoords.Add(angleShot);
+                ViewModel.PathsInTargets[ViewModel.TargetId - 1].Add(angleShot);
             }
             else
             {
-                PathInTargetCoords.Add(a);
+                ViewModel.PathsToTargets[ViewModel.TargetId - 1].Add(angleShot);
             }
 
             TblScore.Text = $"{Localization.Paint_Score}: {ViewModel.Score}";
 
-            if (Target.IsFull)
+            // ptt
+            bool isPathToTargetStarts = Target.IsFull;
+            if (isPathToTargetStarts)
             {
+                ViewModel.PathsToTargets.Add([]);
                 var pit = new PathInTarget()
                 {
                     CoordinatesJson = JsonConvert.SerializeObject(PathInTargetCoords),
                     Session = AppointmentSession.CurrentSession.Id,
-                    TargetId = TargetID,
+                    TargetId = ViewModel.TargetId,
                 };
                 ViewModel.SavePathInTarget(pit);
 
                 PathInTargetCoords = [];
+
+                // TargetId++
                 var newCenter = ViewModel.NextTargetCenter;
+
                 Target.Reset();
 
                 if (newCenter is null)
@@ -116,9 +82,7 @@ namespace Disk.View.PaintWindow
                     var wndCenter = Converter.ToWnd_FromRelative(newCenter);
                     Target.Move(wndCenter);
 
-                    //TargetCenters.Add(Converter.ToAngle_FromWnd(wndCenter));
-
-                    Stopwatch = Stopwatch.StartNew();
+                    PathToTargetStopwatch = Stopwatch.StartNew();
                     TblTime.Text = string.Empty;
 
                     if (User is not null)

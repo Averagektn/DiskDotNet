@@ -49,16 +49,14 @@ namespace Disk.View.PaintWindow
         // Shoulf be removed
         private static Settings Settings => Settings.Default;
 
-        private Stopwatch Stopwatch = new();
-        private Point2DF? PathStartingPoint;
-
-        private int TargetID = 1;
+        private Stopwatch PathToTargetStopwatch = new();
+        private Point2DF PathStartingPoint = null!;
 
         public PaintView()
         {
             InitializeComponent();
 
-            Stopwatch = Stopwatch.StartNew();
+            PathToTargetStopwatch = Stopwatch.StartNew();
 
             MoveTimer = new(DispatcherPriority.Normal)
             {

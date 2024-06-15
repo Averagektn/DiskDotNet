@@ -8,6 +8,8 @@ using Disk.Sessions;
 using Disk.Stores;
 using Disk.ViewModel.Common.ViewModels;
 using Disk.Visual.Impl;
+using Newtonsoft.Json;
+using System.Diagnostics;
 using System.Net;
 using System.Windows;
 using FilePath = System.IO.Path;
@@ -38,7 +40,7 @@ namespace Disk.ViewModel
         // sessions datasets
         public List<Point2D<float>> TargetCenters { get; set; } = null!;
         public List<Point2D<float>> FullPath = [];
-        public List<List<Point2D<float>>> PathsToTargets = [];
+        public List<List<Point2D<float>>> PathsToTargets = [[]];
         public List<List<Point2D<float>>> PathsInTargets = [];
 
         // changing
@@ -53,6 +55,9 @@ namespace Disk.ViewModel
         private readonly IPathInTargetRepository _pathInTargetRepository;
         private readonly ISessionResultRepository _sessionResultRepository;
 
+        // readonly
+        private Stopwatch PathToTargetStopwatch;
+
         public PaintViewModel(NavigationStore navigationStore, IPathToTargetRepository pathToTargetRepository,
             IPathInTargetRepository pathInTargetRepository, ISessionResultRepository sessionResultRepository)
         {
@@ -65,6 +70,8 @@ namespace Disk.ViewModel
             _pathToTargetRepository = pathToTargetRepository;
             _pathInTargetRepository = pathInTargetRepository;
             _sessionResultRepository = sessionResultRepository;
+
+            PathToTargetStopwatch = Stopwatch.StartNew();
         }
 
         public ProgressTarget GetProgressTarget()
@@ -136,6 +143,39 @@ namespace Disk.ViewModel
             IsGame = false;
             UserMovementLog.Dispose();
             DiskNetworkThread.Join();
+        }
+
+        public PathToTarget SwitchToPathInTarget(Point2D<int> userShot)
+        {
+            PathsToTargets[TargetId - 1].Add(Converter.ToAngle_FromWnd(userShot));
+            PathToTargetStopwatch.Stop();
+            PathsInTargets.Add([]);
+
+            double distance = 0;
+            var pathToTarget = PathsToTargets[TargetId - 1];
+            for (int i = 1; i < pathToTarget.Count; i++) 
+            {
+                distance += pathToTarget[i - 1].GetDistance(pathToTarget[i]);
+            }
+
+            var touchPoint = Converter.ToAngle_FromWnd(userShot);
+            var time = PathToTargetStopwatch.Elapsed.TotalSeconds;
+            var avgSpeed = distance / time;
+            var approachSpeed = pathToTarget[0].GetDistance(touchPoint) / time;
+
+            var ptt = new PathToTarget()
+            {
+                AngleDistance = distance,
+                AngleSpeed = avgSpeed,
+                ApproachSpeed = approachSpeed,
+                CoordinatesJson = JsonConvert.SerializeObject(PathsToTargets[TargetId - 1]),
+                TargetNum = TargetId - 1,
+                Session = AppointmentSession.CurrentSession.Id,
+                Time = time
+            };
+            SavePathToTarget(ptt);
+
+            return ptt;
         }
     }
 }

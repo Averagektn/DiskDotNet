@@ -113,7 +113,7 @@ namespace Disk.View.PaintWindow
         {
             CbTargets.Items.Clear();
 
-            for (int i = 1; i < TargetID; i++)
+            for (int i = 1; i < ViewModel.TargetId + 1; i++)
             {
                 CbTargets.Items.Add($"{Localization.Paint_WindRoseForTarget} {i}");
             }
@@ -123,7 +123,7 @@ namespace Disk.View.PaintWindow
         {
             CbTargets.Items.Clear();
 
-            for (int i = 1; i < TargetID; i++)
+            for (int i = 1; i < ViewModel.TargetId + 1; i++)
             {
                 CbTargets.Items.Add($"{Localization.Paint_PathToTarget} {i}");
             }
@@ -136,7 +136,7 @@ namespace Disk.View.PaintWindow
 
             BtnStop.IsEnabled = false;
 
-            for (int i = 1; i < TargetID; i++)
+            for (int i = 1; i < ViewModel.TargetId + 1; i++)
             {
                 CbTargets.Items.Add($"{Localization.Paint_WindRoseForTarget} {i}");
             }
