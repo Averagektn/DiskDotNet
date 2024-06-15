@@ -13,6 +13,7 @@ using Path = Disk.Visual.Impl.Path;
 using PolarPointF = Disk.Data.Impl.PolarPoint<float>;
 using Settings = Disk.Properties.Config.Config;
 
+
 namespace Disk.View.PaintWindow
 {
     public partial class PaintView : UserControl
@@ -22,11 +23,11 @@ namespace Disk.View.PaintWindow
             Target.Remove(PaintArea.Children);
             User.Remove(PaintArea.Children);
 
-            Drawables.Remove(Target);
-            Scalables.Remove(Target);
+            _ = Drawables.Remove(Target);
+            _ = Scalables.Remove(Target);
 
-            Drawables.Remove(User);
-            Scalables.Remove(User);
+            _ = Drawables.Remove(User);
+            _ = Scalables.Remove(User);
 
             User.ClearOnShot();
 
@@ -115,7 +116,7 @@ namespace Disk.View.PaintWindow
 
             for (int i = 1; i < ViewModel.TargetId + 1; i++)
             {
-                CbTargets.Items.Add($"{Localization.Paint_WindRoseForTarget} {i}");
+                _ = CbTargets.Items.Add($"{Localization.Paint_WindRoseForTarget} {i}");
             }
         }
 
@@ -125,7 +126,7 @@ namespace Disk.View.PaintWindow
 
             for (int i = 1; i < ViewModel.TargetId + 1; i++)
             {
-                CbTargets.Items.Add($"{Localization.Paint_PathToTarget} {i}");
+                _ = CbTargets.Items.Add($"{Localization.Paint_PathToTarget} {i}");
             }
         }
 
@@ -138,7 +139,7 @@ namespace Disk.View.PaintWindow
 
             for (int i = 1; i < ViewModel.TargetId + 1; i++)
             {
-                CbTargets.Items.Add($"{Localization.Paint_WindRoseForTarget} {i}");
+                _ = CbTargets.Items.Add($"{Localization.Paint_WindRoseForTarget} {i}");
             }
 
             CbTargets.Visibility = Visibility.Visible;

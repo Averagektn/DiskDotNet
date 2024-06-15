@@ -32,6 +32,7 @@ namespace Disk.ViewModel
         public Point2D<float>? NextTargetCenter => TargetCenters.Count <= TargetId ? null : TargetCenters[TargetId++];
         private static Settings Settings => Settings.Default;
         private string UsrAngLog => $"{CurrPath}{FilePath.DirectorySeparatorChar}{Settings.USER_ANG_LOG_FILE}";
+        public bool IsPathToTarget => PathToTargetStopwatch.IsRunning;
 
         // Disposable
         private readonly Thread DiskNetworkThread;
@@ -56,7 +57,12 @@ namespace Disk.ViewModel
         private readonly ISessionResultRepository _sessionResultRepository;
 
         // readonly
-        private Stopwatch PathToTargetStopwatch;
+        private readonly Stopwatch PathToTargetStopwatch;
+
+        // binding
+        public string ScoreString => $"{Localization.Paint_Score}: {Score}";
+        private string _message = string.Empty;
+        public string Message { get => _message; set => SetProperty(ref _message, value); }
 
         public PaintViewModel(NavigationStore navigationStore, IPathToTargetRepository pathToTargetRepository,
             IPathInTargetRepository pathInTargetRepository, ISessionResultRepository sessionResultRepository)
@@ -138,22 +144,24 @@ namespace Disk.ViewModel
 
         public override void Dispose()
         {
-            base.Dispose();
+            GC.SuppressFinalize(this);
 
             IsGame = false;
             UserMovementLog.Dispose();
             DiskNetworkThread.Join();
         }
 
-        public PathToTarget SwitchToPathInTarget(Point2D<int> userShot)
+        public void SwitchToPathInTarget(Point2D<int> userShot)
         {
+            PathToTargetStopwatch.Stop();
+
             PathsToTargets[TargetId - 1].Add(Converter.ToAngle_FromWnd(userShot));
             PathToTargetStopwatch.Stop();
             PathsInTargets.Add([]);
 
             double distance = 0;
             var pathToTarget = PathsToTargets[TargetId - 1];
-            for (int i = 1; i < pathToTarget.Count; i++) 
+            for (int i = 1; i < pathToTarget.Count; i++)
             {
                 distance += pathToTarget[i - 1].GetDistance(pathToTarget[i]);
             }
@@ -175,7 +183,44 @@ namespace Disk.ViewModel
             };
             SavePathToTarget(ptt);
 
-            return ptt;
+            Message =
+                    $"""
+                        {Localization.Paint_Time}: {time:F2}
+                        {Localization.Paint_AngleDistance}: {distance:F2}
+                        {Localization.Paint_AngleSpeed}: {avgSpeed:F2}
+                        {Localization.Paint_ApproachSpeed}: {approachSpeed:F2}
+                     """;
+        }
+
+        public bool SwitchToPathToTarget(ProgressTarget target)
+        {
+            PathsToTargets.Add([]);
+
+            var pit = new PathInTarget()
+            {
+                CoordinatesJson = JsonConvert.SerializeObject(PathsInTargets[TargetId - 1]),
+                Session = AppointmentSession.CurrentSession.Id,
+                TargetId = TargetId,
+            };
+
+            SavePathInTarget(pit);
+
+            // TargetId++
+            var newCenter = NextTargetCenter;
+
+            target.Reset();
+
+            if (newCenter is not null)
+            {
+                var wndCenter = Converter.ToWnd_FromRelative(newCenter);
+                target.Move(wndCenter);
+
+                Message = string.Empty;
+                PathToTargetStopwatch.Restart();
+
+                return true;
+            }
+            return false;
         }
     }
 }

@@ -1,11 +1,13 @@
-﻿using Disk.Entities;
-using Disk.Sessions;
+﻿using Disk.Calculations.Impl.Converters;
+using Disk.ViewModel;
 using Disk.Visual.Impl;
-using Newtonsoft.Json;
-using System.Diagnostics;
+using Disk.Visual.Interface;
 using System.Windows;
 using System.Windows.Controls;
-using Localization = Disk.Properties.Localization;
+using System.Windows.Threading;
+using Point2DF = Disk.Data.Impl.Point2D<float>;
+using Point2DI = Disk.Data.Impl.Point2D<int>;
+using Settings = Disk.Properties.Config.Config;
 
 namespace Disk.View.PaintWindow
 {
@@ -14,6 +16,56 @@ namespace Disk.View.PaintWindow
     /// </summary>
     public partial class PaintView : UserControl
     {
+        private User User = null!;
+        private ProgressTarget Target = null!;
+        private Converter Converter => ViewModel.Converter;
+
+        private PaintViewModel ViewModel => (PaintViewModel)DataContext;
+
+        private readonly DispatcherTimer ShotTimer;
+        private readonly DispatcherTimer MoveTimer;
+
+        private readonly List<IScalable?> Scalables = [];
+        private readonly List<IDrawable?> Drawables = [];
+
+        private Point2DI? ShiftedWndPos
+        {
+            get => ViewModel.CurrentPos is null
+                ? User.Center
+                : Converter.ToWndCoord(new Point2DF(ViewModel.CurrentPos.X - Settings.ANGLE_X_SHIFT, ViewModel.CurrentPos.Y - Settings.ANGLE_Y_SHIFT));
+        }
+
+        private Size PaintPanelSize => PaintRect.RenderSize;
+        private int PaintPanelCenterX => (int)PaintPanelSize.Width / 2;
+        private int PaintPanelCenterY => (int)PaintPanelSize.Height / 2;
+
+        private static Settings Settings => Settings.Default;
+
+        public PaintView()
+        {
+            InitializeComponent();
+
+            MoveTimer = new(DispatcherPriority.Normal)
+            {
+                Interval = TimeSpan.FromMilliseconds(Settings.MOVE_TIME)
+            };
+            MoveTimer.Tick += MoveTimerElapsed;
+
+            ShotTimer = new(DispatcherPriority.Normal)
+            {
+                Interval = TimeSpan.FromMilliseconds(Settings.SHOT_TIME)
+            };
+            ShotTimer.Tick += ShotTimerElapsed;
+
+            Unloaded += OnClosing;
+            Loaded += OnLoaded;
+            SizeChanged += OnSizeChanged;
+
+            CbTargets.SelectionChanged += CbTargets_SelectionChanged;
+            RbPath.Checked += RbPath_Checked;
+            RbRose.Checked += RbRose_Checked;
+        }
+
         private void ShotTimerElapsed(object? sender, EventArgs e)
         {
             var shot = User.Shot();
@@ -21,29 +73,15 @@ namespace Disk.View.PaintWindow
             var angleShot = Converter.ToAngle_FromWnd(shot);
 
             // pit
-            bool isPathInTargetStarts = shotScore != 0 && PathToTargetStopwatch.IsRunning;
+            bool isPathInTargetStarts = shotScore != 0 && ViewModel.IsPathToTarget;
             if (isPathInTargetStarts)
             {
-                // final point in path to target
-                PathToTargetCoords.Add(angleShot);
-                PathToTargetStopwatch.Stop();
-
-                var ptt = ViewModel.SwitchToPathInTarget(shot);
-                var message =
-                    $"""
-                        {Localization.Paint_Time}: {ptt.Time:F2}
-                        {Localization.Paint_AngleDistance}: {ptt.AngleDistance:F2}
-                        {Localization.Paint_AngleSpeed}: {ptt.AngleSpeed:F2}
-                        {Localization.Paint_ApproachSpeed}: {ptt.ApproachSpeed:F2}
-                     """;
-
-                TblTime.Text = message;
+                ViewModel.SwitchToPathInTarget(shot);
             }
 
-            bool isPathInTarget = !PathToTargetStopwatch.IsRunning;
+            bool isPathInTarget = !ViewModel.IsPathToTarget;
             if (isPathInTarget)
             {
-                PathInTargetCoords.Add(angleShot);
                 ViewModel.PathsInTargets[ViewModel.TargetId - 1].Add(angleShot);
             }
             else
@@ -51,44 +89,13 @@ namespace Disk.View.PaintWindow
                 ViewModel.PathsToTargets[ViewModel.TargetId - 1].Add(angleShot);
             }
 
-            TblScore.Text = $"{Localization.Paint_Score}: {ViewModel.Score}";
-
             // ptt
             bool isPathToTargetStarts = Target.IsFull;
             if (isPathToTargetStarts)
             {
-                ViewModel.PathsToTargets.Add([]);
-                var pit = new PathInTarget()
-                {
-                    CoordinatesJson = JsonConvert.SerializeObject(PathInTargetCoords),
-                    Session = AppointmentSession.CurrentSession.Id,
-                    TargetId = ViewModel.TargetId,
-                };
-                ViewModel.SavePathInTarget(pit);
-
-                PathInTargetCoords = [];
-
-                // TargetId++
-                var newCenter = ViewModel.NextTargetCenter;
-
-                Target.Reset();
-
-                if (newCenter is null)
+                if (!ViewModel.SwitchToPathToTarget(Target))
                 {
                     OnStopClick(this, new());
-                }
-                else
-                {
-                    var wndCenter = Converter.ToWnd_FromRelative(newCenter);
-                    Target.Move(wndCenter);
-
-                    PathToTargetStopwatch = Stopwatch.StartNew();
-                    TblTime.Text = string.Empty;
-
-                    if (User is not null)
-                    {
-                        PathStartingPoint = Converter.ToAngle_FromWnd(User.Center);
-                    }
                 }
             }
         }
@@ -105,10 +112,6 @@ namespace Disk.View.PaintWindow
         {
             User = ViewModel.GetUser();
             Target = ViewModel.GetProgressTarget();
-
-            //TargetCenters.Add(new Point2D<float>((float)Target.Center.XDbl, (float)Target.Center.YDbl));
-
-            PathStartingPoint = Converter.ToAngle_FromWnd(User.Center);
 
             Drawables.Add(Target); Drawables.Add(User);
             Scalables.Add(Target); Scalables.Add(User); Scalables.Add(Converter);
