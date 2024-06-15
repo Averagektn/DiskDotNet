@@ -80,7 +80,7 @@ namespace Disk.View.PaintWindow
                             userReader
                             .Get2DPoints()
                             .Select(p =>
-                                new PolarPointF(p.X - TargetCenters[selectedIndex].X, p.Y - TargetCenters[selectedIndex].Y))
+                                new PolarPointF(p.X - ViewModel.TargetCenters[selectedIndex].X, p.Y - ViewModel.TargetCenters[selectedIndex].Y))
                             .Where(p => Math.Abs(p.X) > angRadius && Math.Abs(p.Y) > angRadius).ToList();
 
                         var userRose = new Graph(dataset, PaintPanelSize, Brushes.LightGreen, 8);
@@ -132,7 +132,7 @@ namespace Disk.View.PaintWindow
         private void OnStopClick(object sender, RoutedEventArgs e)
         {
             StopGame();
-            ViewModel.SaveSessionResult(Score);
+            ViewModel.SaveSessionResult();
 
             BtnStop.IsEnabled = false;
 

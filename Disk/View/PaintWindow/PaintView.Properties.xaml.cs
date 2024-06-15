@@ -21,6 +21,23 @@ namespace Disk.View.PaintWindow
 
         private PaintViewModel ViewModel => (PaintViewModel)DataContext;
 
+        private readonly DispatcherTimer ShotTimer;
+        private readonly DispatcherTimer MoveTimer;
+
+        private readonly List<IScalable?> Scalables = [];
+        private readonly List<IDrawable?> Drawables = [];
+
+        private Point2DI? ShiftedWndPos
+        {
+            get => ViewModel.CurrentPos is null 
+                ? User.Center
+                : Converter.ToWndCoord(new Point2DF(ViewModel.CurrentPos.X - Settings.ANGLE_X_SHIFT, ViewModel.CurrentPos.Y - Settings.ANGLE_Y_SHIFT));
+        }
+
+        private Size PaintPanelSize => PaintRect.RenderSize;
+        private int PaintPanelCenterX => (int)PaintPanelSize.Width / 2;
+        private int PaintPanelCenterY => (int)PaintPanelSize.Height / 2;
+
         // move all to vm
         // replace
         public List<Point2DF> PathToTargetCoords = [];
@@ -29,38 +46,13 @@ namespace Disk.View.PaintWindow
         public List<List<Point2DF>> PathsToTargets = [];
         public List<List<Point2DF>> PathsInTargets = [];
 
-        private readonly List<Point2DF> TargetCenters = [];
-
-        //public SessionResult SessionResult { get; set; } = new();
-
-        // Non-verified
+        // Shoulf be removed
         private static Settings Settings => Settings.Default;
-
-        private readonly DispatcherTimer ShotTimer;
-        private readonly DispatcherTimer MoveTimer;
-
-        private readonly List<IScalable?> Scalables = [];
-        private readonly List<IDrawable?> Drawables = [];
 
         private Stopwatch Stopwatch = new();
         private Point2DF? PathStartingPoint;
-        private Point2DI? ShiftedWndPos
-        {
-            get
-            {
-                return ViewModel.CurrentPos is null
-                    ? User.Center
-                    : Converter.ToWndCoord(
-                    new Point2DF(ViewModel.CurrentPos.X - Settings.ANGLE_X_SHIFT, ViewModel.CurrentPos.Y - Settings.ANGLE_Y_SHIFT));
-            }
-        }
 
-        private Size PaintPanelSize => PaintRect.RenderSize;
-        private int PaintPanelCenterX => (int)PaintPanelSize.Width / 2;
-        private int PaintPanelCenterY => (int)PaintPanelSize.Height / 2;
-        private int Score = 0;
         private int TargetID = 1;
-
 
         public PaintView()
         {

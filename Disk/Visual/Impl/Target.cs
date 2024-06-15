@@ -21,6 +21,11 @@ namespace Disk.Visual.Impl
     public class Target(Point2D<int> center, int radius, Size iniSize) : User(center, radius, 0, Brushes.White, iniSize)
     {
         /// <summary>
+        ///     Invoked on ReceiveShot method call
+        /// </summary>
+        public event Action<int>? OnReceiveShot;
+
+        /// <summary>
         ///     Gets the maximum radius of the target
         /// </summary>
         public int MaxRadius => Radius * 5;
@@ -143,6 +148,8 @@ namespace Disk.Visual.Impl
             {
                 res += circle.Contains(shot) ? 1 : 0;
             }
+
+            OnReceiveShot?.Invoke(res);
 
             return res;
         }

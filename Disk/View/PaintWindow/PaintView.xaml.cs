@@ -91,11 +91,7 @@ namespace Disk.View.PaintWindow
                 PathInTargetCoords.Add(a);
             }
 
-            Score += shotScore;
-
-
-            //Title = $"{Localization.Paint_Score}: {Score}";
-            TblScore.Text = $"{Localization.Paint_Score}: {Score}";
+            TblScore.Text = $"{Localization.Paint_Score}: {ViewModel.Score}";
 
             if (Target.IsFull)
             {
@@ -120,7 +116,7 @@ namespace Disk.View.PaintWindow
                     var wndCenter = Converter.ToWnd_FromRelative(newCenter);
                     Target.Move(wndCenter);
 
-                    TargetCenters.Add(Converter.ToAngle_FromWnd(wndCenter));
+                    //TargetCenters.Add(Converter.ToAngle_FromWnd(wndCenter));
 
                     Stopwatch = Stopwatch.StartNew();
                     TblTime.Text = string.Empty;
@@ -146,7 +142,7 @@ namespace Disk.View.PaintWindow
             User = ViewModel.GetUser();
             Target = ViewModel.GetProgressTarget();
 
-            TargetCenters.Add(new Point2D<float>((float)Target.Center.XDbl, (float)Target.Center.YDbl));
+            //TargetCenters.Add(new Point2D<float>((float)Target.Center.XDbl, (float)Target.Center.YDbl));
 
             PathStartingPoint = Converter.ToAngle_FromWnd(User.Center);
 

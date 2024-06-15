@@ -26,8 +26,14 @@ namespace Disk.ViewModel
         // Scale
         public Converter Converter { get; set; }
 
-        public int TargetId { get; set; }
+        // Properties
+        public Point2D<float>? NextTargetCenter => TargetCenters.Count <= TargetId ? null : TargetCenters[TargetId++];
+        private static Settings Settings => Settings.Default;
+        private string UsrAngLog => $"{CurrPath}{FilePath.DirectorySeparatorChar}{Settings.USER_ANG_LOG_FILE}";
+
+        // Disposable
         private readonly Thread DiskNetworkThread;
+        private Logger UserMovementLog = null!;
 
         // sessions datasets
         public List<Point2D<float>> TargetCenters { get; set; } = null!;
@@ -35,14 +41,11 @@ namespace Disk.ViewModel
         public List<List<Point2D<float>>> PathsToTargets = [];
         public List<List<Point2D<float>>> PathsInTargets = [];
 
-        // cahnging
+        // changing
         public Point3D<float>? CurrentPos;
         public bool IsGame = true;
-
-        // Unchanged
-        private static Settings Settings => Settings.Default;
-        private string UsrAngLog => $"{CurrPath}{FilePath.DirectorySeparatorChar}{Settings.USER_ANG_LOG_FILE}";
-        private Logger UserMovementLog = null!;
+        public int TargetId { get; set; }
+        public int Score { get; set; }
 
         // DI
         private readonly NavigationStore _navigationStore;
@@ -69,7 +72,10 @@ namespace Disk.ViewModel
             var center = NextTargetCenter ?? new(0.5f, 0.5f);
             var wndCenter = Converter.ToWnd_FromRelative(center);
 
-            return DrawableFabric.GetProgressTarget(wndCenter);
+            var target = DrawableFabric.GetProgressTarget(wndCenter);
+            target.OnReceiveShot += shot => Score += shot;
+
+            return target;
         }
 
         public User GetUser()
@@ -101,10 +107,7 @@ namespace Disk.ViewModel
             }
         }
 
-        public Point2D<float>? NextTargetCenter => TargetCenters.Count <= TargetId ? null : TargetCenters[TargetId++];
-
-        // Show message box
-        public void SaveSessionResult(int score)
+        public void SaveSessionResult()
         {
             var mx = Calculator2D.MathExp(FullPath);
             var dispersion = Calculator2D.Dispersion(FullPath);
@@ -116,7 +119,7 @@ namespace Disk.ViewModel
                 MathExp = (mx.XDbl + mx.YDbl) / 2,
                 Dispersion = (dispersion.XDbl + dispersion.YDbl) / 2,
                 Deviation = (deviation.XDbl + dispersion.YDbl) / 2,
-                Score = score
+                Score = Score
             };
 
             _sessionResultRepository.Add(sres);
