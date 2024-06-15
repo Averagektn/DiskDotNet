@@ -13,8 +13,8 @@ namespace Disk.Stores
 
         public void Close()
         {
-            CanCloseStack.Pop();
-            ViewModels.Pop();
+            _ = CanCloseStack.Pop();
+            ViewModels.Pop().Dispose();
             OnCurrentViewModelChanged();
         }
 

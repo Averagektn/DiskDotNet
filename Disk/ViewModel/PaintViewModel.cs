@@ -97,12 +97,9 @@ namespace Disk.ViewModel
             catch
             {
                 _ = MessageBox.Show(Localization.Paint_ConnectionLost);
-                _ = Application.Current.Dispatcher.BeginInvoke(new Action(NavigateToAppoinment));
+                _ = Application.Current.Dispatcher.BeginInvoke(new Action(() => _navigationStore.NavigateBack()));
             }
         }
-
-        public void NavigateToAppoinment() =>
-            _navigationStore.SetViewModel<AppointmentViewModel>(vm => vm.Appointment = AppointmentSession.Appointment);
 
         public Point2D<float>? NextTargetCenter => TargetCenters.Count <= TargetId ? null : TargetCenters[TargetId++];
 
@@ -129,8 +126,10 @@ namespace Disk.ViewModel
         public void SavePathToTarget(PathToTarget pathToTarget) => _pathToTargetRepository.Add(pathToTarget);
         public void SavePathInTarget(PathInTarget pathInTarget) => _pathInTargetRepository.Add(pathInTarget);
 
-        ~PaintViewModel()
+        public override void Dispose()
         {
+            base.Dispose();
+
             IsGame = false;
             UserMovementLog.Dispose();
             DiskNetworkThread.Join();

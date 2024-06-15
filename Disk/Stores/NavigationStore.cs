@@ -35,8 +35,8 @@ namespace Disk.Stores
                 return false;
             }
 
-            _ = ViewModels.Pop();
-            
+            ViewModels.Pop().Dispose();
+
             if (ViewModels.Count == 0)
             {
                 return false;
