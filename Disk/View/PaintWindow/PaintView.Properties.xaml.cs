@@ -22,6 +22,7 @@ namespace Disk.View.PaintWindow
 
         private PaintViewModel ViewModel => (PaintViewModel)DataContext;
 
+        // move all to vm
         // replace
         public List<Point2DF> PathToTargetCoords = [];
         public List<Point2DF> PathInTargetCoords = [];
@@ -31,8 +32,7 @@ namespace Disk.View.PaintWindow
 
         private readonly List<Point2DF> TargetCenters = [];
 
-        public SessionResult SessionResult { get; set; } = new();
-
+        //public SessionResult SessionResult { get; set; } = new();
 
         // Non-verified
         private static Settings Settings => Settings.Default;

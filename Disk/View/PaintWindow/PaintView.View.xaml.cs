@@ -1,6 +1,7 @@
 ﻿using Disk.Calculations.Impl;
 using Disk.Calculations.Impl.Converters;
 using Disk.Data.Impl;
+using Disk.Sessions;
 using Disk.Visual.Impl;
 using System.ComponentModel;
 using System.Drawing;
@@ -19,35 +20,7 @@ namespace Disk.View.PaintWindow
 {
     public partial class PaintView : UserControl
     {
-        private void ShowStats()
-        {
-            if (ViewModel.FullPath.Count != 0)
-            {
-                var mx = Calculator2D.MathExp(ViewModel.FullPath);
-                var dispersion = Calculator2D.Dispersion(ViewModel.FullPath);
-                var deviation = Calculator2D.StandartDeviation(ViewModel.FullPath);
 
-                SessionResult.MathExp = (mx.XDbl + mx.YDbl) / 2;
-                SessionResult.Dispersion = (dispersion.XDbl + dispersion.YDbl) / 2;
-                SessionResult.Deviation = (deviation.XDbl + dispersion.YDbl) / 2;
-                SessionResult.Score = Score;
-                ViewModel.SaveSessionResult(SessionResult);
-
-                MessageBox.Show(
-                $"""
-                                 {Localization.Paint_Score}: {Score}
-                                 {Localization.Paint_MathExp}: {mx}
-                                 {Localization.Paint_Dispersion}: {dispersion}
-                                 {Localization.Paint_StandartDeviation}: {deviation}
-                                 """);
-
-                MessageBox.Show(Localization.Paint_Over);
-            }
-            else
-            {
-                MessageBox.Show(Localization.Paint_Over);
-            }
-        }
 
         private void StopGame()
         {
@@ -171,7 +144,7 @@ namespace Disk.View.PaintWindow
         private void OnStopClick(object sender, RoutedEventArgs e)
         {
             StopGame();
-            ShowStats();
+            ViewModel.SaveSessionResult(Score);
 
             BtnStop.IsEnabled = false;
 

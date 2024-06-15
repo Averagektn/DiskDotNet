@@ -1,4 +1,5 @@
-﻿using Disk.Calculations.Impl.Converters;
+﻿using Disk.Calculations.Impl;
+using Disk.Calculations.Impl.Converters;
 using Disk.Data.Impl;
 using Disk.Entities;
 using Disk.Repository.Interface;
@@ -76,24 +77,27 @@ namespace Disk.ViewModel
 
         public Point2D<float>? NextTargetCenter => TargetCenters.Count <= TargetId ? null : TargetCenters[TargetId++];
 
-        public void SaveSessionResult(SessionResult sessionResult)
+        public void SaveSessionResult(int score)
         {
-            sessionResult.Id = AppointmentSession.CurrentSession.Id;
-            _sessionResultRepository.Add(sessionResult);
+            var mx = Calculator2D.MathExp(FullPath);
+            var dispersion = Calculator2D.Dispersion(FullPath);
+            var deviation = Calculator2D.StandartDeviation(FullPath);
+
+            var sres = new SessionResult()
+            {
+                Id = AppointmentSession.CurrentSession.Id,
+                MathExp = (mx.XDbl + mx.YDbl) / 2,
+                Dispersion = (dispersion.XDbl + dispersion.YDbl) / 2,
+                Deviation = (deviation.XDbl + dispersion.YDbl) / 2,
+                Score = score
+            };
+
+            _sessionResultRepository.Add(sres);
             OnSessionOver?.Invoke();
         }
 
-        public void SavePathToTarget(PathToTarget pathToTarget)
-        {
-            pathToTarget.Session = AppointmentSession.CurrentSession.Id;
-            _pathToTargetRepository.Add(pathToTarget);
-        }
-
-        public void SavePathInTarget(PathInTarget pathInTarget)
-        {
-            pathInTarget.Session = AppointmentSession.CurrentSession.Id;
-            _pathInTargetRepository.Add(pathInTarget);
-        }
+        public void SavePathToTarget(PathToTarget pathToTarget) => _pathToTargetRepository.Add(pathToTarget);
+        public void SavePathInTarget(PathInTarget pathInTarget) => _pathInTargetRepository.Add(pathInTarget);
 
         ~PaintViewModel()
         {
