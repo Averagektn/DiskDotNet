@@ -46,13 +46,8 @@ namespace Disk.View.PaintWindow
         private readonly List<IDrawable?> Drawables = [];
 
         private Stopwatch Stopwatch = new();
-
         private Point2DF? PathStartingPoint;
-
-
-
         private Point3DF? CurrentPos;
-
         private Point2DI? ShiftedWndPos
         {
             get

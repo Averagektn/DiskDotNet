@@ -151,28 +151,23 @@ namespace Disk.View.PaintWindow
                 while (IsGame)
                 {
                     CurrentPos = con.GetXYZ();
-                    //???
-                    //Thread.Sleep(Settings.MOVE_TIME / 2);
                 }
             }
             catch
             {
                 MessageBox.Show(Localization.Paint_ConnectionLost);
-                //Application.Current.Dispatcher.BeginInvoke(new Action(Close));
                 Application.Current.Dispatcher.BeginInvoke(new Action(ViewModel.NavigateToAppoinment));
-
             }
         }
 
         private void OnLoaded(object sender, RoutedEventArgs e)
         {
             User = ViewModel.GetUser();
-
             Target = ViewModel.GetProgressTarget();
 
-            TargetCenters.Add(new((float)Target.Center.XDbl, (float)Target.Center.YDbl));
+            TargetCenters.Add(new Point2D<float>((float)Target.Center.XDbl, (float)Target.Center.YDbl));
 
-            PathStartingPoint = new(0.0f, 0.0f);            
+            PathStartingPoint = Converter.ToAngle_FromWnd(User.Center);            
 
             Drawables.Add(Target); Drawables.Add(User);
             Scalables.Add(Target); Scalables.Add(User); Scalables.Add(Converter);
@@ -181,7 +176,6 @@ namespace Disk.View.PaintWindow
             {
                 elem?.Draw(PaintArea);
             }
-
             foreach (var elem in Scalables)
             {
                 elem?.Scale(PaintPanelSize);
