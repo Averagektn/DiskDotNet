@@ -18,7 +18,7 @@ namespace Disk.Visual.Impl
         protected const double DIAGONAL_CORRECTION = 1.41;
 
         private readonly Image _image;
-        private readonly int IniSpeed;
+        //private readonly int IniSpeed;
         private readonly Size IniImageSize;
         protected readonly Size IniSize;
 
@@ -113,7 +113,7 @@ namespace Disk.Visual.Impl
             double coeffX = (double)newSize.Width / IniSize.Width;
             double coeffY = (double)newSize.Height / IniSize.Height;
 
-            Speed = (int)Math.Round(IniSpeed * (coeffX + coeffY) / 2);
+            //Speed = (int)Math.Round(IniSpeed * (coeffX + coeffY) / 2);
 
             Center = new(
                     (int)Math.Round(Center.X * (newSize.Width / CurrSize.Width)),

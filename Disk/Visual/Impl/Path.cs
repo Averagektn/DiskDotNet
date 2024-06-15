@@ -13,7 +13,7 @@ namespace Disk.Visual.Impl
     /// <summary>
     ///     Represents a path that can be drawn and scaled
     /// </summary>
-    class Path : IDrawable, IScalable
+    class Path : IStaticFigure
     {
         /// <summary>
         ///     The polyline used to draw the path

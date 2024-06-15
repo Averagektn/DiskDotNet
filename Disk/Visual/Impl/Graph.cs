@@ -12,7 +12,7 @@ namespace Disk.Visual.Impl
     /// <summary>
     ///     Represents a graph that can be drawn and scaled
     /// </summary>
-    class Graph : IDrawable, IScalable
+    class Graph : IStaticFigure
     {
         /// <summary>
         ///     The size of the graph
