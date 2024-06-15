@@ -7,6 +7,7 @@
              xmlns:local="clr-namespace:Disk.View.PaintWindow" 
              xmlns:viewmodel="clr-namespace:Disk.ViewModel" 
              d:DataContext="{d:DesignInstance Type=viewmodel:PaintViewModel}"
+             xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
              mc:Ignorable="d" 
              d:DesignHeight="450" 
              d:DesignWidth="800">
@@ -38,21 +39,33 @@
         </Viewbox>
 
         <Viewbox Grid.Row="2" Grid.Column="1" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="10">
-            <RadioButton Name="RbRose" Content="{x:Static lang:Localization.Paint_WindRose}" GroupName="DataType" IsChecked="True" Visibility="Hidden"/>
+            <RadioButton Name="RbRose" Content="{x:Static lang:Localization.Paint_WindRose}" GroupName="DataType" IsChecked="True" Visibility="{Binding RoseButtonVisibility}">
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="Checked">
+                        <i:InvokeCommandAction Command="{Binding RoseSelectedCommand}" />
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+            </RadioButton>
         </Viewbox>
 
         <Viewbox Grid.Row="3" Grid.Column="1" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="10">
-            <RadioButton Name="RbPath" Content="{x:Static lang:Localization.Paint_Path}" GroupName="DataType" Visibility="Hidden"/>
+            <RadioButton Name="RbPath" Content="{x:Static lang:Localization.Paint_Path}" GroupName="DataType" Visibility="{Binding PathButtonVisibility}">
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="Checked">
+                        <i:InvokeCommandAction Command="{Binding PathSelectedCommand}" />
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+            </RadioButton>
         </Viewbox>
 
         <Viewbox Grid.Row="4" Grid.Column="1" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="10">
-            <ComboBox Name="CbTargets" Visibility="Hidden" FontSize="20" Width="200"/>
+            <ComboBox Name="CbTargets" ItemsSource="{Binding PathsAndRoses}" Visibility="{Binding RosesAndPathsVisibility}" FontSize="20" Width="200"/>
         </Viewbox>
         
         <TextBlock FontSize="5" Text="{Binding ScoreString}" TextAlignment="Left"/>
 
         <Viewbox Grid.Row="5" Grid.Column="1" Margin="10 10 10 10">
-            <Button Content="{x:Static lang:Localization.Paint_Stop}" FontSize="20" Name="BtnStop"/>
+            <Button Content="{x:Static lang:Localization.Paint_Stop}" FontSize="20" Name="BtnStop" IsEnabled="{Binding IsStopEnabled}"/>
         </Viewbox>
 
         <Canvas Name="PaintArea" Grid.RowSpan="6">

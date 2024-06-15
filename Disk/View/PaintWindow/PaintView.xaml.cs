@@ -57,13 +57,11 @@ namespace Disk.View.PaintWindow
             };
             ShotTimer.Tick += ShotTimerElapsed;
 
-            Unloaded += OnClosing;
+            Unloaded += (_, _) => StopGame();
             Loaded += OnLoaded;
             SizeChanged += OnSizeChanged;
 
             CbTargets.SelectionChanged += CbTargets_SelectionChanged;
-            RbPath.Checked += RbPath_Checked;
-            RbRose.Checked += RbRose_Checked;
         }
 
         private void ShotTimerElapsed(object? sender, EventArgs e)
@@ -127,6 +125,41 @@ namespace Disk.View.PaintWindow
 
             MoveTimer.Start();
             ShotTimer.Start();
+        }
+
+        private void StopGame()
+        {
+            Target.Remove(PaintArea.Children);
+            User.Remove(PaintArea.Children);
+
+            _ = Drawables.Remove(Target);
+            _ = Scalables.Remove(Target);
+
+            _ = Drawables.Remove(User);
+            _ = Scalables.Remove(User);
+
+            User.ClearOnShot();
+
+            MoveTimer.Stop();
+            ShotTimer.Stop();
+        }
+
+        private void OnSizeChanged(object sender, RoutedEventArgs e)
+        {
+            AllowedArea.RadiusX = PaintPanelCenterX;
+            AllowedArea.RadiusY = PaintPanelCenterY;
+            AllowedArea.Center = new(PaintPanelCenterX, PaintPanelCenterY);
+
+            foreach (var elem in Scalables)
+            {
+                elem?.Scale(PaintPanelSize);
+            }
+        }
+
+        private void OnStopClick(object sender, RoutedEventArgs e)
+        {
+            StopGame();
+            ViewModel.SaveSessionResult();
         }
     }
 }

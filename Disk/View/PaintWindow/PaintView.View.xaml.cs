@@ -3,12 +3,9 @@ using Disk.Data.Impl;
 using Disk.Visual.Impl;
 using System.Drawing;
 using System.IO;
-using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using Color = System.Windows.Media.Color;
-using FilePath = System.IO.Path;
-using Localization = Disk.Properties.Localization;
 using Path = Disk.Visual.Impl.Path;
 using PolarPointF = Disk.Data.Impl.PolarPoint<float>;
 using Settings = Disk.Properties.Config.Config;
@@ -18,53 +15,13 @@ namespace Disk.View.PaintWindow
 {
     public partial class PaintView : UserControl
     {
-        private void StopGame()
-        {
-            Target.Remove(PaintArea.Children);
-            User.Remove(PaintArea.Children);
-
-            _ = Drawables.Remove(Target);
-            _ = Scalables.Remove(Target);
-
-            _ = Drawables.Remove(User);
-            _ = Scalables.Remove(User);
-
-            User.ClearOnShot();
-
-            MoveTimer.Stop();
-            ShotTimer.Stop();
-        }
-
-        private void OnClosing(object? sender, RoutedEventArgs e)
-        {
-            StopGame();
-        }
-
-        private void OnSizeChanged(object sender, RoutedEventArgs e)
-        {
-            AllowedArea.RadiusX = PaintPanelCenterX;
-            AllowedArea.RadiusY = PaintPanelCenterY;
-            AllowedArea.Center = new(PaintPanelCenterX, PaintPanelCenterY);
-
-            foreach (var elem in Scalables)
-            {
-                elem?.Scale(PaintPanelSize);
-            }
-        }
-
-        private string GetInTargetFileName(int id) =>
-            $"{ViewModel.CurrPath}{FilePath.DirectorySeparatorChar}in_tar_{id}.log";
-
-        private string GetMovToTargetFileName(int id) =>
-            $"{ViewModel.CurrPath}{FilePath.DirectorySeparatorChar}mov_to_tar_{id}.log";
-
         private void CbTargets_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             PaintArea.Children.Clear();
 
             var selectedIndex = CbTargets.SelectedIndex;
-            var roseFileName = GetInTargetFileName(selectedIndex + 1);
-            var pathFileName = GetMovToTargetFileName(selectedIndex + 1);
+            var roseFileName = "";//GetInTargetFileName(selectedIndex + 1);
+            var pathFileName = "";//GetMovToTargetFileName(selectedIndex + 1);
 
             if (selectedIndex != -1)
             {
@@ -108,43 +65,6 @@ namespace Disk.View.PaintWindow
                     }
                 }
             }
-        }
-
-        private void RbRose_Checked(object sender, RoutedEventArgs e)
-        {
-            CbTargets.Items.Clear();
-
-            for (int i = 1; i < ViewModel.TargetId + 1; i++)
-            {
-                _ = CbTargets.Items.Add($"{Localization.Paint_WindRoseForTarget} {i}");
-            }
-        }
-
-        private void RbPath_Checked(object sender, RoutedEventArgs e)
-        {
-            CbTargets.Items.Clear();
-
-            for (int i = 1; i < ViewModel.TargetId + 1; i++)
-            {
-                _ = CbTargets.Items.Add($"{Localization.Paint_PathToTarget} {i}");
-            }
-        }
-
-        private void OnStopClick(object sender, RoutedEventArgs e)
-        {
-            StopGame();
-            ViewModel.SaveSessionResult();
-
-            BtnStop.IsEnabled = false;
-
-            for (int i = 1; i < ViewModel.TargetId + 1; i++)
-            {
-                _ = CbTargets.Items.Add($"{Localization.Paint_WindRoseForTarget} {i}");
-            }
-
-            CbTargets.Visibility = Visibility.Visible;
-            RbPath.Visibility = Visibility.Visible;
-            RbRose.Visibility = Visibility.Visible;
         }
     }
 }

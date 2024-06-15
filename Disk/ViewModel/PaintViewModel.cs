@@ -6,12 +6,15 @@ using Disk.Repository.Interface;
 using Disk.Service.Implementation;
 using Disk.Sessions;
 using Disk.Stores;
+using Disk.ViewModel.Common.Commands.Sync;
 using Disk.ViewModel.Common.ViewModels;
 using Disk.Visual.Impl;
 using Newtonsoft.Json;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Net;
 using System.Windows;
+using System.Windows.Input;
 using FilePath = System.IO.Path;
 using Localization = Disk.Properties.Localization;
 using Settings = Disk.Properties.Config.Config;
@@ -49,6 +52,7 @@ namespace Disk.ViewModel
         public bool IsGame = true;
         public int TargetId { get; set; }
         public int Score { get; set; }
+        public ObservableCollection<string> PathsAndRoses { get; set; } = [];
 
         // DI
         private readonly NavigationStore _navigationStore;
@@ -63,6 +67,38 @@ namespace Disk.ViewModel
         public string ScoreString => $"{Localization.Paint_Score}: {Score}";
         private string _message = string.Empty;
         public string Message { get => _message; set => SetProperty(ref _message, value); }
+        private bool _isStopEnabled = true;
+        public bool IsStopEnabled { get => _isStopEnabled; set => SetProperty(ref _isStopEnabled, value); }
+        private Visibility _rosesAndPathsVisibility = Visibility.Hidden;
+        public Visibility RosesAndPathsVisibility { get => _rosesAndPathsVisibility; set => SetProperty(ref _rosesAndPathsVisibility, value); }
+        private Visibility _pathButtonVisibility = Visibility.Hidden;
+        public Visibility PathButtonVisibility { get => _pathButtonVisibility; set => SetProperty(ref _pathButtonVisibility, value); }
+        private Visibility _roseButtonVisibility = Visibility.Hidden;
+        public Visibility RoseButtonVisibility { get => _roseButtonVisibility; set => SetProperty(ref _roseButtonVisibility, value); }
+
+        // commands
+        public ICommand RoseSelectedCommand => new Command(RoseSelected);
+        public ICommand PathSelectedCommand => new Command(PathSelected);
+
+        private void PathSelected(object? obj)
+        {
+            PathsAndRoses.Clear();
+
+            for (int i = 1; i < TargetId + 1; i++)
+            {
+                PathsAndRoses.Add($"{Localization.Paint_PathToTarget} {i}");
+            }
+        }
+
+        private void RoseSelected(object? obj)
+        {
+            PathsAndRoses.Clear();
+
+            for (int i = 1; i < TargetId + 1; i++)
+            {
+                PathsAndRoses.Add($"{Localization.Paint_WindRoseForTarget} {i}");
+            }
+        }
 
         public PaintViewModel(NavigationStore navigationStore, IPathToTargetRepository pathToTargetRepository,
             IPathInTargetRepository pathInTargetRepository, ISessionResultRepository sessionResultRepository)
@@ -136,6 +172,15 @@ namespace Disk.ViewModel
             };
 
             _sessionResultRepository.Add(sres);
+
+            IsStopEnabled = false;
+
+            RoseSelected(null);
+
+            RosesAndPathsVisibility = Visibility.Visible;
+            RoseButtonVisibility = Visibility.Visible;
+            PathButtonVisibility = Visibility.Visible;
+
             OnSessionOver?.Invoke();
         }
 
