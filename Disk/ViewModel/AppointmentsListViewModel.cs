@@ -21,7 +21,11 @@ namespace Disk.ViewModel
 
         public ICommand StartAppointmentCommand => new AsyncCommand(StartAppointmentAsync);
         public ICommand ToAppointmentCommand =>
-            new Command(_ => navigationStore.SetViewModel<AppointmentViewModel>(vm => vm.Appointment = SelectedAppointment!));
+            new Command(_ => 
+            {
+                AppointmentSession.Appointment = SelectedAppointment!;
+                navigationStore.SetViewModel<AppointmentViewModel>();
+            });
 
         private async Task StartAppointmentAsync(object? arg)
         {
@@ -38,7 +42,6 @@ namespace Disk.ViewModel
 
             navigationStore.SetViewModel<AppointmentViewModel>(vm => 
             {
-                vm.Appointment = appointment;
                 vm.IsNewAppointment = true;
             });
         }

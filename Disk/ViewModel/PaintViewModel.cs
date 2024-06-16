@@ -116,7 +116,7 @@ namespace Disk.ViewModel
 
             if (IsRoseChecked)
             {
-                var angRadius = (Converter.ToAngleX_FromLog(target.Radius) + Converter.ToAngleY_FromLog(target.Radius)) / 2;
+                var angRadius = (Converter.ToAngleX_FromWnd(target.Radius) + Converter.ToAngleY_FromWnd(target.Radius)) / 2;
 
                 var dataset =
                     PathsInTargets[SelectedRoseOrPath]
@@ -131,7 +131,7 @@ namespace Disk.ViewModel
             {
                 return new Path
                     (
-                        PathsInTargets[SelectedRoseOrPath], paintAreaSize, new SizeF((int)Settings.X_MAX_ANGLE, (int)Settings.Y_MAX_ANGLE),
+                        PathsInTargets[SelectedRoseOrPath], paintAreaSize, new SizeF((int)Settings.X_MAX_ANGLE * 2, (int)Settings.Y_MAX_ANGLE * 2),
                         new SolidColorBrush
                         (
                             Color.FromRgb(Settings.USER_COLOR.R, Settings.USER_COLOR.G, Settings.USER_COLOR.B)

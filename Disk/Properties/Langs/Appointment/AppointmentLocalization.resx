@@ -135,8 +135,14 @@
   <data name="Dispersion" xml:space="preserve">
     <value>Dispersion</value>
   </data>
+  <data name="ExportToExcel" xml:space="preserve">
+    <value>Export to excel</value>
+  </data>
   <data name="MathExp" xml:space="preserve">
     <value>Math expectation</value>
+  </data>
+  <data name="SaveFailed" xml:space="preserve">
+    <value>Save failed</value>
   </data>
   <data name="Score" xml:space="preserve">
     <value>Score</value>

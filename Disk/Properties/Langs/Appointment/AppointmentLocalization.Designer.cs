@@ -115,11 +115,29 @@ namespace Disk.Properties.Langs.Appointment {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Export to excel.
+        /// </summary>
+        public static string ExportToExcel {
+            get {
+                return ResourceManager.GetString("ExportToExcel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Math expectation.
         /// </summary>
         public static string MathExp {
             get {
                 return ResourceManager.GetString("MathExp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Save failed.
+        /// </summary>
+        public static string SaveFailed {
+            get {
+                return ResourceManager.GetString("SaveFailed", resourceCulture);
             }
         }
         

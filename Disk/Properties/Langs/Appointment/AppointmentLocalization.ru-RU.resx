@@ -135,8 +135,14 @@
   <data name="Dispersion" xml:space="preserve">
     <value>Дисперсия</value>
   </data>
+  <data name="ExportToExcel" xml:space="preserve">
+    <value>Экспорт в Excel</value>
+  </data>
   <data name="MathExp" xml:space="preserve">
     <value>Математическое ожидание</value>
+  </data>
+  <data name="SaveFailed" xml:space="preserve">
+    <value>Ошибка сохранения файла</value>
   </data>
   <data name="Score" xml:space="preserve">
     <value>Счет</value>
