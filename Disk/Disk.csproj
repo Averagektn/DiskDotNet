@@ -12,6 +12,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Properties\feet_projection.png" />
     <None Remove="Properties\logo.gif" />
     <None Remove="Properties\logo.jpg" />
     <None Remove="Properties\pngegg.png" />
@@ -19,6 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="Properties\feet_projection.png" />
     <Content Include="Properties\Icon.ico" />
   </ItemGroup>
 
