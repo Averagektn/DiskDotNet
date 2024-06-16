@@ -20,7 +20,6 @@ using System.Windows.Media;
 using FilePath = System.IO.Path;
 using Localization = Disk.Properties.Localization;
 using Settings = Disk.Properties.Config.Config;
-using SizeF = System.Drawing.SizeF;
 
 namespace Disk.ViewModel
 {

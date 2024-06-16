@@ -16,7 +16,7 @@ using Localization = Disk.Properties.Langs.Appointment.AppointmentLocalization;
 
 namespace Disk.ViewModel
 {
-    public class AppointmentViewModel(ModalNavigationStore modalNavigationStore, ISessionRepository sessionRepository)
+    public class AppointmentViewModel(ModalNavigationStore modalNavigationStore, ISessionRepository sessionRepository, IMapRepository mapRepository)
         : ObserverViewModel
     {
         public bool IsNewAppointment { get; set; }
@@ -39,16 +39,16 @@ namespace Disk.ViewModel
             {
                 var worksheet = workbook.Worksheets.Add();
 
-                worksheet.Cell(1, 1).Value = "Date";
-                worksheet.Cell(1, 2).Value = "Map";
+                worksheet.Cell(1, 1).Value = Localization.DateTime;
+                worksheet.Cell(1, 2).Value = Localization.Map;
 
                 worksheet.Cell(2, 1).Value = session.DateTime;
-                worksheet.Cell(2, 2).Value = session.Map;
+                worksheet.Cell(2, 2).Value = mapRepository.GetById(session.Map).Name;
 
-                worksheet.Cell(4, 1).Value = "Dispersion";
-                worksheet.Cell(4, 2).Value = "Deviation";
-                worksheet.Cell(4, 3).Value = "MathExp";
-                worksheet.Cell(4, 4).Value = "Score";
+                worksheet.Cell(4, 1).Value = Localization.Dispersion;
+                worksheet.Cell(4, 2).Value = Localization.Deviation;
+                worksheet.Cell(4, 3).Value = Localization.MathExp;
+                worksheet.Cell(4, 4).Value = Localization.Score;
 
                 var sres = session.SessionResult;
                 worksheet.Cell(5, 1).Value = sres?.Dispersion;
@@ -56,11 +56,11 @@ namespace Disk.ViewModel
                 worksheet.Cell(5, 3).Value = sres?.MathExp;
                 worksheet.Cell(5, 4).Value = sres?.Score;
 
-                worksheet.Cell(7, 1).Value = "TargetNum";
-                worksheet.Cell(7, 2).Value = "AngleDistance";
-                worksheet.Cell(7, 3).Value = "Time";
-                worksheet.Cell(7, 4).Value = "AngleSpeed";
-                worksheet.Cell(7, 5).Value = "ApproachSpeed";
+                worksheet.Cell(7, 1).Value = Localization.TargetNum;
+                worksheet.Cell(7, 2).Value = Localization.AngleDistance;
+                worksheet.Cell(7, 3).Value = Localization.Time;
+                worksheet.Cell(7, 4).Value = Localization.AngleSpeed;
+                worksheet.Cell(7, 5).Value = Localization.ApproachSpeed;
 
                 var ptts = session.PathToTargets;
                 int pttRow = 8;
@@ -76,13 +76,14 @@ namespace Disk.ViewModel
                     pttRow++;
 
                     var pathList = JsonConvert.DeserializeObject<List<Point2D<float>>>(ptt.CoordinatesJson)!;
-                    worksheet.Cell(pathRow++, pathCol).Value = $"Target: {ptt.TargetNum + 1}";
+                    worksheet.Cell(pathRow++, pathCol).Value = $"{Localization.TargetNum}: {ptt.TargetNum + 1}";
                     worksheet.Cell(pathRow, pathCol).Value = "X";
                     worksheet.Cell(pathRow, pathCol + 1).Value = "Y";
-                    worksheet.Cell(pathRow - 1, pathCol + 2).Value = "Profile projection";
-                    worksheet.Cell(pathRow - 1, pathCol + 3).Value = "Frontal direction";
-                    worksheet.Cell(pathRow - 1, pathCol + 4).Value = "Frontal left foot";
-                    worksheet.Cell(pathRow++, pathCol + 5).Value = "Frontal right foot";
+                    worksheet.Cell(pathRow - 1, pathCol + 2).Value = Localization.ProfileProjection;
+                    worksheet.Cell(pathRow - 1, pathCol + 3).Value = Localization.FrontalProjection;
+                    worksheet.Cell(pathRow - 1, pathCol + 4).Value = Localization.FrontLeftFoot;
+                    worksheet.Cell(pathRow - 1, pathCol + 5).Value = Localization.FrontRightFoot;
+                    pathRow++;
 
 
                     foreach (var point in pathList)
@@ -95,7 +96,7 @@ namespace Disk.ViewModel
 
                         // frontal
                         // left
-                        if (point.X >= 0.0f)
+                        if (point.X < 0.0f)
                         {
                             worksheet.Cell(pathRow, pathCol + 3).Value = "<-";
                             // left foot
@@ -123,7 +124,8 @@ namespace Disk.ViewModel
                 {
                     worksheet.Range(1, 1, 1, 2),
                     worksheet.Range(4, 1, 4, 4),
-                    worksheet.Range(7, 1, 7, 5)
+                    worksheet.Range(7, 1, 7, 5),
+                    worksheet.Range(1, 7, 2, pathCol - 2)
                 }
                 .ForEach(header =>
                 {
@@ -131,7 +133,7 @@ namespace Disk.ViewModel
                     header.Style.Fill.BackgroundColor = XLColor.LightGray;
                 });
 
-                _ = worksheet.Columns().AdjustToContents();
+                _ = worksheet.Columns().AdjustToContents().Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
             }
         }
 
