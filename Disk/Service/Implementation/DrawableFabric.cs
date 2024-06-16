@@ -1,6 +1,7 @@
 ﻿using Disk.Calculations.Impl.Converters;
 using Disk.Data.Impl;
 using Disk.Visual.Impl;
+using System.IO;
 using System.Windows;
 using System.Windows.Media;
 using Settings = Disk.Properties.Config.Config;
@@ -20,14 +21,11 @@ namespace Disk.Service.Implementation
         private static readonly int TargetHp = 200; // to settings
 
         public static User GetUser(string userImagePath) =>
-            userImagePath != string.Empty
-                ? new UserPicture(userImagePath, new(ScreenIniCenterX, ScreenIniCenterY), Settings.USER_INI_SPEED,
-                    new(50, 50), ScreenIniSize)
-                : new User(new(ScreenIniCenterX, ScreenIniCenterY), Settings.USER_INI_RADIUS, Settings.USER_INI_SPEED,
-                    UserBrush, ScreenIniSize);
+            File.Exists(userImagePath)
+                ? new UserPicture(userImagePath, new(ScreenIniCenterX, ScreenIniCenterY), Settings.USER_INI_SPEED, new(50, 50), ScreenIniSize)
+                : new User(new(ScreenIniCenterX, ScreenIniCenterY), Settings.USER_INI_RADIUS, Settings.USER_INI_SPEED, UserBrush, ScreenIniSize);
 
-        public static ProgressTarget GetProgressTarget(Point2D<int> center) =>
-            new(center, Settings.TARGET_INI_RADIUS + 5, ScreenIniSize, TargetHp);
+        public static ProgressTarget GetProgressTarget(Point2D<int> center) => new(center, Settings.TARGET_INI_RADIUS + 5, ScreenIniSize, TargetHp);
 
         public static Converter GetConverter() => new(ScreenIniSize, new(XAngleSize, YAngleSize));
     }
