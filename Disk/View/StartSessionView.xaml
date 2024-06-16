@@ -27,6 +27,7 @@
                 <RowDefinition Height="1*"/>
                 <RowDefinition Height="1*"/>
                 <RowDefinition Height="1*"/>
+                <RowDefinition Height="1*"/>
             </Grid.RowDefinitions>
 
             <Viewbox Grid.Row="0">
@@ -47,6 +48,18 @@
             </Viewbox>
 
             <Viewbox Grid.Row="2">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="{Binding ImageFilePath}" Width="200"/>
+                    <Button 
+                        Content="Pick" 
+                        Command="{Binding PickImageCommand}" 
+                        Margin="0 10" 
+                        Height="50"
+                        Width="50"/>
+                </StackPanel>
+            </Viewbox>
+            
+            <Viewbox Grid.Row="3">
                 <Button
                     Margin="10 0"
                     Height="50"

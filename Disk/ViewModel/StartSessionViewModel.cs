@@ -5,6 +5,7 @@ using Disk.Sessions;
 using Disk.Stores;
 using Disk.ViewModel.Common.Commands.Sync;
 using Disk.ViewModel.Common.ViewModels;
+using Microsoft.Win32;
 using Newtonsoft.Json;
 using System.Collections.ObjectModel;
 using System.IO;
@@ -18,10 +19,29 @@ namespace Disk.ViewModel
     {
         public event Action? OnSessionOver;
 
+        private string _imageFilePath = "Pick a file";
+        public string ImageFilePath { get => _imageFilePath; set => SetProperty(ref _imageFilePath, value); }
+
         public ObservableCollection<Map> Maps => new(mapRepository.GetAll());
         public Map? SelectedMap { get; set; }
+
         public ICommand StartSessionCommand => new Command(StartSession);
+        public ICommand PickImageCommand => new Command(PickImage);
+
         private static Settings Settings => Settings.Default;
+
+        private void PickImage(object? obj)
+        {
+            var filePicker = new OpenFileDialog
+            {
+                Filter = "Images|*.png"
+            };
+
+            if (filePicker.ShowDialog() == true)
+            {
+                ImageFilePath = filePicker.FileName;
+            }
+        }
 
         private void StartSession(object? obj)
         {
@@ -35,7 +55,7 @@ namespace Disk.ViewModel
                     $"{DateTime.Now:dd.MM.yyyy HH-mm-ss}";
             if (!Directory.Exists(logPath))
             {
-                Directory.CreateDirectory(logPath);
+                _ = Directory.CreateDirectory(logPath);
             }
 
             var session = new Session()
@@ -52,6 +72,7 @@ namespace Disk.ViewModel
 
             navigationStore.SetViewModel<PaintViewModel>(vm =>
             {
+                vm.ImagePath = ImageFilePath;
                 vm.CurrPath = logPath;
                 vm.TargetCenters = JsonConvert.DeserializeObject<List<Point2D<float>>>(SelectedMap.CoordinatesJson) ?? [];
                 vm.OnSessionOver += OnSessionOver;
