@@ -130,19 +130,43 @@
     <value>Дата</value>
   </data>
   <data name="Deviation" xml:space="preserve">
-    <value>Отклоенение</value>
+    <value>Отклонение</value>
   </data>
   <data name="Dispersion" xml:space="preserve">
     <value>Дисперсия</value>
   </data>
+  <data name="ExportToExcel" xml:space="preserve">
+    <value>Экспорт в Excel</value>
+  </data>
+  <data name="FrontalProjection" xml:space="preserve">
+    <value>Фронтальная проекция</value>
+  </data>
+  <data name="FrontLeftFoot" xml:space="preserve">
+    <value>Левая нога. Фронтальная проекция</value>
+  </data>
+  <data name="FrontRightFoot" xml:space="preserve">
+    <value>Правая нога. Фронтальная проекция</value>
+  </data>
+  <data name="Map" xml:space="preserve">
+    <value>Карта</value>
+  </data>
   <data name="MathExp" xml:space="preserve">
     <value>Математическое ожидание</value>
+  </data>
+  <data name="ProfileProjection" xml:space="preserve">
+    <value>Профильная проекция</value>
+  </data>
+  <data name="SaveFailed" xml:space="preserve">
+    <value>Ошибка сохранения файла</value>
   </data>
   <data name="Score" xml:space="preserve">
     <value>Счет</value>
   </data>
   <data name="Start" xml:space="preserve">
     <value>Начать сбор данных</value>
+  </data>
+  <data name="TargetNum" xml:space="preserve">
+    <value>Номер цели</value>
   </data>
   <data name="Time" xml:space="preserve">
     <value>Время</value>

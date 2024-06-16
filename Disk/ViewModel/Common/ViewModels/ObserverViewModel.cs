@@ -3,7 +3,7 @@ using System.Runtime.CompilerServices;
 
 namespace Disk.ViewModel.Common.ViewModels
 {
-    public class ObserverViewModel : INotifyPropertyChanged
+    public class ObserverViewModel : INotifyPropertyChanged, IDisposable
     {
         public event PropertyChangedEventHandler? PropertyChanged;
         protected bool SetProperty<T>(ref T field, T newValue, [CallerMemberName] string? propertyName = null)
@@ -21,6 +21,11 @@ namespace Disk.ViewModel.Common.ViewModels
         protected void OnPropertyChanged(string propertyName)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        public virtual void Dispose()
+        {
+            GC.SuppressFinalize(this);
         }
     }
 }

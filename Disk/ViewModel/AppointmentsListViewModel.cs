@@ -10,25 +10,22 @@ using System.Windows.Input;
 
 namespace Disk.ViewModel
 {
-    public class AppointmentsListViewModel(ModalNavigationStore modalNavigationStore, NavigationStore navigationStore,
-            IAppointmentRepository appointmentRepository, INoteRepository noteRepository) : ObserverViewModel
+    public class AppointmentsListViewModel(NavigationStore navigationStore, IAppointmentRepository appointmentRepository) 
+        : ObserverViewModel
     {
         public Patient Patient { get; set; } = null!;
 
-        public ObservableCollection<Note> Notes { get; set; } = new(noteRepository.GetPatientNotes(AppointmentSession.Patient.Id));
         public ObservableCollection<Appointment> Appointments => new(appointmentRepository.GetPatientAppointments(Patient.Id));
 
         public Appointment? SelectedAppointment { get; set; }
 
-        public ICommand AddNoteCommand => 
-            new Command(_ => modalNavigationStore.SetViewModel<AddNoteViewModel>
-            (
-                vm => vm.OnAdd += note => Notes.Add(note), 
-                canClose: true)
-            );
         public ICommand StartAppointmentCommand => new AsyncCommand(StartAppointmentAsync);
         public ICommand ToAppointmentCommand =>
-            new Command(_ => navigationStore.SetViewModel<AppointmentViewModel>(vm => vm.Appointment = SelectedAppointment!));
+            new Command(_ => 
+            {
+                AppointmentSession.Appointment = SelectedAppointment!;
+                navigationStore.SetViewModel<AppointmentViewModel>();
+            });
 
         private async Task StartAppointmentAsync(object? arg)
         {
@@ -45,7 +42,6 @@ namespace Disk.ViewModel
 
             navigationStore.SetViewModel<AppointmentViewModel>(vm => 
             {
-                vm.Appointment = appointment;
                 vm.IsNewAppointment = true;
             });
         }

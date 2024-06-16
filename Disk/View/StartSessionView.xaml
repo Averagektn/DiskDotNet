@@ -6,31 +6,67 @@
              xmlns:local="clr-namespace:Disk.View" xmlns:viewmodel="clr-namespace:Disk.ViewModel" d:DataContext="{d:DesignInstance Type=viewmodel:StartSessionViewModel}"
              xmlns:lang="clr-namespace:Disk.Properties.Langs.StartSession" 
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
+             d:DesignHeight="450" d:DesignWidth="400">
     <UserControl.Resources>
         <ResourceDictionary Source="/Style/BtnStyles.xaml"/>
     </UserControl.Resources>
 
-    <StackPanel HorizontalAlignment="Center">
-        <TextBlock Text="{x:Static lang:StartSessionLocalization.Map}" 
-               Margin="0,15"
-               HorizontalAlignment="Left"/>
-        <ComboBox 
-                Margin="0 15"
-                Width="200"
-                ItemsSource="{Binding Maps}" 
-                SelectedItem="{Binding SelectedMap}"/>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="1*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="1*"/>
+        </Grid.ColumnDefinitions>
+        <Grid Grid.Row="1" Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="1*"/>
+            </Grid.RowDefinitions>
 
-        <Button Content="{x:Static lang:StartSessionLocalization.Start}" 
-                    Foreground="White"
-                    Background="Black"
-                    Margin="0,25"
-                    Height="35"
-                    Width="250"
-                    Command="{Binding StartSessionCommand}">
-            <Button.Style>
-                <Style TargetType="Button" BasedOn="{StaticResource GradientButtonStyle}"/>
-            </Button.Style>
-        </Button>
-    </StackPanel>
+            <Viewbox Grid.Row="0">
+                <TextBlock 
+                        FontSize="15"
+                        Text="{x:Static lang:StartSessionLocalization.Map}" 
+                        Margin="15"
+                        HorizontalAlignment="Left"/>
+            </Viewbox>
+
+            <Viewbox Grid.Row="1">
+                <ComboBox 
+                        FontSize="10"
+                        Margin="15"
+                        Width="200"
+                        ItemsSource="{Binding Maps}" 
+                        SelectedItem="{Binding SelectedMap}"/>
+            </Viewbox>
+
+            <Viewbox Grid.Row="2">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="{Binding ImageFilePath}" Width="200"/>
+                    <Button 
+                        Content="Pick" 
+                        Command="{Binding PickImageCommand}" 
+                        Margin="0 10" 
+                        Height="50"
+                        Width="50"/>
+                </StackPanel>
+            </Viewbox>
+            
+            <Viewbox Grid.Row="3">
+                <Button
+                    Margin="10 0"
+                    Height="50"
+                    Content="{x:Static lang:StartSessionLocalization.Start}" 
+                    Command="{Binding StartSessionCommand}"/>
+            </Viewbox>
+        </Grid>
+    </Grid>
+
 </UserControl>

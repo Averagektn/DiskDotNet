@@ -1,5 +1,4 @@
 ﻿using Disk.Data.Impl;
-using Disk.Sessions;
 using Disk.Stores;
 using Disk.ViewModel.Common.ViewModels;
 using Disk.Visual.Impl;
@@ -10,7 +9,7 @@ using Settings = Disk.Properties.Config.Config;
 
 namespace Disk.ViewModel
 {
-    public class MapCreatorViewModel(ModalNavigationStore modalNavigationStore, NavigationStore navigationStore) : ObserverViewModel
+    public class MapCreatorViewModel(ModalNavigationStore modalNavigationStore) : ObserverViewModel
     {
         private static int IniWidth => Settings.Default.SCREEN_INI_WIDTH;
         private static int IniHeight => Settings.Default.SCREEN_INI_HEIGHT;
@@ -24,7 +23,7 @@ namespace Disk.ViewModel
             var x = (int)mousePos.X;
             var y = (int)mousePos.Y;
 
-            _movingTarget = _targets.Find(target => target.Contains(new Point2D<int>(x, y)));
+            _movingTarget = _targets.FindLast(target => target.Contains(new Point2D<int>(x, y)));
         }
 
         public void MoveTarget(Point mousePos)
@@ -40,18 +39,15 @@ namespace Disk.ViewModel
         {
             if (_targets.Count != 0)
             {
-                foreach (var target in _targets)
-                {
-                    MapSession.Map.Add(new Point2D<float>(
-                        (float)(target.Center.X / actualWidth),
-                        (float)(target.Center.Y / actualHeight)));
-                }
-
-                modalNavigationStore.SetViewModel<MapNamePickerViewModel>();
-            }
-            else 
-            {
-                navigationStore.NavigateBack();
+                modalNavigationStore.SetViewModel<MapNamePickerViewModel>(
+                    vm => vm.Map = _targets
+                        .Select(t => new Point2D<float>
+                        (
+                            (float)(t.Center.X / actualWidth),
+                            (float)(t.Center.Y / actualHeight))
+                        )
+                        .ToList(),
+                    canClose: true);
             }
         }
 

@@ -13,7 +13,6 @@ namespace Disk.ViewModel
 {
     public class CalibrationViewModel : ObserverViewModel
     {
-        // Properties
         public string XCoord { get => _xCoord; set => SetProperty(ref _xCoord, value); }
         public string YCoord { get => _yCoord; set => SetProperty(ref _yCoord, value); }
         public bool CalibrateXEnabled { get => _calibrateXEnabled; set => SetProperty(ref _calibrateXEnabled, value); }
@@ -30,18 +29,24 @@ namespace Disk.ViewModel
         private bool _startCalibrationEnabled = true;
 
         // Actions
-        public ICommand StartCalibration => new Command(OnStartCalibrationClick);
-        public ICommand CentralizeX => new Command(OnCentralizeXClick);
-        public ICommand CentralizeY => new Command(OnCentralizeYClick);
-        public ICommand CalibrateX => new Command(OnCalibrateXClick);
-        public ICommand CalibrateY => new Command(OnCalibrateYClick);
-        public ICommand Apply => new Command(OnApplyClick);
+        public ICommand StartCalibrationCommand => new Command(StartCalibration);
+        public ICommand CentralizeXCommand => new Command(_ => XShift += XAngleRes);
+        public ICommand CentralizeYCommand => new Command(_ => YShift += YAngleRes);
+        public ICommand CalibrateXCommand => new Command(_ => 
+        {
+            CalibrateXEnabled = false;
+            IsRunningThread = CalibrateYEnabled;
+        });
+        public ICommand CalibrateYCommand => new Command(_ =>
+        {
+            CalibrateYEnabled = false;
+            IsRunningThread = CalibrateXEnabled;
+        });
+        public ICommand ApplyCommand => new Command(ApplyCalibration);
 
         // Non-binded
         private static Settings Settings => Settings.Default;
-
         private readonly Thread DataThread;
-
         private readonly DispatcherTimer TextBoxUpdateTimer;
 
         private float XAngleRes => XAngle - XShift;
@@ -64,16 +69,16 @@ namespace Disk.ViewModel
             _xCoord = $"{XAngle:F2}";
             _yCoord = $"{YAngle:F2}";
 
-            DataThread = new(NetworkThreadProc);
+            DataThread = new(ReceiveFromDisk);
 
             TextBoxUpdateTimer = new(DispatcherPriority.Normal)
             {
                 Interval = TimeSpan.FromMilliseconds(Settings.CALIBRATION_TIMEOUT)
             };
-            TextBoxUpdateTimer.Tick += OnTextBoxUpdateTimerElapsed;
+            TextBoxUpdateTimer.Tick += UpdateText;
         }
 
-        private void OnTextBoxUpdateTimerElapsed(object? sender, EventArgs e)
+        private void UpdateText(object? sender, EventArgs e)
         {
             if (CalibrateXEnabled)
             {
@@ -85,7 +90,7 @@ namespace Disk.ViewModel
             }
         }
 
-        private void NetworkThreadProc()
+        private void ReceiveFromDisk()
         {
             try
             {
@@ -107,13 +112,9 @@ namespace Disk.ViewModel
                 _ = MessageBox.Show(CalibrationLocalization.ConnectionLost);
                 _navigationStore.NavigateBack();
             }
-        }
+        } 
 
-        private void OnCentralizeXClick(object? parameter) => XShift += XAngleRes;
-
-        private void OnCentralizeYClick(object? parameter) => YShift += YAngleRes;
-
-        private void OnStartCalibrationClick(object? parameter)
+        private void StartCalibration(object? parameter)
         {
             StartCalibrationEnabled = false;
 
@@ -125,21 +126,7 @@ namespace Disk.ViewModel
             TextBoxUpdateTimer.Start();
         }
 
-        private void OnCalibrateXClick(object? parameter)
-        {
-            CalibrateXEnabled = false;
-
-            IsRunningThread = CalibrateYEnabled;
-        }
-
-        private void OnCalibrateYClick(object? parameter)
-        {
-            CalibrateYEnabled = false;
-
-            IsRunningThread = CalibrateXEnabled;
-        }
-
-        private void OnApplyClick(object? parameter)
+        private void ApplyCalibration(object? parameter)
         {
             IsRunningThread = false;
 

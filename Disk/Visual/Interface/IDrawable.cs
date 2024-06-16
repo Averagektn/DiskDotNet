@@ -6,7 +6,7 @@ namespace Disk.Visual.Interface
     /// <summary>
     ///     Represents an object that can be drawn
     /// </summary>
-    interface IDrawable
+    public interface IDrawable
     {
         /// <summary>
         ///     Draws the object and adds it as a child to the specified parent

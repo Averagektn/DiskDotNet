@@ -124,7 +124,7 @@
     <value>Отмена</value>
   </data>
   <data name="DateOfBirth" xml:space="preserve">
-    <value>Дата раждения</value>
+    <value>Дата рождения</value>
   </data>
   <data name="Duplication" xml:space="preserve">
     <value>Пациент уже существует</value>

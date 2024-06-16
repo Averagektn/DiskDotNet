@@ -9,14 +9,13 @@ namespace Disk.ViewModel
 {
     public class MenuViewModel(NavigationStore navigationStore, ModalNavigationStore modalNavigationStore) : ObserverViewModel
     {
-        // Actions
         public ICommand ChangeLanguageCommand => new Command(ChangeLanguage);
-        public ICommand ToMapConstructorCommand => new Command(ToMapContructor);
-        public ICommand ToSettingsCommand => new Command(ToSettings);
-        public ICommand ToPatientsCommand => new Command(ToPatients);
-        public ICommand QuitCommand => new Command(Quit);
-        public ICommand ToCalibrationCommand => new Command(ToCalibration);
-        public ICommand LogoutCommand => new Command(Logout);
+        public ICommand ToMapConstructorCommand => new Command(_ => navigationStore.SetViewModel<MapCreatorViewModel>());
+        public ICommand ToSettingsCommand => new Command(_ => navigationStore.SetViewModel<SettingsViewModel>());
+        public ICommand ToPatientsCommand => new Command(_ => navigationStore.SetViewModel<PatientsViewModel>());
+        public ICommand QuitCommand => new Command(_ => Application.Current.MainWindow.Close());
+        public ICommand ToCalibrationCommand => new Command(_ => navigationStore.SetViewModel<CalibrationViewModel>());
+        public ICommand LogoutCommand => new Command(_ => modalNavigationStore.SetViewModel<AuthenticationViewModel>());
 
         private static Settings Settings => Settings.Default;
 
@@ -47,28 +46,5 @@ namespace Disk.ViewModel
 
             Application.Current.Shutdown();
         }
-
-        private void ToMapContructor(object? parameter)
-        {
-            navigationStore.SetViewModel<MapCreatorViewModel>();
-        }
-
-        private void ToPatients(object? parameter)
-        {
-            navigationStore.SetViewModel<PatientsViewModel>();
-        }
-
-        private void ToSettings(object? parameter)
-        {
-            navigationStore.SetViewModel<SettingsViewModel>();
-        }
-
-        private void ToCalibration(object? parameter)
-        {
-            navigationStore.SetViewModel<CalibrationViewModel>();
-        }
-
-        private void Quit(object? parameter) => Application.Current.MainWindow.Close();
-        private void Logout(object? parameter) => modalNavigationStore.SetViewModel<AuthenticationViewModel>();
     }
 }

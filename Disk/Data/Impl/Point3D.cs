@@ -8,7 +8,7 @@ namespace Disk.Data.Impl
     /// <typeparam name="CoordType">
     ///     The type of the coordinates
     /// </typeparam>
-    class Point3D<CoordType> : Point2D<CoordType>, IEquatable<Point3D<CoordType>> where CoordType : IConvertible, new()
+    public class Point3D<CoordType> : Point2D<CoordType>, IEquatable<Point3D<CoordType>> where CoordType : IConvertible, new()
     {
         /// <summary>
         ///     Gets or sets the Z coordinate of the point

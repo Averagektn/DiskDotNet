@@ -40,7 +40,7 @@ namespace Listener
         /// <param name="receiveTimeout">
         ///     The receive timeout in milliseconds
         /// </param>
-        private Connection(IPAddress ip, int port, int receiveTimeout)
+        private Connection(IPAddress ip, int port, int receiveTimeout = 20)
         {
             IP = ip;
             Port = port;
@@ -91,7 +91,7 @@ namespace Listener
         /// <returns>
         ///     The Connection object
         /// </returns>
-        public static Connection GetConnection(IPAddress ip, int port, int receiveTimeout = 2000)
+        public static Connection GetConnection(IPAddress ip, int port, int receiveTimeout = 20)
         {
             var conn = Connections.FirstOrDefault(c => c.IP.Equals(ip) && c.Port == port);
 

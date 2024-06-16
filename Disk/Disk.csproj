@@ -12,6 +12,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Properties\feet_projection.png" />
     <None Remove="Properties\logo.gif" />
     <None Remove="Properties\logo.jpg" />
     <None Remove="Properties\pngegg.png" />
@@ -19,10 +20,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="Properties\feet_projection.png" />
     <Content Include="Properties\Icon.ico" />
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="ClosedXML" Version="0.102.2" />
     <PackageReference Include="Extended.Wpf.Toolkit" Version="4.6.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.6">
       <PrivateAssets>all</PrivateAssets>
@@ -98,6 +101,11 @@
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>PaintWindowLocalization.resx</DependentUpon>
+    </Compile>
+    <Compile Update="Properties\Langs\Paint\PaintLocalization.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>PaintLocalization.resx</DependentUpon>
     </Compile>
     <Compile Update="Properties\Langs\Patients\PatientsLocalization.Designer.cs">
       <DesignTime>True</DesignTime>
@@ -175,6 +183,13 @@
       <LastGenOutput>PaintWindowLocalization.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Update="Properties\Langs\PaintWindow\PaintWindowLocalization.ru-RU.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Properties\Langs\Paint\PaintLocalization.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>PaintLocalization.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Properties\Langs\Paint\PaintLocalization.ru-RU.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Properties\Langs\Patients\PatientsLocalization.resx">

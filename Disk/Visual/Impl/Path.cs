@@ -13,17 +13,12 @@ namespace Disk.Visual.Impl
     /// <summary>
     ///     Represents a path that can be drawn and scaled
     /// </summary>
-    class Path : IDrawable, IScalable
+    class Path : IStaticFigure
     {
         /// <summary>
         ///     The polyline used to draw the path
         /// </summary>
         private readonly Polyline Polyline;
-
-        /// <summary>
-        ///     The size of the angle
-        /// </summary>
-        private readonly SizeF AngleSize;
 
         /// <summary>
         ///     The list of points in the path
@@ -50,11 +45,9 @@ namespace Disk.Visual.Impl
         /// <param name="color">
         ///     The color of the path
         /// </param>
-        public Path(IEnumerable<Point2D<float>> points, Size currSize, SizeF angleSize, Brush color)
+        public Path(IEnumerable<Point2D<float>> points, Converter converter, Brush color)
         {
-            AngleSize = angleSize;
-
-            Converter = new(currSize, angleSize);
+            Converter = converter;
 
             Polyline = new Polyline()
             {
@@ -99,8 +92,6 @@ namespace Disk.Visual.Impl
         /// </param>
         public void Scale(Size newSize)
         {
-            Converter = new(newSize, AngleSize);
-
             Polyline.Points.Clear();
 
             foreach (var point in Points)

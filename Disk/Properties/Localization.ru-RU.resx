@@ -163,10 +163,10 @@
     <value>Диск. Поле</value>
   </data>
   <data name="Paint.WindRose" xml:space="preserve">
-    <value>Роза ветров</value>
+    <value>Диаграмма частот</value>
   </data>
   <data name="Paint.WindRoseForTarget" xml:space="preserve">
-    <value>Роза ветров для цели</value>
+    <value>Диаграмма частот для цели</value>
   </data>
   <data name="UserData.Birthday" xml:space="preserve">
     <value>Дата рождения</value>

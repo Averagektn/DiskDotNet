@@ -7,7 +7,7 @@ using XamlRadialProgressBar;
 
 namespace Disk.Visual.Impl
 {
-    class ProgressTarget : Target
+    public class ProgressTarget : Target
     {
         public double Progress => _border.Value / _border.Maximum;
 

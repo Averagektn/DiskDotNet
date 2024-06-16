@@ -7,7 +7,7 @@ namespace Disk.Calculations.Impl.Converters
     /// <summary>
     ///     Provides conversion between coordinate systems
     /// </summary>
-    internal partial class Converter : IScalable
+    public partial class Converter : IScalable
     {
         /// <summary>
         ///     Size of the screen in angle space

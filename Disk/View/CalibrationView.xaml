@@ -3,10 +3,14 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:Disk.View" xmlns:viewmodel="clr-namespace:Disk.ViewModel" d:DataContext="{d:DesignInstance Type=viewmodel:CalibrationViewModel}"
+             xmlns:local="clr-namespace:Disk.View" 
+             xmlns:viewmodel="clr-namespace:Disk.ViewModel" 
+             d:DataContext="{d:DesignInstance Type=viewmodel:CalibrationViewModel}"
              xmlns:lang="clr-namespace:Disk.Properties.Langs.Calibration"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
+             d:DesignHeight="450" 
+             d:DesignWidth="800">
+    
     <UserControl.Resources>
         <ResourceDictionary Source="/Style/BtnStyles.xaml"/>
     </UserControl.Resources>
@@ -31,16 +35,11 @@
         </Grid.ColumnDefinitions>
 
         <Viewbox Grid.Row="1" Grid.Column="1">
-            <Button Content="{x:Static lang:CalibrationLocalization.Start}" 
-                    IsEnabled="{Binding StartCalibrationEnabled}" 
-                    Command="{Binding StartCalibration}" 
-                    Style="{StaticResource GradientButtonStyle}"
-                    Foreground="White"
-                    Background="Black"
-                    Margin="0,25"
-                    Height="35"
-                    Width="250"/>
-
+            <Button 
+                Content="{x:Static lang:CalibrationLocalization.Start}" 
+                IsEnabled="{Binding StartCalibrationEnabled}" 
+                Command="{Binding StartCalibrationCommand}" 
+                Margin="0,25"/>
         </Viewbox>
 
         <Viewbox Grid.Row="2" Grid.Column="1">
@@ -52,23 +51,17 @@
         </Viewbox>
 
         <Viewbox Grid.Row="3" Grid.Column="2">
-            <Button Content="{x:Static lang:CalibrationLocalization.Centralize}" Command="{Binding CentralizeX}"
-                    Style="{StaticResource GradientButtonStyle}"
-                    Foreground="White"
-                    Background="Black"
-                    Margin="0,25"
-                    Height="35"
-                    Width="250"/>
+            <Button 
+                Content="{x:Static lang:CalibrationLocalization.Centralize}" 
+                Command="{Binding CentralizeXCommand}"
+                Margin="0,25"/>
         </Viewbox>
 
         <Viewbox Grid.Row="4" Grid.Column="1">
-            <Button Content="{x:Static lang:CalibrationLocalization.SetX}" Command="{Binding CalibrateX}"
-                    Style="{StaticResource GradientButtonStyle}"
-                    Foreground="White"
-                    Background="Black"
-                    Margin="0,25"
-                    Height="35"
-                    Width="250"/>
+            <Button 
+                Content="{x:Static lang:CalibrationLocalization.SetX}" 
+                Command="{Binding CalibrateXCommand}"
+                Margin="0,25"/>
         </Viewbox>
 
         <Viewbox Grid.Row="5" Grid.Column="1">
@@ -81,33 +74,24 @@
 
 
         <Viewbox Grid.Row="6" Grid.Column="2">
-            <Button Content="{x:Static lang:CalibrationLocalization.Centralize}" Command="{Binding CentralizeY}" 
-                    Style="{StaticResource GradientButtonStyle}"
-                    Foreground="White"
-                    Background="Black"
-                    Margin="0,25"
-                    Height="35"
-                    Width="250"/>
+            <Button 
+                Content="{x:Static lang:CalibrationLocalization.Centralize}" 
+                Command="{Binding CentralizeYCommand}" 
+                Margin="0,25"/>
         </Viewbox>
 
         <Viewbox Grid.Row="7" Grid.Column="1">
-            <Button Content="{x:Static lang:CalibrationLocalization.SetY}" Command="{Binding CalibrateY}"
-                    Style="{StaticResource GradientButtonStyle}"
-                    Foreground="White"
-                    Background="Black"
-                    Margin="0,25"
-                    Height="35"
-                    Width="250"/>
+            <Button 
+                Content="{x:Static lang:CalibrationLocalization.SetY}" 
+                Command="{Binding CalibrateYCommand}"
+                Margin="0,25"/>
         </Viewbox>
 
         <Viewbox Grid.Row="8" Grid.Column="1">
-            <Button Content="{x:Static lang:CalibrationLocalization.Apply}" Command="{Binding Apply}"
-                    Style="{StaticResource GradientButtonStyle}"
-                    Foreground="White"
-                    Background="Black"
-                    Margin="0,25"
-                    Height="35"
-                    Width="250"/>
+            <Button 
+                Content="{x:Static lang:CalibrationLocalization.Apply}" 
+                Command="{Binding ApplyCommand}"
+                Margin="0,25"/>
         </Viewbox>
     </Grid>
 </UserControl>

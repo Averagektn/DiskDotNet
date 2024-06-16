@@ -5,7 +5,7 @@ namespace Disk.Visual.Interface
     /// <summary>
     ///     Represents an object that can be scaled
     /// </summary>
-    interface IScalable
+    public interface IScalable
     {
         /// <summary>
         ///     Scales the object to the specified size

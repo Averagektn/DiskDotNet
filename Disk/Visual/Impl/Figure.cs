@@ -20,10 +20,10 @@ namespace Disk.Visual.Impl
 
         public int Left => throw new NotImplementedException();
         protected int Speed;
-        private int _iniSpeed;
+        //private readonly int _iniSpeed;
         protected Size CurrSize;
         private Size IniSize;
-        private int IniRadius;
+        //private readonly int IniRadius;
         public int Radius { get; protected set; }
 
         protected readonly TFigure _figure;
@@ -109,8 +109,8 @@ namespace Disk.Visual.Impl
             double coeffX = (double)newSize.Width / IniSize.Width;
             double coeffY = (double)newSize.Height / IniSize.Height;
 
-            Speed = (int)Math.Round(_iniSpeed * (coeffX + coeffY) / 2);
-            Radius = (int)Math.Round(IniRadius * (coeffX + coeffY) / 2);
+            //Speed = (int)Math.Round(_iniSpeed * (coeffX + coeffY) / 2);
+            //Radius = (int)Math.Round(IniRadius * (coeffX + coeffY) / 2);
 
             Center = new(
                     (int)Math.Round(Center.X * (newSize.Width / CurrSize.Width)),

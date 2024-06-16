@@ -30,7 +30,13 @@ namespace Disk.Stores
 
         public bool NavigateBack()
         {
-            _ = ViewModels.Pop();
+            if (ViewModels.Count == 0)
+            {
+                return false;
+            }
+
+            ViewModels.Pop().Dispose();
+
             if (ViewModels.Count == 0)
             {
                 return false;

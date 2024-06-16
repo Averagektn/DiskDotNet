@@ -5,9 +5,13 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:lang="clr-namespace:Disk.Properties" 
              xmlns:local="clr-namespace:Disk.View.PaintWindow" 
-             xmlns:viewmodel="clr-namespace:Disk.ViewModel" d:DataContext="{d:DesignInstance Type=viewmodel:PaintViewModel}"
+             xmlns:viewmodel="clr-namespace:Disk.ViewModel" 
+             d:DataContext="{d:DesignInstance Type=viewmodel:PaintViewModel}"
+             xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
+             d:DesignHeight="450" 
+             d:DesignWidth="800">
+    
     <UserControl.Resources>
         <ResourceDictionary Source="/Style/BtnStyles.xaml"/>
     </UserControl.Resources>
@@ -26,8 +30,15 @@
             <RowDefinition Height="1*"/>
         </Grid.RowDefinitions>
 
+        <Image 
+            Grid.RowSpan="6"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
+            Panel.ZIndex="-10"
+            Source="/Properties/feet_projection.png" />
+
         <Viewbox Grid.Row="0" Grid.Column="1" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="10">
-            <TextBlock FontSize="20" Name="TblTime" TextAlignment="Left"/>
+            <TextBlock FontSize="20" Text="{Binding Message}" TextAlignment="Left"/>
         </Viewbox>
 
         <Viewbox Grid.Row="1" Grid.Column="1" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="10">
@@ -35,23 +46,33 @@
         </Viewbox>
 
         <Viewbox Grid.Row="2" Grid.Column="1" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="10">
-            <RadioButton Name="RbRose" Content="{x:Static lang:Localization.Paint_WindRose}" GroupName="DataType" IsChecked="True" Visibility="Hidden"/>
+            <RadioButton Name="RbRose" Content="{x:Static lang:Localization.Paint_WindRose}" GroupName="DataType" IsChecked="{Binding IsRoseChecked}" Visibility="{Binding RoseButtonVisibility}">
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="Checked">
+                        <i:InvokeCommandAction Command="{Binding RoseSelectedCommand}" />
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+            </RadioButton>
         </Viewbox>
 
         <Viewbox Grid.Row="3" Grid.Column="1" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="10">
-            <RadioButton Name="RbPath" Content="{x:Static lang:Localization.Paint_Path}" GroupName="DataType" Visibility="Hidden"/>
+            <RadioButton Name="RbPath" Content="{x:Static lang:Localization.Paint_Path}" GroupName="DataType" Visibility="{Binding PathButtonVisibility}" IsChecked="{Binding IsPathChecked}">
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="Checked">
+                        <i:InvokeCommandAction Command="{Binding PathSelectedCommand}" />
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+            </RadioButton>
         </Viewbox>
 
         <Viewbox Grid.Row="4" Grid.Column="1" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="10">
-            <ComboBox Name="CbTargets" Visibility="Hidden" FontSize="20" Width="200"/>
+            <ComboBox Name="CbTargets" SelectionChanged="CbTargets_SelectionChanged" SelectedIndex="{Binding SelectedRoseOrPath}" ItemsSource="{Binding PathsAndRoses}" Visibility="{Binding RosesAndPathsVisibility}" FontSize="20" Width="200"/>
         </Viewbox>
-
-        <Viewbox Grid.Row="5" Grid.Column="0" VerticalAlignment="Bottom" HorizontalAlignment="Right">
-            <TextBlock FontSize="20" Name="TblScore" TextAlignment="Left"/>
-        </Viewbox>
+        
+        <TextBlock FontSize="5" Text="{Binding ScoreString}" TextAlignment="Left"/>
 
         <Viewbox Grid.Row="5" Grid.Column="1" Margin="10 10 10 10">
-            <Button Content="{x:Static lang:Localization.Paint_Stop}" Click="OnStopClick" Style="{StaticResource GradientButtonStyle}" FontSize="20" Name="BtnStop"/>
+            <Button Content="{x:Static lang:Localization.Paint_Stop}" FontSize="20" Name="BtnStop" Click="OnStopClick" IsEnabled="{Binding IsStopEnabled}"/>
         </Viewbox>
 
         <Canvas Name="PaintArea" Grid.RowSpan="6">

@@ -115,11 +115,74 @@ namespace Disk.Properties.Langs.Appointment {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Export to excel.
+        /// </summary>
+        public static string ExportToExcel {
+            get {
+                return ResourceManager.GetString("ExportToExcel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Frontal projection.
+        /// </summary>
+        public static string FrontalProjection {
+            get {
+                return ResourceManager.GetString("FrontalProjection", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Left foot. Frontal projection.
+        /// </summary>
+        public static string FrontLeftFoot {
+            get {
+                return ResourceManager.GetString("FrontLeftFoot", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Right foot. Frontal projection.
+        /// </summary>
+        public static string FrontRightFoot {
+            get {
+                return ResourceManager.GetString("FrontRightFoot", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Map.
+        /// </summary>
+        public static string Map {
+            get {
+                return ResourceManager.GetString("Map", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Math expectation.
         /// </summary>
         public static string MathExp {
             get {
                 return ResourceManager.GetString("MathExp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Profile projection.
+        /// </summary>
+        public static string ProfileProjection {
+            get {
+                return ResourceManager.GetString("ProfileProjection", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Save failed.
+        /// </summary>
+        public static string SaveFailed {
+            get {
+                return ResourceManager.GetString("SaveFailed", resourceCulture);
             }
         }
         
@@ -138,6 +201,15 @@ namespace Disk.Properties.Langs.Appointment {
         public static string Start {
             get {
                 return ResourceManager.GetString("Start", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Target number.
+        /// </summary>
+        public static string TargetNum {
+            get {
+                return ResourceManager.GetString("TargetNum", resourceCulture);
             }
         }
         

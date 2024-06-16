@@ -23,6 +23,7 @@ namespace Disk
         {
             Thread.CurrentThread.CurrentUICulture =
                 new System.Globalization.CultureInfo(Disk.Properties.Config.Config.Default.LANGUAGE);
+            System.Windows.Media.RenderOptions.ProcessRenderMode = System.Windows.Interop.RenderMode.SoftwareOnly;
 
 
             Log.Logger = new LoggerConfiguration()
@@ -40,7 +41,6 @@ namespace Disk
             _ = services.AddSingleton<IAppointmentRepository, AppointmentRepository>();
             _ = services.AddSingleton<IDoctorRepository, DoctorRepository>();
             _ = services.AddSingleton<IMapRepository, MapRepository>();
-            _ = services.AddSingleton<INoteRepository, NoteRepository>();
             _ = services.AddSingleton<IPathInTargetRepository, PathInTargetRepository>();
             _ = services.AddSingleton<IPathToTargetRepository, PathToTargetRepository>();
             _ = services.AddSingleton<IPatientRepository, PatientRepository>();
@@ -61,7 +61,6 @@ namespace Disk
             _ = services.AddTransient<AddPatientViewModel>();
             _ = services.AddTransient<AppointmentsListViewModel>();
             _ = services.AddTransient<AppointmentViewModel>();
-            _ = services.AddTransient<AddNoteViewModel>();
             _ = services.AddTransient<StartSessionViewModel>();
             _ = services.AddTransient<PaintViewModel>();
 

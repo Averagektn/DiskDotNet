@@ -1,4 +1,4 @@
-﻿namespace Disk.Repository.Common
+﻿namespace Disk.Repository.Common.Interface
 {
     public interface ICrudRepository<Entity> where Entity : class
     {

@@ -11,21 +11,12 @@ public partial class DiskContext : DbContext
     public DiskContext(DbContextOptions<DiskContext> options) : base(options) { }
 
     public virtual DbSet<Appointment> Appointments { get; set; }
-
     public virtual DbSet<Doctor> Doctors { get; set; }
-
     public virtual DbSet<Map> Maps { get; set; }
-
-    public virtual DbSet<Note> Notes { get; set; }
-
     public virtual DbSet<PathInTarget> PathInTargets { get; set; }
-
     public virtual DbSet<PathToTarget> PathToTargets { get; set; }
-
     public virtual DbSet<Patient> Patients { get; set; }
-
     public virtual DbSet<Session> Sessions { get; set; }
-
     public virtual DbSet<SessionResult> SessionResults { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -83,26 +74,6 @@ public partial class DiskContext : DbContext
                 .HasColumnName("map_name");
 
             _ = entity.HasOne(d => d.CreatedByNavigation).WithMany(p => p.Maps).HasForeignKey(d => d.CreatedBy);
-        });
-
-        _ = modelBuilder.Entity<Note>(entity =>
-        {
-            _ = entity.HasKey(e => e.Id);
-
-            _ = entity.ToTable("note");
-
-            _ = entity.Property(e => e.Id).HasColumnName("nt_id");
-            _ = entity.Property(e => e.Doctor).HasColumnName("nt_doctor");
-            _ = entity.Property(e => e.Patient).HasColumnName("nt_patient");
-            _ = entity.Property(e => e.Text).HasColumnName("nt_text");
-
-            _ = entity.HasOne(d => d.DoctorNavigation).WithMany(p => p.Notes)
-                .HasForeignKey(d => d.Doctor)
-                .OnDelete(DeleteBehavior.ClientSetNull);
-
-            _ = entity.HasOne(d => d.PatientNavigation).WithMany(p => p.Notes)
-                .HasForeignKey(d => d.Patient)
-                .OnDelete(DeleteBehavior.ClientSetNull);
         });
 
         _ = modelBuilder.Entity<PathInTarget>(entity =>
