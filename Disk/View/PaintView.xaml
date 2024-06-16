@@ -72,7 +72,7 @@
         <TextBlock FontSize="5" Text="{Binding ScoreString}" TextAlignment="Left"/>
 
         <Viewbox Grid.Row="5" Grid.Column="1" Margin="10 10 10 10">
-            <Button Content="{x:Static lang:Localization.Paint_Stop}" FontSize="20" Name="BtnStop" IsEnabled="{Binding IsStopEnabled}"/>
+            <Button Content="{x:Static lang:Localization.Paint_Stop}" FontSize="20" Name="BtnStop" Click="OnStopClick" IsEnabled="{Binding IsStopEnabled}"/>
         </Viewbox>
 
         <Canvas Name="PaintArea" Grid.RowSpan="6">

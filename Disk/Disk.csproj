@@ -102,6 +102,11 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>PaintWindowLocalization.resx</DependentUpon>
     </Compile>
+    <Compile Update="Properties\Langs\Paint\PaintLocalization.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>PaintLocalization.resx</DependentUpon>
+    </Compile>
     <Compile Update="Properties\Langs\Patients\PatientsLocalization.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
@@ -178,6 +183,13 @@
       <LastGenOutput>PaintWindowLocalization.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Update="Properties\Langs\PaintWindow\PaintWindowLocalization.ru-RU.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Properties\Langs\Paint\PaintLocalization.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>PaintLocalization.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Properties\Langs\Paint\PaintLocalization.ru-RU.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Properties\Langs\Patients\PatientsLocalization.resx">

@@ -38,6 +38,11 @@ namespace Disk.ViewModel
         private static Settings Settings => Settings.Default;
         private string UsrAngLog => $"{CurrPath}{FilePath.DirectorySeparatorChar}{Settings.USER_ANG_LOG_FILE}";
         public bool IsPathToTarget => PathToTargetStopwatch.IsRunning;
+        private Path Path => new
+            (
+                PathsToTargets[SelectedRoseOrPath], Converter,
+                new SolidColorBrush(Color.FromRgb(Settings.USER_COLOR.R, Settings.USER_COLOR.G, Settings.USER_COLOR.B))
+            );
 
         // Disposable
         private readonly Thread DiskNetworkThread;
@@ -115,30 +120,27 @@ namespace Disk.ViewModel
 
             if (IsRoseChecked)
             {
-                var angRadius = (Converter.ToAngleX_FromWnd(target.Radius) + Converter.ToAngleY_FromWnd(target.Radius)) / 2;
-
-                var angCenter = Converter.ToAngle_FromWnd(Converter.ToWnd_FromRelative(TargetCenters[SelectedRoseOrPath]));
-                var dataset =
-                    PathsInTargets[SelectedRoseOrPath]
-                    .Select(p => new PolarPoint<float>(p.X - angCenter.X, p.Y - angCenter.Y))
-                    .Where(p => Math.Abs(p.X) > angRadius && Math.Abs(p.Y) > angRadius)
-                    .ToList();
-
-                return new Graph(dataset, paintAreaSize, Brushes.LightGreen, 8);
-
+                return GetGraph(target, paintAreaSize);
             }
             else if (IsPathChecked)
             {
-                return new Path
-                    (
-                        PathsToTargets[SelectedRoseOrPath], Converter,
-                        new SolidColorBrush
-                        (
-                            Color.FromRgb(Settings.USER_COLOR.R, Settings.USER_COLOR.G, Settings.USER_COLOR.B)
-                        )
-                    );
+                return Path;
             }
             return null;
+        }
+
+        private Graph GetGraph(Target target, Size paintAreaSize)
+        {
+            var angRadius = (Converter.ToAngleX_FromWnd(target.Radius) + Converter.ToAngleY_FromWnd(target.Radius)) / 2;
+
+            var angCenter = Converter.ToAngle_FromWnd(Converter.ToWnd_FromRelative(TargetCenters[SelectedRoseOrPath]));
+            var dataset =
+                PathsInTargets[SelectedRoseOrPath]
+                .Select(p => new PolarPoint<float>(p.X - angCenter.X, p.Y - angCenter.Y))
+                .Where(p => Math.Abs(p.X) > angRadius && Math.Abs(p.Y) > angRadius)
+                .ToList();
+
+            return new Graph(dataset, paintAreaSize, Brushes.LightGreen, 8);
         }
 
         private void PathSelected(object? obj)
@@ -237,13 +239,19 @@ namespace Disk.ViewModel
             IsGame = false;
             UserMovementLog.Dispose();
             DiskNetworkThread.Join();
+
+            // uncomment
+            //SaveSessionResult();
         }
 
         public void SwitchToPathInTarget(Point2D<int> userShot)
         {
             PathToTargetStopwatch.Stop();
 
-            PathsToTargets[TargetId - 1].Add(Converter.ToAngle_FromWnd(userShot));
+            if (userShot.X != 0 && userShot.Y != 0)
+            {
+                PathsToTargets[TargetId - 1].Add(Converter.ToAngle_FromWnd(userShot));
+            }
             PathToTargetStopwatch.Stop();
             PathsInTargets.Add([]);
 

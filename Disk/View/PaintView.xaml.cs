@@ -75,14 +75,18 @@ namespace Disk.View.PaintWindow
                 ViewModel.SwitchToPathInTarget(shot);
             }
 
+            bool isValidShot = angleShot.X != 0 && angleShot.Y != 0;
             bool isPathInTarget = !ViewModel.IsPathToTarget;
-            if (isPathInTarget)
+            if (isValidShot)
             {
-                ViewModel.PathsInTargets[ViewModel.TargetId - 1].Add(angleShot);
-            }
-            else
-            {
-                ViewModel.PathsToTargets[ViewModel.TargetId - 1].Add(angleShot);
+                if (isPathInTarget)
+                {
+                    ViewModel.PathsInTargets[ViewModel.TargetId - 1].Add(angleShot);
+                }
+                else
+                {
+                    ViewModel.PathsToTargets[ViewModel.TargetId - 1].Add(angleShot);
+                }
             }
 
             // ptt
@@ -157,6 +161,7 @@ namespace Disk.View.PaintWindow
         private void OnStopClick(object sender, RoutedEventArgs e)
         {
             StopGame();
+            // comment
             ViewModel.SaveSessionResult();
         }
 
