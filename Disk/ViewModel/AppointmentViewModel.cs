@@ -63,6 +63,7 @@ namespace Disk.ViewModel
                 worksheet.Cell(7, 5).Value = Localization.ApproachSpeed;
 
                 var ptts = session.PathToTargets;
+                var pits = session.PathInTargets;
                 int pttRow = 8;
                 int pathCol = 7;
                 foreach (var ptt in ptts)
@@ -109,9 +110,58 @@ namespace Disk.ViewModel
                         {
                             worksheet.Cell(pathRow, pathCol + 3).Value = "->";
                             // left foot
-                            worksheet.Cell(pathRow, pathCol + 4).Value = 90.0f - point.X;
+                            worksheet.Cell(pathRow, pathCol + 4).Value = 90.0f + point.X;
                             // right foot
-                            worksheet.Cell(pathRow, pathCol + 5).Value = 90.0f + point.X;
+                            worksheet.Cell(pathRow, pathCol + 5).Value = 90.0f - point.X;
+                        }
+
+                        pathRow++;
+                    }
+
+                    pathCol += 7;
+                }
+
+                foreach (var pit in pits)
+                {
+                    int pathRow = 1;
+
+                    var pathList = JsonConvert.DeserializeObject<List<Point2D<float>>>(pit.CoordinatesJson)!;
+                    worksheet.Cell(pathRow++, pathCol).Value = $"{Localization.TargetNum}: {pit.TargetId + 1}";
+                    worksheet.Cell(pathRow, pathCol).Value = "X";
+                    worksheet.Cell(pathRow, pathCol + 1).Value = "Y";
+                    worksheet.Cell(pathRow - 1, pathCol + 2).Value = Localization.ProfileProjection;
+                    worksheet.Cell(pathRow - 1, pathCol + 3).Value = Localization.FrontalProjection;
+                    worksheet.Cell(pathRow - 1, pathCol + 4).Value = Localization.FrontLeftFoot;
+                    worksheet.Cell(pathRow - 1, pathCol + 5).Value = Localization.FrontRightFoot;
+                    pathRow++;
+
+
+                    foreach (var point in pathList)
+                    {
+                        worksheet.Cell(pathRow, pathCol).Value = point.X;
+                        worksheet.Cell(pathRow, pathCol + 1).Value = point.Y;
+
+                        // profile
+                        worksheet.Cell(pathRow, pathCol + 2).Value = 90.0f + point.Y;
+
+                        // frontal
+                        // left
+                        if (point.X < 0.0f)
+                        {
+                            worksheet.Cell(pathRow, pathCol + 3).Value = "<-";
+                            // left foot
+                            worksheet.Cell(pathRow, pathCol + 4).Value = 90.0f + point.X;
+                            // right foot
+                            worksheet.Cell(pathRow, pathCol + 5).Value = 90.0f - point.X;
+                        }
+                        // right
+                        else
+                        {
+                            worksheet.Cell(pathRow, pathCol + 3).Value = "->";
+                            // left foot
+                            worksheet.Cell(pathRow, pathCol + 4).Value = 90.0f + point.X;
+                            // right foot
+                            worksheet.Cell(pathRow, pathCol + 5).Value = 90.0f - point.X;
                         }
 
                         pathRow++;

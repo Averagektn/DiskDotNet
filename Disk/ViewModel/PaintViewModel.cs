@@ -296,7 +296,7 @@ namespace Disk.ViewModel
             {
                 CoordinatesJson = JsonConvert.SerializeObject(PathsInTargets[TargetId - 1]),
                 Session = AppointmentSession.CurrentSession.Id,
-                TargetId = TargetId,
+                TargetId = TargetId - 1,
             };
 
             SavePathInTarget(pit);
