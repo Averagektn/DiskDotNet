@@ -64,6 +64,8 @@ namespace Disk.ViewModel
                 DateTime = DateTime.Now.ToString(),
                 LogFilePath = logPath,
                 Map = SelectedMap!.Id,
+                MaxXAngle = Settings.XMaxAngle,
+                MaxYAngle = Settings.YMaxAngle
             };
             sessionRepository.Add(session);
             AppointmentSession.CurrentSession = session;
