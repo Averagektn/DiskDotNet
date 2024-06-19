@@ -22,7 +22,7 @@ namespace Disk
         private App()
         {
             Thread.CurrentThread.CurrentUICulture =
-                new System.Globalization.CultureInfo(Disk.Properties.Config.Config.Default.LANGUAGE);
+                new System.Globalization.CultureInfo(Disk.Properties.Config.Config.Default.Language);
             System.Windows.Media.RenderOptions.ProcessRenderMode = System.Windows.Interop.RenderMode.SoftwareOnly;
 
 

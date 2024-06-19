@@ -99,7 +99,7 @@ namespace Disk.ViewModel
                 worksheet.Cell(8, 5).Value = ptt.ApproachSpeed;
 
                 var pathList = JsonConvert.DeserializeObject<List<Point2D<float>>>(ptt.CoordinatesJson)!;
-                worksheet.Cell(pathRow, pathCol++).Value = $"Ptt";
+                worksheet.Cell(pathRow, pathCol++).Value = $"{Localization.PathToTarget}";
                 worksheet.Cell(pathRow++, pathCol).Value = $"{Localization.TargetNum}: {ptt.TargetNum + 1}";
                 worksheet.Cell(pathRow, pathCol).Value = "X";
                 worksheet.Cell(pathRow, pathCol + 1).Value = "Y";
@@ -144,7 +144,7 @@ namespace Disk.ViewModel
                 int pathRow = 1;
 
                 var pathList = JsonConvert.DeserializeObject<List<Point2D<float>>>(pit.CoordinatesJson)!;
-                worksheet.Cell(pathRow, pathCol++).Value = $"Pit";
+                worksheet.Cell(pathRow, pathCol++).Value = $"{Localization.PathInTarget}";
                 worksheet.Cell(pathRow++, pathCol).Value = $"{Localization.TargetNum}: {pit.TargetId + 1}";
                 worksheet.Cell(pathRow, pathCol).Value = "X";
                 worksheet.Cell(pathRow, pathCol + 1).Value = "Y";
@@ -156,7 +156,7 @@ namespace Disk.ViewModel
 
                 FillExcelWithPoints(worksheet, pathCol, pathRow, pathList);
 
-                pathCol += ColsPerPath* 2;
+                pathCol += ColsPerPath * 2;
             }
         }
 

@@ -25,9 +25,9 @@ namespace Disk.ViewModel
             {
                 var selectedLanguage = parameter.ToString();
 
-                if (Settings.LANGUAGE != selectedLanguage)
+                if (Settings.Language != selectedLanguage)
                 {
-                    Settings.LANGUAGE = selectedLanguage;
+                    Settings.Language = selectedLanguage;
                     Settings.Save();
 
                     RestartApplication();

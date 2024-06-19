@@ -32,7 +32,7 @@ namespace Disk.View.PaintWindow
         {
             get => ViewModel.CurrentPos is null
                 ? User.Center
-                : Converter.ToWndCoord(new Point2DF(ViewModel.CurrentPos.X - Settings.ANGLE_X_SHIFT, ViewModel.CurrentPos.Y - Settings.ANGLE_Y_SHIFT));
+                : Converter.ToWndCoord(new Point2DF(ViewModel.CurrentPos.X - Settings.XAngleShift, ViewModel.CurrentPos.Y - Settings.YAngleShift));
         }
 
         private Size PaintPanelSize => PaintRect.RenderSize;
@@ -47,13 +47,13 @@ namespace Disk.View.PaintWindow
 
             MoveTimer = new(DispatcherPriority.Normal)
             {
-                Interval = TimeSpan.FromMilliseconds(Settings.MOVE_TIME)
+                Interval = TimeSpan.FromMilliseconds(Settings.MoveTime)
             };
             MoveTimer.Tick += MoveTimerElapsed;
 
             ShotTimer = new(DispatcherPriority.Normal)
             {
-                Interval = TimeSpan.FromMilliseconds(Settings.SHOT_TIME)
+                Interval = TimeSpan.FromMilliseconds(Settings.ShotTime)
             };
             ShotTimer.Tick += ShotTimerElapsed;
 

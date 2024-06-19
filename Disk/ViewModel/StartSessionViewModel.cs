@@ -50,7 +50,7 @@ namespace Disk.ViewModel
                 return;
             }
 
-            var logPath = $"{Settings.MAIN_DIR_PATH}{Path.DirectorySeparatorChar}" +
+            var logPath = $"{Settings.MainDirPath}{Path.DirectorySeparatorChar}" +
                     $"{AppointmentSession.Patient.Surname} {AppointmentSession.Patient.Name}{Path.DirectorySeparatorChar}" +
                     $"{DateTime.Now:dd.MM.yyyy HH-mm-ss}";
             if (!Directory.Exists(logPath))

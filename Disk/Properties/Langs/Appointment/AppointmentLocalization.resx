@@ -153,6 +153,12 @@
   <data name="MathExp" xml:space="preserve">
     <value>Math expectation</value>
   </data>
+  <data name="PathInTarget" xml:space="preserve">
+    <value>Path in target</value>
+  </data>
+  <data name="PathToTarget" xml:space="preserve">
+    <value>Path to target</value>
+  </data>
   <data name="ProfileProjection" xml:space="preserve">
     <value>Profile projection</value>
   </data>

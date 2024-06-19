@@ -11,8 +11,8 @@ namespace Disk.ViewModel
 {
     public class MapCreatorViewModel(ModalNavigationStore modalNavigationStore) : ObserverViewModel
     {
-        private static int IniWidth => Settings.Default.SCREEN_INI_WIDTH;
-        private static int IniHeight => Settings.Default.SCREEN_INI_HEIGHT;
+        private static int IniWidth => Settings.Default.IniScreenWidth;
+        private static int IniHeight => Settings.Default.IniScreenHeight;
 
         private readonly List<NumberedTarget> _targets = [];
 
@@ -91,7 +91,7 @@ namespace Disk.ViewModel
                     (int)(actualX / renderSize.Width * IniWidth),
                     (int)(actualY / renderSize.Height * IniHeight)
                    ),
-                Settings.Default.TARGET_INI_RADIUS,
+                Settings.Default.IniTargetRadius,
                 new Size(IniWidth, IniHeight),
                 _targets.Count + 1
                );

@@ -153,6 +153,12 @@
   <data name="MathExp" xml:space="preserve">
     <value>Математическое ожидание</value>
   </data>
+  <data name="PathInTarget" xml:space="preserve">
+    <value>Путь в цели</value>
+  </data>
+  <data name="PathToTarget" xml:space="preserve">
+    <value>Путь к цели</value>
+  </data>
   <data name="ProfileProjection" xml:space="preserve">
     <value>Профильная проекция</value>
   </data>

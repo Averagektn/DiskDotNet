@@ -169,6 +169,24 @@ namespace Disk.Properties.Langs.Appointment {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Path in target.
+        /// </summary>
+        public static string PathInTarget {
+            get {
+                return ResourceManager.GetString("PathInTarget", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Path to target.
+        /// </summary>
+        public static string PathToTarget {
+            get {
+                return ResourceManager.GetString("PathToTarget", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Profile projection.
         /// </summary>
         public static string ProfileProjection {

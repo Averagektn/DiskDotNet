@@ -26,24 +26,24 @@ namespace Disk.Properties.Config {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("20")]
-        public float X_MAX_ANGLE {
+        public float XMaxAngle {
             get {
-                return ((float)(this["X_MAX_ANGLE"]));
+                return ((float)(this["XMaxAngle"]));
             }
             set {
-                this["X_MAX_ANGLE"] = value;
+                this["XMaxAngle"] = value;
             }
         }
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("20")]
-        public float Y_MAX_ANGLE {
+        public float YMaxAngle {
             get {
-                return ((float)(this["Y_MAX_ANGLE"]));
+                return ((float)(this["YMaxAngle"]));
             }
             set {
-                this["Y_MAX_ANGLE"] = value;
+                this["YMaxAngle"] = value;
             }
         }
         
@@ -62,375 +62,159 @@ namespace Disk.Properties.Config {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("9998")]
-        public int PORT {
+        public int Port {
             get {
-                return ((int)(this["PORT"]));
+                return ((int)(this["Port"]));
             }
             set {
-                this["PORT"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("1000")]
-        public int TARGET_MIN_TIME {
-            get {
-                return ((int)(this["TARGET_MIN_TIME"]));
-            }
-            set {
-                this["TARGET_MIN_TIME"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("5000")]
-        public int TARGET_MAX_TIME {
-            get {
-                return ((int)(this["TARGET_MAX_TIME"]));
-            }
-            set {
-                this["TARGET_MAX_TIME"] = value;
+                this["Port"] = value;
             }
         }
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("20")]
-        public int MOVE_TIME {
+        public int MoveTime {
             get {
-                return ((int)(this["MOVE_TIME"]));
+                return ((int)(this["MoveTime"]));
             }
             set {
-                this["MOVE_TIME"] = value;
+                this["MoveTime"] = value;
             }
         }
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("200")]
-        public int SHOT_TIME {
+        public int ShotTime {
             get {
-                return ((int)(this["SHOT_TIME"]));
+                return ((int)(this["ShotTime"]));
             }
             set {
-                this["SHOT_TIME"] = value;
+                this["ShotTime"] = value;
             }
         }
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("5")]
-        public int USER_INI_SPEED {
+        public int IniUserRadius {
             get {
-                return ((int)(this["USER_INI_SPEED"]));
+                return ((int)(this["IniUserRadius"]));
             }
             set {
-                this["USER_INI_SPEED"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("5")]
-        public int USER_INI_RADIUS {
-            get {
-                return ((int)(this["USER_INI_RADIUS"]));
-            }
-            set {
-                this["USER_INI_RADIUS"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("4")]
-        public int ENEMY_INI_SPEED {
-            get {
-                return ((int)(this["ENEMY_INI_SPEED"]));
-            }
-            set {
-                this["ENEMY_INI_SPEED"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("5")]
-        public int ENEMY_INI_RADIUS {
-            get {
-                return ((int)(this["ENEMY_INI_RADIUS"]));
-            }
-            set {
-                this["ENEMY_INI_RADIUS"] = value;
+                this["IniUserRadius"] = value;
             }
         }
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("7")]
-        public int TARGET_INI_RADIUS {
+        public int IniTargetRadius {
             get {
-                return ((int)(this["TARGET_INI_RADIUS"]));
+                return ((int)(this["IniTargetRadius"]));
             }
             set {
-                this["TARGET_INI_RADIUS"] = value;
+                this["IniTargetRadius"] = value;
             }
         }
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("800")]
-        public int SCREEN_INI_WIDTH {
+        public int IniScreenWidth {
             get {
-                return ((int)(this["SCREEN_INI_WIDTH"]));
+                return ((int)(this["IniScreenWidth"]));
             }
         }
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("800")]
-        public int SCREEN_INI_HEIGHT {
+        public int IniScreenHeight {
             get {
-                return ((int)(this["SCREEN_INI_HEIGHT"]));
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("1")]
-        public int ENEMIES_NUM {
-            get {
-                return ((int)(this["ENEMIES_NUM"]));
-            }
-            set {
-                this["ENEMIES_NUM"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("userWND.log")]
-        public string USER_WND_LOG_FILE {
-            get {
-                return ((string)(this["USER_WND_LOG_FILE"]));
-            }
-            set {
-                this["USER_WND_LOG_FILE"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("userCEN.log")]
-        public string USER_CEN_LOG_FILE {
-            get {
-                return ((string)(this["USER_CEN_LOG_FILE"]));
-            }
-            set {
-                this["USER_CEN_LOG_FILE"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("userANG.log")]
-        public string USER_ANG_LOG_FILE {
-            get {
-                return ((string)(this["USER_ANG_LOG_FILE"]));
-            }
-            set {
-                this["USER_ANG_LOG_FILE"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("enemyWND")]
-        public string ENEMY_WND_LOG_NAME {
-            get {
-                return ((string)(this["ENEMY_WND_LOG_NAME"]));
-            }
-            set {
-                this["ENEMY_WND_LOG_NAME"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("enemyCEN")]
-        public string ENEMY_CEN_LOG_NAME {
-            get {
-                return ((string)(this["ENEMY_CEN_LOG_NAME"]));
-            }
-            set {
-                this["ENEMY_CEN_LOG_NAME"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("enemyANG")]
-        public string ENEMY_ANG_LOG_NAME {
-            get {
-                return ((string)(this["ENEMY_ANG_LOG_NAME"]));
-            }
-            set {
-                this["ENEMY_ANG_LOG_NAME"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute(";")]
-        public char LOG_SEPARATOR {
-            get {
-                return ((char)(this["LOG_SEPARATOR"]));
-            }
-            set {
-                this["LOG_SEPARATOR"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute(".log")]
-        public string LOG_EXTENSION {
-            get {
-                return ((string)(this["LOG_EXTENSION"]));
-            }
-            set {
-                this["LOG_EXTENSION"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string ENEMY_LOG_PATH {
-            get {
-                return ((string)(this["ENEMY_LOG_PATH"]));
-            }
-            set {
-                this["ENEMY_LOG_PATH"] = value;
+                return ((int)(this["IniScreenHeight"]));
             }
         }
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("Green")]
-        public global::System.Drawing.Color USER_COLOR {
+        public global::System.Drawing.Color UserColor {
             get {
-                return ((global::System.Drawing.Color)(this["USER_COLOR"]));
+                return ((global::System.Drawing.Color)(this["UserColor"]));
             }
             set {
-                this["USER_COLOR"] = value;
+                this["UserColor"] = value;
             }
         }
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("0")]
-        public float ANGLE_X_SHIFT {
+        public float XAngleShift {
             get {
-                return ((float)(this["ANGLE_X_SHIFT"]));
+                return ((float)(this["XAngleShift"]));
             }
             set {
-                this["ANGLE_X_SHIFT"] = value;
+                this["XAngleShift"] = value;
             }
         }
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("0")]
-        public float ANGLE_Y_SHIFT {
+        public float YAngleShift {
             get {
-                return ((float)(this["ANGLE_Y_SHIFT"]));
+                return ((float)(this["YAngleShift"]));
             }
             set {
-                this["ANGLE_Y_SHIFT"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("100")]
-        public int CALIBRATION_TIMEOUT {
-            get {
-                return ((int)(this["CALIBRATION_TIMEOUT"]));
-            }
-            set {
-                this["CALIBRATION_TIMEOUT"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("2000")]
-        public int RECEIVE_TIMEOUT {
-            get {
-                return ((int)(this["RECEIVE_TIMEOUT"]));
-            }
-            set {
-                this["RECEIVE_TIMEOUT"] = value;
+                this["YAngleShift"] = value;
             }
         }
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("Диск. Данные")]
-        public string MAIN_DIR_PATH {
+        public string MainDirPath {
             get {
-                return ((string)(this["MAIN_DIR_PATH"]));
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("maps")]
-        public string MAPS_DIR_PATH {
-            get {
-                return ((string)(this["MAPS_DIR_PATH"]));
-            }
-            set {
-                this["MAPS_DIR_PATH"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("1")]
-        public int MAP_ID {
-            get {
-                return ((int)(this["MAP_ID"]));
-            }
-            set {
-                this["MAP_ID"] = value;
+                return ((string)(this["MainDirPath"]));
             }
         }
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("ru-RU")]
-        public string LANGUAGE {
+        public string Language {
             get {
-                return ((string)(this["LANGUAGE"]));
+                return ((string)(this["Language"]));
             }
             set {
-                this["LANGUAGE"] = value;
+                this["Language"] = value;
             }
         }
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=C:\\\\Archive\\\\6 semester\\\\DiskDotNet\\\\Disk\\\\Db\\\\disk.db")]
-        public string DB_CONNECTION {
+        [global::System.Configuration.DefaultSettingValueAttribute("50")]
+        public int TargetHp {
             get {
-                return ((string)(this["DB_CONNECTION"]));
+                return ((int)(this["TargetHp"]));
             }
             set {
-                this["DB_CONNECTION"] = value;
+                this["TargetHp"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("userAngles.log")]
+        public string UserLogFileName {
+            get {
+                return ((string)(this["UserLogFileName"]));
+            }
+            set {
+                this["UserLogFileName"] = value;
             }
         }
     }

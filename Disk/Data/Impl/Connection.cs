@@ -48,9 +48,9 @@ namespace Disk.Data.Impl
             Port = port;
 
             Socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp)
-/*            {
+            {
                 ReceiveTimeout = receiveTimeout
-            }*/;
+            };
             Socket.Connect(new IPEndPoint(IP, Port));
 
             Handshake();

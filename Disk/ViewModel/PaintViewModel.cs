@@ -36,12 +36,12 @@ namespace Disk.ViewModel
         // Properties
         public Point2D<float>? NextTargetCenter => TargetCenters.Count <= TargetId ? null : TargetCenters[TargetId++];
         private static Settings Settings => Settings.Default;
-        private string UsrAngLog => $"{CurrPath}{FilePath.DirectorySeparatorChar}{Settings.USER_ANG_LOG_FILE}";
+        private string UsrAngLog => $"{CurrPath}{FilePath.DirectorySeparatorChar}{Settings.UserLogFileName}";
         public bool IsPathToTarget => PathToTargetStopwatch.IsRunning;
         private Path Path => new
             (
                 PathsToTargets[SelectedRoseOrPath], Converter,
-                new SolidColorBrush(Color.FromRgb(Settings.USER_COLOR.R, Settings.USER_COLOR.G, Settings.USER_COLOR.B))
+                new SolidColorBrush(Color.FromRgb(Settings.UserColor.R, Settings.UserColor.G, Settings.UserColor.B))
             );
 
         // Disposable
@@ -189,7 +189,7 @@ namespace Disk.ViewModel
         {
             try
             {
-                using var con = Connection.GetConnection(IPAddress.Parse(Settings.IP), Settings.PORT);
+                using var con = Connection.GetConnection(IPAddress.Parse(Settings.IP), Settings.Port);
 
                 while (IsGame)
                 {
