@@ -223,6 +223,15 @@ namespace Disk.Properties.Langs.Appointment {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Target center.
+        /// </summary>
+        public static string TargetCenter {
+            get {
+                return ResourceManager.GetString("TargetCenter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Target number.
         /// </summary>
         public static string TargetNum {

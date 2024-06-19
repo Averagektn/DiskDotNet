@@ -171,6 +171,9 @@
   <data name="Start" xml:space="preserve">
     <value>Начать сбор данных</value>
   </data>
+  <data name="TargetCenter" xml:space="preserve">
+    <value>Центр цели</value>
+  </data>
   <data name="TargetNum" xml:space="preserve">
     <value>Номер цели</value>
   </data>

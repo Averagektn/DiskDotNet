@@ -171,6 +171,9 @@
   <data name="Start" xml:space="preserve">
     <value>Start</value>
   </data>
+  <data name="TargetCenter" xml:space="preserve">
+    <value>Target center</value>
+  </data>
   <data name="TargetNum" xml:space="preserve">
     <value>Target number</value>
   </data>
