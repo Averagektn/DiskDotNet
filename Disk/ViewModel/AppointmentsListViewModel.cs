@@ -15,7 +15,8 @@ namespace Disk.ViewModel
     {
         public Patient Patient { get; set; } = null!;
 
-        public ObservableCollection<Appointment> Appointments => new(appointmentRepository.GetPatientAppointments(Patient.Id));
+        public ObservableCollection<Appointment> Appointments 
+            => new(appointmentRepository.GetPatientAppointments(Patient.Id).OrderByDescending(a => DateTime.Parse(a.DateTime)));
 
         public Appointment? SelectedAppointment { get; set; }
 
