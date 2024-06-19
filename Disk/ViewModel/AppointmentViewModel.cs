@@ -32,6 +32,8 @@ namespace Disk.ViewModel
         public ICommand SessionSelectedCommand => new Command(SessionSelected);
         public ICommand ExportToExcelCommand => new Command(ExportToExcel);
 
+        private const int ColsPerPath = 8;
+
         private void FillExcel(XLWorkbook workbook)
         {
 
@@ -64,118 +66,16 @@ namespace Disk.ViewModel
 
                 var ptts = session.PathToTargets;
                 var pits = session.PathInTargets;
-                int pttRow = 8;
                 int pathCol = 7;
-                foreach (var ptt in ptts)
-                {
-                    int pathRow = 1;
-                    worksheet.Cell(pttRow, 1).Value = ptt.TargetNum;
-                    worksheet.Cell(pttRow, 2).Value = ptt.AngleDistance;
-                    worksheet.Cell(pttRow, 3).Value = ptt.Time;
-                    worksheet.Cell(pttRow, 4).Value = ptt.AngleSpeed;
-                    worksheet.Cell(pttRow, 5).Value = ptt.ApproachSpeed;
-                    pttRow++;
 
-                    var pathList = JsonConvert.DeserializeObject<List<Point2D<float>>>(ptt.CoordinatesJson)!;
-                    worksheet.Cell(pathRow++, pathCol).Value = $"{Localization.TargetNum}: {ptt.TargetNum + 1}";
-                    worksheet.Cell(pathRow, pathCol).Value = "X";
-                    worksheet.Cell(pathRow, pathCol + 1).Value = "Y";
-                    worksheet.Cell(pathRow - 1, pathCol + 2).Value = Localization.ProfileProjection;
-                    worksheet.Cell(pathRow - 1, pathCol + 3).Value = Localization.FrontalProjection;
-                    worksheet.Cell(pathRow - 1, pathCol + 4).Value = Localization.FrontLeftFoot;
-                    worksheet.Cell(pathRow - 1, pathCol + 5).Value = Localization.FrontRightFoot;
-                    pathRow++;
-
-
-                    foreach (var point in pathList)
-                    {
-                        worksheet.Cell(pathRow, pathCol).Value = point.X;
-                        worksheet.Cell(pathRow, pathCol + 1).Value = point.Y;
-
-                        // profile
-                        worksheet.Cell(pathRow, pathCol + 2).Value = 90.0f + point.Y;
-
-                        // frontal
-                        // left
-                        if (point.X < 0.0f)
-                        {
-                            worksheet.Cell(pathRow, pathCol + 3).Value = "<-";
-                            // left foot
-                            worksheet.Cell(pathRow, pathCol + 4).Value = 90.0f + point.X;
-                            // right foot
-                            worksheet.Cell(pathRow, pathCol + 5).Value = 90.0f - point.X;
-                        }
-                        // right
-                        else
-                        {
-                            worksheet.Cell(pathRow, pathCol + 3).Value = "->";
-                            // left foot
-                            worksheet.Cell(pathRow, pathCol + 4).Value = 90.0f + point.X;
-                            // right foot
-                            worksheet.Cell(pathRow, pathCol + 5).Value = 90.0f - point.X;
-                        }
-
-                        pathRow++;
-                    }
-
-                    pathCol += 7;
-                }
-
-                foreach (var pit in pits)
-                {
-                    int pathRow = 1;
-
-                    var pathList = JsonConvert.DeserializeObject<List<Point2D<float>>>(pit.CoordinatesJson)!;
-                    worksheet.Cell(pathRow++, pathCol).Value = $"{Localization.TargetNum}: {pit.TargetId + 1}";
-                    worksheet.Cell(pathRow, pathCol).Value = "X";
-                    worksheet.Cell(pathRow, pathCol + 1).Value = "Y";
-                    worksheet.Cell(pathRow - 1, pathCol + 2).Value = Localization.ProfileProjection;
-                    worksheet.Cell(pathRow - 1, pathCol + 3).Value = Localization.FrontalProjection;
-                    worksheet.Cell(pathRow - 1, pathCol + 4).Value = Localization.FrontLeftFoot;
-                    worksheet.Cell(pathRow - 1, pathCol + 5).Value = Localization.FrontRightFoot;
-                    pathRow++;
-
-
-                    foreach (var point in pathList)
-                    {
-                        worksheet.Cell(pathRow, pathCol).Value = point.X;
-                        worksheet.Cell(pathRow, pathCol + 1).Value = point.Y;
-
-                        // profile
-                        worksheet.Cell(pathRow, pathCol + 2).Value = 90.0f + point.Y;
-
-                        // frontal
-                        // left
-                        if (point.X < 0.0f)
-                        {
-                            worksheet.Cell(pathRow, pathCol + 3).Value = "<-";
-                            // left foot
-                            worksheet.Cell(pathRow, pathCol + 4).Value = 90.0f + point.X;
-                            // right foot
-                            worksheet.Cell(pathRow, pathCol + 5).Value = 90.0f - point.X;
-                        }
-                        // right
-                        else
-                        {
-                            worksheet.Cell(pathRow, pathCol + 3).Value = "->";
-                            // left foot
-                            worksheet.Cell(pathRow, pathCol + 4).Value = 90.0f + point.X;
-                            // right foot
-                            worksheet.Cell(pathRow, pathCol + 5).Value = 90.0f - point.X;
-                        }
-
-                        pathRow++;
-                    }
-
-                    pathCol += 7;
-                }
+                FillPtts(worksheet, ptts, pathCol);
+                FillPits(worksheet, pits, pathCol + ColsPerPath);
 
                 new List<IXLRange>()
                 {
                     worksheet.Range(1, 1, 1, 2),
                     worksheet.Range(4, 1, 4, 4),
-                    worksheet.Range(7, 1, 7, 5),
-                    worksheet.Range(1, 7, 2, pathCol - 2)
+                    worksheet.Range(7, 1, 7, 5)
                 }
                 .ForEach(header =>
                 {
@@ -184,6 +84,79 @@ namespace Disk.ViewModel
                 });
 
                 _ = worksheet.Columns().AdjustToContents().Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
+            }
+        }
+
+        private static void FillPtts(IXLWorksheet worksheet, ICollection<PathToTarget> ptts, int pathCol)
+        {
+            foreach (var ptt in ptts)
+            {
+                int pathRow = 1;
+                worksheet.Cell(8, 1).Value = ptt.TargetNum;
+                worksheet.Cell(8, 2).Value = ptt.AngleDistance;
+                worksheet.Cell(8, 3).Value = ptt.Time;
+                worksheet.Cell(8, 4).Value = ptt.AngleSpeed;
+                worksheet.Cell(8, 5).Value = ptt.ApproachSpeed;
+
+                var pathList = JsonConvert.DeserializeObject<List<Point2D<float>>>(ptt.CoordinatesJson)!;
+                worksheet.Cell(pathRow, pathCol++).Value = $"Ptt";
+                worksheet.Cell(pathRow++, pathCol).Value = $"{Localization.TargetNum}: {ptt.TargetNum + 1}";
+                worksheet.Cell(pathRow, pathCol).Value = "X";
+                worksheet.Cell(pathRow, pathCol + 1).Value = "Y";
+                worksheet.Cell(pathRow - 1, pathCol + 2).Value = Localization.ProfileProjection;
+                worksheet.Cell(pathRow - 1, pathCol + 3).Value = Localization.FrontalProjection;
+                worksheet.Cell(pathRow - 1, pathCol + 4).Value = Localization.FrontLeftFoot;
+                worksheet.Cell(pathRow - 1, pathCol + 5).Value = Localization.FrontRightFoot;
+                pathRow++;
+
+                FillExcelWithPoints(worksheet, pathCol, pathRow, pathList);
+
+                pathCol += ColsPerPath * 2;
+            }
+        }
+
+        private static void FillExcelWithPoints(IXLWorksheet worksheet, int pathCol, int pathRow, List<Point2D<float>> pathList)
+        {
+            foreach (var point in pathList)
+            {
+                worksheet.Cell(pathRow, pathCol).Value = point.X;
+                worksheet.Cell(pathRow, pathCol + 1).Value = point.Y;
+
+                // profile
+                worksheet.Cell(pathRow, pathCol + 2).Value = 90.0f + point.Y;
+
+                // frontal
+                // left
+                worksheet.Cell(pathRow, pathCol + 3).Value = point.X < 0.0f ? (XLCellValue)"<-" : (XLCellValue)"->";
+                // left foot
+                worksheet.Cell(pathRow, pathCol + 4).Value = 90.0f + point.X;
+                // right foot
+                worksheet.Cell(pathRow, pathCol + 5).Value = 90.0f - point.X;
+
+                pathRow++;
+            }
+        }
+
+        private static void FillPits(IXLWorksheet worksheet, ICollection<PathInTarget> pits, int pathCol)
+        {
+            foreach (var pit in pits)
+            {
+                int pathRow = 1;
+
+                var pathList = JsonConvert.DeserializeObject<List<Point2D<float>>>(pit.CoordinatesJson)!;
+                worksheet.Cell(pathRow, pathCol++).Value = $"Pit";
+                worksheet.Cell(pathRow++, pathCol).Value = $"{Localization.TargetNum}: {pit.TargetId + 1}";
+                worksheet.Cell(pathRow, pathCol).Value = "X";
+                worksheet.Cell(pathRow, pathCol + 1).Value = "Y";
+                worksheet.Cell(pathRow - 1, pathCol + 2).Value = Localization.ProfileProjection;
+                worksheet.Cell(pathRow - 1, pathCol + 3).Value = Localization.FrontalProjection;
+                worksheet.Cell(pathRow - 1, pathCol + 4).Value = Localization.FrontLeftFoot;
+                worksheet.Cell(pathRow - 1, pathCol + 5).Value = Localization.FrontRightFoot;
+                pathRow++;
+
+                FillExcelWithPoints(worksheet, pathCol, pathRow, pathList);
+
+                pathCol += ColsPerPath* 2;
             }
         }
 
