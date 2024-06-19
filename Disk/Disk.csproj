@@ -95,11 +95,6 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>PaintWindowLocalization.resx</DependentUpon>
     </Compile>
-    <Compile Update="Properties\Langs\Paint\PaintLocalization.Designer.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>PaintLocalization.resx</DependentUpon>
-    </Compile>
     <Compile Update="Properties\Langs\Patients\PatientsLocalization.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
@@ -109,11 +104,6 @@
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>StartSessionLocalization.resx</DependentUpon>
-    </Compile>
-    <Compile Update="Properties\Localization.Designer.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Localization.resx</DependentUpon>
     </Compile>
   </ItemGroup>
 
@@ -178,13 +168,6 @@
     <EmbeddedResource Update="Properties\Langs\PaintWindow\PaintWindowLocalization.ru-RU.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="Properties\Langs\Paint\PaintLocalization.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>PaintLocalization.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Properties\Langs\Paint\PaintLocalization.ru-RU.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-    </EmbeddedResource>
     <EmbeddedResource Update="Properties\Langs\Patients\PatientsLocalization.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>PatientsLocalization.Designer.cs</LastGenOutput>
@@ -198,15 +181,6 @@
     </EmbeddedResource>
     <EmbeddedResource Update="Properties\Langs\StartSession\StartSessionLocalization.ru-RU.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Properties\Localization.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>Localization.Designer.cs</LastGenOutput>
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Properties\Localization.ru-RU.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </EmbeddedResource>
   </ItemGroup>
 

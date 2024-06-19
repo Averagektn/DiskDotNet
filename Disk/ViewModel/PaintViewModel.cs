@@ -18,7 +18,7 @@ using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
 using FilePath = System.IO.Path;
-using Localization = Disk.Properties.Localization;
+using Localization = Disk.Properties.Langs.PaintWindow.PaintWindowLocalization;
 using Settings = Disk.Properties.Config.Config;
 
 namespace Disk.ViewModel
