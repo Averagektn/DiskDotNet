@@ -18,7 +18,7 @@
       <Value Profile="(Default)">20</Value>
     </Setting>
     <Setting Name="ShotTime" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">200</Value>
+      <Value Profile="(Default)">20</Value>
     </Setting>
     <Setting Name="IniUserRadius" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">5</Value>
@@ -48,7 +48,7 @@
       <Value Profile="(Default)">ru-RU</Value>
     </Setting>
     <Setting Name="TargetHp" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">50</Value>
+      <Value Profile="(Default)">200</Value>
     </Setting>
     <Setting Name="UserLogFileName" Type="System.String" Scope="User">
       <Value Profile="(Default)">userAngles.log</Value>

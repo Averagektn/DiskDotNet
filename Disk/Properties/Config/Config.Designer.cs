@@ -85,7 +85,7 @@ namespace Disk.Properties.Config {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("200")]
+        [global::System.Configuration.DefaultSettingValueAttribute("20")]
         public int ShotTime {
             get {
                 return ((int)(this["ShotTime"]));
@@ -196,7 +196,7 @@ namespace Disk.Properties.Config {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("50")]
+        [global::System.Configuration.DefaultSettingValueAttribute("200")]
         public int TargetHp {
             get {
                 return ((int)(this["TargetHp"]));
