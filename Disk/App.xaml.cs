@@ -49,6 +49,7 @@ namespace Disk
 
             _ = services.AddSingleton<IAuthenticationService, AuthenticationService>();
             _ = services.AddSingleton<IPatientService, PatientService>();
+            _ = services.AddSingleton<IExcelFiller, ExcelFiller>();
 
             _ = services.AddTransient<MainViewModel>();
             _ = services.AddTransient<MenuViewModel>();
