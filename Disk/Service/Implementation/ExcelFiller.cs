@@ -65,10 +65,13 @@ namespace Disk.Service.Implementation
                 worksheet.Cell(4, 4).Value = Localization.Score;
 
                 var sres = session.SessionResult;
-                worksheet.Cell(5, 1).Value = sres?.Dispersion;
-                worksheet.Cell(5, 2).Value = sres?.Deviation;
-                worksheet.Cell(5, 3).Value = sres?.MathExp;
-                worksheet.Cell(5, 4).Value = sres?.Score;
+                if (sres is not null)
+                {
+                    SetFloatCell(worksheet, 5, 1, (float)sres.Dispersion);
+                    SetFloatCell(worksheet, 5, 2, (float)sres.Deviation);
+                    SetFloatCell(worksheet, 5, 3, (float)sres.MathExp);
+                    worksheet.Cell(5, 4).Value = sres.Score;
+                }
 
                 worksheet.Cell(7, 1).Value = Localization.TargetNum;
                 worksheet.Cell(7, 2).Value = Localization.AngleDistance;
@@ -93,9 +96,9 @@ namespace Disk.Service.Implementation
                     header.Style.Font.Bold = true;
                     header.Style.Fill.BackgroundColor = XLColor.LightGray;
                 });
-                worksheet.Range(3, pathCol, 3, (ColsPerPath * (session.PathToTargets.Count + session.PathInTargets.Count + 1)) - 2).Style.Fill
+                worksheet.Range(3, pathCol, 3, ColsPerPath * (session.PathToTargets.Count + session.PathInTargets.Count + 1) - 2).Style.Fill
                     .BackgroundColor = XLColor.LightSlateGray;
-                worksheet.Range(3, pathCol, 3, (ColsPerPath * (session.PathToTargets.Count + session.PathInTargets.Count + 1)) - 2).Style.Font
+                worksheet.Range(3, pathCol, 3, ColsPerPath * (session.PathToTargets.Count + session.PathInTargets.Count + 1) - 2).Style.Font
                     .Bold = true;
 
                 _ = worksheet.Columns().AdjustToContents().Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
@@ -107,20 +110,21 @@ namespace Disk.Service.Implementation
             var ptts = session.PathToTargets;
             var mapCenters = JsonConvert.DeserializeObject<List<Point2D<float>>>(session.MapNavigation.CoordinatesJson)!;
 
+            int pttRow = 8;
             foreach (var ptt in ptts)
             {
-                worksheet.Cell(8, 1).Value = ptt.TargetNum;
-                worksheet.Cell(8, 2).Value = ptt.AngleDistance;
-                worksheet.Cell(8, 3).Value = ptt.Time;
-                worksheet.Cell(8, 4).Value = ptt.AngleSpeed;
-                worksheet.Cell(8, 5).Value = ptt.ApproachSpeed;
+                worksheet.Cell(pttRow, 1).Value = ptt.TargetNum;
+                SetFloatCell(worksheet, pttRow, 2, (float)ptt.AngleDistance);
+                SetFloatCell(worksheet, pttRow, 3, (float)ptt.Time);
+                SetFloatCell(worksheet, pttRow, 4, (float)ptt.AngleSpeed);
+                SetFloatCell(worksheet, pttRow++, 5, (float)ptt.ApproachSpeed);
 
                 var pathList = JsonConvert.DeserializeObject<List<Point2D<float>>>(ptt.CoordinatesJson)!;
 
                 worksheet.Cell(1, pathCol++).Value = $"{Localization.PathToTarget}";
                 FillPath(worksheet, session, pathCol, mapCenters, pathList, ptt.TargetNum);
 
-                pathCol += ColsPerPath * 2;
+                pathCol += ColsPerPath * 2 - 1;
             }
         }
 
@@ -133,11 +137,13 @@ namespace Disk.Service.Implementation
             {
                 var pathList = JsonConvert.DeserializeObject<List<Point2D<float>>>(pit.CoordinatesJson)!;
 
-                worksheet.Cell(1, pathCol++).Value = $"{Localization.PathInTarget}";
-                worksheet.Cell(1, pathCol + 1).Value = $"{Localization.Precision} {pit.Precision}";
+                worksheet.Cell(1, pathCol).Value = Localization.PathInTarget;
+                worksheet.Cell(4, pathCol).Value = Localization.Precision;
+                worksheet.Cell(5, pathCol).Style.NumberFormat.Format = "0%";
+                worksheet.Cell(5, pathCol++).Value = float.Round(pit.Precision, 1);
                 FillPath(worksheet, session, pathCol, mapCenters, pathList, pit.TargetId);
 
-                pathCol += ColsPerPath * 2;
+                pathCol += ColsPerPath * 2 - 1;
             }
         }
 
@@ -150,19 +156,19 @@ namespace Disk.Service.Implementation
             worksheet.Cell(pathRow + 1, pathCol - 1).Value = Localization.TargetCenter;
 
             worksheet.Cell(pathRow, pathCol).Value = "X";
-            worksheet.Cell(pathRow + 1, pathCol).Value = (mapCenters[(int)targetId].X - 0.5f) * session.MaxXAngle * 2;
+            SetFloatCell(worksheet, pathRow + 1, pathCol, (mapCenters[(int)targetId].X - 0.5f) * session.MaxXAngle * 2);
 
             worksheet.Cell(pathRow, pathCol + 1).Value = "Y";
-            worksheet.Cell(pathRow + 1, pathCol + 1).Value = (mapCenters[(int)targetId].Y - 0.5f) * session.MaxYAngle * 2;
+            SetFloatCell(worksheet, pathRow + 1, pathCol + 1, (mapCenters[(int)targetId].Y - 0.5f) * session.MaxYAngle * 2);
 
             worksheet.Cell(pathRow - 1, pathCol + 2).Value = Localization.ProfileProjection;
-            worksheet.Cell(pathRow + 1, pathCol + 2).Value = 90.0f + ((mapCenters[(int)targetId].Y - 0.5f) * session.MaxYAngle * 2);
+            SetFloatCell(worksheet, pathRow + 1, pathCol + 2, 90.0f + ((mapCenters[(int)targetId].Y - 0.5f) * session.MaxYAngle * 2));
 
             worksheet.Cell(pathRow - 1, pathCol + 3).Value = Localization.FrontLeftFoot;
-            worksheet.Cell(pathRow + 1, pathCol + 3).Value = 90.0f + ((mapCenters[(int)targetId].X - 0.5f) * session.MaxXAngle * 2);
+            SetFloatCell(worksheet, pathRow + 1, pathCol + 3, 90.0f + ((mapCenters[(int)targetId].X - 0.5f) * session.MaxXAngle * 2));
 
             worksheet.Cell(pathRow - 1, pathCol + 4).Value = Localization.FrontRightFoot;
-            worksheet.Cell(pathRow + 1, pathCol + 4).Value = 90.0f - ((mapCenters[(int)targetId].X - 0.5f) * session.MaxXAngle * 2);
+            SetFloatCell(worksheet, pathRow + 1, pathCol + 4, 90.0f - ((mapCenters[(int)targetId].X - 0.5f) * session.MaxXAngle * 2));
 
             pathRow += 2;
 
@@ -173,20 +179,26 @@ namespace Disk.Service.Implementation
         {
             foreach (var point in pathList)
             {
-                worksheet.Cell(pathRow, pathCol).Value = point.X;
-                worksheet.Cell(pathRow, pathCol + 1).Value = point.Y;
+                SetFloatCell(worksheet, pathRow, pathCol, point.X);
+                SetFloatCell(worksheet, pathRow, pathCol + 1, point.Y);
 
                 // profile
-                worksheet.Cell(pathRow, pathCol + 2).Value = 90.0f + point.Y;
+                SetFloatCell(worksheet, pathRow, pathCol + 2, 90.0f + point.Y);
 
                 // frontal
                 // left foot
-                worksheet.Cell(pathRow, pathCol + 3).Value = 90.0f + point.X;
+                SetFloatCell(worksheet, pathRow, pathCol + 3, 90.0f + point.X);
                 // right foot
-                worksheet.Cell(pathRow, pathCol + 4).Value = 90.0f - point.X;
+                SetFloatCell(worksheet, pathRow, pathCol + 4, 90.0f - point.X);
 
                 pathRow++;
             }
+        }
+
+        private static void SetFloatCell(IXLWorksheet worksheet, int row, int column, float value)
+        {
+            worksheet.Cell(row, column).Style.NumberFormat.Format = "0.0";
+            worksheet.Cell(row, column).Value = value;
         }
     }
 }
