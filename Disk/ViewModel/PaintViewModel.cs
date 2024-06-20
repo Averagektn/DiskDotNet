@@ -11,6 +11,7 @@ using Disk.ViewModel.Common.ViewModels;
 using Disk.Visual.Impl;
 using Disk.Visual.Interface;
 using Newtonsoft.Json;
+using Serilog;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Net;
@@ -27,7 +28,7 @@ namespace Disk.ViewModel
     {
         // Can set on creation
         public event Action? OnSessionOver;
-        public string ImagePath = "/Properties/pngegg.png";
+        public string ImagePath = string.Empty;
         public string CurrPath { get; set; } = null!;
 
         // Scale
@@ -66,6 +67,7 @@ namespace Disk.ViewModel
         private readonly IPathToTargetRepository _pathToTargetRepository;
         private readonly IPathInTargetRepository _pathInTargetRepository;
         private readonly ISessionResultRepository _sessionResultRepository;
+        private readonly ISessionRepository _sessionRepository;
 
         // readonly
         private readonly Stopwatch PathToTargetStopwatch;
@@ -96,7 +98,7 @@ namespace Disk.ViewModel
         public ICommand PathSelectedCommand => new Command(PathSelected);
 
         public PaintViewModel(NavigationStore navigationStore, IPathToTargetRepository pathToTargetRepository,
-            IPathInTargetRepository pathInTargetRepository, ISessionResultRepository sessionResultRepository)
+            IPathInTargetRepository pathInTargetRepository, ISessionResultRepository sessionResultRepository, ISessionRepository sessionRepository)
         {
             DiskNetworkThread = new(ReceiveUserPos);
             DiskNetworkThread.Start();
@@ -107,6 +109,7 @@ namespace Disk.ViewModel
             _pathToTargetRepository = pathToTargetRepository;
             _pathInTargetRepository = pathInTargetRepository;
             _sessionResultRepository = sessionResultRepository;
+            _sessionRepository = sessionRepository;
 
             PathToTargetStopwatch = Stopwatch.StartNew();
         }
@@ -179,7 +182,17 @@ namespace Disk.ViewModel
             var user = DrawableFabric.GetUser(ImagePath);
 
             UserMovementLog = Logger.GetLogger(UsrAngLog);
-            user.OnShot += (p) => UserMovementLog.LogLn(Converter.ToAngle_FromWnd(p));
+            user.OnShot += (p) =>
+            {
+                try
+                {
+                    UserMovementLog.LogLn(Converter.ToAngle_FromWnd(p));
+                }
+                catch (Exception ex) 
+                {
+                    Log.Fatal(ex.Message);
+                }
+            };
             user.OnShot += (p) => FullPath.Add(Converter.ToAngle_FromWnd(p));
 
             return user;
@@ -205,20 +218,27 @@ namespace Disk.ViewModel
 
         public void SaveSessionResult()
         {
-            var mx = Calculator2D.MathExp(FullPath);
-            var dispersion = Calculator2D.Dispersion(FullPath);
-            var deviation = Calculator2D.StandartDeviation(FullPath);
-
-            var sres = new SessionResult()
+            if (PathsInTargets.Count != 0)
             {
-                Id = AppointmentSession.CurrentSession.Id,
-                MathExp = (mx.XDbl + mx.YDbl) / 2,
-                Dispersion = (dispersion.XDbl + dispersion.YDbl) / 2,
-                Deviation = (deviation.XDbl + dispersion.YDbl) / 2,
-                Score = Score
-            };
+                var mx = Calculator2D.MathExp(FullPath);
+                var dispersion = Calculator2D.Dispersion(FullPath);
+                var deviation = Calculator2D.StandartDeviation(FullPath);
 
-            _sessionResultRepository.Add(sres);
+                var sres = new SessionResult()
+                {
+                    Id = AppointmentSession.CurrentSession.Id,
+                    MathExp = (mx.XDbl + mx.YDbl) / 2,
+                    Dispersion = (dispersion.XDbl + dispersion.YDbl) / 2,
+                    Deviation = (deviation.XDbl + dispersion.YDbl) / 2,
+                    Score = Score
+                };
+
+                _sessionResultRepository.Add(sres);
+            }
+            else
+            {
+                _sessionRepository.Delete(AppointmentSession.CurrentSession);
+            }
 
             IsStopEnabled = false;
 

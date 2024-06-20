@@ -96,9 +96,9 @@ namespace Disk.Service.Implementation
                     header.Style.Font.Bold = true;
                     header.Style.Fill.BackgroundColor = XLColor.LightGray;
                 });
-                worksheet.Range(3, pathCol, 3, ColsPerPath * (session.PathToTargets.Count + session.PathInTargets.Count + 1) - 2).Style.Fill
+                worksheet.Range(3, pathCol, 3, (ColsPerPath * (session.PathToTargets.Count + session.PathInTargets.Count + 1)) - 2).Style.Fill
                     .BackgroundColor = XLColor.LightSlateGray;
-                worksheet.Range(3, pathCol, 3, ColsPerPath * (session.PathToTargets.Count + session.PathInTargets.Count + 1) - 2).Style.Font
+                worksheet.Range(3, pathCol, 3, (ColsPerPath * (session.PathToTargets.Count + session.PathInTargets.Count + 1)) - 2).Style.Font
                     .Bold = true;
 
                 _ = worksheet.Columns().AdjustToContents().Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
@@ -124,7 +124,7 @@ namespace Disk.Service.Implementation
                 worksheet.Cell(1, pathCol++).Value = $"{Localization.PathToTarget}";
                 FillPath(worksheet, session, pathCol, mapCenters, pathList, ptt.TargetNum);
 
-                pathCol += ColsPerPath * 2 - 1;
+                pathCol += (ColsPerPath * 2) - 1;
             }
         }
 
@@ -143,7 +143,7 @@ namespace Disk.Service.Implementation
                 worksheet.Cell(5, pathCol++).Value = float.Round(pit.Precision, 1);
                 FillPath(worksheet, session, pathCol, mapCenters, pathList, pit.TargetId);
 
-                pathCol += ColsPerPath * 2 - 1;
+                pathCol += (ColsPerPath * 2) - 1;
             }
         }
 
