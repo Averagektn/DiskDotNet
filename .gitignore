@@ -408,3 +408,4 @@ Db/disk.db
 /Db/disk.db
 *.bmp
 /Disk/Properties/Config/AppConfig.cs
+/Db/disk.db-wal
