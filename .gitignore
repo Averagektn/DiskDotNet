@@ -409,3 +409,4 @@ Db/disk.db
 *.bmp
 /Disk/Properties/Config/AppConfig.cs
 /Db/disk.db-wal
+/Db/disk.db-shm
