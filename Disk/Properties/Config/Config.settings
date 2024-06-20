@@ -24,7 +24,7 @@
       <Value Profile="(Default)">5</Value>
     </Setting>
     <Setting Name="IniTargetRadius" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">7</Value>
+      <Value Profile="(Default)">12</Value>
     </Setting>
     <Setting Name="IniScreenWidth" Type="System.Int32" Scope="Application">
       <Value Profile="(Default)">800</Value>

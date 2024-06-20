@@ -109,7 +109,7 @@ namespace Disk.Properties.Config {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("7")]
+        [global::System.Configuration.DefaultSettingValueAttribute("12")]
         public int IniTargetRadius {
             get {
                 return ((int)(this["IniTargetRadius"]));
