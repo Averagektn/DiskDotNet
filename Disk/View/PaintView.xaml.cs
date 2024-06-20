@@ -161,7 +161,6 @@ namespace Disk.View.PaintWindow
         private void OnStopClick(object sender, RoutedEventArgs e)
         {
             StopGame();
-            // comment
             ViewModel.SaveSessionResult();
         }
 

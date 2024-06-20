@@ -182,17 +182,7 @@ namespace Disk.ViewModel
             var user = DrawableFabric.GetUser(ImagePath);
 
             UserMovementLog = Logger.GetLogger(UsrAngLog);
-            user.OnShot += (p) =>
-            {
-                try
-                {
-                    UserMovementLog.LogLn(Converter.ToAngle_FromWnd(p));
-                }
-                catch (Exception ex) 
-                {
-                    Log.Fatal(ex.Message);
-                }
-            };
+            user.OnShot += (p) => UserMovementLog.LogLn(Converter.ToAngle_FromWnd(p));
             user.OnShot += (p) => FullPath.Add(Converter.ToAngle_FromWnd(p));
 
             return user;
@@ -212,7 +202,11 @@ namespace Disk.ViewModel
             catch
             {
                 _ = MessageBox.Show(Localization.ConnectionLost);
-                _ = Application.Current.Dispatcher.BeginInvoke(new Action(() => _navigationStore.NavigateBack()));
+                _ = Application.Current.Dispatcher.BeginInvoke(new Action(() => 
+                {
+                    SaveSessionResult();
+                    _navigationStore.NavigateBack(); 
+                }));
             }
         }
 
@@ -259,9 +253,6 @@ namespace Disk.ViewModel
             IsGame = false;
             UserMovementLog.Dispose();
             DiskNetworkThread.Join();
-
-            // uncomment
-            //SaveSessionResult();
         }
 
         public void SwitchToPathInTarget(Point2D<int> userShot)
