@@ -76,7 +76,6 @@ namespace Disk.Service.Implementation
                 worksheet.Cell(7, 4).Value = Localization.AngleSpeed;
                 worksheet.Cell(7, 5).Value = Localization.ApproachSpeed;
 
-                var pits = session.PathInTargets;
                 const int pathCol = 7;
 
                 FillPtts(worksheet, session, pathCol);
@@ -87,16 +86,17 @@ namespace Disk.Service.Implementation
                     worksheet.Range(1, 1, 1, 2),
                     worksheet.Range(4, 1, 4, 4),
                     worksheet.Range(7, 1, 7, 5),
-                    worksheet.Range(1, pathCol, 2, ColsPerPath * (session.PathToTargets.Count + pits.Count + 1) - 2),
+                    worksheet.Range(1, pathCol, 2, (ColsPerPath * (session.PathToTargets.Count + session.PathInTargets.Count + 1)) - 2),
                 }
                 .ForEach(header =>
                 {
                     header.Style.Font.Bold = true;
                     header.Style.Fill.BackgroundColor = XLColor.LightGray;
                 });
-                worksheet.Range(3, pathCol, 3, ColsPerPath * (session.PathToTargets.Count + pits.Count + 1) - 2).Style.Fill
+                worksheet.Range(3, pathCol, 3, (ColsPerPath * (session.PathToTargets.Count + session.PathInTargets.Count + 1)) - 2).Style.Fill
                     .BackgroundColor = XLColor.LightSlateGray;
-                worksheet.Range(3, pathCol, 3, ColsPerPath * (session.PathToTargets.Count + pits.Count + 1) - 2).Style.Font.Bold = true;
+                worksheet.Range(3, pathCol, 3, (ColsPerPath * (session.PathToTargets.Count + session.PathInTargets.Count + 1)) - 2).Style.Font
+                    .Bold = true;
 
                 _ = worksheet.Columns().AdjustToContents().Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
             }
@@ -117,6 +117,7 @@ namespace Disk.Service.Implementation
 
                 var pathList = JsonConvert.DeserializeObject<List<Point2D<float>>>(ptt.CoordinatesJson)!;
 
+                worksheet.Cell(1, pathCol++).Value = $"{Localization.PathToTarget}";
                 FillPath(worksheet, session, pathCol, mapCenters, pathList, ptt.TargetNum);
 
                 pathCol += ColsPerPath * 2;
@@ -132,6 +133,8 @@ namespace Disk.Service.Implementation
             {
                 var pathList = JsonConvert.DeserializeObject<List<Point2D<float>>>(pit.CoordinatesJson)!;
 
+                worksheet.Cell(1, pathCol++).Value = $"{Localization.PathInTarget}";
+                worksheet.Cell(1, pathCol + 1).Value = $"{Localization.Precision} {pit.Precision}";
                 FillPath(worksheet, session, pathCol, mapCenters, pathList, pit.TargetId);
 
                 pathCol += ColsPerPath * 2;
@@ -143,7 +146,6 @@ namespace Disk.Service.Implementation
         {
             int pathRow = 1;
 
-            worksheet.Cell(pathRow, pathCol++).Value = $"{Localization.PathToTarget}";
             worksheet.Cell(pathRow++, pathCol).Value = $"{Localization.TargetNum}: {targetId + 1}";
             worksheet.Cell(pathRow + 1, pathCol - 1).Value = Localization.TargetCenter;
 

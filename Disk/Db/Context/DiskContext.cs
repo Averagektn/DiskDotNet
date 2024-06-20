@@ -85,6 +85,7 @@ public partial class DiskContext : DbContext
             _ = entity.Property(e => e.Session).HasColumnName("pit_session");
             _ = entity.Property(e => e.TargetId).HasColumnName("pit_target_id");
             _ = entity.Property(e => e.CoordinatesJson).HasColumnName("pit_coordinates_json");
+            _ = entity.Property(e => e.Precision).HasColumnName("pit_precision");
 
             _ = entity.HasOne(d => d.SessionNavigation).WithMany(p => p.PathInTargets)
                 .HasForeignKey(d => d.Session)

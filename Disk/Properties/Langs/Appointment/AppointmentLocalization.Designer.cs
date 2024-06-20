@@ -187,6 +187,15 @@ namespace Disk.Properties.Langs.Appointment {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Precision.
+        /// </summary>
+        public static string Precision {
+            get {
+                return ResourceManager.GetString("Precision", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Profile projection.
         /// </summary>
         public static string ProfileProjection {

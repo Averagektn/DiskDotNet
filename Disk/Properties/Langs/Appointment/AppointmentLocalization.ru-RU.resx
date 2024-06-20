@@ -159,6 +159,9 @@
   <data name="PathToTarget" xml:space="preserve">
     <value>Путь к цели</value>
   </data>
+  <data name="Precision" xml:space="preserve">
+    <value>Точность</value>
+  </data>
   <data name="ProfileProjection" xml:space="preserve">
     <value>Профильная проекция</value>
   </data>

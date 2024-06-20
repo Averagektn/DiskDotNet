@@ -159,6 +159,9 @@
   <data name="PathToTarget" xml:space="preserve">
     <value>Path to target</value>
   </data>
+  <data name="Precision" xml:space="preserve">
+    <value>Precision</value>
+  </data>
   <data name="ProfileProjection" xml:space="preserve">
     <value>Profile projection</value>
   </data>

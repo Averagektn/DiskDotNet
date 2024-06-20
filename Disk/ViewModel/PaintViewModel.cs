@@ -290,13 +290,17 @@ namespace Disk.ViewModel
 
         public bool SwitchToPathToTarget(ProgressTarget target)
         {
+            var pathInTarget = PathsInTargets[TargetId - 1];
             PathsToTargets.Add([]);
+
+            var precision = (float)pathInTarget.Count(p => target.Contains(Converter.ToWndCoord(p))) / pathInTarget.Count;
 
             var pit = new PathInTarget()
             {
-                CoordinatesJson = JsonConvert.SerializeObject(PathsInTargets[TargetId - 1]),
+                CoordinatesJson = JsonConvert.SerializeObject(pathInTarget),
                 Session = AppointmentSession.CurrentSession.Id,
                 TargetId = TargetId - 1,
+                Precision = precision
             };
 
             SavePathInTarget(pit);
