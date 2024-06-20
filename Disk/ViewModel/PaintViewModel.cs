@@ -74,7 +74,7 @@ namespace Disk.ViewModel
         public bool IsRoseChecked { get; set; }
         public bool IsPathChecked { get; set; }
         public int SelectedRoseOrPath { get; set; }
-        public string ScoreString => $"{Localization.Paint_Score}: {Score}";
+        public string ScoreString => $"{Localization.Score}: {Score}";
 
         private string _message = string.Empty;
         public string Message { get => _message; set => SetProperty(ref _message, value); }
@@ -149,7 +149,7 @@ namespace Disk.ViewModel
 
             for (int i = 1; i < TargetId + 1; i++)
             {
-                PathsAndRoses.Add($"{Localization.Paint_PathToTarget} {i}");
+                PathsAndRoses.Add($"{Localization.PathToTarget} {i}");
             }
         }
 
@@ -159,7 +159,7 @@ namespace Disk.ViewModel
 
             for (int i = 1; i < TargetId + 1; i++)
             {
-                PathsAndRoses.Add($"{Localization.Paint_WindRoseForTarget} {i}");
+                PathsAndRoses.Add($"{Localization.WindRoseForTarget} {i}");
             }
         }
 
@@ -198,7 +198,7 @@ namespace Disk.ViewModel
             }
             catch
             {
-                _ = MessageBox.Show(Localization.Paint_ConnectionLost);
+                _ = MessageBox.Show(Localization.ConnectionLost);
                 _ = Application.Current.Dispatcher.BeginInvoke(new Action(() => _navigationStore.NavigateBack()));
             }
         }
@@ -281,10 +281,10 @@ namespace Disk.ViewModel
 
             Message =
                     $"""
-                        {Localization.Paint_Time}: {time:F2}
-                        {Localization.Paint_AngleDistance}: {distance:F2}
-                        {Localization.Paint_AngleSpeed}: {avgSpeed:F2}
-                        {Localization.Paint_ApproachSpeed}: {approachSpeed:F2}
+                        {Localization.Time}: {time:F2}
+                        {Localization.AngleDistance}: {distance:F2}
+                        {Localization.AngleSpeed}: {avgSpeed:F2}
+                        {Localization.ApproachSpeed}: {approachSpeed:F2}
                      """;
         }
 

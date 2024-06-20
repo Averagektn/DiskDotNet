@@ -117,76 +117,58 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Paint.AngleDistance" xml:space="preserve">
+  <data name="AngleDistance" xml:space="preserve">
     <value>Расстояние (в углах)</value>
   </data>
-  <data name="Paint.AngleSpeed" xml:space="preserve">
+  <data name="AngleSpeed" xml:space="preserve">
     <value>Скорость (в углах)</value>
   </data>
-  <data name="Paint.ApproachSpeed" xml:space="preserve">
+  <data name="ApproachSpeed" xml:space="preserve">
     <value>Скорость сближения</value>
   </data>
-  <data name="Paint.ConnectionLost" xml:space="preserve">
+  <data name="ConnectionLost" xml:space="preserve">
     <value>Потеряно соединение с диском</value>
   </data>
-  <data name="Paint.Dispersion" xml:space="preserve">
+  <data name="Dispersion" xml:space="preserve">
     <value>Дисперсия</value>
   </data>
-  <data name="Paint.EmptyMap" xml:space="preserve">
+  <data name="EmptyMap" xml:space="preserve">
     <value>Карта пуста</value>
   </data>
-  <data name="Paint.MathExp" xml:space="preserve">
+  <data name="LeftFoot" xml:space="preserve">
+    <value>Л</value>
+  </data>
+  <data name="MathExp" xml:space="preserve">
     <value>Среднее смещение от центра</value>
   </data>
-  <data name="Paint.Over" xml:space="preserve">
+  <data name="Over" xml:space="preserve">
     <value>Конец</value>
   </data>
-  <data name="Paint.Path" xml:space="preserve">
+  <data name="Path" xml:space="preserve">
     <value>Путь</value>
   </data>
-  <data name="Paint.PathToTarget" xml:space="preserve">
+  <data name="PathToTarget" xml:space="preserve">
     <value>Путь к цели</value>
   </data>
-  <data name="Paint.Score" xml:space="preserve">
+  <data name="RightFoot" xml:space="preserve">
+    <value>П</value>
+  </data>
+  <data name="Score" xml:space="preserve">
     <value>Счет</value>
   </data>
-  <data name="Paint.StandartDeviation" xml:space="preserve">
+  <data name="StandartDeviation" xml:space="preserve">
     <value>Среднее отклонение от центра</value>
   </data>
-  <data name="Paint.Stop" xml:space="preserve">
+  <data name="Stop" xml:space="preserve">
     <value>Остановить</value>
   </data>
-  <data name="Paint.Time" xml:space="preserve">
+  <data name="Time" xml:space="preserve">
     <value>Время</value>
   </data>
-  <data name="Paint.Title" xml:space="preserve">
-    <value>Диск. Поле</value>
-  </data>
-  <data name="Paint.WindRose" xml:space="preserve">
+  <data name="WindRose" xml:space="preserve">
     <value>Диаграмма частот</value>
   </data>
-  <data name="Paint.WindRoseForTarget" xml:space="preserve">
+  <data name="WindRoseForTarget" xml:space="preserve">
     <value>Диаграмма частот для цели</value>
-  </data>
-  <data name="UserData.Birthday" xml:space="preserve">
-    <value>Дата рождения</value>
-  </data>
-  <data name="UserData.FieldIsEmpty" xml:space="preserve">
-    <value>Не заполнено одно из полей</value>
-  </data>
-  <data name="UserData.Map" xml:space="preserve">
-    <value>Карта</value>
-  </data>
-  <data name="UserData.Name" xml:space="preserve">
-    <value>Имя</value>
-  </data>
-  <data name="UserData.Start" xml:space="preserve">
-    <value>Начать</value>
-  </data>
-  <data name="UserData.Surname" xml:space="preserve">
-    <value>Фамилия</value>
-  </data>
-  <data name="UserData.Title" xml:space="preserve">
-    <value>Диск. Данные пользователя</value>
   </data>
 </root>

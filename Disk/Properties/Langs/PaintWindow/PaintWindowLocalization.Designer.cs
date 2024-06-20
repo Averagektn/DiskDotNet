@@ -63,216 +63,162 @@ namespace Disk.Properties.Langs.PaintWindow {
         /// <summary>
         ///   Looks up a localized string similar to Distance (in angles).
         /// </summary>
-        public static string Paint_AngleDistance {
+        public static string AngleDistance {
             get {
-                return ResourceManager.GetString("Paint.AngleDistance", resourceCulture);
+                return ResourceManager.GetString("AngleDistance", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Speed (in angles).
         /// </summary>
-        public static string Paint_AngleSpeed {
+        public static string AngleSpeed {
             get {
-                return ResourceManager.GetString("Paint.AngleSpeed", resourceCulture);
+                return ResourceManager.GetString("AngleSpeed", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Approach speed.
         /// </summary>
-        public static string Paint_ApproachSpeed {
+        public static string ApproachSpeed {
             get {
-                return ResourceManager.GetString("Paint.ApproachSpeed", resourceCulture);
+                return ResourceManager.GetString("ApproachSpeed", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Connection lost.
         /// </summary>
-        public static string Paint_ConnectionLost {
+        public static string ConnectionLost {
             get {
-                return ResourceManager.GetString("Paint.ConnectionLost", resourceCulture);
+                return ResourceManager.GetString("ConnectionLost", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Dispersion.
         /// </summary>
-        public static string Paint_Dispersion {
+        public static string Dispersion {
             get {
-                return ResourceManager.GetString("Paint.Dispersion", resourceCulture);
+                return ResourceManager.GetString("Dispersion", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Map is empty.
         /// </summary>
-        public static string Paint_EmptyMap {
+        public static string EmptyMap {
             get {
-                return ResourceManager.GetString("Paint.EmptyMap", resourceCulture);
+                return ResourceManager.GetString("EmptyMap", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to L.
+        /// </summary>
+        public static string LeftFoot {
+            get {
+                return ResourceManager.GetString("LeftFoot", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Average shift from center.
         /// </summary>
-        public static string Paint_MathExp {
+        public static string MathExp {
             get {
-                return ResourceManager.GetString("Paint.MathExp", resourceCulture);
+                return ResourceManager.GetString("MathExp", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Wasted.
         /// </summary>
-        public static string Paint_Over {
+        public static string Over {
             get {
-                return ResourceManager.GetString("Paint.Over", resourceCulture);
+                return ResourceManager.GetString("Over", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Path.
         /// </summary>
-        public static string Paint_Path {
+        public static string Path {
             get {
-                return ResourceManager.GetString("Paint.Path", resourceCulture);
+                return ResourceManager.GetString("Path", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Path to target.
         /// </summary>
-        public static string Paint_PathToTarget {
+        public static string PathToTarget {
             get {
-                return ResourceManager.GetString("Paint.PathToTarget", resourceCulture);
+                return ResourceManager.GetString("PathToTarget", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to R.
+        /// </summary>
+        public static string RightFoot {
+            get {
+                return ResourceManager.GetString("RightFoot", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Score.
         /// </summary>
-        public static string Paint_Score {
+        public static string Score {
             get {
-                return ResourceManager.GetString("Paint.Score", resourceCulture);
+                return ResourceManager.GetString("Score", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Deviation.
         /// </summary>
-        public static string Paint_StandartDeviation {
+        public static string StandartDeviation {
             get {
-                return ResourceManager.GetString("Paint.StandartDeviation", resourceCulture);
+                return ResourceManager.GetString("StandartDeviation", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Stop.
         /// </summary>
-        public static string Paint_Stop {
+        public static string Stop {
             get {
-                return ResourceManager.GetString("Paint.Stop", resourceCulture);
+                return ResourceManager.GetString("Stop", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Time.
         /// </summary>
-        public static string Paint_Time {
+        public static string Time {
             get {
-                return ResourceManager.GetString("Paint.Time", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Disk. Paint field.
-        /// </summary>
-        public static string Paint_Title {
-            get {
-                return ResourceManager.GetString("Paint.Title", resourceCulture);
+                return ResourceManager.GetString("Time", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Wind rose.
         /// </summary>
-        public static string Paint_WindRose {
+        public static string WindRose {
             get {
-                return ResourceManager.GetString("Paint.WindRose", resourceCulture);
+                return ResourceManager.GetString("WindRose", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Wind rose for target.
         /// </summary>
-        public static string Paint_WindRoseForTarget {
+        public static string WindRoseForTarget {
             get {
-                return ResourceManager.GetString("Paint.WindRoseForTarget", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Birthday.
-        /// </summary>
-        public static string UserData_Birthday {
-            get {
-                return ResourceManager.GetString("UserData.Birthday", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to One of the fields is empty.
-        /// </summary>
-        public static string UserData_FieldIsEmpty {
-            get {
-                return ResourceManager.GetString("UserData.FieldIsEmpty", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Map.
-        /// </summary>
-        public static string UserData_Map {
-            get {
-                return ResourceManager.GetString("UserData.Map", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Name.
-        /// </summary>
-        public static string UserData_Name {
-            get {
-                return ResourceManager.GetString("UserData.Name", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Start.
-        /// </summary>
-        public static string UserData_Start {
-            get {
-                return ResourceManager.GetString("UserData.Start", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Surname.
-        /// </summary>
-        public static string UserData_Surname {
-            get {
-                return ResourceManager.GetString("UserData.Surname", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to User data.
-        /// </summary>
-        public static string UserData_Title {
-            get {
-                return ResourceManager.GetString("UserData.Title", resourceCulture);
+                return ResourceManager.GetString("WindRoseForTarget", resourceCulture);
             }
         }
     }

@@ -37,6 +37,14 @@
             Panel.ZIndex="-10"
             Source="/Properties/feet_projection.png" />
 
+        <Viewbox Grid.Row="0" Grid.Column="0" Margin="10 10 0 0" HorizontalAlignment="Left" VerticalAlignment="Top">
+            <TextBlock Text="{x:Static lang:PaintWindowLocalization.LeftFoot}" FontSize="20" Height="100"/>
+        </Viewbox>
+
+        <Viewbox Grid.Row="0" Grid.Column="0" Margin="10 10 0 0" HorizontalAlignment="Right" VerticalAlignment="Top">
+            <TextBlock Text="{x:Static lang:PaintWindowLocalization.RightFoot}" FontSize="20" Height="100"/>
+        </Viewbox>
+
         <Viewbox Grid.Row="0" Grid.Column="1" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="10">
             <TextBlock FontSize="20" Text="{Binding Message}" TextAlignment="Left"/>
         </Viewbox>
@@ -46,7 +54,7 @@
         </Viewbox>
 
         <Viewbox Grid.Row="2" Grid.Column="1" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="10">
-            <RadioButton Name="RbRose" Content="{x:Static lang:PaintWindowLocalization.Paint_WindRose}" GroupName="DataType" IsChecked="{Binding IsRoseChecked}" Visibility="{Binding RoseButtonVisibility}">
+            <RadioButton Name="RbRose" Content="{x:Static lang:PaintWindowLocalization.WindRose}" GroupName="DataType" IsChecked="{Binding IsRoseChecked}" Visibility="{Binding RoseButtonVisibility}">
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="Checked">
                         <i:InvokeCommandAction Command="{Binding RoseSelectedCommand}" />
@@ -56,7 +64,7 @@
         </Viewbox>
 
         <Viewbox Grid.Row="3" Grid.Column="1" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="10">
-            <RadioButton Name="RbPath" Content="{x:Static lang:PaintWindowLocalization.Paint_Path}" GroupName="DataType" Visibility="{Binding PathButtonVisibility}" IsChecked="{Binding IsPathChecked}">
+            <RadioButton Name="RbPath" Content="{x:Static lang:PaintWindowLocalization.Path}" GroupName="DataType" Visibility="{Binding PathButtonVisibility}" IsChecked="{Binding IsPathChecked}">
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="Checked">
                         <i:InvokeCommandAction Command="{Binding PathSelectedCommand}" />
@@ -72,7 +80,7 @@
         <TextBlock FontSize="5" Text="{Binding ScoreString}" TextAlignment="Left"/>
 
         <Viewbox Grid.Row="5" Grid.Column="1" Margin="10 10 10 10">
-            <Button Content="{x:Static lang:PaintWindowLocalization.Paint_Stop}" FontSize="20" Name="BtnStop" Click="OnStopClick" IsEnabled="{Binding IsStopEnabled}"/>
+            <Button Content="{x:Static lang:PaintWindowLocalization.Stop}" FontSize="20" Name="BtnStop" Click="OnStopClick" IsEnabled="{Binding IsStopEnabled}"/>
         </Viewbox>
 
         <Canvas Name="PaintArea" Grid.RowSpan="6">
