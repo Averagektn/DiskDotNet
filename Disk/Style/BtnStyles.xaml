@@ -1,7 +1,7 @@
 ﻿<ResourceDictionary 
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
-    
+
     <Style TargetType="Button">
         <Setter Property="Template">
             <Setter.Value>
@@ -20,6 +20,11 @@
                         <Trigger Property="IsMouseOver" Value="True">
                             <Setter Property="Background" Value="AliceBlue" TargetName="LoginBorder"  />
                             <Setter Property="TextBlock.Foreground" Value="Black"  TargetName="LoginBorder" />
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="Background" Value="Gray" TargetName="LoginBorder" />
+                            <Setter Property="BorderBrush" Value="DarkGray" TargetName="LoginBorder" />
+                            <Setter Property="Foreground" Value="LightGray" />
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
