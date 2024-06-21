@@ -37,54 +37,82 @@
             Panel.ZIndex="-10"
             Source="/Properties/feet_projection.png" />
 
-        <Viewbox Grid.Row="0" Grid.Column="0" Margin="10 10 0 0" HorizontalAlignment="Left" VerticalAlignment="Top">
-            <TextBlock Text="{x:Static lang:PaintWindowLocalization.LeftFoot}" FontSize="20" Height="100"/>
+        <Viewbox Grid.Row="0" Grid.Column="0" Margin="10 10 0 0" 
+                 HorizontalAlignment="Left" VerticalAlignment="Top">
+            
+            <TextBlock 
+                Text="{x:Static lang:PaintWindowLocalization.LeftFoot}" 
+                FontSize="20" Height="100"/>
         </Viewbox>
 
-        <Viewbox Grid.Row="0" Grid.Column="0" Margin="10 10 0 0" HorizontalAlignment="Right" VerticalAlignment="Top">
-            <TextBlock Text="{x:Static lang:PaintWindowLocalization.RightFoot}" FontSize="20" Height="100"/>
+        <Viewbox Grid.Row="0" Grid.Column="0" Margin="10 10 0 0" 
+                 HorizontalAlignment="Right" VerticalAlignment="Top">
+            
+            <TextBlock 
+                Text="{x:Static lang:PaintWindowLocalization.RightFoot}" 
+                FontSize="20" 
+                Height="100"/>
         </Viewbox>
 
-        <Viewbox Grid.Row="0" Grid.Column="1" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="10">
-            <TextBlock FontSize="20" Text="{Binding Message}" TextAlignment="Left"/>
+        <Viewbox Grid.Row="0" Grid.Column="1" VerticalAlignment="Top" 
+                 HorizontalAlignment="Left" Margin="10">
+            
+            <TextBlock FontSize="20" Text="{Binding Message}" 
+                       TextAlignment="Left"/>
         </Viewbox>
 
-        <Viewbox Grid.Row="1" Grid.Column="1" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="10">
-            <TextBlock FontSize="20" Name="TblAccuracy" TextAlignment="Left"/>
+        <Viewbox Grid.Row="1" Grid.Column="1" VerticalAlignment="Top" 
+                 HorizontalAlignment="Left" Margin="10">
+            
+            <TextBlock FontSize="20" Name="TblAccuracy" 
+                       TextAlignment="Left"/>
         </Viewbox>
 
-        <Viewbox Grid.Row="2" Grid.Column="1" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="10">
-            <RadioButton Name="RbRose" Content="{x:Static lang:PaintWindowLocalization.WindRose}" GroupName="DataType" IsChecked="{Binding IsRoseChecked}" Visibility="{Binding RoseButtonVisibility}">
-                <i:Interaction.Triggers>
-                    <i:EventTrigger EventName="Checked">
-                        <i:InvokeCommandAction Command="{Binding SelectionChangedCommand}" />
-                    </i:EventTrigger>
-                </i:Interaction.Triggers>
-            </RadioButton>
+        <Viewbox Grid.Row="2" Grid.Column="1" VerticalAlignment="Bottom" 
+                 HorizontalAlignment="Left" Margin="10">
+            
+            <RadioButton 
+                Content="{x:Static lang:PaintWindowLocalization.WindRose}"          
+                GroupName="DataType" 
+                IsChecked="{Binding IsRoseChecked}" 
+                Visibility="{Binding RoseButtonVisibility}" 
+                Checked="RbChecked"/>
         </Viewbox>
 
-        <Viewbox Grid.Row="3" Grid.Column="1" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="10">
-            <RadioButton Name="RbPath" Content="{x:Static lang:PaintWindowLocalization.Path}" GroupName="DataType" Visibility="{Binding PathButtonVisibility}" IsChecked="{Binding IsPathChecked}">
-                <i:Interaction.Triggers>
-                    <i:EventTrigger EventName="Checked">
-                        <i:InvokeCommandAction Command="{Binding SelectionChangedCommand}" />
-                    </i:EventTrigger>
-                </i:Interaction.Triggers>
-            </RadioButton>
+        <Viewbox Grid.Row="3" Grid.Column="1" VerticalAlignment="Top" 
+                 HorizontalAlignment="Left" Margin="10">
+            
+            <RadioButton 
+                Content="{x:Static lang:PaintWindowLocalization.Path}" 
+                GroupName="DataType" 
+                Visibility="{Binding PathButtonVisibility}" 
+                IsChecked="{Binding IsPathChecked}"
+                Checked="RbChecked"/>
         </Viewbox>
 
-        <Viewbox Grid.Row="4" Grid.Column="1" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="10">
-            <ComboBox Name="CbTargets" SelectionChanged="CbTargets_SelectionChanged" SelectedIndex="{Binding SelectedRoseOrPath}" ItemsSource="{Binding PathsAndRoses}" Visibility="{Binding RosesAndPathsVisibility}" FontSize="20" Width="200"/>
+        <Viewbox Grid.Row="4" Grid.Column="1" VerticalAlignment="Bottom" 
+                 HorizontalAlignment="Left" Margin="10">
+            
+            <ComboBox Name="CbTargets" 
+                      SelectionChanged="CbTargets_SelectionChanged" 
+                      SelectedIndex="{Binding SelectedRoseOrPath}" 
+                      ItemsSource="{Binding PathsAndRoses}" 
+                      Visibility="{Binding RosesAndPathsVisibility}" 
+                      FontSize="20" Width="200"/>
         </Viewbox>
         
-        <TextBlock FontSize="5" Text="{Binding ScoreString}" TextAlignment="Left"/>
+        <TextBlock FontSize="5" Text="{Binding ScoreString}" 
+                   TextAlignment="Left"/>
 
         <Viewbox Grid.Row="5" Grid.Column="1" Margin="10 10 10 10">
-            <Button Content="{x:Static lang:PaintWindowLocalization.Stop}" FontSize="20" Name="BtnStop" Click="OnStopClick" IsEnabled="{Binding IsStopEnabled}"/>
+            <Button Content="{x:Static lang:PaintWindowLocalization.Stop}"
+                    FontSize="20" Name="BtnStop" Click="OnStopClick" 
+                    IsEnabled="{Binding IsStopEnabled}"/>
         </Viewbox>
 
         <Canvas Name="PaintArea" Grid.RowSpan="6">
-            <Path Fill="Transparent" Stretch="Fill" Stroke="Black" StrokeThickness="2">
+            <Path Fill="Transparent" Stretch="Fill" Stroke="Black" 
+                  StrokeThickness="2">
                 <Path.Data>
                     <EllipseGeometry x:Name="AllowedArea"/>
                 </Path.Data>
@@ -93,8 +121,23 @@
 
         <Rectangle Grid.Row="0" Grid.Column="0" Grid.RowSpan="6" Name="PaintRect"/>
         <Rectangle Grid.Row="0" Grid.Column="1" Grid.RowSpan="6" Name="DataRect"/>
-        <Line Grid.RowSpan="6" X1="0" Y1="0" X2="0" Y2="{Binding ActualHeight, RelativeSource={RelativeSource AncestorType=Grid}}" Stroke="Black" StrokeThickness="2" HorizontalAlignment="Center" Panel.ZIndex="-10" />
-        <Line Grid.RowSpan="6" X1="0" Y1="0" X2="0" Y2="{Binding ActualHeight, RelativeSource={RelativeSource AncestorType=Grid}}" Stroke="Black" StrokeThickness="2" HorizontalAlignment="Right" Panel.ZIndex="-10" />
-        <Line Grid.RowSpan="6" X1="0" Y1="0" X2="{Binding ActualWidth, RelativeSource={RelativeSource AncestorType=Grid}}" Y2="0" Stroke="Black" StrokeThickness="2" VerticalAlignment="Center" Panel.ZIndex="-10" />
+        
+        <Line 
+            Grid.RowSpan="6" X1="0" Y1="0" X2="0" 
+            Y2="{Binding ActualHeight, RelativeSource={RelativeSource AncestorType=Grid}}"   
+            Stroke="Black" StrokeThickness="2" 
+            HorizontalAlignment="Center" Panel.ZIndex="-10" />
+        
+        <Line 
+            Grid.RowSpan="6" X1="0" Y1="0" X2="0" 
+            Y2="{Binding ActualHeight, RelativeSource={RelativeSource AncestorType=Grid}}" 
+            Stroke="Black" StrokeThickness="2" 
+            HorizontalAlignment="Right" Panel.ZIndex="-10" />
+        
+        <Line 
+            Grid.RowSpan="6" X1="0" Y1="0" 
+            X2="{Binding ActualWidth, RelativeSource={RelativeSource AncestorType=Grid}}" 
+            Y2="0" Stroke="Black" StrokeThickness="2" 
+            VerticalAlignment="Center" Panel.ZIndex="-10" />
     </Grid>
 </UserControl>

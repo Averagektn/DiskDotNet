@@ -162,6 +162,7 @@ namespace Disk.View.PaintWindow
         {
             StopGame();
             ViewModel.SaveSessionResult();
+            CbTargets_SelectionChanged(sender, null!);
         }
 
         private void CbTargets_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -180,5 +181,7 @@ namespace Disk.View.PaintWindow
                 }
             }
         }
+
+        private void RbChecked(object sender, RoutedEventArgs e) => CbTargets_SelectionChanged(sender, null!);
     }
 }

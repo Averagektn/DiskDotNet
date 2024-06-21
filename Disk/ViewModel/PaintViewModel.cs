@@ -66,9 +66,9 @@ namespace Disk.ViewModel
         private readonly Stopwatch PathToTargetStopwatch;
 
         // binding
-        public bool IsRoseChecked { get; set; }
+        public bool IsRoseChecked { get; set; } = true;
         public bool IsPathChecked { get; set; }
-        private int _selectedRoseOrPath = -1;
+        private int _selectedRoseOrPath;
         public int SelectedRoseOrPath { get => _selectedRoseOrPath; set => SetProperty(ref _selectedRoseOrPath, value); }
         public string ScoreString => $"{Localization.Score}: {Score}";
 
@@ -86,9 +86,6 @@ namespace Disk.ViewModel
 
         private Visibility _roseButtonVisibility = Visibility.Hidden;
         public Visibility RoseButtonVisibility { get => _roseButtonVisibility; set => SetProperty(ref _roseButtonVisibility, value); }
-
-        // commands
-        public ICommand SelectionChangedCommand => new Command(SelectionChanged);
 
         public PaintViewModel(NavigationStore navigationStore, IPathToTargetRepository pathToTargetRepository,
             IPathInTargetRepository pathInTargetRepository, ISessionResultRepository sessionResultRepository, ISessionRepository sessionRepository)
@@ -160,11 +157,6 @@ namespace Disk.ViewModel
                 .ToList();
 
             return new Graph(dataset, paintAreaSize, Brushes.LightGreen, 8);
-        }
-
-        private void SelectionChanged(object? obj)
-        {
-            SelectedRoseOrPath = -1;
         }
 
         public ProgressTarget GetProgressTarget()
