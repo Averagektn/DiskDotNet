@@ -53,10 +53,7 @@ namespace Disk.ViewModel
         private int _score;
         public int Score
         {
-            get
-            {
-                return _score;
-            }
+            get => _score;
             set
             {
                 OnPropertyChanged(nameof(ScoreString));
@@ -340,6 +337,15 @@ namespace Disk.ViewModel
                 return true;
             }
             return false;
+        }
+
+        public override void Dispose()
+        {
+            base.Dispose();
+            GC.SuppressFinalize(this);
+
+            IsGame = false;
+            DiskNetworkThread.Join();
         }
     }
 }
