@@ -10,6 +10,7 @@ using Newtonsoft.Json;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Windows.Input;
+using Localization = Disk.Properties.Langs.StartSession.StartSessionLocalization;
 using Settings = Disk.Properties.Config.Config;
 
 namespace Disk.ViewModel
@@ -19,8 +20,9 @@ namespace Disk.ViewModel
     {
         public event Action? OnSessionOver;
 
-        private string _imageFilePath = "Pick a file";
-        public string ImageFilePath { get => _imageFilePath; set => SetProperty(ref _imageFilePath, value); }
+        private string _imageFilePath = string.Empty;
+        private string _imageFileName = Localization.PickAFile;
+        public string ImageFileName { get => _imageFileName; set => SetProperty(ref _imageFileName, value); }
 
         public ObservableCollection<Map> Maps => new(mapRepository.GetAll());
         public Map? SelectedMap { get; set; }
@@ -39,7 +41,8 @@ namespace Disk.ViewModel
 
             if (filePicker.ShowDialog() == true)
             {
-                ImageFilePath = filePicker.FileName;
+                _imageFilePath = filePicker.FileName;
+                ImageFileName = filePicker.SafeFileName;
             }
         }
 
@@ -74,7 +77,7 @@ namespace Disk.ViewModel
 
             navigationStore.SetViewModel<PaintViewModel>(vm =>
             {
-                vm.ImagePath = ImageFilePath;
+                vm.ImagePath = _imageFilePath;
                 vm.CurrPath = logPath;
                 vm.TargetCenters = JsonConvert.DeserializeObject<List<Point2D<float>>>(SelectedMap.CoordinatesJson) ?? [];
                 vm.OnSessionOver += OnSessionOver;

@@ -46,7 +46,12 @@
 
             <Viewbox Grid.Row="2">
                 <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="{Binding ImageFilePath}" Width="200"/>
+                    <TextBlock 
+                        FontSize="20"
+                        Text="{Binding ImageFileName}" 
+                        VerticalAlignment="Center" 
+                        HorizontalAlignment="Center" 
+                        Width="200"/>
                     <Button 
                         Content="Pick" 
                         Command="{Binding PickImageCommand}" 

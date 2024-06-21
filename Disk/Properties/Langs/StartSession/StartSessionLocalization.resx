@@ -120,6 +120,9 @@
   <data name="Map" xml:space="preserve">
     <value>Map</value>
   </data>
+  <data name="PickAFile" xml:space="preserve">
+    <value>Pick a file</value>
+  </data>
   <data name="Start" xml:space="preserve">
     <value>Start session</value>
   </data>

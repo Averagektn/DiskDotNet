@@ -6,7 +6,6 @@ using Disk.Repository.Interface;
 using Disk.Service.Implementation;
 using Disk.Sessions;
 using Disk.Stores;
-using Disk.ViewModel.Common.Commands.Sync;
 using Disk.ViewModel.Common.ViewModels;
 using Disk.Visual.Impl;
 using Disk.Visual.Interface;
@@ -15,7 +14,6 @@ using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Net;
 using System.Windows;
-using System.Windows.Input;
 using System.Windows.Media;
 using FilePath = System.IO.Path;
 using Localization = Disk.Properties.Langs.PaintWindow.PaintWindowLocalization;
@@ -53,17 +51,17 @@ namespace Disk.ViewModel
         public bool IsGame = true;
         public int TargetId { get; set; }
         private int _score;
-        public int Score 
+        public int Score
         {
             get
             {
-                return _score; 
+                return _score;
             }
-            set 
+            set
             {
                 OnPropertyChanged(nameof(ScoreString));
-                SetProperty(ref _score, value);
-            } 
+                _ = SetProperty(ref _score, value);
+            }
         }
         public ObservableCollection<string> PathsAndRoses { get; set; } = [];
 
@@ -131,7 +129,7 @@ namespace Disk.ViewModel
             {
                 if (PathsToTargets.Count <= SelectedRoseOrPath || PathsToTargets[SelectedRoseOrPath].Count == 0)
                 {
-                    MessageBox.Show(Localization.NoContentForPathError);
+                    _ = MessageBox.Show(Localization.NoContentForPathError);
                     return [];
                 }
                 var converter = DrawableFabric.GetIniConverter();
@@ -155,7 +153,7 @@ namespace Disk.ViewModel
         {
             if (PathsInTargets.Count <= SelectedRoseOrPath || PathsInTargets[SelectedRoseOrPath].Count == 0)
             {
-                MessageBox.Show(Localization.NoContentForDiagramError);
+                _ = MessageBox.Show(Localization.NoContentForDiagramError);
                 return new Graph([], paintAreaSize, Brushes.LightGreen, 8);
             }
 
