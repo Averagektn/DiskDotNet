@@ -57,7 +57,7 @@
             <RadioButton Name="RbRose" Content="{x:Static lang:PaintWindowLocalization.WindRose}" GroupName="DataType" IsChecked="{Binding IsRoseChecked}" Visibility="{Binding RoseButtonVisibility}">
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="Checked">
-                        <i:InvokeCommandAction Command="{Binding RoseSelectedCommand}" />
+                        <i:InvokeCommandAction Command="{Binding SelectionChangedCommand}" />
                     </i:EventTrigger>
                 </i:Interaction.Triggers>
             </RadioButton>
@@ -67,7 +67,7 @@
             <RadioButton Name="RbPath" Content="{x:Static lang:PaintWindowLocalization.Path}" GroupName="DataType" Visibility="{Binding PathButtonVisibility}" IsChecked="{Binding IsPathChecked}">
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="Checked">
-                        <i:InvokeCommandAction Command="{Binding PathSelectedCommand}" />
+                        <i:InvokeCommandAction Command="{Binding SelectionChangedCommand}" />
                     </i:EventTrigger>
                 </i:Interaction.Triggers>
             </RadioButton>

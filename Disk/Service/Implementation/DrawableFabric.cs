@@ -20,13 +20,13 @@ namespace Disk.Service.Implementation
         private static readonly float YAngleSize = Settings.YMaxAngle * 2;
         private static readonly int TargetHp = Settings.TargetHp;
 
-        public static User GetUser(string userImagePath) =>
+        public static User GetIniUser(string userImagePath) =>
             File.Exists(userImagePath)
                 ? new UserPicture(userImagePath, new(ScreenIniCenterX, ScreenIniCenterY), 0, new(50, 50), ScreenIniSize)
                 : new User(new(ScreenIniCenterX, ScreenIniCenterY), Settings.IniUserRadius, 0, UserBrush, ScreenIniSize);
 
-        public static ProgressTarget GetProgressTarget(Point2D<int> center) => new(center, Settings.IniTargetRadius, ScreenIniSize, TargetHp);
+        public static ProgressTarget GetIniProgressTarget(Point2D<int> center) => new(center, Settings.IniTargetRadius, ScreenIniSize, TargetHp);
 
-        public static Converter GetConverter() => new(ScreenIniSize, new(XAngleSize, YAngleSize));
+        public static Converter GetIniConverter() => new(ScreenIniSize, new(XAngleSize, YAngleSize));
     }
 }

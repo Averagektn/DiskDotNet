@@ -170,9 +170,14 @@ namespace Disk.View.PaintWindow
 
             if (ViewModel is not null)
             {
-                var figure = ViewModel.DrawPathOrRose(Target, PaintPanelSize);
-                figure?.Draw(PaintArea);
-                Scalables.Add(figure);
+                var figures = ViewModel.GetPathAndRose(Target, PaintPanelSize);
+                foreach (var figure in figures)
+                {
+                    Scalables.Add(figure);
+
+                    figure.Draw(PaintArea);
+                    figure.Scale(PaintPanelSize);
+                }
             }
         }
     }

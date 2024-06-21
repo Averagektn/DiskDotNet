@@ -7,7 +7,7 @@ using System.Windows.Markup;
 
 namespace Disk.Visual.Impl
 {
-    internal abstract class Figure<TFigure> : IFigure where TFigure : FrameworkElement, new()
+    internal abstract class Figure<TFigure> : IDynamicFigure where TFigure : FrameworkElement, new()
     {
         private readonly double DIAGONAL_CORRECTION = Math.Sqrt(2);
         public Point2D<int> Center { get; protected set; }
