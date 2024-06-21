@@ -24,8 +24,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="3*"/>
             <RowDefinition Height="3*"/>
-            <RowDefinition Height="1*"/>
-            <RowDefinition Height="1*"/>
+            <RowDefinition Height="2*"/>
             <RowDefinition Height="1*"/>
             <RowDefinition Height="1*"/>
         </Grid.RowDefinitions>
@@ -68,29 +67,27 @@
                        TextAlignment="Left"/>
         </Viewbox>
 
-        <Viewbox Grid.Row="2" Grid.Column="1" VerticalAlignment="Bottom" 
+        <Viewbox Grid.Row="2" Grid.Column="1"  VerticalAlignment="Bottom" 
                  HorizontalAlignment="Left" Margin="10">
-            
-            <RadioButton 
+
+            <StackPanel>
+                <RadioButton 
                 Content="{x:Static lang:PaintWindowLocalization.WindRose}"          
                 GroupName="DataType" 
                 IsChecked="{Binding IsRoseChecked}" 
                 Visibility="{Binding RoseButtonVisibility}" 
                 Checked="RbChecked"/>
-        </Viewbox>
 
-        <Viewbox Grid.Row="3" Grid.Column="1" VerticalAlignment="Top" 
-                 HorizontalAlignment="Left" Margin="10">
-            
-            <RadioButton 
+                <RadioButton 
                 Content="{x:Static lang:PaintWindowLocalization.Path}" 
                 GroupName="DataType" 
                 Visibility="{Binding PathButtonVisibility}" 
                 IsChecked="{Binding IsPathChecked}"
                 Checked="RbChecked"/>
+            </StackPanel>
         </Viewbox>
 
-        <Viewbox Grid.Row="4" Grid.Column="1" VerticalAlignment="Bottom" 
+        <Viewbox Grid.Row="3" Grid.Column="1" VerticalAlignment="Bottom" 
                  HorizontalAlignment="Left" Margin="10">
             
             <ComboBox Name="CbTargets" 
@@ -104,13 +101,13 @@
         <TextBlock FontSize="5" Text="{Binding ScoreString}" 
                    TextAlignment="Left"/>
 
-        <Viewbox Grid.Row="5" Grid.Column="1" Margin="10 10 10 10">
+        <Viewbox Grid.Row="4" Grid.Column="1" Margin="10 10 10 10">
             <Button Content="{x:Static lang:PaintWindowLocalization.Stop}"
                     FontSize="20" Name="BtnStop" Click="OnStopClick" 
                     IsEnabled="{Binding IsStopEnabled}"/>
         </Viewbox>
 
-        <Canvas Name="PaintArea" Grid.RowSpan="6">
+        <Canvas Name="PaintArea" Grid.RowSpan="5">
             <Path Fill="Transparent" Stretch="Fill" Stroke="Black" 
                   StrokeThickness="2">
                 <Path.Data>
@@ -119,23 +116,23 @@
             </Path>
         </Canvas>
 
-        <Rectangle Grid.Row="0" Grid.Column="0" Grid.RowSpan="6" Name="PaintRect"/>
-        <Rectangle Grid.Row="0" Grid.Column="1" Grid.RowSpan="6" Name="DataRect"/>
+        <Rectangle Grid.Row="0" Grid.Column="0" Grid.RowSpan="5" Name="PaintRect"/>
+        <Rectangle Grid.Row="0" Grid.Column="1" Grid.RowSpan="5" Name="DataRect"/>
         
         <Line 
-            Grid.RowSpan="6" X1="0" Y1="0" X2="0" 
+            Grid.RowSpan="5" X1="0" Y1="0" X2="0" 
             Y2="{Binding ActualHeight, RelativeSource={RelativeSource AncestorType=Grid}}"   
             Stroke="Black" StrokeThickness="2" 
             HorizontalAlignment="Center" Panel.ZIndex="-10" />
         
         <Line 
-            Grid.RowSpan="6" X1="0" Y1="0" X2="0" 
+            Grid.RowSpan="5" X1="0" Y1="0" X2="0" 
             Y2="{Binding ActualHeight, RelativeSource={RelativeSource AncestorType=Grid}}" 
             Stroke="Black" StrokeThickness="2" 
             HorizontalAlignment="Right" Panel.ZIndex="-10" />
         
         <Line 
-            Grid.RowSpan="6" X1="0" Y1="0" 
+            Grid.RowSpan="5" X1="0" Y1="0" 
             X2="{Binding ActualWidth, RelativeSource={RelativeSource AncestorType=Grid}}" 
             Y2="0" Stroke="Black" StrokeThickness="2" 
             VerticalAlignment="Center" Panel.ZIndex="-10" />

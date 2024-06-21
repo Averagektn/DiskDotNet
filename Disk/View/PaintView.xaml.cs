@@ -182,6 +182,12 @@ namespace Disk.View.PaintWindow
             }
         }
 
-        private void RbChecked(object sender, RoutedEventArgs e) => CbTargets_SelectionChanged(sender, null!);
+        private void RbChecked(object sender, RoutedEventArgs e)
+        {
+            if (!ViewModel.IsGame)
+            {
+                CbTargets_SelectionChanged(sender, null!);
+            }
+        }
     }
 }
