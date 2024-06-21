@@ -53,7 +53,7 @@
                         HorizontalAlignment="Center" 
                         Width="200"/>
                     <Button 
-                        Content="Pick" 
+                        Content="..." 
                         Command="{Binding PickImageCommand}" 
                         Margin="0 10" 
                         Height="50"
