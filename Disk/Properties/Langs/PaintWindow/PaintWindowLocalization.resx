@@ -141,6 +141,12 @@
   <data name="MathExp" xml:space="preserve">
     <value>Average shift from center</value>
   </data>
+  <data name="NoContentForDiagramError" xml:space="preserve">
+    <value>No content for diagram</value>
+  </data>
+  <data name="NoContentForPathError" xml:space="preserve">
+    <value>No content for path</value>
+  </data>
   <data name="Path" xml:space="preserve">
     <value>Path</value>
   </data>

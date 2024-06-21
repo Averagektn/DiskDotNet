@@ -141,6 +141,12 @@
   <data name="MathExp" xml:space="preserve">
     <value>Среднее смещение от центра</value>
   </data>
+  <data name="NoContentForDiagramError" xml:space="preserve">
+    <value>Нет данных для построения диаграммы</value>
+  </data>
+  <data name="NoContentForPathError" xml:space="preserve">
+    <value>Нет данных для построения пути</value>
+  </data>
   <data name="Path" xml:space="preserve">
     <value>Путь</value>
   </data>

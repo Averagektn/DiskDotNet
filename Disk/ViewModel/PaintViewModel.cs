@@ -120,6 +120,11 @@ namespace Disk.ViewModel
             }
             else if (IsPathChecked)
             {
+                if (PathsToTargets.Count <= SelectedRoseOrPath || PathsToTargets[SelectedRoseOrPath].Count == 0)
+                {
+                    MessageBox.Show(Localization.NoContentForPathError);
+                    return [];
+                }
                 var converter = DrawableFabric.GetIniConverter();
                 var path = new Path
                     (
@@ -139,6 +144,12 @@ namespace Disk.ViewModel
 
         private Graph GetGraph(Target target, Size paintAreaSize)
         {
+            if (PathsInTargets.Count <= SelectedRoseOrPath || PathsInTargets[SelectedRoseOrPath].Count == 0)
+            {
+                MessageBox.Show(Localization.NoContentForDiagramError);
+                return new Graph([], paintAreaSize, Brushes.LightGreen, 8);
+            }
+
             var angRadius = (Converter.ToAngleX_FromWnd(target.Radius) + Converter.ToAngleY_FromWnd(target.Radius)) / 2;
 
             var angCenter = Converter.ToAngle_FromWnd(Converter.ToWnd_FromRelative(TargetCenters[SelectedRoseOrPath]));

@@ -133,6 +133,24 @@ namespace Disk.Properties.Langs.PaintWindow {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to No content for diagram.
+        /// </summary>
+        public static string NoContentForDiagramError {
+            get {
+                return ResourceManager.GetString("NoContentForDiagramError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No content for path.
+        /// </summary>
+        public static string NoContentForPathError {
+            get {
+                return ResourceManager.GetString("NoContentForPathError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Path.
         /// </summary>
         public static string Path {
