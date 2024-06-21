@@ -39,6 +39,9 @@
                 <i:EventTrigger EventName="SelectionChanged">
                     <i:InvokeCommandAction Command="{Binding SessionSelectedCommand}" />
                 </i:EventTrigger>
+                <i:EventTrigger EventName="MouseDoubleClick">
+                    <i:InvokeCommandAction Command="{Binding ShowSessionCommand}" />
+                </i:EventTrigger>
             </i:Interaction.Triggers>
         </DataGrid>
 

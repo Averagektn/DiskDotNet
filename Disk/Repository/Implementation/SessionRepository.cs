@@ -14,6 +14,7 @@ namespace Disk.Repository.Implementation
                 .Include(s => s.PathInTargets)
                 .Include(s => s.PathToTargets)
                 .Include(s => s.SessionResult)
+                .Include(s => s.MapNavigation)
                 .ToList();
         }
     }

@@ -104,7 +104,7 @@ namespace Disk.View.PaintWindow
         {
             if (ShiftedWndPos is not null && AllowedArea.FillContains(ShiftedWndPos.ToPoint()))
             {
-                User.Move(ShiftedWndPos);
+                User.Move(ShiftedWndPos!);
             }
         }
 
@@ -113,20 +113,24 @@ namespace Disk.View.PaintWindow
             User = ViewModel.GetUser();
             Target = ViewModel.GetProgressTarget();
 
-            Drawables.Add(Target); Drawables.Add(User);
             Scalables.Add(Target); Scalables.Add(User); Scalables.Add(Converter);
+            Scalables.ForEach(elem => elem?.Scale(PaintPanelSize));
 
-            foreach (var elem in Drawables)
+            if (ViewModel.IsGame)
             {
-                elem?.Draw(PaintArea);
-            }
-            foreach (var elem in Scalables)
-            {
-                elem?.Scale(PaintPanelSize);
-            }
+                ViewModel.StartReceiving();
 
-            MoveTimer.Start();
-            ShotTimer.Start();
+                Drawables.Add(Target); Drawables.Add(User);
+
+                Drawables.ForEach(elem => elem?.Draw(PaintArea));
+
+                MoveTimer.Start();
+                ShotTimer.Start();
+            }
+            else
+            {
+                ViewModel.EnableResults();
+            }
         }
 
         private void StopGame()
@@ -152,10 +156,7 @@ namespace Disk.View.PaintWindow
             AllowedArea.RadiusY = PaintPanelCenterY;
             AllowedArea.Center = new(PaintPanelCenterX, PaintPanelCenterY);
 
-            foreach (var elem in Scalables)
-            {
-                elem?.Scale(PaintPanelSize);
-            }
+            Scalables.ForEach(elem => elem?.Scale(PaintPanelSize));
         }
 
         private void OnStopClick(object sender, RoutedEventArgs e)

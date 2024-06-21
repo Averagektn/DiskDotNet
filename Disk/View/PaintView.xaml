@@ -52,7 +52,7 @@
         <Viewbox Grid.RowSpan="5" Grid.Column="1" Margin="5 0">
             <StackPanel>
 
-                <TextBlock FontSize="20" Text="{Binding ScoreString}" TextAlignment="Left" Margin="0 20"/>
+                <TextBlock FontSize="20" Text="{Binding ScoreString}" Visibility="{Binding ScoreVisibility}" TextAlignment="Left" Margin="0 20"/>
 
                 <TextBlock FontSize="20" Text="{Binding Message}" TextAlignment="Left" Margin="0 20"/>
 

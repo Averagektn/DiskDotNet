@@ -35,7 +35,7 @@ namespace Disk.ViewModel
         public Point2D<float>? NextTargetCenter => TargetCenters.Count <= TargetId ? null : TargetCenters[TargetId++];
         private static Settings Settings => Settings.Default;
         private string UsrAngLog => $"{CurrPath}{FilePath.DirectorySeparatorChar}{Settings.UserLogFileName}";
-        public bool IsPathToTarget => PathToTargetStopwatch.IsRunning;
+        public bool IsPathToTarget => PathToTargetStopwatch?.IsRunning ?? false;
 
         // Disposable
         private readonly Thread DiskNetworkThread;
@@ -69,11 +69,10 @@ namespace Disk.ViewModel
         private readonly ISessionResultRepository _sessionResultRepository;
         private readonly ISessionRepository _sessionRepository;
 
-        // readonly
-        private readonly Stopwatch PathToTargetStopwatch;
+        private Stopwatch? PathToTargetStopwatch;
 
         // binding
-        public bool IsRoseChecked { get; set; } = true;
+        public bool IsRoseChecked { get; set; }
         public bool IsPathChecked { get; set; }
         private int _selectedRoseOrPath;
         public int SelectedRoseOrPath { get => _selectedRoseOrPath; set => SetProperty(ref _selectedRoseOrPath, value); }
@@ -94,11 +93,13 @@ namespace Disk.ViewModel
         private Visibility _roseButtonVisibility = Visibility.Hidden;
         public Visibility RoseButtonVisibility { get => _roseButtonVisibility; set => SetProperty(ref _roseButtonVisibility, value); }
 
+        private Visibility _scoreVisiblity = Visibility.Visible;
+        public Visibility ScoreVisibility { get => _scoreVisiblity; set => SetProperty(ref _scoreVisiblity, value); }
+
         public PaintViewModel(NavigationStore navigationStore, IPathToTargetRepository pathToTargetRepository,
             IPathInTargetRepository pathInTargetRepository, ISessionResultRepository sessionResultRepository, ISessionRepository sessionRepository)
         {
             DiskNetworkThread = new(ReceiveUserPos);
-            DiskNetworkThread.Start();
 
             Converter = DrawableFabric.GetIniConverter();
 
@@ -107,7 +108,11 @@ namespace Disk.ViewModel
             _pathInTargetRepository = pathInTargetRepository;
             _sessionResultRepository = sessionResultRepository;
             _sessionRepository = sessionRepository;
+        }
 
+        public void StartReceiving()
+        {
+            DiskNetworkThread.Start();
             PathToTargetStopwatch = Stopwatch.StartNew();
         }
 
@@ -241,15 +246,9 @@ namespace Disk.ViewModel
             }
 
             IsStopEnabled = false;
+            FillTargetsComboBox();
 
-            for (int i = 0; i < TargetCenters.Count; i++)
-            {
-                PathsAndRoses.Add($"{Localization.Target} {i + 1}");
-            }
-
-            RosesAndPathsVisibility = Visibility.Visible;
-            RoseButtonVisibility = Visibility.Visible;
-            PathButtonVisibility = Visibility.Visible;
+            EnableResults();
 
             IsGame = false;
             DiskNetworkThread.Join();
@@ -257,18 +256,33 @@ namespace Disk.ViewModel
             OnSessionOver?.Invoke();
         }
 
+        public void FillTargetsComboBox()
+        {
+            for (int i = 0; i < TargetCenters.Count; i++)
+            {
+                PathsAndRoses.Add($"{Localization.Target} {i + 1}");
+            }
+        }
+
+        public void EnableResults()
+        {
+            RosesAndPathsVisibility = Visibility.Visible;
+            RoseButtonVisibility = Visibility.Visible;
+            PathButtonVisibility = Visibility.Visible;
+        }
+
         public void SavePathToTarget(PathToTarget pathToTarget) => _pathToTargetRepository.Add(pathToTarget);
         public void SavePathInTarget(PathInTarget pathInTarget) => _pathInTargetRepository.Add(pathInTarget);
 
         public void SwitchToPathInTarget(Point2D<int> userShot)
         {
-            PathToTargetStopwatch.Stop();
+            PathToTargetStopwatch!.Stop();
 
             if (userShot.X != 0 && userShot.Y != 0)
             {
                 PathsToTargets[TargetId - 1].Add(Converter.ToAngle_FromWnd(userShot));
             }
-            PathToTargetStopwatch.Stop();
+            PathToTargetStopwatch!.Stop();
             PathsInTargets.Add([]);
 
             double distance = 0;
@@ -279,7 +293,7 @@ namespace Disk.ViewModel
             }
 
             var touchPoint = Converter.ToAngle_FromWnd(userShot);
-            var time = PathToTargetStopwatch.Elapsed.TotalSeconds;
+            var time = PathToTargetStopwatch!.Elapsed.TotalSeconds;
             var avgSpeed = distance / time;
             var approachSpeed = pathToTarget[0].GetDistance(touchPoint) / time;
 
@@ -332,7 +346,7 @@ namespace Disk.ViewModel
                 target.Move(wndCenter);
 
                 Message = string.Empty;
-                PathToTargetStopwatch.Restart();
+                PathToTargetStopwatch!.Restart();
 
                 return true;
             }
@@ -345,7 +359,10 @@ namespace Disk.ViewModel
             GC.SuppressFinalize(this);
 
             IsGame = false;
-            DiskNetworkThread.Join();
+            if (DiskNetworkThread.IsAlive)
+            {
+                DiskNetworkThread.Join();
+            }
         }
     }
 }
