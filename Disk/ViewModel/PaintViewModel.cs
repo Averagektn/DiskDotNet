@@ -52,7 +52,19 @@ namespace Disk.ViewModel
         public Point3D<float>? CurrentPos;
         public bool IsGame = true;
         public int TargetId { get; set; }
-        public int Score { get; set; }
+        private int _score;
+        public int Score 
+        {
+            get
+            {
+                return _score; 
+            }
+            set 
+            {
+                OnPropertyChanged(nameof(ScoreString));
+                SetProperty(ref _score, value);
+            } 
+        }
         public ObservableCollection<string> PathsAndRoses { get; set; } = [];
 
         // DI
@@ -290,10 +302,10 @@ namespace Disk.ViewModel
 
             Message =
                     $"""
-                        {Localization.Time}: {time:F2}
-                        {Localization.AngleDistance}: {distance:F2}
-                        {Localization.AngleSpeed}: {avgSpeed:F2}
-                        {Localization.ApproachSpeed}: {approachSpeed:F2}
+                     {Localization.Time}: {time:F2}
+                     {Localization.AngleDistance}: {distance:F2}
+                     {Localization.AngleSpeed}: {avgSpeed:F2}
+                     {Localization.ApproachSpeed}: {approachSpeed:F2}
                      """;
         }
 

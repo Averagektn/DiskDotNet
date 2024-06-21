@@ -10,10 +10,6 @@
              xmlns:lang="clr-namespace:Disk.Properties.Langs.Authentication"
              d:DataContext="{d:DesignInstance Type=viewmodel:AuthenticationViewModel}"
              mc:Ignorable="d">
-    
-    <UserControl.Resources>
-        <ResourceDictionary Source="/Style/BtnStyles.xaml"/>
-    </UserControl.Resources>
 
     <Grid>
         <Grid.RowDefinitions>

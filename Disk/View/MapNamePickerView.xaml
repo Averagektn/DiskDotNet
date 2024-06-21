@@ -11,10 +11,6 @@
              mc:Ignorable="d" 
              d:DesignHeight="150" 
              d:DesignWidth="300">
-    
-    <UserControl.Resources>
-        <ResourceDictionary Source="/Style/BtnStyles.xaml"/>
-    </UserControl.Resources>
 
     <StackPanel 
         HorizontalAlignment="Center" 

@@ -7,9 +7,6 @@
              xmlns:lang="clr-namespace:Disk.Properties.Langs.StartSession" 
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="400">
-    <UserControl.Resources>
-        <ResourceDictionary Source="/Style/BtnStyles.xaml"/>
-    </UserControl.Resources>
 
     <Grid>
         <Grid.RowDefinitions>
