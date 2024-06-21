@@ -141,14 +141,8 @@
   <data name="MathExp" xml:space="preserve">
     <value>Среднее смещение от центра</value>
   </data>
-  <data name="Over" xml:space="preserve">
-    <value>Конец</value>
-  </data>
   <data name="Path" xml:space="preserve">
     <value>Путь</value>
-  </data>
-  <data name="PathToTarget" xml:space="preserve">
-    <value>Путь к цели</value>
   </data>
   <data name="RightFoot" xml:space="preserve">
     <value>П</value>
@@ -162,13 +156,13 @@
   <data name="Stop" xml:space="preserve">
     <value>Остановить</value>
   </data>
+  <data name="Target" xml:space="preserve">
+    <value>Цель</value>
+  </data>
   <data name="Time" xml:space="preserve">
     <value>Время</value>
   </data>
   <data name="WindRose" xml:space="preserve">
     <value>Диаграмма частот</value>
-  </data>
-  <data name="WindRoseForTarget" xml:space="preserve">
-    <value>Диаграмма частот для цели</value>
   </data>
 </root>

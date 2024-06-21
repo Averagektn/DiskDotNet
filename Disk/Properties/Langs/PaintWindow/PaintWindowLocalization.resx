@@ -141,14 +141,8 @@
   <data name="MathExp" xml:space="preserve">
     <value>Average shift from center</value>
   </data>
-  <data name="Over" xml:space="preserve">
-    <value>Wasted</value>
-  </data>
   <data name="Path" xml:space="preserve">
     <value>Path</value>
-  </data>
-  <data name="PathToTarget" xml:space="preserve">
-    <value>Path to target</value>
   </data>
   <data name="RightFoot" xml:space="preserve">
     <value>R</value>
@@ -162,13 +156,13 @@
   <data name="Stop" xml:space="preserve">
     <value>Stop</value>
   </data>
+  <data name="Target" xml:space="preserve">
+    <value>Target</value>
+  </data>
   <data name="Time" xml:space="preserve">
     <value>Time</value>
   </data>
   <data name="WindRose" xml:space="preserve">
     <value>Wind rose</value>
-  </data>
-  <data name="WindRoseForTarget" xml:space="preserve">
-    <value>Wind rose for target</value>
   </data>
 </root>

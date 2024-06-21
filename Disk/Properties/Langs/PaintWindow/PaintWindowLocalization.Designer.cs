@@ -133,29 +133,11 @@ namespace Disk.Properties.Langs.PaintWindow {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Wasted.
-        /// </summary>
-        public static string Over {
-            get {
-                return ResourceManager.GetString("Over", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Path.
         /// </summary>
         public static string Path {
             get {
                 return ResourceManager.GetString("Path", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Path to target.
-        /// </summary>
-        public static string PathToTarget {
-            get {
-                return ResourceManager.GetString("PathToTarget", resourceCulture);
             }
         }
         
@@ -196,6 +178,15 @@ namespace Disk.Properties.Langs.PaintWindow {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Target.
+        /// </summary>
+        public static string Target {
+            get {
+                return ResourceManager.GetString("Target", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Time.
         /// </summary>
         public static string Time {
@@ -210,15 +201,6 @@ namespace Disk.Properties.Langs.PaintWindow {
         public static string WindRose {
             get {
                 return ResourceManager.GetString("WindRose", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Wind rose for target.
-        /// </summary>
-        public static string WindRoseForTarget {
-            get {
-                return ResourceManager.GetString("WindRoseForTarget", resourceCulture);
             }
         }
     }
