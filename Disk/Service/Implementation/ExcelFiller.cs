@@ -152,7 +152,8 @@ namespace Disk.Service.Implementation
         {
             int pathRow = 1;
 
-            worksheet.Cell(pathRow++, pathCol).Value = $"{Localization.TargetNum}: {targetId + 1}";
+            worksheet.Cell(pathRow, pathCol).Value = $"{Localization.TargetNum}:";
+            worksheet.Cell(pathRow++, pathCol + 1).Value = targetId + 1;
             worksheet.Cell(pathRow + 1, pathCol - 1).Value = Localization.TargetCenter;
 
             worksheet.Cell(pathRow, pathCol).Value = "X";

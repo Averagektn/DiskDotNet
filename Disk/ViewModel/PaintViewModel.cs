@@ -11,7 +11,6 @@ using Disk.ViewModel.Common.ViewModels;
 using Disk.Visual.Impl;
 using Disk.Visual.Interface;
 using Newtonsoft.Json;
-using Serilog;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Net;
@@ -133,7 +132,7 @@ namespace Disk.ViewModel
                 var userToDraw = DrawableFabric.GetIniUser(ImagePath);
                 userToDraw.Move(converter.ToWndCoord(PathsToTargets[SelectedRoseOrPath][0]));
 
-                return [targetToDraw, userToDraw, path]; 
+                return [targetToDraw, userToDraw, path];
             }
             return [];
         }
@@ -191,10 +190,10 @@ namespace Disk.ViewModel
             catch
             {
                 _ = MessageBox.Show(Localization.ConnectionLost);
-                _ = Application.Current.Dispatcher.BeginInvoke(new Action(() => 
+                _ = Application.Current.Dispatcher.BeginInvoke(new Action(() =>
                 {
                     SaveSessionResult();
-                    _navigationStore.NavigateBack(); 
+                    _ = _navigationStore.NavigateBack();
                 }));
             }
         }
