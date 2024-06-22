@@ -11,10 +11,25 @@ namespace Disk.ViewModel
     {
         public ICommand ChangeLanguageCommand => new Command(ChangeLanguage);
         public ICommand ToMapConstructorCommand => new Command(_ => navigationStore.SetViewModel<MapCreatorViewModel>());
-        public ICommand ToSettingsCommand => new Command(_ => navigationStore.SetViewModel<SettingsViewModel>());
-        public ICommand ToPatientsCommand => new Command(_ => navigationStore.SetViewModel<PatientsViewModel>());
+
+        public ICommand ToSettingsCommand => new Command(
+            _ => navigationStore.SetViewModel<NavigateBackViewModel>(
+                vm => vm.CurrentViewModel = navigationStore.GetViewModel<SettingsViewModel>()
+                )
+            );
+        public ICommand ToPatientsCommand => new Command(
+            _ => navigationStore.SetViewModel<NavigateBackViewModel>(
+                vm => vm.CurrentViewModel = navigationStore.GetViewModel<PatientsViewModel>()
+                )
+            );
+        public ICommand ToCalibrationCommand =>
+            new Command(
+                _ => navigationStore.SetViewModel<NavigateBackViewModel>(
+                    vm => vm.CurrentViewModel = navigationStore.GetViewModel<CalibrationViewModel>()
+                )
+            );
+
         public ICommand QuitCommand => new Command(_ => Application.Current.MainWindow.Close());
-        public ICommand ToCalibrationCommand => new Command(_ => navigationStore.SetViewModel<CalibrationViewModel>());
         public ICommand LogoutCommand => new Command(_ => modalNavigationStore.SetViewModel<AuthenticationViewModel>());
 
         private static Settings Settings => Settings.Default;

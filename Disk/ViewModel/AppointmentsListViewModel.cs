@@ -25,7 +25,10 @@ namespace Disk.ViewModel
             new Command(_ => 
             {
                 AppointmentSession.Appointment = SelectedAppointment!;
-                navigationStore.SetViewModel<AppointmentViewModel>();
+
+                navigationStore.SetViewModel<NavigateBackViewModel>(
+                    vm => vm.CurrentViewModel = navigationStore.GetViewModel<AppointmentViewModel>()
+                );
             });
 
         private async Task StartAppointmentAsync(object? arg)
@@ -41,10 +44,11 @@ namespace Disk.ViewModel
 
             AppointmentSession.Appointment = appointment;
 
-            navigationStore.SetViewModel<AppointmentViewModel>(vm => 
-            {
-                vm.IsNewAppointment = true;
-            });
+            navigationStore.SetViewModel<NavigateBackViewModel>(
+                vm => vm.CurrentViewModel = navigationStore.GetViewModel<AppointmentViewModel>(
+                    vm => vm.IsNewAppointment = true
+                )
+            );
         }
     }
 }

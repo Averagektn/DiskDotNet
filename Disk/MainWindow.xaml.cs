@@ -15,15 +15,12 @@ namespace Disk
         {
             InitializeComponent();
 
-            Closing += NavigateBack;
+            Closing += OnClosing;
         }
 
-        private void NavigateBack(object? obj, CancelEventArgs args)
+        private void OnClosing(object? obj, CancelEventArgs args)
         {
-            if (ViewModel.CanNavigateBack())
-            {
-                args.Cancel = true;
-            }
+            ViewModel.Dispose();
         }
     }
 }
