@@ -10,7 +10,7 @@ namespace Disk.Migrations
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AddColumn<float>(
+            _ = migrationBuilder.AddColumn<float>(
                 name: "pit_precision",
                 table: "path_in_target",
                 type: "REAL",
@@ -21,7 +21,7 @@ namespace Disk.Migrations
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropColumn(
+            _ = migrationBuilder.DropColumn(
                 name: "pit_precision",
                 table: "path_in_target");
         }

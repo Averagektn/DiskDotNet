@@ -10,30 +10,30 @@ namespace Disk.Migrations
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropForeignKey(
+            _ = migrationBuilder.DropForeignKey(
                 name: "FK_appointment_doctor_app_doctor",
                 table: "appointment");
 
-            migrationBuilder.DropForeignKey(
+            _ = migrationBuilder.DropForeignKey(
                 name: "FK_map_doctor_map_created_by",
                 table: "map");
 
-            migrationBuilder.DropTable(
+            _ = migrationBuilder.DropTable(
                 name: "doctor");
 
-            migrationBuilder.DropIndex(
+            _ = migrationBuilder.DropIndex(
                 name: "IX_map_map_created_by",
                 table: "map");
 
-            migrationBuilder.DropIndex(
+            _ = migrationBuilder.DropIndex(
                 name: "IX_appointment_app_doctor",
                 table: "appointment");
 
-            migrationBuilder.DropColumn(
+            _ = migrationBuilder.DropColumn(
                 name: "map_created_by",
                 table: "map");
 
-            migrationBuilder.DropColumn(
+            _ = migrationBuilder.DropColumn(
                 name: "app_doctor",
                 table: "appointment");
         }
@@ -41,21 +41,21 @@ namespace Disk.Migrations
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AddColumn<long>(
+            _ = migrationBuilder.AddColumn<long>(
                 name: "map_created_by",
                 table: "map",
                 type: "INTEGER",
                 nullable: false,
                 defaultValue: 0L);
 
-            migrationBuilder.AddColumn<long>(
+            _ = migrationBuilder.AddColumn<long>(
                 name: "app_doctor",
                 table: "appointment",
                 type: "INTEGER",
                 nullable: false,
                 defaultValue: 0L);
 
-            migrationBuilder.CreateTable(
+            _ = migrationBuilder.CreateTable(
                 name: "doctor",
                 columns: table => new
                 {
@@ -68,20 +68,20 @@ namespace Disk.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_doctor", x => x.doc_id);
+                    _ = table.PrimaryKey("PK_doctor", x => x.doc_id);
                 });
 
-            migrationBuilder.CreateIndex(
+            _ = migrationBuilder.CreateIndex(
                 name: "IX_map_map_created_by",
                 table: "map",
                 column: "map_created_by");
 
-            migrationBuilder.CreateIndex(
+            _ = migrationBuilder.CreateIndex(
                 name: "IX_appointment_app_doctor",
                 table: "appointment",
                 column: "app_doctor");
 
-            migrationBuilder.AddForeignKey(
+            _ = migrationBuilder.AddForeignKey(
                 name: "FK_appointment_doctor_app_doctor",
                 table: "appointment",
                 column: "app_doctor",
@@ -89,7 +89,7 @@ namespace Disk.Migrations
                 principalColumn: "doc_id",
                 onDelete: ReferentialAction.Cascade);
 
-            migrationBuilder.AddForeignKey(
+            _ = migrationBuilder.AddForeignKey(
                 name: "FK_map_doctor_map_created_by",
                 table: "map",
                 column: "map_created_by",

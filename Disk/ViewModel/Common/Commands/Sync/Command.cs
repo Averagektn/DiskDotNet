@@ -13,8 +13,7 @@ namespace Disk.ViewModel.Common.Commands.Sync
             remove => CommandManager.RequerySuggested -= value;
         }
 
-        public bool CanExecute(object? parameter) =>
-            _canExecute is null || parameter is not null && _canExecute(parameter);
+        public bool CanExecute(object? parameter) => _canExecute is null || (parameter is not null && _canExecute(parameter));
 
         public void Execute(object? parameter)
         {

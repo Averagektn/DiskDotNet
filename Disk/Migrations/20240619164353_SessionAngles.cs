@@ -10,7 +10,7 @@ namespace Disk.Migrations
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.CreateTable(
+            _ = migrationBuilder.CreateTable(
                 name: "doctor",
                 columns: table => new
                 {
@@ -23,10 +23,10 @@ namespace Disk.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_doctor", x => x.doc_id);
+                    _ = table.PrimaryKey("PK_doctor", x => x.doc_id);
                 });
 
-            migrationBuilder.CreateTable(
+            _ = migrationBuilder.CreateTable(
                 name: "patient",
                 columns: table => new
                 {
@@ -41,10 +41,10 @@ namespace Disk.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_patient", x => x.pat_id);
+                    _ = table.PrimaryKey("PK_patient", x => x.pat_id);
                 });
 
-            migrationBuilder.CreateTable(
+            _ = migrationBuilder.CreateTable(
                 name: "map",
                 columns: table => new
                 {
@@ -57,8 +57,8 @@ namespace Disk.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_map", x => x.map_id);
-                    table.ForeignKey(
+                    _ = table.PrimaryKey("PK_map", x => x.map_id);
+                    _ = table.ForeignKey(
                         name: "FK_map_doctor_map_created_by",
                         column: x => x.map_created_by,
                         principalTable: "doctor",
@@ -66,7 +66,7 @@ namespace Disk.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
-            migrationBuilder.CreateTable(
+            _ = migrationBuilder.CreateTable(
                 name: "appointment",
                 columns: table => new
                 {
@@ -78,14 +78,14 @@ namespace Disk.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_appointment", x => x.app_id);
-                    table.ForeignKey(
+                    _ = table.PrimaryKey("PK_appointment", x => x.app_id);
+                    _ = table.ForeignKey(
                         name: "FK_appointment_doctor_app_doctor",
                         column: x => x.app_doctor,
                         principalTable: "doctor",
                         principalColumn: "doc_id",
                         onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
+                    _ = table.ForeignKey(
                         name: "FK_appointment_patient_app_patient",
                         column: x => x.app_patient,
                         principalTable: "patient",
@@ -93,7 +93,7 @@ namespace Disk.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
-            migrationBuilder.CreateTable(
+            _ = migrationBuilder.CreateTable(
                 name: "session",
                 columns: table => new
                 {
@@ -108,13 +108,13 @@ namespace Disk.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_session", x => x.ses_id);
-                    table.ForeignKey(
+                    _ = table.PrimaryKey("PK_session", x => x.ses_id);
+                    _ = table.ForeignKey(
                         name: "FK_session_appointment_ses_appointment",
                         column: x => x.ses_appointment,
                         principalTable: "appointment",
                         principalColumn: "app_id");
-                    table.ForeignKey(
+                    _ = table.ForeignKey(
                         name: "FK_session_map_ses_map",
                         column: x => x.ses_map,
                         principalTable: "map",
@@ -122,7 +122,7 @@ namespace Disk.Migrations
                         onDelete: ReferentialAction.Restrict);
                 });
 
-            migrationBuilder.CreateTable(
+            _ = migrationBuilder.CreateTable(
                 name: "path_in_target",
                 columns: table => new
                 {
@@ -132,8 +132,8 @@ namespace Disk.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_path_in_target", x => new { x.pit_session, x.pit_target_id });
-                    table.ForeignKey(
+                    _ = table.PrimaryKey("PK_path_in_target", x => new { x.pit_session, x.pit_target_id });
+                    _ = table.ForeignKey(
                         name: "FK_path_in_target_session_pit_session",
                         column: x => x.pit_session,
                         principalTable: "session",
@@ -141,7 +141,7 @@ namespace Disk.Migrations
                         onDelete: ReferentialAction.Restrict);
                 });
 
-            migrationBuilder.CreateTable(
+            _ = migrationBuilder.CreateTable(
                 name: "path_to_target",
                 columns: table => new
                 {
@@ -155,8 +155,8 @@ namespace Disk.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_path_to_target", x => new { x.ptt_session, x.ptt_target_num });
-                    table.ForeignKey(
+                    _ = table.PrimaryKey("PK_path_to_target", x => new { x.ptt_session, x.ptt_target_num });
+                    _ = table.ForeignKey(
                         name: "FK_path_to_target_session_ptt_session",
                         column: x => x.ptt_session,
                         principalTable: "session",
@@ -164,7 +164,7 @@ namespace Disk.Migrations
                         onDelete: ReferentialAction.Restrict);
                 });
 
-            migrationBuilder.CreateTable(
+            _ = migrationBuilder.CreateTable(
                 name: "session_result",
                 columns: table => new
                 {
@@ -176,8 +176,8 @@ namespace Disk.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_session_result", x => x.sres_id);
-                    table.ForeignKey(
+                    _ = table.PrimaryKey("PK_session_result", x => x.sres_id);
+                    _ = table.ForeignKey(
                         name: "FK_session_result_session_sres_id",
                         column: x => x.sres_id,
                         principalTable: "session",
@@ -185,39 +185,39 @@ namespace Disk.Migrations
                         onDelete: ReferentialAction.Restrict);
                 });
 
-            migrationBuilder.CreateIndex(
+            _ = migrationBuilder.CreateIndex(
                 name: "IX_appointment_app_doctor",
                 table: "appointment",
                 column: "app_doctor");
 
-            migrationBuilder.CreateIndex(
+            _ = migrationBuilder.CreateIndex(
                 name: "IX_appointment_app_patient",
                 table: "appointment",
                 column: "app_patient");
 
-            migrationBuilder.CreateIndex(
+            _ = migrationBuilder.CreateIndex(
                 name: "IX_map_map_created_by",
                 table: "map",
                 column: "map_created_by");
 
-            migrationBuilder.CreateIndex(
+            _ = migrationBuilder.CreateIndex(
                 name: "IX_map_map_name",
                 table: "map",
                 column: "map_name",
                 unique: true);
 
-            migrationBuilder.CreateIndex(
+            _ = migrationBuilder.CreateIndex(
                 name: "IX_session_ses_appointment",
                 table: "session",
                 column: "ses_appointment");
 
-            migrationBuilder.CreateIndex(
+            _ = migrationBuilder.CreateIndex(
                 name: "IX_session_ses_log_file_path",
                 table: "session",
                 column: "ses_log_file_path",
                 unique: true);
 
-            migrationBuilder.CreateIndex(
+            _ = migrationBuilder.CreateIndex(
                 name: "IX_session_ses_map",
                 table: "session",
                 column: "ses_map");
@@ -226,28 +226,28 @@ namespace Disk.Migrations
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropTable(
+            _ = migrationBuilder.DropTable(
                 name: "path_in_target");
 
-            migrationBuilder.DropTable(
+            _ = migrationBuilder.DropTable(
                 name: "path_to_target");
 
-            migrationBuilder.DropTable(
+            _ = migrationBuilder.DropTable(
                 name: "session_result");
 
-            migrationBuilder.DropTable(
+            _ = migrationBuilder.DropTable(
                 name: "session");
 
-            migrationBuilder.DropTable(
+            _ = migrationBuilder.DropTable(
                 name: "appointment");
 
-            migrationBuilder.DropTable(
+            _ = migrationBuilder.DropTable(
                 name: "map");
 
-            migrationBuilder.DropTable(
+            _ = migrationBuilder.DropTable(
                 name: "patient");
 
-            migrationBuilder.DropTable(
+            _ = migrationBuilder.DropTable(
                 name: "doctor");
         }
     }

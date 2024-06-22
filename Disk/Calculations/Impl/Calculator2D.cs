@@ -5,7 +5,7 @@ namespace Disk.Calculations.Impl
     /// <summary>
     ///     Calculates mathematical aspects of multiple 2D points
     /// </summary>
-    static class Calculator2D
+    public static class Calculator2D
     {
         /// <summary>
         ///     Calculates mathematical expectation

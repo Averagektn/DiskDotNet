@@ -12,7 +12,7 @@ namespace Disk.Visual.Impl
     /// <summary>
     ///     Represents a graph that can be drawn and scaled
     /// </summary>
-    class Graph : IStaticFigure
+    public class Graph : IStaticFigure
     {
         /// <summary>
         ///     The size of the graph
@@ -120,7 +120,7 @@ namespace Disk.Visual.Impl
 
                 var point = new PolarPoint<float>(radius, Math.PI * angle / 180);
 
-                Polygon.Points.Add(new(Size.Width / 2 + point.X, Size.Height / 2 - point.Y));
+                Polygon.Points.Add(new((Size.Width / 2) + point.X, (Size.Height / 2) - point.Y));
             }
         }
 

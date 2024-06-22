@@ -34,20 +34,20 @@ namespace Disk.View
 
             TbTargetRadius.Text = Settings.IniTargetRadius.ToString();
 
-/*            TbEnemiesNum.Text = Settings.ENEMIES_NUM.ToString();
+            /*            TbEnemiesNum.Text = Settings.ENEMIES_NUM.ToString();
 
-            TbUserFileAng.Text = Settings.USER_ANG_LOG_FILE;
-            TbUserFileCen.Text = Settings.USER_CEN_LOG_FILE;
-            TbUserFileWnd.Text = Settings.USER_WND_LOG_FILE;
+                        TbUserFileAng.Text = Settings.USER_ANG_LOG_FILE;
+                        TbUserFileCen.Text = Settings.USER_CEN_LOG_FILE;
+                        TbUserFileWnd.Text = Settings.USER_WND_LOG_FILE;
 
-            TbEnemyAngLogName.Text = Settings.ENEMY_ANG_LOG_NAME;
-            TbEnemyCenLogName.Text = Settings.ENEMY_CEN_LOG_NAME;
-            TbEnemyWndLogName.Text = Settings.ENEMY_WND_LOG_NAME;*/
+                        TbEnemyAngLogName.Text = Settings.ENEMY_ANG_LOG_NAME;
+                        TbEnemyCenLogName.Text = Settings.ENEMY_CEN_LOG_NAME;
+                        TbEnemyWndLogName.Text = Settings.ENEMY_WND_LOG_NAME;*/
 
-/*            TbLogSeparator.Text = Settings.LOG_SEPARATOR.ToString();
-            TbLogExtension.Text = Settings.LOG_EXTENSION;
+            /*            TbLogSeparator.Text = Settings.LOG_SEPARATOR.ToString();
+                        TbLogExtension.Text = Settings.LOG_EXTENSION;
 
-            TbEnemyLogPath.Text = Settings.ENEMY_LOG_PATH;*/
+                        TbEnemyLogPath.Text = Settings.ENEMY_LOG_PATH;*/
 
             Settings.UserColor = Settings.UserColor;
         }
@@ -57,7 +57,7 @@ namespace Disk.View
             try
             {
                 Settings.IP = TbIP.Text;
-                Settings.Port = Convert.ToInt32(TbPort.Text);
+                //Settings.Port = Convert.ToInt32(TbPort.Text);
 
                 //Settings.TARGET_MAX_TIME = Convert.ToInt32(TbTargetMaxTime.Text);
                 //Settings.TARGET_MIN_TIME = Convert.ToInt32(TbTargetMinTime.Text);
@@ -67,26 +67,26 @@ namespace Disk.View
 
                 //Settings.IniUserSpeed = Convert.ToInt32(TbUserSpeed.Text);
                 Settings.IniUserRadius = Convert.ToInt32(TbUserRadius.Text);
-/*
-                Settings.IniEnemySpeed = Convert.ToInt32(TbEnemySpeed.Text);
-                Settings.IniEnemyRadius = Convert.ToInt32(TbEnemyRadius.Text);*/
+                /*
+                                Settings.IniEnemySpeed = Convert.ToInt32(TbEnemySpeed.Text);
+                                Settings.IniEnemyRadius = Convert.ToInt32(TbEnemyRadius.Text);*/
 
                 Settings.IniTargetRadius = Convert.ToInt32(TbTargetRadius.Text);
 
-/*                Settings.ENEMIES_NUM = Convert.ToInt32(TbEnemiesNum.Text);
+                /*                Settings.ENEMIES_NUM = Convert.ToInt32(TbEnemiesNum.Text);
 
-                Settings.USER_ANG_LOG_FILE = TbUserFileAng.Text;
-                Settings.USER_CEN_LOG_FILE = TbUserFileCen.Text;
-                Settings.USER_WND_LOG_FILE = TbUserFileWnd.Text;
+                                Settings.USER_ANG_LOG_FILE = TbUserFileAng.Text;
+                                Settings.USER_CEN_LOG_FILE = TbUserFileCen.Text;
+                                Settings.USER_WND_LOG_FILE = TbUserFileWnd.Text;
 
-                Settings.ENEMY_ANG_LOG_NAME = TbEnemyAngLogName.Text;
-                Settings.ENEMY_CEN_LOG_NAME = TbEnemyCenLogName.Text;
-                Settings.ENEMY_WND_LOG_NAME = TbEnemyWndLogName.Text;*/
+                                Settings.ENEMY_ANG_LOG_NAME = TbEnemyAngLogName.Text;
+                                Settings.ENEMY_CEN_LOG_NAME = TbEnemyCenLogName.Text;
+                                Settings.ENEMY_WND_LOG_NAME = TbEnemyWndLogName.Text;*/
 
-/*                Settings.LOG_SEPARATOR = TbLogSeparator.Text[0];
-                Settings.LOG_EXTENSION = TbLogExtension.Text;
+                /*                Settings.LOG_SEPARATOR = TbLogSeparator.Text[0];
+                                Settings.LOG_EXTENSION = TbLogExtension.Text;
 
-                Settings.ENEMY_LOG_PATH = TbEnemyLogPath.Text;*/
+                                Settings.ENEMY_LOG_PATH = TbEnemyLogPath.Text;*/
 
                 Settings.UserColor = Settings.UserColor;
             }

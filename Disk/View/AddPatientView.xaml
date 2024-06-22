@@ -19,20 +19,20 @@
         <Viewbox Grid.Row="1">
             <StackPanel Grid.Column="0" HorizontalAlignment="Center" CanVerticallyScroll="True">
                 <TextBlock 
-        FontSize="15"
-        Text="{x:Static lang:AddPatientLocalization.Surname}" 
-        Margin="10 5"
-        HorizontalAlignment="Left"/>
+                    FontSize="15"
+                    Text="{x:Static lang:AddPatientLocalization.Surname}" 
+                    Margin="10 5"
+                    HorizontalAlignment="Left"/>
 
                 <TextBox 
-        FontSize="15"
-        Padding="0,5"
-        Width="255"
-        Margin="10 5"
-        BorderThickness="0,0,0,1"
-        HorizontalAlignment="Left"
-        Text="{Binding Patient.Surname}"
-        Background="{Binding BgSurname}">
+                    FontSize="15"
+                    Padding="0,5"
+                    Width="255"
+                    Margin="10 5"
+                    BorderThickness="0,0,0,1"
+                    HorizontalAlignment="Left"
+                    Text="{Binding Patient.Surname}"
+                    Background="{Binding BgSurname}">
                     <i:Interaction.Triggers>
                         <i:EventTrigger EventName="GotFocus">
                             <i:InvokeCommandAction Command="{Binding SurnameFocusCommand}" />
@@ -41,19 +41,20 @@
                 </TextBox>
 
                 <TextBlock 
-        FontSize="15"
-        Text="{x:Static lang:AddPatientLocalization.Name}" 
-        Margin="10 5"
-        HorizontalAlignment="Left"/>
+                    FontSize="15"
+                    Text="{x:Static lang:AddPatientLocalization.Name}" 
+                    Margin="10 5"
+                    HorizontalAlignment="Left"/>
+
                 <TextBox 
-        FontSize="15"
-        Padding="0,5"
-        Width="255"
-        Margin="10 5"
-        BorderThickness="0,0,0,1"
-        HorizontalAlignment="Left"
-        Text="{Binding Patient.Name}"
-        Background="{Binding BgName}">
+                        FontSize="15"
+                        Padding="0,5"
+                        Width="255"
+                        Margin="10 5"
+                        BorderThickness="0,0,0,1"
+                        HorizontalAlignment="Left"
+                        Text="{Binding Patient.Name}"
+                        Background="{Binding BgName}">
                     <i:Interaction.Triggers>
                         <i:EventTrigger EventName="GotFocus">
                             <i:InvokeCommandAction Command="{Binding NameFocusCommand}" />
@@ -62,34 +63,34 @@
                 </TextBox>
 
                 <TextBlock 
-        FontSize="15"
-        Text="{x:Static lang:AddPatientLocalization.Patronymic}" 
-        Margin="10 5"
-        HorizontalAlignment="Left"/>
+                    FontSize="15"
+                    Text="{x:Static lang:AddPatientLocalization.Patronymic}" 
+                    Margin="10 5"
+                    HorizontalAlignment="Left"/>
 
                 <TextBox 
-        FontSize="15"
-        Padding="0,5"
-        Width="255"
-        Margin="10 5"
-        BorderThickness="0,0,0,1"
-        HorizontalAlignment="Left"
-        Text="{Binding Patient.Patronymic}"/>
+                    FontSize="15"
+                    Padding="0,5"
+                    Width="255"
+                    Margin="10 5"
+                    BorderThickness="0,0,0,1"
+                    HorizontalAlignment="Left"
+                    Text="{Binding Patient.Patronymic}"/>
 
                 <TextBlock 
-        FontSize="15"
-        Text="{x:Static lang:AddPatientLocalization.DateOfBirth}" 
-        Margin="10 5"
-        HorizontalAlignment="Left"/>
+                    FontSize="15"
+                    Text="{x:Static lang:AddPatientLocalization.DateOfBirth}" 
+                    Margin="10 5"
+                    HorizontalAlignment="Left"/>
 
                 <DatePicker 
-        FontSize="15"
-        SelectedDate="{Binding Patient.DateOfBirth}"          
-        Width="255"
-        Margin="10 5"
-        BorderThickness="0,0,0,1"
-        HorizontalAlignment="Left" 
-        Background="{Binding BgDateOfBirth}">
+                    FontSize="15"
+                    SelectedDate="{Binding Patient.DateOfBirth}"          
+                    Width="255"
+                    Margin="10 5"
+                    BorderThickness="0,0,0,1"
+                    HorizontalAlignment="Left" 
+                    Background="{Binding BgDateOfBirth}">
                     <i:Interaction.Triggers>
                         <i:EventTrigger EventName="GotFocus">
                             <i:InvokeCommandAction Command="{Binding DateOfBirthFocusCommand}" />
@@ -98,20 +99,20 @@
                 </DatePicker>
 
                 <TextBlock 
-        FontSize="15"
-        Text="{x:Static lang:AddPatientLocalization.MobilePhone}" 
-        Margin="10 5"
-        HorizontalAlignment="Left"/>
+                    FontSize="15"
+                    Text="{x:Static lang:AddPatientLocalization.MobilePhone}" 
+                    Margin="10 5"
+                    HorizontalAlignment="Left"/>
 
                 <TextBox 
-        FontSize="15"
-        Padding="0,5"
-        Width="255"
-        Margin="10 5"
-        BorderThickness="0,0,0,1"
-        HorizontalAlignment="Left"
-        Text="{Binding Patient.PhoneMobile}"
-        Background="{Binding BgMobilePhone}">
+                    FontSize="15"
+                    Padding="0,5"
+                    Width="255"
+                    Margin="10 5"
+                    BorderThickness="0,0,0,1"
+                    HorizontalAlignment="Left"
+                    Text="{Binding Patient.PhoneMobile}"
+                    Background="{Binding BgMobilePhone}">
                     <i:Interaction.Triggers>
                         <i:EventTrigger EventName="GotFocus">
                             <i:InvokeCommandAction Command="{Binding MobilePhoneFocusCommand}" />
@@ -120,20 +121,20 @@
                 </TextBox>
 
                 <TextBlock 
-        FontSize="15"
-        Text="{x:Static lang:AddPatientLocalization.HomePhone}" 
-        Margin="10 5"
-        HorizontalAlignment="Left"/>
+                    FontSize="15"
+                    Text="{x:Static lang:AddPatientLocalization.HomePhone}" 
+                    Margin="10 5"
+                    HorizontalAlignment="Left"/>
 
                 <TextBox 
-        FontSize="15"
-        Padding="0,5"
-        Width="255"
-        Margin="10 5"
-        BorderThickness="0,0,0,1"
-        HorizontalAlignment="Left"
-        Text="{Binding Patient.PhoneHome}"
-        Background="{Binding BgHomePhone}">
+                    FontSize="15"
+                    Padding="0,5"
+                    Width="255"
+                    Margin="10 5"
+                    BorderThickness="0,0,0,1"
+                    HorizontalAlignment="Left"
+                    Text="{Binding Patient.PhoneHome}"
+                    Background="{Binding BgHomePhone}">
                     <i:Interaction.Triggers>
                         <i:EventTrigger EventName="GotFocus">
                             <i:InvokeCommandAction Command="{Binding HomePhoneFocusCommand}" />
@@ -141,21 +142,23 @@
                     </i:Interaction.Triggers>
                 </TextBox>
 
-                <Button Content="{x:Static lang:AddPatientLocalization.AddPatient}" 
-            Height="50"
-            Margin="0 20 0 0"  
-            Command="{Binding AddPatientCommand}"/>
+                <Button 
+                    Content="{x:Static lang:AddPatientLocalization.AddPatient}" 
+                    Height="50"
+                    Margin="0 20 0 0"  
+                    Command="{Binding AddPatientCommand}"/>
 
-                <Button Content="{x:Static lang:AddPatientLocalization.Cancel}" 
-            Height="50"
-            Margin="0 20"                    
-            Command="{Binding CancelCommand}"/>
+                <Button 
+                    Content="{x:Static lang:AddPatientLocalization.Cancel}" 
+                    Height="50"
+                    Margin="0 20"                    
+                    Command="{Binding CancelCommand}"/>
 
-                <styles:Popup PopupMessage="{Binding PopupMessage}" 
-                  IsPopupOpen="{Binding IsShowPopup}" 
-                  PopupHeader="{Binding PopupHeader}"/>
+                <styles:Popup 
+                    PopupMessage="{Binding PopupMessage}" 
+                    IsPopupOpen="{Binding IsShowPopup}" 
+                    PopupHeader="{Binding PopupHeader}"/>
             </StackPanel>
         </Viewbox>
     </Grid>
-    
 </UserControl>

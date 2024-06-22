@@ -1,8 +1,8 @@
 ﻿using Disk.Db.Context;
 using Disk.Entities;
 using Disk.Repository.Common.Implementation;
-using Disk.Repository.Interface;
 using Disk.Repository.Exceptions;
+using Disk.Repository.Interface;
 using Microsoft.EntityFrameworkCore;
 
 namespace Disk.Repository.Implementation
@@ -11,7 +11,7 @@ namespace Disk.Repository.Implementation
     {
         public new void Add(Patient entity)
         {
-            var patientExists = table.Any(p => p.Name == entity.Name && p.Surname == entity.Surname && 
+            var patientExists = table.Any(p => p.Name == entity.Name && p.Surname == entity.Surname &&
                 p.Patronymic == entity.Patronymic && p.DateOfBirth == entity.DateOfBirth);
             if (patientExists)
             {

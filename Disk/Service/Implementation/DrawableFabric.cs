@@ -14,8 +14,7 @@ namespace Disk.Service.Implementation
         private static readonly Size ScreenIniSize = new(Settings.IniScreenWidth, Settings.IniScreenHeight);
         private static readonly int ScreenIniCenterX = (int)ScreenIniSize.Width / 2;
         private static readonly int ScreenIniCenterY = (int)ScreenIniSize.Height / 2;
-        private static readonly Brush UserBrush =
-            new SolidColorBrush(Color.FromRgb(Settings.UserColor.R, Settings.UserColor.G, Settings.UserColor.B));
+        private static readonly Brush UserBrush = new SolidColorBrush(Color.FromRgb(Settings.UserColor.R, Settings.UserColor.G, Settings.UserColor.B));
         private static readonly float XAngleSize = Settings.XMaxAngle * 2;
         private static readonly float YAngleSize = Settings.YMaxAngle * 2;
         private static readonly int TargetHp = Settings.TargetHp;

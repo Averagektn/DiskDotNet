@@ -50,7 +50,7 @@ namespace Disk.ViewModel
                     canClose: true);
             }
 
-            navigationStore.NavigateBack();
+            _ = navigationStore.NavigateBack();
         }
 
         public void RemoveTarget(UIElementCollection screenTargets, Point mousePos)

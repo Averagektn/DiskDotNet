@@ -32,7 +32,7 @@ namespace Disk.ViewModel
         public ICommand StartCalibrationCommand => new Command(StartCalibration);
         public ICommand CentralizeXCommand => new Command(_ => XShift += XAngleRes);
         public ICommand CentralizeYCommand => new Command(_ => YShift += YAngleRes);
-        public ICommand CalibrateXCommand => new Command(_ => 
+        public ICommand CalibrateXCommand => new Command(_ =>
         {
             CalibrateXEnabled = false;
             IsRunningThread = CalibrateYEnabled;
@@ -110,9 +110,9 @@ namespace Disk.ViewModel
             catch
             {
                 _ = MessageBox.Show(CalibrationLocalization.ConnectionLost);
-                _navigationStore.NavigateBack();
+                _ = _navigationStore.NavigateBack();
             }
-        } 
+        }
 
         private void StartCalibration(object? parameter)
         {
@@ -144,7 +144,7 @@ namespace Disk.ViewModel
             Settings.YAngleShift = YShift;
 
             Settings.Save();
-            _navigationStore.NavigateBack();
+            _ = _navigationStore.NavigateBack();
         }
     }
 }

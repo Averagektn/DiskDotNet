@@ -1,6 +1,6 @@
 ﻿using System.Windows.Input;
 
-namespace Disk.ViewModel.Common
+namespace Disk.ViewModel.Common.Commands.Async
 {
     public interface IAsyncCommand : ICommand
     {

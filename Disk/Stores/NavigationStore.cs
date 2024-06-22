@@ -6,7 +6,7 @@ namespace Disk.Stores
     {
         public readonly Stack<ObserverViewModel> ViewModels = [];
         public event Action? CurrentViewModelChanged;
-        
+
         public ObserverViewModel GetViewModel(Type vmType) => getViewModel.Invoke(vmType);
         public ObserverViewModel GetViewModel<TViewModel>() => getViewModel.Invoke(typeof(TViewModel));
         public ObserverViewModel GetViewModel<TViewModel>(Action<TViewModel> parametrizeViewModel) where TViewModel : class

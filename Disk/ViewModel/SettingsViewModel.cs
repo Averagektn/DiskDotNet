@@ -7,7 +7,7 @@ namespace Disk.ViewModel
     {
         public void Close()
         {
-            navigationStore.NavigateBack();
+            _ = navigationStore.NavigateBack();
         }
     }
 }
