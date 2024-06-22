@@ -18,7 +18,6 @@ namespace Disk.ViewModel
     {
         public bool IsNewAppointment { get; set; }
         public Patient Patient { get; set; } = AppointmentSession.Patient;
-        public Doctor Doctor { get; set; } = AppSession.Doctor;
         public Session? SelectedSession { get; set; }
         public ObservableCollection<Session> Sessions { get; set; }
             = new(sessionRepository.GetSessionsWithResultsByAppointment(AppointmentSession.Appointment.Id));

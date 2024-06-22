@@ -29,8 +29,7 @@ namespace Disk.ViewModel
                 )
             );
 
-        public ICommand QuitCommand => new Command(_ => Application.Current.MainWindow.Close());
-        public ICommand LogoutCommand => new Command(_ => modalNavigationStore.SetViewModel<AuthenticationViewModel>());
+        public static ICommand QuitCommand => new Command(_ => Application.Current.MainWindow.Close());
 
         private static Settings Settings => Settings.Default;
 

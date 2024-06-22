@@ -36,7 +36,6 @@ namespace Disk.ViewModel
             var appointment = new Appointment()
             {
                 DateTime = DateTime.Now.ToString(),
-                Doctor = AppSession.Doctor.Id,
                 Patient = AppointmentSession.Patient.Id
             };
 

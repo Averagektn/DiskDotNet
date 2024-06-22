@@ -33,7 +33,6 @@ namespace Disk.ViewModel
                 Name = MapName,
                 CoordinatesJson = JsonConvert.SerializeObject(Map),
                 CreatedAtDateTime = DateTime.Now.ToString(),
-                CreatedBy = AppSession.Doctor.Id
             };
 
             try

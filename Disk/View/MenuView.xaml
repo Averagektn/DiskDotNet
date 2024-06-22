@@ -76,7 +76,6 @@
                 <MenuItem Header="English" Command="{Binding ChangeLanguageCommand}" CommandParameter="en-US"/>
                 <MenuItem Header="Русский" Command="{Binding ChangeLanguageCommand}" CommandParameter="ru-RU"/>
             </MenuItem>
-            <MenuItem Header="{x:Static lang:MenuLocalization.Logout}" Command="{Binding LogoutCommand}"/>
         </Menu>
     </Grid>
 </UserControl>
