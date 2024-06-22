@@ -59,15 +59,12 @@ namespace Disk.Properties.Config {
             }
         }
         
-        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("9998")]
         public int Port {
             get {
                 return ((int)(this["Port"]));
-            }
-            set {
-                this["Port"] = value;
             }
         }
         
@@ -175,7 +172,7 @@ namespace Disk.Properties.Config {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("Диск. Данные")]
+        [global::System.Configuration.DefaultSettingValueAttribute("Data")]
         public string MainDirPath {
             get {
                 return ((string)(this["MainDirPath"]));
@@ -206,15 +203,12 @@ namespace Disk.Properties.Config {
             }
         }
         
-        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("userAngles.log")]
         public string UserLogFileName {
             get {
                 return ((string)(this["UserLogFileName"]));
-            }
-            set {
-                this["UserLogFileName"] = value;
             }
         }
     }

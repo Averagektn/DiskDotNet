@@ -110,6 +110,11 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>PatientsLocalization.resx</DependentUpon>
     </Compile>
+    <Compile Update="Properties\Langs\Settings\SettingsLocalization.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>SettingsLocalization.resx</DependentUpon>
+    </Compile>
     <Compile Update="Properties\Langs\StartSession\StartSessionLocalization.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
@@ -197,6 +202,13 @@
       <LastGenOutput>PatientsLocalization.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Update="Properties\Langs\Patients\PatientsLocalization.ru-RU.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Properties\Langs\Settings\SettingsLocalization.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>SettingsLocalization.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Properties\Langs\Settings\SettingsLocalization.ru-RU.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Properties\Langs\StartSession\StartSessionLocalization.resx">

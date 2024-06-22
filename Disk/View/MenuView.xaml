@@ -43,7 +43,6 @@
 
         <Viewbox Grid.Row="2" Grid.Column="1">
             <Button 
-                IsEnabled="False"
                 Command="{Binding ToSettingsCommand}" 
                 Content="{x:Static lang:MenuLocalization.Settings}"
                 Margin="0 15"/>
