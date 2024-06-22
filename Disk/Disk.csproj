@@ -80,6 +80,11 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>CalibrationLocalization.resx</DependentUpon>
     </Compile>
+    <Compile Update="Properties\Langs\MapCreator\MapCreatorLocalization.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>MapCreatorLocalization.resx</DependentUpon>
+    </Compile>
     <Compile Update="Properties\Langs\MapNamePicker\MapNamePickerLocalization.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
@@ -155,6 +160,10 @@
     <EmbeddedResource Update="Properties\Langs\Calibration\CalibrationLocalization.ru-RU.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
     </EmbeddedResource>
+    <EmbeddedResource Update="Properties\Langs\MapCreator\MapCreatorLocalization.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>MapCreatorLocalization.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Update="Properties\Langs\MapNamePicker\MapNamePickerLocalization.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>MapNamePickerLocalization.Designer.cs</LastGenOutput>
@@ -165,6 +174,9 @@
     <EmbeddedResource Update="Properties\Langs\Menu\MenuLocalization.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>MenuLocalization.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Properties\Langs\Menu\MenuLocalization.ru-RU.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Properties\Langs\NavigateBack\NavigateBackLocalization.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>

@@ -9,7 +9,7 @@ using Settings = Disk.Properties.Config.Config;
 
 namespace Disk.ViewModel
 {
-    public class MapCreatorViewModel(ModalNavigationStore modalNavigationStore) : ObserverViewModel
+    public class MapCreatorViewModel(ModalNavigationStore modalNavigationStore, NavigationStore navigationStore) : ObserverViewModel
     {
         private static int IniWidth => Settings.Default.IniScreenWidth;
         private static int IniHeight => Settings.Default.IniScreenHeight;
@@ -49,6 +49,8 @@ namespace Disk.ViewModel
                         .ToList(),
                     canClose: true);
             }
+
+            navigationStore.NavigateBack();
         }
 
         public void RemoveTarget(UIElementCollection screenTargets, Point mousePos)
