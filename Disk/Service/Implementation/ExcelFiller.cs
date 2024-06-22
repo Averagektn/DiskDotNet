@@ -3,7 +3,6 @@ using Disk.Data.Impl;
 using Disk.Entities;
 using Disk.Repository.Interface;
 using Disk.Service.Interface;
-using Disk.Sessions;
 using Microsoft.Win32;
 using Newtonsoft.Json;
 using Serilog;
@@ -17,7 +16,7 @@ namespace Disk.Service.Implementation
     {
         private const int ColsPerPath = 7;
 
-        public void ExportToExcel(IEnumerable<Session> sessions)
+        public void ExportToExcel(IEnumerable<Session> sessions, Patient patient)
         {
             using var workbook = new XLWorkbook();
 
@@ -27,7 +26,7 @@ namespace Disk.Service.Implementation
             {
                 Filter = "Excel Workbook|*.xlsx",
                 Title = Localization.ExportToExcel,
-                FileName = $"{AppointmentSession.Patient.Surname} {AppointmentSession.Patient.Name} {AppointmentSession.Patient.Patronymic}.xlsx"
+                FileName = $"{patient.Surname} {patient.Name} {patient.Patronymic}.xlsx"
             };
 
             if (saveFileDialog.ShowDialog() == true)

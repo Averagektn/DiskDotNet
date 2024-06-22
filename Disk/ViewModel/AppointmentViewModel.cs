@@ -2,7 +2,6 @@
 using Disk.Entities;
 using Disk.Repository.Interface;
 using Disk.Service.Interface;
-using Disk.Sessions;
 using Disk.Stores;
 using Disk.ViewModel.Common.Commands.Sync;
 using Disk.ViewModel.Common.ViewModels;
@@ -17,22 +16,27 @@ namespace Disk.ViewModel
         NavigationStore navigationStore) : ObserverViewModel
     {
         public bool IsNewAppointment { get; set; }
-        public Patient Patient { get; set; } = AppointmentSession.Patient;
+        public Patient Patient { get; set; } = null!;
+        public Appointment Appointment { get; set; } = null!;
         public Session? SelectedSession { get; set; }
-        public ObservableCollection<Session> Sessions { get; set; }
-            = new(sessionRepository.GetSessionsWithResultsByAppointment(AppointmentSession.Appointment.Id));
+        public ObservableCollection<Session> Sessions { get; set; } = [];
         public ObservableCollection<PathToTarget> PathsToTargets { get; set; } = [];
 
         public ICommand StartSessionCommand
-            => new Command(_ => modalNavigationStore.SetViewModel<StartSessionViewModel>(vm => vm.OnSessionOver += Update, canClose: true));
+            => new Command(_ => modalNavigationStore.SetViewModel<StartSessionViewModel>(
+                vm =>
+                {
+                    vm.OnSessionOver += Update;
+                    vm.Appointment = Appointment;
+                    vm.Patient = Patient;
+                },
+                canClose: true));
         public ICommand SessionSelectedCommand => new Command(SessionSelected);
-        public ICommand ExportToExcelCommand => new Command(_ => excelFiller.ExportToExcel(Sessions));
+        public ICommand ExportToExcelCommand => new Command(_ => excelFiller.ExportToExcel(Sessions, Patient));
         public ICommand ShowSessionCommand => new Command(ShowSession);
 
         private void ShowSession(object? obj)
         {
-            AppointmentSession.CurrentSession = SelectedSession!;
-            
             navigationStore.SetViewModel<PaintViewModel>(vm =>
             {
                 vm.PathsToTargets = SelectedSession!.PathToTargets
@@ -48,6 +52,8 @@ namespace Disk.ViewModel
 
                 vm.IsBackEnabled = true;
                 vm.IsStopEnabled = false;
+
+                vm.CurrentSession = SelectedSession!;
 
                 vm.FillTargetsComboBox();
             });
@@ -66,7 +72,7 @@ namespace Disk.ViewModel
         private void Update()
         {
             Sessions.Clear();
-            var sessions = sessionRepository.GetSessionsWithResultsByAppointment(AppointmentSession.Appointment.Id);
+            var sessions = sessionRepository.GetSessionsWithResultsByAppointment(Appointment.Id);
 
             foreach (var session in sessions)
             {

@@ -7,7 +7,7 @@ using Settings = Disk.Properties.Config.Config;
 
 namespace Disk.ViewModel
 {
-    public class MenuViewModel(NavigationStore navigationStore, ModalNavigationStore modalNavigationStore) : ObserverViewModel
+    public class MenuViewModel(NavigationStore navigationStore) : ObserverViewModel
     {
         public ICommand ChangeLanguageCommand => new Command(ChangeLanguage);
         public ICommand ToMapConstructorCommand => new Command(_ => navigationStore.SetViewModel<MapCreatorViewModel>());

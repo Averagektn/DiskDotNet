@@ -4,7 +4,6 @@ using Disk.Data.Impl;
 using Disk.Entities;
 using Disk.Repository.Interface;
 using Disk.Service.Implementation;
-using Disk.Sessions;
 using Disk.Stores;
 using Disk.ViewModel.Common.Commands.Sync;
 using Disk.ViewModel.Common.ViewModels;
@@ -25,6 +24,8 @@ namespace Disk.ViewModel
 {
     public class PaintViewModel : ObserverViewModel
     {
+        public Session CurrentSession { get; set; } = null!;
+
         // Can set on creation
         public event Action? OnSessionOver;
         public string ImagePath = string.Empty;
@@ -230,7 +231,7 @@ namespace Disk.ViewModel
 
                 var sres = new SessionResult()
                 {
-                    Id = AppointmentSession.CurrentSession.Id,
+                    Id = CurrentSession.Id,
                     MathExp = (mx.XDbl + mx.YDbl) / 2,
                     Dispersion = (dispersion.XDbl + dispersion.YDbl) / 2,
                     Deviation = (deviation.XDbl + dispersion.YDbl) / 2,
@@ -241,7 +242,7 @@ namespace Disk.ViewModel
             }
             else
             {
-                _sessionRepository.Delete(AppointmentSession.CurrentSession);
+                _sessionRepository.Delete(CurrentSession);
             }
 
             using (var logger = Logger.GetLogger(UsrAngLog))
@@ -312,7 +313,7 @@ namespace Disk.ViewModel
                 ApproachSpeed = approachSpeed,
                 CoordinatesJson = JsonConvert.SerializeObject(PathsToTargets[TargetId - 1]),
                 TargetNum = TargetId - 1,
-                Session = AppointmentSession.CurrentSession.Id,
+                Session = CurrentSession.Id,
                 Time = time
             };
             SavePathToTarget(ptt);
@@ -336,7 +337,7 @@ namespace Disk.ViewModel
             var pit = new PathInTarget()
             {
                 CoordinatesJson = JsonConvert.SerializeObject(pathInTarget),
-                Session = AppointmentSession.CurrentSession.Id,
+                Session = CurrentSession.Id,
                 TargetId = TargetId - 1,
                 Precision = precision
             };
@@ -366,9 +367,9 @@ namespace Disk.ViewModel
             base.Dispose();
             GC.SuppressFinalize(this);
 
-            if (AppointmentSession.CurrentSession.SessionResult is null)
+            if (CurrentSession.SessionResult is null)
             {
-                _sessionRepository.Delete(AppointmentSession.CurrentSession);
+                _sessionRepository.Delete(CurrentSession);
             }
             IsGame = false;
             if (DiskNetworkThread.IsAlive)

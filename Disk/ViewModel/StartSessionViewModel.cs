@@ -1,7 +1,6 @@
 ﻿using Disk.Data.Impl;
 using Disk.Entities;
 using Disk.Repository.Interface;
-using Disk.Sessions;
 using Disk.Stores;
 using Disk.ViewModel.Common.Commands.Sync;
 using Disk.ViewModel.Common.ViewModels;
@@ -18,6 +17,8 @@ namespace Disk.ViewModel
     public class StartSessionViewModel(ModalNavigationStore modalNavigationStore, NavigationStore navigationStore,
         ISessionRepository sessionRepository, IMapRepository mapRepository) : ObserverViewModel
     {
+        public Patient Patient { get; set; } = null!;
+        public Appointment Appointment { get; set; } = null!;
         public event Action? OnSessionOver;
 
         private string _imageFilePath = string.Empty;
@@ -54,7 +55,7 @@ namespace Disk.ViewModel
             }
 
             var logPath = $"{Settings.MainDirPath}{Path.DirectorySeparatorChar}" +
-                    $"{AppointmentSession.Patient.Surname} {AppointmentSession.Patient.Name}{Path.DirectorySeparatorChar}" +
+                    $"{Patient.Surname} {Patient.Name}{Path.DirectorySeparatorChar}" +
                     $"{DateTime.Now:dd.MM.yyyy HH-mm-ss}";
             if (!Directory.Exists(logPath))
             {
@@ -63,7 +64,7 @@ namespace Disk.ViewModel
 
             var session = new Session()
             {
-                Appointment = AppointmentSession.Appointment.Id,
+                Appointment = Appointment.Id,
                 DateTime = DateTime.Now.ToString(),
                 LogFilePath = logPath,
                 Map = SelectedMap!.Id,
@@ -71,7 +72,6 @@ namespace Disk.ViewModel
                 MaxYAngle = Settings.YMaxAngle
             };
             sessionRepository.Add(session);
-            AppointmentSession.CurrentSession = session;
 
             modalNavigationStore.Close();
 
@@ -81,6 +81,7 @@ namespace Disk.ViewModel
                 vm.CurrPath = logPath;
                 vm.TargetCenters = JsonConvert.DeserializeObject<List<Point2D<float>>>(SelectedMap.CoordinatesJson) ?? [];
                 vm.OnSessionOver += OnSessionOver;
+                vm.CurrentSession = session;
             });
         }
     }
