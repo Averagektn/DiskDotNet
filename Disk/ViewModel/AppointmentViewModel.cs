@@ -14,8 +14,7 @@ using System.Windows.Input;
 namespace Disk.ViewModel
 {
     public class AppointmentViewModel(ModalNavigationStore modalNavigationStore, ISessionRepository sessionRepository, IExcelFiller excelFiller,
-        NavigationStore navigationStore)
-        : ObserverViewModel
+        NavigationStore navigationStore) : ObserverViewModel
     {
         public bool IsNewAppointment { get; set; }
         public Patient Patient { get; set; } = AppointmentSession.Patient;
