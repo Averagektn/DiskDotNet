@@ -127,10 +127,7 @@
     <value>Дата рождения</value>
   </data>
   <data name="DateTime" xml:space="preserve">
-    <value>Время</value>
-  </data>
-  <data name="Doctor" xml:space="preserve">
-    <value>Врач</value>
+    <value>Дата/Время</value>
   </data>
   <data name="HomePhone" xml:space="preserve">
     <value>Домашний телефон</value>
