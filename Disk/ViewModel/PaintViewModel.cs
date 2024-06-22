@@ -6,6 +6,7 @@ using Disk.Repository.Interface;
 using Disk.Service.Implementation;
 using Disk.Sessions;
 using Disk.Stores;
+using Disk.ViewModel.Common.Commands.Sync;
 using Disk.ViewModel.Common.ViewModels;
 using Disk.Visual.Impl;
 using Disk.Visual.Interface;
@@ -14,6 +15,7 @@ using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Net;
 using System.Windows;
+using System.Windows.Input;
 using System.Windows.Media;
 using FilePath = System.IO.Path;
 using Localization = Disk.Properties.Langs.PaintWindow.PaintWindowLocalization;
@@ -72,6 +74,9 @@ namespace Disk.ViewModel
         private Stopwatch? PathToTargetStopwatch;
 
         // binding
+        private bool _isBackEnabled;
+        public bool IsBackEnabled { get => _isBackEnabled; set => SetProperty(ref _isBackEnabled, value); }
+
         public bool IsRoseChecked { get; set; }
         public bool IsPathChecked { get; set; }
         private int _selectedRoseOrPath;
@@ -95,6 +100,8 @@ namespace Disk.ViewModel
 
         private Visibility _scoreVisiblity = Visibility.Visible;
         public Visibility ScoreVisibility { get => _scoreVisiblity; set => SetProperty(ref _scoreVisiblity, value); }
+
+        public ICommand NavigateBackCommand => new Command(_ => _navigationStore.NavigateBack());
 
         public PaintViewModel(NavigationStore navigationStore, IPathToTargetRepository pathToTargetRepository,
             IPathInTargetRepository pathInTargetRepository, ISessionResultRepository sessionResultRepository, ISessionRepository sessionRepository)
@@ -246,6 +253,7 @@ namespace Disk.ViewModel
             }
 
             IsStopEnabled = false;
+            IsBackEnabled = true;
             FillTargetsComboBox();
 
             EnableResults();
@@ -358,6 +366,10 @@ namespace Disk.ViewModel
             base.Dispose();
             GC.SuppressFinalize(this);
 
+            if (AppointmentSession.CurrentSession.SessionResult is null)
+            {
+                _sessionRepository.Delete(AppointmentSession.CurrentSession);
+            }
             IsGame = false;
             if (DiskNetworkThread.IsAlive)
             {

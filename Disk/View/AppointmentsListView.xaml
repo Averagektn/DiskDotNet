@@ -15,7 +15,7 @@
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="5*"/>
-            <ColumnDefinition Width="6*"/>
+            <ColumnDefinition Width="10*"/>
         </Grid.ColumnDefinitions>
 
         <Viewbox Grid.Column="0" VerticalAlignment="Top" HorizontalAlignment="Left">
@@ -45,11 +45,11 @@
                 <RowDefinition Height="8*"/>
             </Grid.RowDefinitions>
 
-            <Viewbox Grid.Column="0" Grid.Row="0">
+            <Viewbox Grid.Column="0" Grid.Row="0" HorizontalAlignment="Left">
                 <TextBlock FontSize="15" Text="{x:Static lang:AppointmentsListLocalization.AppoimentsHeader}" Margin="0 0 0 5"/>
             </Viewbox>
 
-            <Viewbox Grid.Column="1" Grid.Row="0">
+            <Viewbox Grid.Column="1" Grid.Row="0" HorizontalAlignment="Right">
                 <Button
                     Margin="10"
                     Content="{x:Static lang:AppointmentsListLocalization.StartAppoiment}" 

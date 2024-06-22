@@ -126,6 +126,9 @@
   <data name="ApproachSpeed" xml:space="preserve">
     <value>Approach speed</value>
   </data>
+  <data name="Back" xml:space="preserve">
+    <value>Back</value>
+  </data>
   <data name="ConnectionLost" xml:space="preserve">
     <value>Connection lost</value>
   </data>

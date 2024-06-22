@@ -33,8 +33,8 @@ namespace Disk.ViewModel
         private void ShowSession(object? obj)
         {
             AppointmentSession.CurrentSession = SelectedSession!;
-
-            var nextVm = navigationStore.GetViewModel<PaintViewModel>(vm =>
+            
+            navigationStore.SetViewModel<PaintViewModel>(vm =>
             {
                 vm.PathsToTargets = SelectedSession!.PathToTargets
                     .Select(path => JsonConvert.DeserializeObject<List<Point2D<float>>>(path.CoordinatesJson)!)
@@ -47,10 +47,11 @@ namespace Disk.ViewModel
 
                 vm.ScoreVisibility = Visibility.Hidden;
 
+                vm.IsBackEnabled = true;
+                vm.IsStopEnabled = false;
+
                 vm.FillTargetsComboBox();
             });
-
-            navigationStore.SetViewModel<NavigateBackViewModel>(vm => vm.CurrentViewModel = nextVm);
         }
 
         private void SessionSelected(object? obj)

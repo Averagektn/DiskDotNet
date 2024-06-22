@@ -90,6 +90,14 @@
                     VerticalAlignment="Bottom"    
                     IsEnabled="{Binding IsStopEnabled}"
                     Margin="0 20"/>
+
+                <Button 
+                    Content="{x:Static lang:PaintWindowLocalization.Back}"
+                    FontSize="20"  
+                    VerticalAlignment="Bottom"    
+                    Command="{Binding NavigateBackCommand}"
+                    IsEnabled="{Binding IsBackEnabled}"
+                    Margin="0 20"/>
             </StackPanel>
         </Viewbox>
 

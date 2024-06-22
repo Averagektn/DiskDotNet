@@ -126,6 +126,9 @@
   <data name="ApproachSpeed" xml:space="preserve">
     <value>Скорость сближения</value>
   </data>
+  <data name="Back" xml:space="preserve">
+    <value>Назад</value>
+  </data>
   <data name="ConnectionLost" xml:space="preserve">
     <value>Потеряно соединение с диском</value>
   </data>
