@@ -138,9 +138,6 @@
   <data name="TargetRadius" xml:space="preserve">
     <value>Target radius</value>
   </data>
-  <data name="UserColor" xml:space="preserve">
-    <value>User color</value>
-  </data>
   <data name="UserRadius" xml:space="preserve">
     <value>User radius</value>
   </data>

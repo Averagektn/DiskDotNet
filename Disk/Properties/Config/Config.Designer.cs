@@ -136,7 +136,7 @@ namespace Disk.Properties.Config {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("Green")]
+        [global::System.Configuration.DefaultSettingValueAttribute("DarkGreen")]
         public global::System.Drawing.Color UserColor {
             get {
                 return ((global::System.Drawing.Color)(this["UserColor"]));

@@ -33,7 +33,7 @@
       <Value Profile="(Default)">800</Value>
     </Setting>
     <Setting Name="UserColor" Type="System.Drawing.Color" Scope="User">
-      <Value Profile="(Default)">Green</Value>
+      <Value Profile="(Default)">DarkGreen</Value>
     </Setting>
     <Setting Name="XAngleShift" Type="System.Single" Scope="User">
       <Value Profile="(Default)">0</Value>

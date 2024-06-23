@@ -19,11 +19,10 @@
             <RowDefinition/>
             <RowDefinition/>
             <RowDefinition/>
-            <RowDefinition/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="5*"/>
-            <ColumnDefinition Width="3*"/>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="1*"/>
         </Grid.ColumnDefinitions>
 
         <Viewbox Grid.Row="0" Grid.Column="0">
@@ -38,23 +37,23 @@
                 Text="{Binding Ip}" 
                 FontSize="20" 
                 TextAlignment="Center" 
-                Margin="0 0 10 0"
+                Margin="15"
                 MinWidth="290"/>
         </Viewbox>
 
         <Viewbox Grid.Row="1" Grid.Column="0">
             <TextBlock 
+                Margin="15"
                 FontSize="15" 
-                Margin="15" 
                 Text="{x:Static lang:SettingsLocalization.MoveTime}"/>
         </Viewbox>
 
         <Viewbox Grid.Row="1" Grid.Column="1">
             <TextBox 
+                Margin="15"
                 Text="{Binding MoveTime}" 
                 FontSize="20" 
                 TextAlignment="Center" 
-                Margin="0 0 10 0"
                 MinWidth="290"/>
         </Viewbox>
 
@@ -70,7 +69,7 @@
                 Text="{Binding ShotTime}" 
                 FontSize="20" 
                 TextAlignment="Center" 
-                Margin="0 0 10 0"
+                Margin="15"
                 MinWidth="290"/>
         </Viewbox>
 
@@ -86,7 +85,7 @@
                 Text="{Binding UserRadius}" 
                 FontSize="20" 
                 TextAlignment="Center" 
-                Margin="0 0 10 0"
+                Margin="15"
                 MinWidth="290"/>
         </Viewbox>
 
@@ -102,7 +101,7 @@
                 Text="{Binding TargetRadius}" 
                 FontSize="20" 
                 TextAlignment="Center" 
-                Margin="0 0 10 0"
+                Margin="15"
                 MinWidth="290"/>
         </Viewbox>
 
@@ -110,33 +109,19 @@
             <TextBlock 
                 FontSize="15" 
                 Margin="15" 
-                Text="{x:Static lang:SettingsLocalization.UserColor}"/>
-        </Viewbox>
-
-        <Viewbox Grid.Row="5" Grid.Column="1">
-            <xctk:ColorPicker 
-                Margin="0 0 10 0"
-                MinWidth="290"
-                SelectedColor="{Binding UserColor, Mode=TwoWay}"/>
-        </Viewbox>
-
-        <Viewbox Grid.Row="6" Grid.Column="0">
-            <TextBlock 
-                FontSize="15" 
-                Margin="15" 
                 Text="{x:Static lang:SettingsLocalization.TargetHp}"/>
         </Viewbox>
 
-        <Viewbox Grid.Row="6" Grid.Column="1">
+        <Viewbox Grid.Row="5" Grid.Column="1">
             <TextBox 
                 Text="{Binding TargetHp}" 
                 FontSize="20" 
                 TextAlignment="Center" 
-                Margin="0 0 10 0"
+                Margin="15"
                 MinWidth="290"/>
         </Viewbox>
 
-        <Viewbox Grid.Row="7" Grid.ColumnSpan="2">
+        <Viewbox Grid.Row="6" Grid.ColumnSpan="2">
             <StackPanel Orientation="Horizontal">
                 <Button 
                     Content="{x:Static lang:SettingsLocalization.Save}" 

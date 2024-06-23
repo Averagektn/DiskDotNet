@@ -143,11 +143,7 @@ namespace Disk.ViewModel
                     return [];
                 }
                 var converter = DrawableFabric.GetIniConverter();
-                var path = new Path
-                    (
-                        PathsToTargets[SelectedRoseOrPath], Converter,
-                        new SolidColorBrush(Color.FromRgb(Settings.UserColor.R, Settings.UserColor.G, Settings.UserColor.B))
-                    );
+                var path = new Path(PathsToTargets[SelectedRoseOrPath], Converter, new SolidColorBrush(Colors.Green));
                 var targetCenter = converter.ToWnd_FromRelative(TargetCenters[SelectedRoseOrPath]);
                 var targetToDraw = DrawableFabric.GetIniProgressTarget(targetCenter);
 

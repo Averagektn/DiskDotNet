@@ -11,16 +11,6 @@ namespace Disk.ViewModel
     {
         private static Settings Settings => Settings.Default;
 
-        private Color _userColor = Settings.UserColor;
-        public Color UserColor
-        {
-            get => _userColor;
-            set
-            {
-                _ = SetProperty(ref _userColor, value);
-            }
-        }
-
         private string _ip = Settings.IP;
         public string Ip
         {
@@ -99,7 +89,6 @@ namespace Disk.ViewModel
         public ICommand SaveCommand => new Command(
             _ =>
             {
-                Settings.UserColor = _userColor;
                 Settings.IP = _ip;
                 Settings.MoveTime = _moveTime;
                 Settings.ShotTime = _shotTime;

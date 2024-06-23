@@ -138,9 +138,6 @@
   <data name="TargetRadius" xml:space="preserve">
     <value>Размер мишени</value>
   </data>
-  <data name="UserColor" xml:space="preserve">
-    <value>Цвет пути</value>
-  </data>
   <data name="UserRadius" xml:space="preserve">
     <value>Размер курсора</value>
   </data>

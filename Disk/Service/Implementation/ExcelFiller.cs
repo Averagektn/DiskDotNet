@@ -112,7 +112,7 @@ namespace Disk.Service.Implementation
             int pttRow = 8;
             foreach (var ptt in ptts)
             {
-                worksheet.Cell(pttRow, 1).Value = ptt.TargetNum;
+                worksheet.Cell(pttRow, 1).Value = ptt.TargetNum + 1;
                 SetFloatCell(worksheet, pttRow, 2, (float)ptt.AngleDistance);
                 SetFloatCell(worksheet, pttRow, 3, (float)ptt.Time);
                 SetFloatCell(worksheet, pttRow, 4, (float)ptt.AngleSpeed);

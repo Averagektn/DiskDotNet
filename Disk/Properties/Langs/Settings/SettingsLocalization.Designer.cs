@@ -124,15 +124,6 @@ namespace Disk.Properties.Langs.Settings {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to User color.
-        /// </summary>
-        public static string UserColor {
-            get {
-                return ResourceManager.GetString("UserColor", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to User radius.
         /// </summary>
         public static string UserRadius {
