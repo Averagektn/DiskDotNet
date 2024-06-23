@@ -27,7 +27,6 @@ namespace Disk.View
             var fontSize = iniFontSize * double.Min(heightScale, widthScale);
             SessionResultGrid.FontSize = fontSize;
             PathToTargetGrid.FontSize = fontSize;
-            TbDoctor.FontSize = fontSize;
             TbPatient.FontSize = fontSize;
         }
     }

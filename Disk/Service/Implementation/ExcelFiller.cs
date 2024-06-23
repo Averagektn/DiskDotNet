@@ -197,7 +197,7 @@ namespace Disk.Service.Implementation
 
         private static void SetFloatCell(IXLWorksheet worksheet, int row, int column, float value)
         {
-            worksheet.Cell(row, column).Style.NumberFormat.Format = "0.0";
+            worksheet.Cell(row, column).Style.NumberFormat.Format = "0.000";
             worksheet.Cell(row, column).Value = value;
         }
     }

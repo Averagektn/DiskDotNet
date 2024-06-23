@@ -276,9 +276,6 @@ namespace Disk.ViewModel
             PathButtonVisibility = Visibility.Visible;
         }
 
-        public void SavePathToTarget(PathToTarget pathToTarget) => _pathToTargetRepository.Add(pathToTarget);
-        public void SavePathInTarget(PathInTarget pathInTarget) => _pathInTargetRepository.Add(pathInTarget);
-
         public void SwitchToPathInTarget(Point2D<int> userShot)
         {
             PathToTargetStopwatch!.Stop();
@@ -316,10 +313,10 @@ namespace Disk.ViewModel
 
             Message =
                     $"""
-                     {Localization.Time}: {time:F2}
-                     {Localization.AngleDistance}: {distance:F2}
-                     {Localization.AngleSpeed}: {avgSpeed:F2}
-                     {Localization.ApproachSpeed}: {approachSpeed:F2}
+                     {Localization.Time}: {time:F1}
+                     {Localization.AngleDistance}: {distance:F1}
+                     {Localization.AngleSpeed}: {avgSpeed:F1}
+                     {Localization.ApproachSpeed}: {approachSpeed:F1}
                      """;
         }
 
@@ -373,5 +370,8 @@ namespace Disk.ViewModel
                 DiskNetworkThread.Join();
             }
         }
+
+        public void SavePathToTarget(PathToTarget pathToTarget) => _pathToTargetRepository.Add(pathToTarget);
+        public void SavePathInTarget(PathInTarget pathInTarget) => _pathInTargetRepository.Add(pathInTarget);
     }
 }

@@ -8,38 +8,39 @@
              d:DataContext="{d:DesignInstance Type=viewmodel:CalibrationViewModel}"
              xmlns:lang="clr-namespace:Disk.Properties.Langs.Calibration"
              mc:Ignorable="d" 
-             d:DesignHeight="450" 
+             d:DesignHeight="800" 
              d:DesignWidth="800">
 
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="1*"/>
-            <RowDefinition Height="2*"/>
+            <RowDefinition Height="3*"/>
             <RowDefinition Height="1*"/>
-            <RowDefinition Height="2*"/>
-            <RowDefinition Height="2*"/>
+            <RowDefinition Height="3*"/>
+            <RowDefinition Height="3*"/>
             <RowDefinition Height="1*"/>
-            <RowDefinition Height="2*"/>
-            <RowDefinition Height="2*"/>
-            <RowDefinition Height="2*"/>
+            <RowDefinition Height="3*"/>
+            <RowDefinition Height="3*"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="3*"/>
             <RowDefinition Height="1*"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="1*"/>
-            <ColumnDefinition Width="3*"/>
+            <ColumnDefinition Width="2*"/>
             <ColumnDefinition Width="2*"/>
         </Grid.ColumnDefinitions>
 
         <Viewbox Grid.Row="1" Grid.Column="1">
             <Button 
+                Margin="10"
                 Content="{x:Static lang:CalibrationLocalization.Start}" 
                 IsEnabled="{Binding StartCalibrationEnabled}" 
-                Command="{Binding StartCalibrationCommand}" 
-                Margin="0,25"/>
+                Command="{Binding StartCalibrationCommand}" />
         </Viewbox>
 
         <Viewbox Grid.Row="2" Grid.Column="1">
-            <TextBlock Text="{x:Static lang:CalibrationLocalization.AngleX}"/>
+            <TextBlock FontSize="20" Text="{x:Static lang:CalibrationLocalization.AngleX}"/>
         </Viewbox>
 
         <Viewbox Grid.Row="3" Grid.Column="1">
@@ -48,20 +49,20 @@
 
         <Viewbox Grid.Row="3" Grid.Column="2">
             <Button 
+                Margin="10"
                 Content="{x:Static lang:CalibrationLocalization.Centralize}" 
-                Command="{Binding CentralizeXCommand}"
-                Margin="0,25"/>
+                Command="{Binding CentralizeXCommand}"/>
         </Viewbox>
 
         <Viewbox Grid.Row="4" Grid.Column="1">
             <Button 
+                Margin="10"
                 Content="{x:Static lang:CalibrationLocalization.SetX}" 
-                Command="{Binding CalibrateXCommand}"
-                Margin="0,25"/>
+                Command="{Binding CalibrateXCommand}"/>
         </Viewbox>
 
         <Viewbox Grid.Row="5" Grid.Column="1">
-            <TextBlock Text="{x:Static lang:CalibrationLocalization.AngleY}"/>
+            <TextBlock FontSize="20" Text="{x:Static lang:CalibrationLocalization.AngleY}"/>
         </Viewbox>
 
         <Viewbox Grid.Row="6" Grid.Column="1">
@@ -71,23 +72,23 @@
 
         <Viewbox Grid.Row="6" Grid.Column="2">
             <Button 
+                Margin="10"
                 Content="{x:Static lang:CalibrationLocalization.Centralize}" 
-                Command="{Binding CentralizeYCommand}" 
-                Margin="0,25"/>
+                Command="{Binding CentralizeYCommand}"/>
         </Viewbox>
 
         <Viewbox Grid.Row="7" Grid.Column="1">
             <Button 
+                Margin="10"
                 Content="{x:Static lang:CalibrationLocalization.SetY}" 
-                Command="{Binding CalibrateYCommand}"
-                Margin="0,25"/>
+                Command="{Binding CalibrateYCommand}"/>
         </Viewbox>
 
-        <Viewbox Grid.Row="8" Grid.Column="1">
+        <Viewbox Grid.Row="9" Grid.Column="1">
             <Button 
+                Margin="10"
                 Content="{x:Static lang:CalibrationLocalization.Apply}" 
-                Command="{Binding ApplyCommand}"
-                Margin="0,25"/>
+                Command="{Binding ApplyCommand}"/>
         </Viewbox>
     </Grid>
 </UserControl>

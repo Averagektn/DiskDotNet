@@ -12,28 +12,44 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="1*"/>
-            <RowDefinition Height="1*"/>
             <RowDefinition Height="7*"/>
             <RowDefinition Height="6*"/>
             <RowDefinition Height="2*"/>
         </Grid.RowDefinitions>
 
-        <TextBlock Grid.Row="0" Margin="5" FontSize="15" Name="TbPatient" Text="{Binding Patient}"/>
-        <TextBlock Grid.Row="1" Margin="5" FontSize="15" Name="TbDoctor" Text="{Binding Doctor}"/>
+        <TextBlock 
+            Grid.Row="0" 
+            Margin="5" 
+            FontSize="15" 
+            Name="TbPatient" 
+            Text="{Binding Patient}"/>
 
-        <DataGrid Grid.Row="2" 
-              Name="SessionResultGrid"
-              ScrollViewer.VerticalScrollBarVisibility="Auto" 
-              ItemsSource="{Binding Sessions}" 
-              IsReadOnly="True"
-              AutoGenerateColumns="False"
-              SelectedItem="{Binding SelectedSession}">
+        <DataGrid 
+            Grid.Row="1" 
+            Name="SessionResultGrid"
+            ScrollViewer.VerticalScrollBarVisibility="Auto" 
+            ItemsSource="{Binding Sessions}" 
+            IsReadOnly="True"
+            AutoGenerateColumns="False"
+            SelectedItem="{Binding SelectedSession}">
         <DataGrid.Columns>
             <DataGridTextColumn Width="1*" Header="{x:Static lang:AppointmentLocalization.DateTime}" Binding="{Binding DateTime}" />
-            <DataGridTextColumn Width="1*" Header="{x:Static lang:AppointmentLocalization.Deviation}" Binding="{Binding SessionResult.Deviation}" />
-                <DataGridTextColumn Width="1*" Header="{x:Static lang:AppointmentLocalization.Dispersion}" Binding="{Binding SessionResult.Dispersion}" />
-                <DataGridTextColumn Width="1*" Header="{x:Static lang:AppointmentLocalization.MathExp}" Binding="{Binding SessionResult.MathExp}" />
-                <DataGridTextColumn Width="1*" Header="{x:Static lang:AppointmentLocalization.Score}" Binding="{Binding SessionResult.Score}" />
+                <DataGridTextColumn 
+                    Width="1*" 
+                    Header="{x:Static lang:AppointmentLocalization.Deviation}" 
+                    Binding="{Binding SessionResult.Deviation, StringFormat=N3}" />
+                <DataGridTextColumn 
+                    Width="1*" 
+                    Header="{x:Static lang:AppointmentLocalization.Dispersion}" 
+                    Binding="{Binding SessionResult.Dispersion, StringFormat=N3}" />
+                <DataGridTextColumn 
+                    Width="1*" 
+                    Header="{x:Static lang:AppointmentLocalization.MathExp}" 
+                    Binding="{Binding SessionResult.MathExp, StringFormat=N3}" />
+                <DataGridTextColumn 
+                    Width="1*" 
+                    Header="{x:Static lang:AppointmentLocalization.Score}" 
+                    Binding="{Binding SessionResult.Score}" />
             </DataGrid.Columns>
             <i:Interaction.Triggers>
                 <i:EventTrigger EventName="SelectionChanged">
@@ -45,16 +61,34 @@
             </i:Interaction.Triggers>
         </DataGrid>
 
-        <DataGrid Name="PathToTargetGrid" Grid.Row="3" IsReadOnly="True" ItemsSource="{Binding PathsToTargets}" AutoGenerateColumns="False" ScrollViewer.VerticalScrollBarVisibility="Auto">
+        <DataGrid 
+            Name="PathToTargetGrid" 
+            Grid.Row="2" 
+            IsReadOnly="True" 
+            ItemsSource="{Binding PathsToTargets}" 
+            AutoGenerateColumns="False" 
+            ScrollViewer.VerticalScrollBarVisibility="Auto">
             <DataGrid.Columns>
-                <DataGridTextColumn Width="1*" Header="{x:Static lang:AppointmentLocalization.AngleDistance}" Binding="{Binding AngleDistance}" />
-                <DataGridTextColumn Width="1*" Header="{x:Static lang:AppointmentLocalization.AngleSpeed}" Binding="{Binding AngleSpeed}" />
-                <DataGridTextColumn Width="1*" Header="{x:Static lang:AppointmentLocalization.ApproachSpeed}" Binding="{Binding ApproachSpeed}" />
-                <DataGridTextColumn Width="1*" Header="{x:Static lang:AppointmentLocalization.Time}" Binding="{Binding Time}" />
+                <DataGridTextColumn 
+                    Width="1*" 
+                    Header="{x:Static lang:AppointmentLocalization.AngleDistance}" 
+                    Binding="{Binding AngleDistance, StringFormat=N3}" />
+                <DataGridTextColumn 
+                    Width="1*" 
+                    Header="{x:Static lang:AppointmentLocalization.AngleSpeed}" 
+                    Binding="{Binding AngleSpeed, StringFormat=N3}" />
+                <DataGridTextColumn 
+                    Width="1*" 
+                    Header="{x:Static lang:AppointmentLocalization.ApproachSpeed}" 
+                    Binding="{Binding ApproachSpeed, StringFormat=N3}" />
+                <DataGridTextColumn 
+                    Width="1*" 
+                    Header="{x:Static lang:AppointmentLocalization.Time}" 
+                    Binding="{Binding Time, StringFormat=N1}" />
             </DataGrid.Columns>
         </DataGrid>
 
-        <Viewbox Grid.Row="4">
+        <Viewbox Grid.Row="3">
             <StackPanel Orientation="Horizontal">
                 <Button 
                     Content="{x:Static lang:AppointmentLocalization.Start}" 
