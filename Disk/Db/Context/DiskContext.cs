@@ -11,7 +11,6 @@ public partial class DiskContext : DbContext
     public DiskContext(DbContextOptions<DiskContext> options) : base(options) { }
 
     public virtual DbSet<Appointment> Appointments { get; set; }
-    public virtual DbSet<Doctor> Doctors { get; set; }
     public virtual DbSet<Map> Maps { get; set; }
     public virtual DbSet<PathInTarget> PathInTargets { get; set; }
     public virtual DbSet<PathToTarget> PathToTargets { get; set; }
@@ -32,31 +31,9 @@ public partial class DiskContext : DbContext
 
             _ = entity.Property(e => e.Id).HasColumnName("app_id");
             _ = entity.Property(e => e.DateTime).HasColumnName("app_date_time");
-            _ = entity.Property(e => e.Doctor).HasColumnName("app_doctor");
             _ = entity.Property(e => e.Patient).HasColumnName("app_patient");
 
-            _ = entity.HasOne(d => d.DoctorNavigation).WithMany(p => p.Appointments).HasForeignKey(d => d.Doctor);
-
             _ = entity.HasOne(d => d.PatientNavigation).WithMany(p => p.Appointments).HasForeignKey(d => d.Patient);
-        });
-
-        _ = modelBuilder.Entity<Doctor>(entity =>
-        {
-            _ = entity.HasKey(e => e.Id);
-
-            _ = entity.ToTable("doctor");
-
-            _ = entity.Property(e => e.Id).HasColumnName("doc_id");
-            _ = entity.Property(e => e.Name)
-                .UseCollation("NOCASE")
-                .HasColumnName("doc_name");
-            _ = entity.Property(e => e.Password).HasColumnName("doc_password");
-            _ = entity.Property(e => e.Patronymic)
-                .UseCollation("NOCASE")
-                .HasColumnName("doc_patronymic");
-            _ = entity.Property(e => e.Surname)
-                .UseCollation("NOCASE")
-                .HasColumnName("doc_surname");
         });
 
         _ = modelBuilder.Entity<Map>(entity =>
@@ -68,12 +45,9 @@ public partial class DiskContext : DbContext
             _ = entity.Property(e => e.Id).HasColumnName("map_id");
             _ = entity.Property(e => e.CoordinatesJson).HasColumnName("map_coordinates_json");
             _ = entity.Property(e => e.CreatedAtDateTime).HasColumnName("map_created_at_date_time");
-            _ = entity.Property(e => e.CreatedBy).HasColumnName("map_created_by");
             _ = entity.Property(e => e.Name)
                 .UseCollation("NOCASE")
                 .HasColumnName("map_name");
-
-            _ = entity.HasOne(d => d.CreatedByNavigation).WithMany(p => p.Maps).HasForeignKey(d => d.CreatedBy);
         });
 
         _ = modelBuilder.Entity<PathInTarget>(entity =>
@@ -85,6 +59,7 @@ public partial class DiskContext : DbContext
             _ = entity.Property(e => e.Session).HasColumnName("pit_session");
             _ = entity.Property(e => e.TargetId).HasColumnName("pit_target_id");
             _ = entity.Property(e => e.CoordinatesJson).HasColumnName("pit_coordinates_json");
+            _ = entity.Property(e => e.Precision).HasColumnName("pit_precision");
 
             _ = entity.HasOne(d => d.SessionNavigation).WithMany(p => p.PathInTargets)
                 .HasForeignKey(d => d.Session)
@@ -147,6 +122,8 @@ public partial class DiskContext : DbContext
             _ = entity.Property(e => e.DateTime).HasColumnName("ses_date_time");
             _ = entity.Property(e => e.LogFilePath).HasColumnName("ses_log_file_path");
             _ = entity.Property(e => e.Map).HasColumnName("ses_map");
+            _ = entity.Property(e => e.MaxXAngle).HasColumnName("ses_max_x_angle");
+            _ = entity.Property(e => e.MaxYAngle).HasColumnName("ses_max_y_angle");
 
             _ = entity.HasOne(d => d.AppointmentNavigation).WithMany(p => p.Sessions)
                 .HasForeignKey(d => d.Appointment)

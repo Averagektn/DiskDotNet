@@ -19,9 +19,6 @@
     
     <Grid>
         <Grid.Resources>
-            <DataTemplate DataType="{x:Type viewmodels:AuthenticationViewModel}">
-                <views:AuthenticationView/>
-            </DataTemplate>
             <DataTemplate DataType="{x:Type viewmodels:MapCreatorViewModel}">
                 <views:MapCreatorView/>
             </DataTemplate>
@@ -54,6 +51,9 @@
             </DataTemplate>
             <DataTemplate DataType="{x:Type viewmodels:PaintViewModel}">
                 <paintview:PaintView/>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type viewmodels:NavigateBackViewModel}">
+                <views:NavigateBackView/>
             </DataTemplate>
         </Grid.Resources>
 

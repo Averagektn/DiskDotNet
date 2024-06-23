@@ -70,6 +70,15 @@ namespace Disk.Properties.Langs.StartSession {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Pick a file.
+        /// </summary>
+        public static string PickAFile {
+            get {
+                return ResourceManager.GetString("PickAFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Start session.
         /// </summary>
         public static string Start {

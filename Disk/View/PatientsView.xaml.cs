@@ -22,7 +22,7 @@ namespace Disk.View
             const int iniWidth = 800;
 
             double heightScale = e.NewSize.Height / iniHeight;
-            double widthScale = e.NewSize.Width / iniWidth;   
+            double widthScale = e.NewSize.Width / iniWidth;
             PatientsDataGrid.FontSize = iniFontSize * double.Min(heightScale, widthScale);
         }
     }

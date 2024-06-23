@@ -1,7 +1,6 @@
 ﻿using Disk.Data.Impl;
 using Disk.Entities;
 using Disk.Repository.Interface;
-using Disk.Sessions;
 using Disk.Stores;
 using Disk.ViewModel.Common.Commands.Sync;
 using Disk.ViewModel.Common.ViewModels;
@@ -10,6 +9,7 @@ using Newtonsoft.Json;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Windows.Input;
+using Localization = Disk.Properties.Langs.StartSession.StartSessionLocalization;
 using Settings = Disk.Properties.Config.Config;
 
 namespace Disk.ViewModel
@@ -17,10 +17,13 @@ namespace Disk.ViewModel
     public class StartSessionViewModel(ModalNavigationStore modalNavigationStore, NavigationStore navigationStore,
         ISessionRepository sessionRepository, IMapRepository mapRepository) : ObserverViewModel
     {
+        public Patient Patient { get; set; } = null!;
+        public Appointment Appointment { get; set; } = null!;
         public event Action? OnSessionOver;
 
-        private string _imageFilePath = "Pick a file";
-        public string ImageFilePath { get => _imageFilePath; set => SetProperty(ref _imageFilePath, value); }
+        private string _imageFilePath = string.Empty;
+        private string _imageFileName = Localization.PickAFile;
+        public string ImageFileName { get => _imageFileName; set => SetProperty(ref _imageFileName, value); }
 
         public ObservableCollection<Map> Maps => new(mapRepository.GetAll());
         public Map? SelectedMap { get; set; }
@@ -39,7 +42,8 @@ namespace Disk.ViewModel
 
             if (filePicker.ShowDialog() == true)
             {
-                ImageFilePath = filePicker.FileName;
+                _imageFilePath = filePicker.FileName;
+                ImageFileName = filePicker.SafeFileName;
             }
         }
 
@@ -50,8 +54,8 @@ namespace Disk.ViewModel
                 return;
             }
 
-            var logPath = $"{Settings.MAIN_DIR_PATH}{Path.DirectorySeparatorChar}" +
-                    $"{AppointmentSession.Patient.Surname} {AppointmentSession.Patient.Name}{Path.DirectorySeparatorChar}" +
+            var logPath = $"{Settings.MainDirPath}{Path.DirectorySeparatorChar}" +
+                    $"{Patient.Surname} {Patient.Name}{Path.DirectorySeparatorChar}" +
                     $"{DateTime.Now:dd.MM.yyyy HH-mm-ss}";
             if (!Directory.Exists(logPath))
             {
@@ -60,22 +64,24 @@ namespace Disk.ViewModel
 
             var session = new Session()
             {
-                Appointment = AppointmentSession.Appointment.Id,
+                Appointment = Appointment.Id,
                 DateTime = DateTime.Now.ToString(),
                 LogFilePath = logPath,
                 Map = SelectedMap!.Id,
+                MaxXAngle = Settings.XMaxAngle,
+                MaxYAngle = Settings.YMaxAngle
             };
             sessionRepository.Add(session);
-            AppointmentSession.CurrentSession = session;
 
             modalNavigationStore.Close();
 
             navigationStore.SetViewModel<PaintViewModel>(vm =>
             {
-                vm.ImagePath = ImageFilePath;
+                vm.ImagePath = _imageFilePath;
                 vm.CurrPath = logPath;
                 vm.TargetCenters = JsonConvert.DeserializeObject<List<Point2D<float>>>(SelectedMap.CoordinatesJson) ?? [];
                 vm.OnSessionOver += OnSessionOver;
+                vm.CurrentSession = session;
             });
         }
     }

@@ -7,6 +7,17 @@ namespace Disk.Stores
         public readonly Stack<ObserverViewModel> ViewModels = [];
         public event Action? CurrentViewModelChanged;
 
+        public ObserverViewModel GetViewModel(Type vmType) => getViewModel.Invoke(vmType);
+        public ObserverViewModel GetViewModel<TViewModel>() => getViewModel.Invoke(typeof(TViewModel));
+        public ObserverViewModel GetViewModel<TViewModel>(Action<TViewModel> parametrizeViewModel) where TViewModel : class
+        {
+            var viewModel = getViewModel.Invoke(typeof(TViewModel));
+            parametrizeViewModel((viewModel as TViewModel)!);
+
+            return viewModel;
+        }
+
+
         public ObserverViewModel CurrentViewModel
         {
             // uncomment for creating new viewModel on back button click
@@ -27,6 +38,8 @@ namespace Disk.Stores
             ViewModels.Push(getViewModel.Invoke(typeof(TViewModel)));
             OnCurrentViewModelChanged();
         }
+
+        public bool CanNavigateBack => ViewModels.Count > 1;
 
         public bool NavigateBack()
         {

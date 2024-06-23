@@ -59,7 +59,7 @@ namespace Disk.Data.Impl
         public void Dispose()
         {
             GC.SuppressFinalize(this);
-            Loggers.Remove(this);
+            _ = Loggers.Remove(this);
             Writer.Close();
         }
 

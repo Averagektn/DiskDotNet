@@ -97,15 +97,6 @@ namespace Disk.Properties.Langs.AppointementsList {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Doctor.
-        /// </summary>
-        public static string Doctor {
-            get {
-                return ResourceManager.GetString("Doctor", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Home phone.
         /// </summary>
         public static string HomePhone {

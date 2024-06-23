@@ -2,12 +2,11 @@
 using Disk.Visual.Interface;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Documents;
 using System.Windows.Markup;
 
 namespace Disk.Visual.Impl
 {
-    internal abstract class Figure<TFigure> : IFigure where TFigure : FrameworkElement, new()
+    public abstract class Figure<TFigure> : IDynamicFigure where TFigure : FrameworkElement, new()
     {
         private readonly double DIAGONAL_CORRECTION = Math.Sqrt(2);
         public Point2D<int> Center { get; protected set; }
@@ -106,8 +105,8 @@ namespace Disk.Visual.Impl
 
         public void Scale(Size newSize)
         {
-            double coeffX = (double)newSize.Width / IniSize.Width;
-            double coeffY = (double)newSize.Height / IniSize.Height;
+            _ = (double)newSize.Width / IniSize.Width;
+            _ = (double)newSize.Height / IniSize.Height;
 
             //Speed = (int)Math.Round(_iniSpeed * (coeffX + coeffY) / 2);
             //Radius = (int)Math.Round(IniRadius * (coeffX + coeffY) / 2);

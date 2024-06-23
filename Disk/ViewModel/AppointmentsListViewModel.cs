@@ -1,6 +1,5 @@
 ﻿using Disk.Entities;
 using Disk.Repository.Interface;
-using Disk.Sessions;
 using Disk.Stores;
 using Disk.ViewModel.Common.Commands.Async;
 using Disk.ViewModel.Common.Commands.Sync;
@@ -10,21 +9,30 @@ using System.Windows.Input;
 
 namespace Disk.ViewModel
 {
-    public class AppointmentsListViewModel(NavigationStore navigationStore, IAppointmentRepository appointmentRepository) 
+    public class AppointmentsListViewModel(NavigationStore navigationStore, IAppointmentRepository appointmentRepository, ISessionRepository sessionRepository)
         : ObserverViewModel
     {
         public Patient Patient { get; set; } = null!;
 
-        public ObservableCollection<Appointment> Appointments => new(appointmentRepository.GetPatientAppointments(Patient.Id));
+        public ObservableCollection<Appointment> Appointments
+            => new(appointmentRepository.GetPatientAppointments(Patient.Id).OrderByDescending(a => DateTime.Parse(a.DateTime)));
 
         public Appointment? SelectedAppointment { get; set; }
 
         public ICommand StartAppointmentCommand => new AsyncCommand(StartAppointmentAsync);
         public ICommand ToAppointmentCommand =>
-            new Command(_ => 
+            new Command(_ =>
             {
-                AppointmentSession.Appointment = SelectedAppointment!;
-                navigationStore.SetViewModel<AppointmentViewModel>();
+                navigationStore.SetViewModel<NavigateBackViewModel>(
+                    vm => vm.CurrentViewModel = navigationStore.GetViewModel<AppointmentViewModel>(
+                        vm =>
+                        {
+                            vm.Appointment = SelectedAppointment!;
+                            vm.Patient = Patient;
+                            vm.Sessions = new ObservableCollection<Session>(sessionRepository.GetSessionsWithResultsByAppointment(SelectedAppointment!.Id));
+                        }
+                    )
+                );
             });
 
         private async Task StartAppointmentAsync(object? arg)
@@ -32,18 +40,22 @@ namespace Disk.ViewModel
             var appointment = new Appointment()
             {
                 DateTime = DateTime.Now.ToString(),
-                Doctor = AppSession.Doctor.Id,
-                Patient = AppointmentSession.Patient.Id
+                Patient = Patient.Id
             };
 
             await appointmentRepository.AddAsync(appointment);
 
-            AppointmentSession.Appointment = appointment;
-
-            navigationStore.SetViewModel<AppointmentViewModel>(vm => 
-            {
-                vm.IsNewAppointment = true;
-            });
+            navigationStore.SetViewModel<NavigateBackViewModel>(
+                vm => vm.CurrentViewModel = navigationStore.GetViewModel<AppointmentViewModel>(
+                    vm =>
+                    {
+                        vm.IsNewAppointment = true;
+                        vm.Appointment = appointment;
+                        vm.Patient = Patient;
+                        vm.Sessions = new ObservableCollection<Session>(sessionRepository.GetSessionsWithResultsByAppointment(appointment.Id));
+                    }
+                )
+            );
         }
     }
 }

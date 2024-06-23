@@ -32,7 +32,7 @@ namespace Disk.ViewModel
         public ICommand StartCalibrationCommand => new Command(StartCalibration);
         public ICommand CentralizeXCommand => new Command(_ => XShift += XAngleRes);
         public ICommand CentralizeYCommand => new Command(_ => YShift += YAngleRes);
-        public ICommand CalibrateXCommand => new Command(_ => 
+        public ICommand CalibrateXCommand => new Command(_ =>
         {
             CalibrateXEnabled = false;
             IsRunningThread = CalibrateYEnabled;
@@ -52,11 +52,11 @@ namespace Disk.ViewModel
         private float XAngleRes => XAngle - XShift;
         private float YAngleRes => YAngle - YShift;
 
-        private float XShift = Settings.ANGLE_X_SHIFT;
-        private float YShift = Settings.ANGLE_Y_SHIFT;
+        private float XShift = Settings.XAngleShift;
+        private float YShift = Settings.YAngleShift;
 
-        private float XAngle = Settings.X_MAX_ANGLE;
-        private float YAngle = Settings.Y_MAX_ANGLE;
+        private float XAngle = Settings.XMaxAngle;
+        private float YAngle = Settings.YMaxAngle;
 
         private bool IsRunningThread = true;
 
@@ -73,7 +73,7 @@ namespace Disk.ViewModel
 
             TextBoxUpdateTimer = new(DispatcherPriority.Normal)
             {
-                Interval = TimeSpan.FromMilliseconds(Settings.CALIBRATION_TIMEOUT)
+                Interval = TimeSpan.FromMilliseconds(Settings.ShotTime)
             };
             TextBoxUpdateTimer.Tick += UpdateText;
         }
@@ -94,7 +94,7 @@ namespace Disk.ViewModel
         {
             try
             {
-                using var con = Connection.GetConnection(IPAddress.Parse(Settings.IP), Settings.PORT);
+                using var con = Connection.GetConnection(IPAddress.Parse(Settings.IP), Settings.Port);
 
                 while (IsRunningThread)
                 {
@@ -110,9 +110,9 @@ namespace Disk.ViewModel
             catch
             {
                 _ = MessageBox.Show(CalibrationLocalization.ConnectionLost);
-                _navigationStore.NavigateBack();
+                _ = _navigationStore.NavigateBack();
             }
-        } 
+        }
 
         private void StartCalibration(object? parameter)
         {
@@ -137,14 +137,14 @@ namespace Disk.ViewModel
                 DataThread.Join();
             }
 
-            Settings.X_MAX_ANGLE = Math.Abs(Convert.ToSingle(XCoord));
-            Settings.Y_MAX_ANGLE = Math.Abs(Convert.ToSingle(YCoord));
+            Settings.XMaxAngle = Math.Abs(Convert.ToSingle(XCoord));
+            Settings.YMaxAngle = Math.Abs(Convert.ToSingle(YCoord));
 
-            Settings.ANGLE_X_SHIFT = XShift;
-            Settings.ANGLE_Y_SHIFT = YShift;
+            Settings.XAngleShift = XShift;
+            Settings.YAngleShift = YShift;
 
             Settings.Save();
-            _navigationStore.NavigateBack();
+            _ = _navigationStore.NavigateBack();
         }
     }
 }

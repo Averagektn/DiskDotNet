@@ -70,12 +70,11 @@
                 Margin="0 15"/>
         </Viewbox>
 
-        <Menu Height="20" VerticalAlignment="Top" HorizontalAlignment="Left" Grid.ColumnSpan="3" Name="Menu">
+        <Menu Height="20" FontSize="15" VerticalAlignment="Top" HorizontalAlignment="Left" Grid.ColumnSpan="3" Name="Menu">
             <MenuItem Header="{x:Static lang:MenuLocalization.Language}">
                 <MenuItem Header="English" Command="{Binding ChangeLanguageCommand}" CommandParameter="en-US"/>
                 <MenuItem Header="Русский" Command="{Binding ChangeLanguageCommand}" CommandParameter="ru-RU"/>
             </MenuItem>
-            <MenuItem Header="{x:Static lang:MenuLocalization.Logout}" Command="{Binding LogoutCommand}"/>
         </Menu>
     </Grid>
 </UserControl>

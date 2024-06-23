@@ -10,7 +10,7 @@ namespace Disk.Calculations.Impl
     /// <typeparam name="CoordType">
     ///     Point coordiante type
     /// </typeparam>
-    static class Classifier<CoordType> where CoordType : IConvertible, new()
+    public static class Classifier<CoordType> where CoordType : IConvertible, new()
     {
         /// <summary>
         ///     Classifies point by using "K means" algorithm for 2D point
@@ -145,8 +145,6 @@ namespace Disk.Calculations.Impl
                 }
             }
 
-            classification = res;
-
             return centers;
         }
 
@@ -277,8 +275,6 @@ namespace Disk.Calculations.Impl
 
                 _classification[classId].ToList().Add(dataset[i]);
             }
-
-            classification = _classification;
         }
     }
 }

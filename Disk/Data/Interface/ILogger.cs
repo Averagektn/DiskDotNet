@@ -3,7 +3,7 @@
     /// <summary>
     ///     Represents a logger for logging messages
     /// </summary>
-    interface ILogger
+    public interface ILogger
     {
         /// <summary>
         ///     Logs the specified data

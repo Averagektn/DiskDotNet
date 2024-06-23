@@ -169,6 +169,33 @@ namespace Disk.Properties.Langs.Appointment {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Path in target.
+        /// </summary>
+        public static string PathInTarget {
+            get {
+                return ResourceManager.GetString("PathInTarget", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Path to target.
+        /// </summary>
+        public static string PathToTarget {
+            get {
+                return ResourceManager.GetString("PathToTarget", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Precision.
+        /// </summary>
+        public static string Precision {
+            get {
+                return ResourceManager.GetString("Precision", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Profile projection.
         /// </summary>
         public static string ProfileProjection {
@@ -201,6 +228,15 @@ namespace Disk.Properties.Langs.Appointment {
         public static string Start {
             get {
                 return ResourceManager.GetString("Start", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Target center.
+        /// </summary>
+        public static string TargetCenter {
+            get {
+                return ResourceManager.GetString("TargetCenter", resourceCulture);
             }
         }
         

@@ -123,9 +123,6 @@
   <data name="Language" xml:space="preserve">
     <value>Язык</value>
   </data>
-  <data name="Logout" xml:space="preserve">
-    <value>Выйти из профиля</value>
-  </data>
   <data name="MapConstructor" xml:space="preserve">
     <value>Конструктор карт</value>
   </data>

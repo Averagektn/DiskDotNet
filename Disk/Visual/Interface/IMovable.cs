@@ -5,7 +5,7 @@ namespace Disk.Visual.Interface
     /// <summary>
     ///     Represents an object that can be moved
     /// </summary>
-    interface IMovable
+    public interface IMovable
     {
         /// <summary>
         ///     Moves the object in the specified direction

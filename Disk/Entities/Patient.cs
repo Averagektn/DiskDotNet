@@ -1,14 +1,19 @@
-﻿namespace Disk.Entities;
+﻿using Disk.Extensions;
+
+namespace Disk.Entities;
 
 public partial class Patient
 {
     public long Id { get; set; }
 
-    public string Name { get; set; } = null!;
+    private string _name = null!;
+    public string Name { get => _name.CapitalizeFirstLetter(); set => _name = value.CapitalizeFirstLetter(); }
 
-    public string Surname { get; set; } = null!;
+    private string _surname = null!;
+    public string Surname { get => _surname.CapitalizeFirstLetter(); set => _surname = value.CapitalizeFirstLetter(); }
 
-    public string? Patronymic { get; set; }
+    private string? _patronymic;
+    public string? Patronymic { get => _patronymic?.CapitalizeFirstLetter(); set => _patronymic = value?.CapitalizeFirstLetter(); }
 
     public string DateOfBirth { get; set; } = null!;
 

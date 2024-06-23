@@ -22,8 +22,7 @@ namespace Disk.Visual.Impl
     /// <param name="iniSize">
     ///     The initial size of the enemy
     /// </param>
-    class Enemy(Point2D<int> center, int radius, int speed, Brush color, Size iniSize) :
-        User(center, radius, speed, color, iniSize)
+    public class Enemy(Point2D<int> center, int radius, int speed, Brush color, Size iniSize) : User(center, radius, speed, color, iniSize)
     {
         /// <summary>
         ///     Makes the enemy follow the specified target point.
@@ -84,14 +83,7 @@ namespace Disk.Visual.Impl
             left = (left + 360.0f) % 360.0f;
             right = (right + 360.0f) % 360.0f;
 
-            if (left <= right)
-            {
-                return angle >= left && angle <= right;
-            }
-            else
-            {
-                return angle >= left || angle <= right;
-            }
+            return left <= right ? angle >= left && angle <= right : angle >= left || angle <= right;
         }
     }
 }

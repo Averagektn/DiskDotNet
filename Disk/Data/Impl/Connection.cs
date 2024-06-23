@@ -8,7 +8,7 @@ namespace Disk.Data.Impl
     /// <summary>
     ///     Represents a connection to a data source
     /// </summary>
-    class Connection : IDataSource<float>, IDisposable
+    public class Connection : IDataSource<float>, IDisposable
     {
         /// <summary>
         ///     The IP address of the connection
@@ -48,9 +48,9 @@ namespace Disk.Data.Impl
             Port = port;
 
             Socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp)
-/*            {
+            {
                 ReceiveTimeout = receiveTimeout
-            }*/;
+            };
             Socket.Connect(new IPEndPoint(IP, Port));
 
             Handshake();
@@ -69,7 +69,7 @@ namespace Disk.Data.Impl
 
             if (bytesRead == 1 && receiveData[0] == 23)
             {
-                Socket.Send(receiveData);
+                _ = Socket.Send(receiveData);
             }
             else
             {
@@ -119,9 +119,9 @@ namespace Disk.Data.Impl
             var coordY = new byte[4];
             var coordZ = new byte[4];
 
-            Socket.Receive(coordX);
-            Socket.Receive(coordY);
-            Socket.Receive(coordZ);
+            _ = Socket.Receive(coordX);
+            _ = Socket.Receive(coordY);
+            _ = Socket.Receive(coordZ);
 
             var x = -BitConverter.ToSingle(coordX, 0);
             var y = BitConverter.ToSingle(coordY, 0);
@@ -215,7 +215,7 @@ namespace Disk.Data.Impl
         /// </summary>
         public void Dispose()
         {
-            Connections.Remove(this);
+            _ = Connections.Remove(this);
             Socket.Close();
         }
     }

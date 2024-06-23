@@ -2,7 +2,7 @@
 
 namespace Disk.Visual.Interface
 {
-    internal interface IUser
+    public interface IUser
     {
         event Action<Point2D<int>>? OnShot;
 

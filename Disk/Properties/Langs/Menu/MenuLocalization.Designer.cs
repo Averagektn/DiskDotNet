@@ -79,15 +79,6 @@ namespace Disk.Properties.Langs.Menu {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Logout.
-        /// </summary>
-        public static string Logout {
-            get {
-                return ResourceManager.GetString("Logout", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Map creator.
         /// </summary>
         public static string MapConstructor {

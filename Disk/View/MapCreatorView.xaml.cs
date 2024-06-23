@@ -10,30 +10,23 @@ namespace Disk.View
     /// </summary>
     public partial class MapCreatorView : UserControl
     {
-        private MapCreatorViewModel? _viewModel;
+        private MapCreatorViewModel? ViewModel => DataContext as MapCreatorViewModel;
 
         public MapCreatorView()
         {
             InitializeComponent();
 
-            Unloaded += OnUnloaded;
             MouseLeftButtonDown += OnMouseLeftButtonDown;
             MouseRightButtonDown += OnMouseRightButtonDown;
             MouseDoubleClick += OnMouseDoubleClick;
             MouseMove += OnMouseMove;
             SizeChanged += OnSizeChanged;
-            Loaded += OnLoaded;
-        }
-
-        private void OnLoaded(object sender, RoutedEventArgs e)
-        {
-            _viewModel = DataContext as MapCreatorViewModel;
         }
 
         private void OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             var mousePos = e.GetPosition(sender as UIElement);
-            _viewModel?.SelectTarget(mousePos);
+            ViewModel?.SelectTarget(mousePos);
         }
 
         private void OnMouseMove(object sender, MouseEventArgs e)
@@ -43,20 +36,15 @@ namespace Disk.View
                 var mousePos = e.GetPosition(sender as UIElement);
                 if (AllowedArea.FillContains(mousePos))
                 {
-                    _viewModel?.MoveTarget(mousePos);
+                    ViewModel?.MoveTarget(mousePos);
                 }
             }
-        }
-
-        private void OnUnloaded(object? sender, RoutedEventArgs e)
-        {
-            _viewModel?.SaveMap(ActualWidth, ActualHeight);
         }
 
         private void OnMouseRightButtonDown(object sender, MouseButtonEventArgs e)
         {
             var mousePos = e.GetPosition(sender as UIElement);
-            _viewModel?.RemoveTarget(PaintArea.Children, mousePos);
+            ViewModel?.RemoveTarget(PaintArea.Children, mousePos);
         }
 
         private void OnSizeChanged(object sender, SizeChangedEventArgs e)
@@ -65,7 +53,15 @@ namespace Disk.View
             AllowedArea.RadiusY = ActualHeight / 2;
             AllowedArea.Center = new(ActualWidth / 2, ActualHeight / 2);
 
-            _viewModel?.ScaleTargets(RenderSize);
+            ViewModel?.ScaleTargets(RenderSize);
+
+            const int iniFontSize = 15;
+            const int iniHeight = 400;
+            const int iniWidth = 800;
+            double heightScale = e.NewSize.Height / iniHeight;
+            double widthScale = e.NewSize.Width / iniWidth;
+            Menu.FontSize = iniFontSize * double.Min(widthScale, heightScale);
+            Menu.Height = Menu.FontSize + 10;
         }
 
         private void OnMouseDoubleClick(object sender, MouseButtonEventArgs e)
@@ -76,8 +72,13 @@ namespace Disk.View
 
             if (e.ChangedButton == MouseButton.Left && AllowedArea.FillContains(new Point(x, y)))
             {
-                _viewModel?.AddTarget(mousePos, RenderSize, PaintArea);
+                ViewModel?.AddTarget(mousePos, RenderSize, PaintArea);
             }
+        }
+
+        private void Save_Click(object sender, RoutedEventArgs e)
+        {
+            ViewModel?.SaveMap(PaintArea.ActualWidth, PaintArea.ActualHeight);
         }
     }
 }

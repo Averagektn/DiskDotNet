@@ -21,14 +21,18 @@ namespace Disk.ViewModel.Common.ViewModels
             _modalNavigationStore.CurrentViewModelChanged += OnCurrentModalViewModelChanged;
         }
 
-        public bool CanNavigateBack()
+        public void CloseModal()
         {
-            if (_modalNavigationStore.CanClose)
-            {
-                _modalNavigationStore.Close();
-                return true;
-            }
-            return _navigationStore.NavigateBack();
+            _modalNavigationStore.Close();
+        }
+
+        public override void Dispose()
+        {
+            base.Dispose();
+            GC.SuppressFinalize(this);
+
+            while (_navigationStore.NavigateBack()) { }
+            while (_modalNavigationStore.CanClose) { _modalNavigationStore.Close(); }
         }
 
         private void OnCurrentModalViewModelChanged()

@@ -32,7 +32,7 @@ namespace Disk.View.PaintWindow
         {
             get => ViewModel.CurrentPos is null
                 ? User.Center
-                : Converter.ToWndCoord(new Point2DF(ViewModel.CurrentPos.X - Settings.ANGLE_X_SHIFT, ViewModel.CurrentPos.Y - Settings.ANGLE_Y_SHIFT));
+                : Converter.ToWndCoord(new Point2DF(ViewModel.CurrentPos.X - Settings.XAngleShift, ViewModel.CurrentPos.Y - Settings.YAngleShift));
         }
 
         private Size PaintPanelSize => PaintRect.RenderSize;
@@ -47,13 +47,13 @@ namespace Disk.View.PaintWindow
 
             MoveTimer = new(DispatcherPriority.Normal)
             {
-                Interval = TimeSpan.FromMilliseconds(Settings.MOVE_TIME)
+                Interval = TimeSpan.FromMilliseconds(Settings.MoveTime)
             };
             MoveTimer.Tick += MoveTimerElapsed;
 
             ShotTimer = new(DispatcherPriority.Normal)
             {
-                Interval = TimeSpan.FromMilliseconds(Settings.SHOT_TIME)
+                Interval = TimeSpan.FromMilliseconds(Settings.ShotTime)
             };
             ShotTimer.Tick += ShotTimerElapsed;
 
@@ -104,7 +104,7 @@ namespace Disk.View.PaintWindow
         {
             if (ShiftedWndPos is not null && AllowedArea.FillContains(ShiftedWndPos.ToPoint()))
             {
-                User.Move(ShiftedWndPos);
+                User.Move(ShiftedWndPos!);
             }
         }
 
@@ -113,20 +113,24 @@ namespace Disk.View.PaintWindow
             User = ViewModel.GetUser();
             Target = ViewModel.GetProgressTarget();
 
-            Drawables.Add(Target); Drawables.Add(User);
             Scalables.Add(Target); Scalables.Add(User); Scalables.Add(Converter);
+            Scalables.ForEach(elem => elem?.Scale(PaintPanelSize));
 
-            foreach (var elem in Drawables)
+            if (ViewModel.IsGame)
             {
-                elem?.Draw(PaintArea);
-            }
-            foreach (var elem in Scalables)
-            {
-                elem?.Scale(PaintPanelSize);
-            }
+                ViewModel.StartReceiving();
 
-            MoveTimer.Start();
-            ShotTimer.Start();
+                Drawables.Add(Target); Drawables.Add(User);
+
+                Drawables.ForEach(elem => elem?.Draw(PaintArea));
+
+                MoveTimer.Start();
+                ShotTimer.Start();
+            }
+            else
+            {
+                ViewModel.EnableResults();
+            }
         }
 
         private void StopGame()
@@ -152,17 +156,14 @@ namespace Disk.View.PaintWindow
             AllowedArea.RadiusY = PaintPanelCenterY;
             AllowedArea.Center = new(PaintPanelCenterX, PaintPanelCenterY);
 
-            foreach (var elem in Scalables)
-            {
-                elem?.Scale(PaintPanelSize);
-            }
+            Scalables.ForEach(elem => elem?.Scale(PaintPanelSize));
         }
 
         private void OnStopClick(object sender, RoutedEventArgs e)
         {
             StopGame();
-            // comment
             ViewModel.SaveSessionResult();
+            CbTargets_SelectionChanged(sender, null!);
         }
 
         private void CbTargets_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -171,9 +172,22 @@ namespace Disk.View.PaintWindow
 
             if (ViewModel is not null)
             {
-                var figure = ViewModel.DrawPathOrRose(Target, PaintPanelSize);
-                figure?.Draw(PaintArea);
-                Scalables.Add(figure);
+                var figures = ViewModel.GetPathAndRose(Target, PaintPanelSize);
+                foreach (var figure in figures)
+                {
+                    Scalables.Add(figure);
+
+                    figure.Draw(PaintArea);
+                    figure.Scale(PaintPanelSize);
+                }
+            }
+        }
+
+        private void RbChecked(object sender, RoutedEventArgs e)
+        {
+            if (!ViewModel.IsGame)
+            {
+                CbTargets_SelectionChanged(sender, null!);
             }
         }
     }

@@ -5,8 +5,5 @@ using Disk.Repository.Interface;
 
 namespace Disk.Repository.Implementation
 {
-    public class PathInTargetRepository(DiskContext diskContext) : CrudRepository<PathInTarget>(diskContext), IPathInTargetRepository
-    {
-
-    }
+    public class PathInTargetRepository(DiskContext diskContext) : CrudRepository<PathInTarget>(diskContext), IPathInTargetRepository { }
 }

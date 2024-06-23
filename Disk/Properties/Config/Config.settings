@@ -2,110 +2,56 @@
 <SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="Disk.Properties.Config" GeneratedClassName="Config">
   <Profiles />
   <Settings>
-    <Setting Name="X_MAX_ANGLE" Type="System.Single" Scope="User">
+    <Setting Name="XMaxAngle" Type="System.Single" Scope="User">
       <Value Profile="(Default)">20</Value>
     </Setting>
-    <Setting Name="Y_MAX_ANGLE" Type="System.Single" Scope="User">
+    <Setting Name="YMaxAngle" Type="System.Single" Scope="User">
       <Value Profile="(Default)">20</Value>
     </Setting>
     <Setting Name="IP" Type="System.String" Scope="User">
       <Value Profile="(Default)">127.0.0.1</Value>
     </Setting>
-    <Setting Name="PORT" Type="System.Int32" Scope="User">
+    <Setting Name="Port" Type="System.Int32" Scope="Application">
       <Value Profile="(Default)">9998</Value>
     </Setting>
-    <Setting Name="TARGET_MIN_TIME" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">1000</Value>
-    </Setting>
-    <Setting Name="TARGET_MAX_TIME" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">5000</Value>
-    </Setting>
-    <Setting Name="MOVE_TIME" Type="System.Int32" Scope="User">
+    <Setting Name="MoveTime" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">20</Value>
     </Setting>
-    <Setting Name="SHOT_TIME" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">200</Value>
+    <Setting Name="ShotTime" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">20</Value>
     </Setting>
-    <Setting Name="USER_INI_SPEED" Type="System.Int32" Scope="User">
+    <Setting Name="IniUserRadius" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">5</Value>
     </Setting>
-    <Setting Name="USER_INI_RADIUS" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">5</Value>
+    <Setting Name="IniTargetRadius" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">12</Value>
     </Setting>
-    <Setting Name="ENEMY_INI_SPEED" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">4</Value>
-    </Setting>
-    <Setting Name="ENEMY_INI_RADIUS" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">5</Value>
-    </Setting>
-    <Setting Name="TARGET_INI_RADIUS" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">7</Value>
-    </Setting>
-    <Setting Name="SCREEN_INI_WIDTH" Type="System.Int32" Scope="Application">
+    <Setting Name="IniScreenWidth" Type="System.Int32" Scope="Application">
       <Value Profile="(Default)">800</Value>
     </Setting>
-    <Setting Name="SCREEN_INI_HEIGHT" Type="System.Int32" Scope="Application">
+    <Setting Name="IniScreenHeight" Type="System.Int32" Scope="Application">
       <Value Profile="(Default)">800</Value>
     </Setting>
-    <Setting Name="ENEMIES_NUM" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">1</Value>
+    <Setting Name="UserColor" Type="System.Drawing.Color" Scope="User">
+      <Value Profile="(Default)">DarkGreen</Value>
     </Setting>
-    <Setting Name="USER_WND_LOG_FILE" Type="System.String" Scope="User">
-      <Value Profile="(Default)">userWND.log</Value>
-    </Setting>
-    <Setting Name="USER_CEN_LOG_FILE" Type="System.String" Scope="User">
-      <Value Profile="(Default)">userCEN.log</Value>
-    </Setting>
-    <Setting Name="USER_ANG_LOG_FILE" Type="System.String" Scope="User">
-      <Value Profile="(Default)">userANG.log</Value>
-    </Setting>
-    <Setting Name="ENEMY_WND_LOG_NAME" Type="System.String" Scope="User">
-      <Value Profile="(Default)">enemyWND</Value>
-    </Setting>
-    <Setting Name="ENEMY_CEN_LOG_NAME" Type="System.String" Scope="User">
-      <Value Profile="(Default)">enemyCEN</Value>
-    </Setting>
-    <Setting Name="ENEMY_ANG_LOG_NAME" Type="System.String" Scope="User">
-      <Value Profile="(Default)">enemyANG</Value>
-    </Setting>
-    <Setting Name="LOG_SEPARATOR" Type="System.Char" Scope="User">
-      <Value Profile="(Default)">;</Value>
-    </Setting>
-    <Setting Name="LOG_EXTENSION" Type="System.String" Scope="User">
-      <Value Profile="(Default)">.log</Value>
-    </Setting>
-    <Setting Name="ENEMY_LOG_PATH" Type="System.String" Scope="User">
-      <Value Profile="(Default)" />
-    </Setting>
-    <Setting Name="USER_COLOR" Type="System.Drawing.Color" Scope="User">
-      <Value Profile="(Default)">Green</Value>
-    </Setting>
-    <Setting Name="ANGLE_X_SHIFT" Type="System.Single" Scope="User">
+    <Setting Name="XAngleShift" Type="System.Single" Scope="User">
       <Value Profile="(Default)">0</Value>
     </Setting>
-    <Setting Name="ANGLE_Y_SHIFT" Type="System.Single" Scope="User">
+    <Setting Name="YAngleShift" Type="System.Single" Scope="User">
       <Value Profile="(Default)">0</Value>
     </Setting>
-    <Setting Name="CALIBRATION_TIMEOUT" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">100</Value>
+    <Setting Name="MainDirPath" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">Data</Value>
     </Setting>
-    <Setting Name="RECEIVE_TIMEOUT" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">2000</Value>
-    </Setting>
-    <Setting Name="MAIN_DIR_PATH" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">Диск. Данные</Value>
-    </Setting>
-    <Setting Name="MAPS_DIR_PATH" Type="System.String" Scope="User">
-      <Value Profile="(Default)">maps</Value>
-    </Setting>
-    <Setting Name="MAP_ID" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">1</Value>
-    </Setting>
-    <Setting Name="LANGUAGE" Type="System.String" Scope="User">
+    <Setting Name="Language" Type="System.String" Scope="User">
       <Value Profile="(Default)">ru-RU</Value>
     </Setting>
-    <Setting Name="DB_CONNECTION" Type="System.String" Scope="User">
-      <Value Profile="(Default)">Data Source=C:\\Archive\\6 semester\\DiskDotNet\\Disk\\Db\\disk.db</Value>
+    <Setting Name="TargetHp" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">200</Value>
+    </Setting>
+    <Setting Name="UserLogFileName" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">userAngles.log</Value>
     </Setting>
   </Settings>
 </SettingsFile>

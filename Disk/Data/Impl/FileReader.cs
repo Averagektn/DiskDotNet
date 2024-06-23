@@ -9,12 +9,7 @@ namespace Disk.Data.Impl
     /// <typeparam name="CoordType">
     ///     The coordinate type
     /// </typeparam>
-    class FileReader<CoordType> :
-        IDataSource<CoordType>,
-        IDisposable
-        where CoordType :
-            IConvertible,
-            new()
+    public class FileReader<CoordType> : IDataSource<CoordType>, IDisposable where CoordType : IConvertible, new()
     {
         /// <summary>
         ///     Gets the filename associated with the file reader.
@@ -52,7 +47,7 @@ namespace Disk.Data.Impl
 
             if (!File.Exists(filename))
             {
-                File.Create(filename);
+                _ = File.Create(filename);
             }
 
             Reader = new StreamReader(filename);
@@ -90,7 +85,7 @@ namespace Disk.Data.Impl
         /// </summary>
         public void Dispose()
         {
-            Files.Remove(this);
+            _ = Files.Remove(this);
             Reader.Close();
         }
 

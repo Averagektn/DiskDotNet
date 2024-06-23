@@ -6,6 +6,10 @@ public partial class Session
 
     public long Map { get; set; }
 
+    public float MaxXAngle { get; set; }
+
+    public float MaxYAngle { get; set; }
+
     public string LogFilePath { get; set; } = null!;
 
     public string DateTime { get; set; } = null!;

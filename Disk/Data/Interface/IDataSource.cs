@@ -8,10 +8,7 @@ namespace Disk.Data.Interface
     /// <typeparam name="CoordType">
     ///     The type of the coordinates
     /// </typeparam>
-    interface IDataSource<CoordType>
-        where CoordType :
-            IConvertible,
-            new()
+    public interface IDataSource<CoordType> where CoordType : IConvertible, new()
     {
         /// <summary>
         ///     Gets the coordinates as a three-dimensional point in XYZ format

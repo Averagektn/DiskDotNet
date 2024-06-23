@@ -2,7 +2,6 @@
 using Disk.Entities;
 using Disk.Properties.Langs.MapNamePicker;
 using Disk.Repository.Interface;
-using Disk.Sessions;
 using Disk.Stores;
 using Disk.ViewModel.Common.Commands.Async;
 using Disk.ViewModel.Common.ViewModels;
@@ -33,7 +32,6 @@ namespace Disk.ViewModel
                 Name = MapName,
                 CoordinatesJson = JsonConvert.SerializeObject(Map),
                 CreatedAtDateTime = DateTime.Now.ToString(),
-                CreatedBy = AppSession.Doctor.Id
             };
 
             try

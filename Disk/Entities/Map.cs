@@ -8,11 +8,7 @@ public partial class Map
 
     public string CreatedAtDateTime { get; set; } = null!;
 
-    public long CreatedBy { get; set; }
-
     public string Name { get; set; } = null!;
-
-    public virtual Doctor CreatedByNavigation { get; set; } = null!;
 
     public virtual ICollection<Session> Sessions { get; set; } = [];
 

@@ -6,7 +6,7 @@
     /// <typeparam name="CoordType">
     ///     The type of the coordinates
     /// </typeparam>
-    internal class PolarPoint<CoordType> : Point2D<CoordType> where CoordType : IConvertible, new()
+    public class PolarPoint<CoordType> : Point2D<CoordType> where CoordType : IConvertible, new()
     {
         /// <summary>
         ///     Gets the radius of the point in polar coordinates
@@ -27,7 +27,7 @@
                     angleRad += 2 * Math.PI;
                 }
 
-                return (angleRad * (180.0 / Math.PI) + 360.0) % 360.0;
+                return ((angleRad * (180.0 / Math.PI)) + 360.0) % 360.0;
             }
         }
 

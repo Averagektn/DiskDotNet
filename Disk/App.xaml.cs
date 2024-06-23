@@ -22,7 +22,7 @@ namespace Disk
         private App()
         {
             Thread.CurrentThread.CurrentUICulture =
-                new System.Globalization.CultureInfo(Disk.Properties.Config.Config.Default.LANGUAGE);
+                new System.Globalization.CultureInfo(Disk.Properties.Config.Config.Default.Language);
             System.Windows.Media.RenderOptions.ProcessRenderMode = System.Windows.Interop.RenderMode.SoftwareOnly;
 
 
@@ -39,7 +39,6 @@ namespace Disk
             _ = services.AddSingleton<ModalNavigationStore>();
 
             _ = services.AddSingleton<IAppointmentRepository, AppointmentRepository>();
-            _ = services.AddSingleton<IDoctorRepository, DoctorRepository>();
             _ = services.AddSingleton<IMapRepository, MapRepository>();
             _ = services.AddSingleton<IPathInTargetRepository, PathInTargetRepository>();
             _ = services.AddSingleton<IPathToTargetRepository, PathToTargetRepository>();
@@ -47,12 +46,11 @@ namespace Disk
             _ = services.AddSingleton<ISessionRepository, SessionRepository>();
             _ = services.AddSingleton<ISessionResultRepository, SessionResultRepository>();
 
-            _ = services.AddSingleton<IAuthenticationService, AuthenticationService>();
             _ = services.AddSingleton<IPatientService, PatientService>();
+            _ = services.AddSingleton<IExcelFiller, ExcelFiller>();
 
             _ = services.AddTransient<MainViewModel>();
             _ = services.AddTransient<MenuViewModel>();
-            _ = services.AddTransient<AuthenticationViewModel>();
             _ = services.AddTransient<MapCreatorViewModel>();
             _ = services.AddTransient<MapNamePickerViewModel>();
             _ = services.AddTransient<CalibrationViewModel>();
@@ -63,10 +61,10 @@ namespace Disk
             _ = services.AddTransient<AppointmentViewModel>();
             _ = services.AddTransient<StartSessionViewModel>();
             _ = services.AddTransient<PaintViewModel>();
+            _ = services.AddTransient<NavigateBackViewModel>();
 
             _ = services.AddSingleton<MainWindow>(provider =>
             {
-                provider.GetRequiredService<ModalNavigationStore>().SetViewModel<AuthenticationViewModel>();
                 provider.GetRequiredService<NavigationStore>().SetViewModel<MenuViewModel>();
                 return new()
                 {

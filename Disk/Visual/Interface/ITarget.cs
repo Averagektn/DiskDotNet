@@ -2,7 +2,7 @@
 
 namespace Disk.Visual.Interface
 {
-    internal interface ITarget
+    public interface ITarget
     {
         int ReceiveShot(Point2D<int> shot);
     }

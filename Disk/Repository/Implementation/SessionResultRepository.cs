@@ -5,8 +5,5 @@ using Disk.Repository.Interface;
 
 namespace Disk.Repository.Implementation
 {
-    public class SessionResultRepository(DiskContext diskContext) : CrudRepository<SessionResult>(diskContext), ISessionResultRepository
-    {
-        
-    }
+    public class SessionResultRepository(DiskContext diskContext) : CrudRepository<SessionResult>(diskContext), ISessionResultRepository { }
 }

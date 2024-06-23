@@ -1,7 +1,6 @@
 ﻿using Disk.Calculations.Impl.Converters;
 using Disk.Data.Impl;
 using Disk.Visual.Interface;
-using System.Drawing;
 using System.Windows.Controls;
 using System.Windows.Markup;
 using System.Windows.Media;
@@ -13,7 +12,7 @@ namespace Disk.Visual.Impl
     /// <summary>
     ///     Represents a path that can be drawn and scaled
     /// </summary>
-    class Path : IStaticFigure
+    public class Path : IStaticFigure
     {
         /// <summary>
         ///     The polyline used to draw the path
@@ -28,7 +27,7 @@ namespace Disk.Visual.Impl
         /// <summary>
         ///     The converter for coordinate transformations
         /// </summary>
-        private Converter Converter;
+        private readonly Converter Converter;
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="Path"/> class
@@ -52,7 +51,7 @@ namespace Disk.Visual.Impl
             Polyline = new Polyline()
             {
                 Stroke = color,
-                StrokeThickness = 3
+                StrokeThickness = 2
             };
 
             foreach (var point in points)

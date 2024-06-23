@@ -123,9 +123,6 @@
   <data name="Language" xml:space="preserve">
     <value>Language</value>
   </data>
-  <data name="Logout" xml:space="preserve">
-    <value>Logout</value>
-  </data>
   <data name="MapConstructor" xml:space="preserve">
     <value>Map creator</value>
   </data>

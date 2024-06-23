@@ -3,7 +3,7 @@
     /// <summary>
     ///     Calculates mathematical aspects of multiple coordinates
     /// </summary>
-    static class Calculator
+    public static class Calculator
     {
         /// <summary>
         ///     Calculates mathematical expectation
@@ -36,7 +36,7 @@
         /// <returns>
         ///     Dispesion
         /// </returns>
-        public static float Dispersion(IList<float> dataset) => 
+        public static float Dispersion(IList<float> dataset) =>
             (float)dataset.Sum(x => Math.Pow(x - MathExp(dataset), 2)) / dataset.Count;
     }
 }

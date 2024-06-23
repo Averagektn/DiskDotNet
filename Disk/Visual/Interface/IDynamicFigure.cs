@@ -5,7 +5,7 @@ namespace Disk.Visual.Interface
     /// <summary>
     ///     Represents a figure that can be drawn, scaled, and moved
     /// </summary>
-    interface IFigure : IDrawable, IScalable, IMovable
+    public interface IDynamicFigure : IStaticFigure, IMovable
     {
         Point2D<int> Center { get; }
 

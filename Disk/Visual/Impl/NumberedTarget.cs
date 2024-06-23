@@ -6,7 +6,7 @@ using System.Windows.Media;
 
 namespace Disk.Visual.Impl
 {
-    internal class NumberedTarget : Target
+    public class NumberedTarget : Target
     {
         private readonly TextBlock _numberText;
 

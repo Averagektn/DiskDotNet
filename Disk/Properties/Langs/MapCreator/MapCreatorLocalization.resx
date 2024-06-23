@@ -117,76 +117,7 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Paint.AngleDistance" xml:space="preserve">
-    <value>Distance (in angles)</value>
-  </data>
-  <data name="Paint.AngleSpeed" xml:space="preserve">
-    <value>Speed (in angles)</value>
-  </data>
-  <data name="Paint.ApproachSpeed" xml:space="preserve">
-    <value>Approach speed</value>
-  </data>
-  <data name="Paint.ConnectionLost" xml:space="preserve">
-    <value>Connection lost</value>
-  </data>
-  <data name="Paint.Dispersion" xml:space="preserve">
-    <value>Dispersion</value>
-  </data>
-  <data name="Paint.EmptyMap" xml:space="preserve">
-    <value>Map is empty</value>
-  </data>
-  <data name="Paint.MathExp" xml:space="preserve">
-    <value>Average shift from center</value>
-  </data>
-  <data name="Paint.Over" xml:space="preserve">
-    <value>Wasted</value>
-  </data>
-  <data name="Paint.Path" xml:space="preserve">
-    <value>Path</value>
-  </data>
-  <data name="Paint.PathToTarget" xml:space="preserve">
-    <value>Path to target</value>
-  </data>
-  <data name="Paint.Score" xml:space="preserve">
-    <value>Score</value>
-  </data>
-  <data name="Paint.StandartDeviation" xml:space="preserve">
-    <value>Deviation</value>
-  </data>
-  <data name="Paint.Stop" xml:space="preserve">
-    <value>Stop</value>
-  </data>
-  <data name="Paint.Time" xml:space="preserve">
-    <value>Time</value>
-  </data>
-  <data name="Paint.Title" xml:space="preserve">
-    <value>Disk. Paint field</value>
-  </data>
-  <data name="Paint.WindRose" xml:space="preserve">
-    <value>Wind rose</value>
-  </data>
-  <data name="Paint.WindRoseForTarget" xml:space="preserve">
-    <value>Wind rose for target</value>
-  </data>
-  <data name="UserData.Birthday" xml:space="preserve">
-    <value>Birthday</value>
-  </data>
-  <data name="UserData.FieldIsEmpty" xml:space="preserve">
-    <value>One of the fields is empty</value>
-  </data>
-  <data name="UserData.Map" xml:space="preserve">
-    <value>Map</value>
-  </data>
-  <data name="UserData.Name" xml:space="preserve">
-    <value>Name</value>
-  </data>
-  <data name="UserData.Start" xml:space="preserve">
-    <value>Start</value>
-  </data>
-  <data name="UserData.Surname" xml:space="preserve">
-    <value>Surname</value>
-  </data>
-  <data name="UserData.Title" xml:space="preserve">
-    <value>User data</value>
+  <data name="Save" xml:space="preserve">
+    <value>Save</value>
   </data>
 </root>
