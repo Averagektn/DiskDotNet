@@ -138,7 +138,7 @@ namespace Disk.Service.Implementation
 
                 worksheet.Cell(1, pathCol).Value = Localization.PathInTarget;
                 worksheet.Cell(4, pathCol).Value = Localization.Precision;
-                worksheet.Cell(5, pathCol).Style.NumberFormat.Format = "0.0%";
+                worksheet.Cell(5, pathCol).Style.NumberFormat.Format = "0.00";
                 worksheet.Cell(5, pathCol++).Value = float.Round(pit.Precision, 3);
                 FillPath(worksheet, session, pathCol, mapCenters, pathList, pit.TargetId);
 
@@ -197,7 +197,7 @@ namespace Disk.Service.Implementation
 
         private static void SetFloatCell(IXLWorksheet worksheet, int row, int column, float value)
         {
-            worksheet.Cell(row, column).Style.NumberFormat.Format = "0.000";
+            worksheet.Cell(row, column).Style.NumberFormat.Format = "0.0";
             worksheet.Cell(row, column).Value = value;
         }
     }

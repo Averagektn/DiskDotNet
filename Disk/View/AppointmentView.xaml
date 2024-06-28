@@ -37,15 +37,15 @@
                 <DataGridTextColumn 
                     Width="1*" 
                     Header="{x:Static lang:AppointmentLocalization.Deviation}" 
-                    Binding="{Binding SessionResult.Deviation, StringFormat=N3}" />
+                    Binding="{Binding SessionResult.Deviation, StringFormat=N1}" />
                 <DataGridTextColumn 
                     Width="1*" 
                     Header="{x:Static lang:AppointmentLocalization.Dispersion}" 
-                    Binding="{Binding SessionResult.Dispersion, StringFormat=N3}" />
+                    Binding="{Binding SessionResult.Dispersion, StringFormat=N1}" />
                 <DataGridTextColumn 
                     Width="1*" 
                     Header="{x:Static lang:AppointmentLocalization.MathExp}" 
-                    Binding="{Binding SessionResult.MathExp, StringFormat=N3}" />
+                    Binding="{Binding SessionResult.MathExp, StringFormat=N1}" />
                 <DataGridTextColumn 
                     Width="1*" 
                     Header="{x:Static lang:AppointmentLocalization.Score}" 
@@ -71,16 +71,20 @@
             <DataGrid.Columns>
                 <DataGridTextColumn 
                     Width="1*" 
+                    Header="{x:Static lang:AppointmentLocalization.TargetNum}" 
+                    Binding="{Binding TargetNumInc}" />                
+                <DataGridTextColumn 
+                    Width="1*" 
                     Header="{x:Static lang:AppointmentLocalization.AngleDistance}" 
-                    Binding="{Binding AngleDistance, StringFormat=N3}" />
+                    Binding="{Binding AngleDistance, StringFormat=N1}" />
                 <DataGridTextColumn 
                     Width="1*" 
                     Header="{x:Static lang:AppointmentLocalization.AngleSpeed}" 
-                    Binding="{Binding AngleSpeed, StringFormat=N3}" />
+                    Binding="{Binding AngleSpeed, StringFormat=N1}" />
                 <DataGridTextColumn 
                     Width="1*" 
                     Header="{x:Static lang:AppointmentLocalization.ApproachSpeed}" 
-                    Binding="{Binding ApproachSpeed, StringFormat=N3}" />
+                    Binding="{Binding ApproachSpeed, StringFormat=N1}" />
                 <DataGridTextColumn 
                     Width="1*" 
                     Header="{x:Static lang:AppointmentLocalization.Time}" 
