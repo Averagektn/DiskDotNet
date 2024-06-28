@@ -12,7 +12,7 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
-            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
         <Border Grid.Row="0" Background="#4bb342">
@@ -24,7 +24,7 @@
                     Margin="10" 
                     Background="Transparent"
                     Width="auto"/>
-
+                
                 <Button 
                     Content="{x:Static lang:NavigationBarLocalization.Settings}"  
                     Command="{Binding NavigateToSettingsCommand}"

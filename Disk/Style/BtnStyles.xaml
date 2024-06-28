@@ -9,8 +9,7 @@
                     <Border
                         x:Name="LoginBorder" 
                         Background="{TemplateBinding Background}" 
-                        CornerRadius="16" 
-                        BorderThickness="2">
+                        CornerRadius="16" >
                         <ContentPresenter 
                             HorizontalAlignment="Center" 
                             VerticalAlignment="Center"/>
@@ -21,9 +20,8 @@
                             <Setter Property="TextBlock.Foreground" Value="Black"  TargetName="LoginBorder" />
                         </Trigger>
                         <Trigger Property="IsEnabled" Value="False">
-                            <Setter Property="Background" Value="Gray" TargetName="LoginBorder" />
-                            <Setter Property="BorderBrush" Value="DarkGray" TargetName="LoginBorder" />
-                            <Setter Property="Foreground" Value="LightGray" />
+                            <Setter Property="Background" Value="#95D98E" TargetName="LoginBorder" />
+                            <Setter Property="Foreground" Value="White" />
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>

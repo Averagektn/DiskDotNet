@@ -9,7 +9,7 @@
              xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
              d:DataContext="{d:DesignInstance Type=viewmodel:SettingsViewModel}"
              mc:Ignorable="d" 
-             d:DesignHeight="450" 
+             d:DesignHeight="800" 
              d:DesignWidth="800">
     <Grid>
         <Grid.RowDefinitions>
@@ -21,119 +21,107 @@
             <RowDefinition/>
             <RowDefinition/>
         </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition/>
-            <ColumnDefinition/>
-        </Grid.ColumnDefinitions>
 
-        <Viewbox Grid.Row="0" Grid.Column="0">
+        <StackPanel Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center">
             <TextBlock 
-                FontSize="15" 
-                Margin="15" 
+                HorizontalAlignment="Center"
+                FontSize="25"  
                 Text="{x:Static lang:SettingsLocalization.Ip}"/>
-        </Viewbox>
 
-        <Viewbox Grid.Row="0" Grid.Column="1">
             <TextBox 
                 Text="{Binding Ip}" 
-                FontSize="20" 
+                FontSize="25" 
                 TextAlignment="Center" 
-                Margin="15"
-                MinWidth="290"/>
-        </Viewbox>
+                Margin="200 10"
+                MinWidth="300"
+                Height="35"/>
+        </StackPanel>
 
-        <Viewbox Grid.Row="1" Grid.Column="0">
+        <StackPanel Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center"> 
             <TextBlock 
-                Margin="15"
-                FontSize="15" 
+                HorizontalAlignment="Center"
+                FontSize="25" 
                 Text="{x:Static lang:SettingsLocalization.MoveTime}"/>
-        </Viewbox>
 
-        <Viewbox Grid.Row="1" Grid.Column="1">
             <TextBox 
-                Margin="15"
                 Text="{Binding MoveTime}" 
-                FontSize="20" 
+                FontSize="25" 
                 TextAlignment="Center" 
-                MinWidth="290"/>
-        </Viewbox>
+                Margin="200 10"
+                MinWidth="300"
+                Height="35"/>
+        </StackPanel>
 
-        <Viewbox Grid.Row="2" Grid.Column="0">
+        <StackPanel Grid.Row="2" HorizontalAlignment="Center" VerticalAlignment="Center">
             <TextBlock 
-                FontSize="15" 
-                Margin="15" 
+                HorizontalAlignment="Center"
+                FontSize="25" 
                 Text="{x:Static lang:SettingsLocalization.ShotTime}"/>
-        </Viewbox>
 
-        <Viewbox Grid.Row="2" Grid.Column="1">
             <TextBox 
                 Text="{Binding ShotTime}" 
-                FontSize="20" 
+                FontSize="25" 
                 TextAlignment="Center" 
-                Margin="15"
-                MinWidth="290"/>
-        </Viewbox>
+                Margin="200 10"
+                MinWidth="300"
+                Height="35"/>
+        </StackPanel>
 
-        <Viewbox Grid.Row="3" Grid.Column="0">
+        <StackPanel Grid.Row="3" HorizontalAlignment="Center" VerticalAlignment="Center">
             <TextBlock 
-                FontSize="15" 
-                Margin="15" 
+                HorizontalAlignment="Center"
+                FontSize="25" 
                 Text="{x:Static lang:SettingsLocalization.UserRadius}"/>
-        </Viewbox>
 
-        <Viewbox Grid.Row="3" Grid.Column="1">
             <TextBox 
                 Text="{Binding UserRadius}" 
-                FontSize="20" 
+                FontSize="25" 
                 TextAlignment="Center" 
-                Margin="15"
-                MinWidth="290"/>
-        </Viewbox>
+                Margin="200 10"
+                MinWidth="300"
+                Height="35"/>
+        </StackPanel>
 
-        <Viewbox Grid.Row="4" Grid.Column="0">
+        <StackPanel Grid.Row="4" HorizontalAlignment="Center" VerticalAlignment="Center">
             <TextBlock 
-                FontSize="15" 
-                Margin="15" 
+                HorizontalAlignment="Center"
+                FontSize="25" 
                 Text="{x:Static lang:SettingsLocalization.TargetRadius}"/>
-        </Viewbox>
 
-        <Viewbox Grid.Row="4" Grid.Column="1">
             <TextBox 
                 Text="{Binding TargetRadius}" 
-                FontSize="20" 
+                FontSize="25" 
                 TextAlignment="Center" 
-                Margin="15"
-                MinWidth="290"/>
-        </Viewbox>
+                Margin="200 10"
+                MinWidth="300"
+                Height="35"/>
+        </StackPanel>
 
-        <Viewbox Grid.Row="5" Grid.Column="0">
+        <StackPanel Grid.Row="5" HorizontalAlignment="Center" VerticalAlignment="Center">
             <TextBlock 
-                FontSize="15" 
-                Margin="15" 
+                HorizontalAlignment="Center"
+                FontSize="25" 
                 Text="{x:Static lang:SettingsLocalization.TargetHp}"/>
-        </Viewbox>
 
-        <Viewbox Grid.Row="5" Grid.Column="1">
             <TextBox 
                 Text="{Binding TargetHp}" 
-                FontSize="20" 
+                FontSize="25" 
                 TextAlignment="Center" 
-                Margin="15"
-                MinWidth="290"/>
-        </Viewbox>
+                Margin="200 10"
+                MinWidth="300"
+                Height="35"/>
+        </StackPanel>
 
-        <Viewbox Grid.Row="6" Grid.ColumnSpan="2">
-            <StackPanel Orientation="Horizontal">
-                <Button 
-                    Content="{x:Static lang:SettingsLocalization.Save}" 
-                    Margin="25 10" 
-                    Command="{Binding SaveCommand}"/>
+        <StackPanel HorizontalAlignment="Center" Grid.Row="6" Orientation="Horizontal">
+            <Button 
+                Content="{x:Static lang:SettingsLocalization.Save}" 
+                Margin="50 10" 
+                Command="{Binding SaveCommand}"/>
 
-                <Button 
-                    Content="{x:Static lang:SettingsLocalization.Cancel}" 
-                    Margin="25 10" 
-                    Command="{Binding CancelCommand}"/>
-            </StackPanel>
-        </Viewbox>
+            <Button 
+                Content="{x:Static lang:SettingsLocalization.Cancel}" 
+                Margin="50 10" 
+                Command="{Binding CancelCommand}"/>
+        </StackPanel>
     </Grid>
 </UserControl>

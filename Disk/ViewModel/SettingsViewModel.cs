@@ -1,7 +1,6 @@
 ﻿using Disk.Stores;
 using Disk.ViewModel.Common.Commands.Sync;
 using Disk.ViewModel.Common.ViewModels;
-using System.Drawing;
 using System.Windows.Input;
 using Settings = Disk.Properties.Config.Config;
 
@@ -12,14 +11,7 @@ namespace Disk.ViewModel
         private static Settings Settings => Settings.Default;
 
         private string _ip = Settings.IP;
-        public string Ip
-        {
-            get => _ip;
-            set
-            {
-                _ = SetProperty(ref _ip, value);
-            }
-        }
+        public string Ip { get => _ip; set => _ = SetProperty(ref _ip, value); }
 
         private int _moveTime = Settings.MoveTime;
         public string MoveTime
