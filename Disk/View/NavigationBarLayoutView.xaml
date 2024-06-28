@@ -1,0 +1,65 @@
+﻿<UserControl x:Class="Disk.View.NavigationBarLayoutView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Disk.View" 
+             xmlns:viewmodel="clr-namespace:Disk.ViewModel" 
+             xmlns:lang="clr-namespace:Disk.Properties.Langs.NavigationBar" 
+             d:DataContext="{d:DesignInstance Type=viewmodel:NavigationBarLayoutViewModel}"
+             mc:Ignorable="d" 
+             d:DesignHeight="800" d:DesignWidth="800">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
+
+        <Border Grid.Row="0" Background="#4bb342">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                <Button 
+                    Content="{x:Static lang:NavigationBarLocalization.Patients}" 
+                    Command="{Binding NavigateToPatientsCommand}"
+                    IsEnabled="{Binding CanNavigateToPatients}"
+                    Margin="10" 
+                    Background="Transparent"
+                    Width="auto"/>
+
+                <Button 
+                    Content="{x:Static lang:NavigationBarLocalization.Settings}"  
+                    Command="{Binding NavigateToSettingsCommand}"
+                    IsEnabled="{Binding CanNavigateToSettings}"
+                    Margin="10" 
+                    Background="Transparent"
+                    Width="auto"/>
+
+                <Button 
+                    Content="{x:Static lang:NavigationBarLocalization.Calibration}"  
+                    Command="{Binding NavigateToCalibrationCommand}"
+                    IsEnabled="{Binding CanNavigateToCalibration}"
+                    Margin="10" 
+                    Background="Transparent"
+                    Width="auto"/>
+
+                <Button 
+                    Content="{x:Static lang:NavigationBarLocalization.MapConstructor}" 
+                    Command="{Binding NavigateToMapCreatorCommand}"
+                    IsEnabled="{Binding CanNavigateToMapCreator}"
+                    Margin="10" 
+                    Background="Transparent"
+                    Width="auto"/>
+
+                <Button 
+                    Content="{x:Static lang:NavigationBarLocalization.Back}" 
+                    Command="{Binding NavigateBackCommand}" 
+                    IsEnabled="{Binding CanNavigateBack}"
+                    Margin="10"
+                    Background="Transparent"
+                    Width="auto"/>
+
+            </StackPanel>
+        </Border>
+        
+        <ContentControl Grid.Row="1" Content="{Binding CurrentViewModel}"/>
+    </Grid>
+</UserControl>

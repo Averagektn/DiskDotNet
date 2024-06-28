@@ -20,14 +20,17 @@ namespace Disk
 
         private void OnClosing(object? obj, CancelEventArgs args)
         {
-            if (ViewModel.IsModalOpen)
+            if (ViewModel is not null)
             {
-                ViewModel.CloseModal();
-                args.Cancel = true;
-            }
-            else
-            {
-                ViewModel.Dispose();
+                if (ViewModel.IsModalOpen)
+                {
+                    ViewModel.CloseModal();
+                    args.Cancel = true;
+                }
+                else
+                {
+                    ViewModel.Dispose();
+                }
             }
         }
     }

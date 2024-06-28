@@ -22,9 +22,6 @@
             <DataTemplate DataType="{x:Type viewmodels:MapCreatorViewModel}">
                 <views:MapCreatorView/>
             </DataTemplate>
-            <DataTemplate DataType="{x:Type viewmodels:MenuViewModel}">
-                <views:MenuView/>
-            </DataTemplate>
             <DataTemplate DataType="{x:Type viewmodels:MapNamePickerViewModel}">
                 <views:MapNamePickerView/>
             </DataTemplate>
@@ -52,8 +49,8 @@
             <DataTemplate DataType="{x:Type viewmodels:PaintViewModel}">
                 <paintview:PaintView/>
             </DataTemplate>
-            <DataTemplate DataType="{x:Type viewmodels:NavigateBackViewModel}">
-                <views:NavigationBarView/>
+            <DataTemplate DataType="{x:Type viewmodels:NavigationBarLayoutViewModel}">
+                <views:NavigationBarLayoutView/>
             </DataTemplate>
         </Grid.Resources>
 

@@ -118,6 +118,18 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Back" xml:space="preserve">
-    <value>Back</value>
+    <value>Назад</value>
+  </data>
+  <data name="Calibration" xml:space="preserve">
+    <value>Калибровка</value>
+  </data>
+  <data name="MapConstructor" xml:space="preserve">
+    <value>Конструктор карт</value>
+  </data>
+  <data name="Patients" xml:space="preserve">
+    <value>Пациенты</value>
+  </data>
+  <data name="Settings" xml:space="preserve">
+    <value>Настройки</value>
   </data>
 </root>

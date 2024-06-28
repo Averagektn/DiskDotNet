@@ -23,7 +23,7 @@ namespace Disk.ViewModel
         public ICommand ToAppointmentCommand =>
             new Command(_ =>
             {
-                navigationStore.SetViewModel<NavigateBackViewModel>(
+                navigationStore.SetViewModel<NavigationBarLayoutViewModel>(
                     vm => vm.CurrentViewModel = navigationStore.GetViewModel<AppointmentViewModel>(
                         vm =>
                         {
@@ -45,7 +45,7 @@ namespace Disk.ViewModel
 
             await appointmentRepository.AddAsync(appointment);
 
-            navigationStore.SetViewModel<NavigateBackViewModel>(
+            navigationStore.SetViewModel<NavigationBarLayoutViewModel>(
                 vm => vm.CurrentViewModel = navigationStore.GetViewModel<AppointmentViewModel>(
                     vm =>
                     {

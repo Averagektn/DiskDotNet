@@ -52,7 +52,7 @@ namespace Disk.ViewModel
 
         private void SelectPatient(object? obj)
         {
-            _navigationStore.SetViewModel<NavigateBackViewModel>(
+            _navigationStore.SetViewModel<NavigationBarLayoutViewModel>(
                 vm => vm.CurrentViewModel = _navigationStore.GetViewModel<AppointmentsListViewModel>(
                     vm => vm.Patient = SelectedPatient!
                     )
