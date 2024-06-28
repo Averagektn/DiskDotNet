@@ -17,11 +17,7 @@ namespace Disk.ViewModel
         public string YCoord { get => _yCoord; set => SetProperty(ref _yCoord, value); }
         public bool CalibrateXEnabled { get => _calibrateXEnabled; set => SetProperty(ref _calibrateXEnabled, value); }
         public bool CalibrateYEnabled { get => _calibrateYEnabled; set => SetProperty(ref _calibrateYEnabled, value); }
-        public bool StartCalibrationEnabled
-        {
-            get => _startCalibrationEnabled;
-            set => SetProperty(ref _startCalibrationEnabled, value);
-        }
+        public bool StartCalibrationEnabled { get => _startCalibrationEnabled; set => SetProperty(ref _startCalibrationEnabled, value); }
         private string _xCoord;
         private string _yCoord;
         private bool _calibrateXEnabled;
