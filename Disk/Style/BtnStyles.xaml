@@ -10,7 +10,6 @@
                         x:Name="LoginBorder" 
                         Background="{TemplateBinding Background}" 
                         CornerRadius="16" 
-                        BorderBrush="LightGreen" 
                         BorderThickness="2">
                         <ContentPresenter 
                             HorizontalAlignment="Center" 
@@ -32,7 +31,7 @@
         </Setter>
 
         <Setter Property="Foreground" Value="White"/>
-        <Setter Property="FontSize" Value="20"/>
+        <Setter Property="FontSize" Value="25"/>
         <Setter Property="Height" Value="50"/>
         <Setter Property="Width" Value="250"/>
         <Setter Property="Background" Value="#4bb342"/>

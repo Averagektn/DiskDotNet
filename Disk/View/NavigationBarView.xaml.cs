@@ -6,9 +6,9 @@ namespace Disk.View
     /// <summary>
     /// Interaction logic for NavigateBackView.xaml
     /// </summary>
-    public partial class NavigateBackView : UserControl
+    public partial class NavigationBarView : UserControl
     {
-        public NavigateBackView()
+        public NavigationBarView()
         {
             InitializeComponent();
 
@@ -23,8 +23,8 @@ namespace Disk.View
 
             double heightScale = e.NewSize.Height / iniHeight;
             double widthScale = e.NewSize.Width / iniWidth;
-            Menu.FontSize = iniFontSize * double.Min(widthScale, heightScale);
-            Menu.Height = Menu.FontSize + 10;
+            //Menu.FontSize = iniFontSize * double.Min(widthScale, heightScale);
+            //Menu.Height = Menu.FontSize + 10;
         }
     }
 }
