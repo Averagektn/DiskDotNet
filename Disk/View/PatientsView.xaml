@@ -12,48 +12,45 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="1*"/>
-            <RowDefinition Height="7*"/>
+            <RowDefinition Height="8*"/>
         </Grid.RowDefinitions>
 
-        <Viewbox Grid.Row="0">
-            <StackPanel Orientation="Horizontal">
-                <TextBlock Text="{x:Static lang:PatientsLocalization.SearchHeader}" 
-                       FontSize="20"
-                       Grid.Row="2"
-                       Margin="0 15"
-                       HorizontalAlignment="Left"/>
-                <TextBox
-                       Margin="15"
-                       Padding="0,5"
-                       Width="450"
-                       BorderThickness="0,0,0,1"
-                       HorizontalAlignment="Left"
-                       Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}"
-                       Background="LightGray">
-                    <i:Interaction.Triggers>
-                        <i:EventTrigger EventName="TextChanged">
-                            <i:InvokeCommandAction Command="{Binding SearchCommand}" />
-                        </i:EventTrigger>
-                    </i:Interaction.Triggers>
-                </TextBox>
-                <Button Content="{x:Static lang:PatientsLocalization.Add}" Command="{Binding AddPatientCommand}"/>
-            </StackPanel>
-        </Viewbox>
+        <StackPanel Grid.Row="0" Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
+            <TextBlock 
+                Text="{x:Static lang:PatientsLocalization.SearchHeader}" 
+                FontSize="25"
+                Margin="0 15"/>
+            <TextBox
+                FontSize="25"
+                Margin="15"
+                Height="35"
+                Width="300"
+                Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}"
+                Background="LightGray">
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="TextChanged">
+                        <i:InvokeCommandAction Command="{Binding SearchCommand}" />
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+            </TextBox>
+            <Button 
+                Content="{x:Static lang:PatientsLocalization.Add}" 
+                Command="{Binding AddPatientCommand}"/>
+        </StackPanel>
 
         <DataGrid x:Name="PatientsDataGrid" 
                   Grid.Row="1"
-                  FontSize="15"
+                  FontSize="25"
                   ItemsSource="{Binding SortedPatients}" 
                   AutoGenerateColumns="False" 
                   SelectedItem="{Binding SelectedPatient}" 
                   IsReadOnly="True">
             <DataGrid.Columns>
-                <DataGridTextColumn Width="2*" Header="{x:Static lang:PatientsLocalization.Surname}" Binding="{Binding Surname}" />
-                <DataGridTextColumn Width="2*" Header="{x:Static lang:PatientsLocalization.Name}" Binding="{Binding Name}" />
-                <DataGridTextColumn Width="2*" Header="{x:Static lang:PatientsLocalization.Patronymic}" Binding="{Binding Patronymic}" />
-                <DataGridTextColumn Width="2*" Header="{x:Static lang:PatientsLocalization.DateOfBirth}" Binding="{Binding DateOfBirth}" />
-                <DataGridTextColumn Width="3*" Header="{x:Static lang:PatientsLocalization.MobilePhone}" Binding="{Binding PhoneMobile}" />
-                <DataGridTextColumn Width="3*" Header="{x:Static lang:PatientsLocalization.HomePhone}" Binding="{Binding PhoneHome}" />
+                <DataGridTextColumn Width="1*" Header="{x:Static lang:PatientsLocalization.Surname}" Binding="{Binding Surname}" />
+                <DataGridTextColumn Width="1*" Header="{x:Static lang:PatientsLocalization.Name}" Binding="{Binding Name}" />
+                <DataGridTextColumn Width="1*" Header="{x:Static lang:PatientsLocalization.Patronymic}" Binding="{Binding Patronymic}" />
+                <DataGridTextColumn Width="1*" Header="{x:Static lang:PatientsLocalization.DateOfBirth}" Binding="{Binding DateOfBirth}" />
+                <DataGridTextColumn Width="1*" Header="{x:Static lang:PatientsLocalization.MobilePhone}" Binding="{Binding PhoneMobile}" />
             </DataGrid.Columns>
             <i:Interaction.Triggers>
                 <i:EventTrigger EventName="MouseDoubleClick">

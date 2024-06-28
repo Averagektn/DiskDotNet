@@ -13,7 +13,8 @@ namespace Disk.ViewModel
         public ICommand AddPatientCommand
             => new Command(_ => _modalNavigationStore.SetViewModel<AddPatientViewModel>
             (
-                vm => vm.OnAdd += patient => SortedPatients.Add(patient),
+                vm => 
+                    vm.OnAdd += patient => SortedPatients.Add(patient),
                 canClose: true)
             );
         public ICommand SearchCommand => new Command(Search);

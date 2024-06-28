@@ -11,19 +11,6 @@ namespace Disk.View
         public PatientsView()
         {
             InitializeComponent();
-
-            SizeChanged += OnSizeChanged;
-        }
-
-        private void OnSizeChanged(object sender, SizeChangedEventArgs e)
-        {
-            const int iniFontSize = 15;
-            const int iniHeight = 400;
-            const int iniWidth = 800;
-
-            double heightScale = e.NewSize.Height / iniHeight;
-            double widthScale = e.NewSize.Width / iniWidth;
-            PatientsDataGrid.FontSize = iniFontSize * double.Min(heightScale, widthScale);
         }
     }
 }
