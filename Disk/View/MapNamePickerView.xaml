@@ -35,7 +35,6 @@
             Command="{Binding SaveMapCommand}"                    
             Margin="0 25"/>
 
-
         <popup:Popup 
             IsPopupOpen="{Binding IsShowPopup}" 
             PopupHeader="{Binding PopupHeader}" 

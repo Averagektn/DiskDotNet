@@ -22,6 +22,13 @@
             <RowDefinition/>
         </Grid.RowDefinitions>
 
+        <Menu Height="35" FontSize="25" VerticalAlignment="Top" HorizontalAlignment="Left">
+            <MenuItem Header="{x:Static lang:SettingsLocalization.Language}">
+                <MenuItem Header="English" Command="{Binding ChangeLanguageCommand}" CommandParameter="en-US"/>
+                <MenuItem Header="Русский" Command="{Binding ChangeLanguageCommand}" CommandParameter="ru-RU"/>
+            </MenuItem>
+        </Menu>
+
         <StackPanel Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center">
             <TextBlock 
                 HorizontalAlignment="Center"

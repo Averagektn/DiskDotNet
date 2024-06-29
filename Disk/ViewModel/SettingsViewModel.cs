@@ -1,6 +1,7 @@
 ﻿using Disk.Stores;
 using Disk.ViewModel.Common.Commands.Sync;
 using Disk.ViewModel.Common.ViewModels;
+using System.Windows;
 using System.Windows.Input;
 using Settings = Disk.Properties.Config.Config;
 
@@ -94,5 +95,34 @@ namespace Disk.ViewModel
             });
 
         public ICommand CancelCommand => new Command(_ => navigationStore.NavigateBack());
+        public ICommand ChangeLanguageCommand => new Command(ChangeLanguage);
+
+        private void ChangeLanguage(object? parameter)
+        {
+            if (parameter is not null)
+            {
+                var selectedLanguage = parameter.ToString();
+
+                if (Settings.Language != selectedLanguage)
+                {
+                    Settings.Language = selectedLanguage;
+                    Settings.Save();
+
+                    RestartApplication();
+                }
+            }
+        }
+
+        private static void RestartApplication()
+        {
+            var appPath = Environment.ProcessPath;
+
+            if (appPath is not null)
+            {
+                _ = System.Diagnostics.Process.Start(appPath);
+            }
+
+            Application.Current.Shutdown();
+        }
     }
 }
