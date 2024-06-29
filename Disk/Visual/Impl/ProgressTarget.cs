@@ -60,7 +60,7 @@ namespace Disk.Visual.Impl
         public override int ReceiveShot(Point2D<int> shot)
         {
             var res = base.ReceiveShot(shot);
-            if (res != 0)
+            if (res <= 1)
             {
                 _border.Value += res;
             }

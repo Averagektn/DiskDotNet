@@ -111,13 +111,6 @@ namespace Disk.Visual.Impl
             for (var angle = angleStep / 2; angle < 360.0; angle += angleStep, i++)
             {
                 var radius = Radius * Frequency.ElementAt(i) / (double)maxFrequency;
-                //REMOVE
-                if (radius < 5)
-                {
-                    radius = 50;
-                }
-                //
-
                 var point = new PolarPoint<float>(radius, Math.PI * angle / 180);
 
                 Polygon.Points.Add(new((Size.Width / 2) + point.X, (Size.Height / 2) - point.Y));
