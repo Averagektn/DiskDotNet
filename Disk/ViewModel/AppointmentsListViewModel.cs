@@ -9,8 +9,8 @@ using System.Windows.Input;
 
 namespace Disk.ViewModel
 {
-    public class AppointmentsListViewModel(NavigationStore navigationStore, IAppointmentRepository appointmentRepository, ISessionRepository sessionRepository)
-        : ObserverViewModel
+    public class AppointmentsListViewModel(NavigationStore navigationStore, IAppointmentRepository appointmentRepository,
+        ISessionRepository sessionRepository) : ObserverViewModel
     {
         public Patient Patient { get; set; } = null!;
 
