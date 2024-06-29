@@ -53,6 +53,7 @@
             FontSize="25"
             Height="35"
             TextAlignment="Center" 
+            BorderThickness="0 0 0 1"
             Margin="10"/>
 
         <Button 
@@ -86,6 +87,7 @@
             FontSize="25" 
             Height="35"
             TextAlignment="Center" 
+            BorderThickness="0 0 0 1"
             Margin="10"/>
 
         <Button 
