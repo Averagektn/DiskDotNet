@@ -9,7 +9,7 @@
              d:DataContext="{d:DesignInstance Type=viewmodel:PaintViewModel}"
              xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
              mc:Ignorable="d" 
-             d:DesignHeight="450" 
+             d:DesignHeight="800" 
              d:DesignWidth="800">
 
     <Grid x:Name="PaintAreaGrid">
@@ -32,76 +32,92 @@
             Panel.ZIndex="-10"
             Source="/Properties/feet_projection.png" />
 
-        <Viewbox Grid.Row="0" Grid.Column="0" Margin="10 10 0 0" 
-                 HorizontalAlignment="Left" VerticalAlignment="Top">
-            
+        <TextBlock 
+            Grid.Row="0" 
+            Grid.Column="0" 
+            Margin="10 10 0 0" 
+            HorizontalAlignment="Left" 
+            VerticalAlignment="Top"
+            Text="{x:Static lang:PaintWindowLocalization.LeftFoot}" 
+            FontSize="55" 
+            Height="65"/>
+
+        <TextBlock 
+            Grid.Row="0" 
+            Grid.Column="0" 
+            Margin="10 10 0 0" 
+            HorizontalAlignment="Right" 
+            VerticalAlignment="Top"    
+            Text="{x:Static lang:PaintWindowLocalization.RightFoot}" 
+            FontSize="55" 
+            Height="65"/>
+
+
+        <StackPanel Grid.RowSpan="5" Grid.Column="1" Margin="5">
             <TextBlock 
-                Text="{x:Static lang:PaintWindowLocalization.LeftFoot}" 
-                FontSize="20" Height="100"/>
-        </Viewbox>
+                FontSize="25" 
+                Text="{Binding ScoreString}" 
+                Visibility="{Binding ScoreVisibility}" 
+                TextAlignment="Left" 
+                Margin="0 20"/>
 
-        <Viewbox Grid.Row="0" Grid.Column="0" Margin="10 10 0 0" 
-                 HorizontalAlignment="Right" VerticalAlignment="Top">
-            
             <TextBlock 
-                Text="{x:Static lang:PaintWindowLocalization.RightFoot}" 
-                FontSize="20" 
-                Height="100"/>
-        </Viewbox>
+                FontSize="25" 
+                Text="{Binding Message}" 
+                TextAlignment="Left" 
+                Margin="0 20"/>
 
-        <Viewbox Grid.RowSpan="5" Grid.Column="1" Margin="5 0">
-            <StackPanel>
+            <RadioButton             
+                FontSize="25"
+                Content="{x:Static lang:PaintWindowLocalization.WindRose}"          
+                GroupName="DataType" 
+                IsChecked="{Binding IsRoseChecked}" 
+                Visibility="{Binding RoseButtonVisibility}" 
+                Margin="0 20"/>
 
-                <TextBlock FontSize="20" Text="{Binding ScoreString}" Visibility="{Binding ScoreVisibility}" TextAlignment="Left" Margin="0 20"/>
+                
+            <RadioButton 
+                FontSize="25"
+                GroupName="DataType"
+                Content="{x:Static lang:PaintWindowLocalization.Path}" 
+                Visibility="{Binding PathButtonVisibility}" 
+                IsChecked="{Binding IsPathChecked}"
+                Margin="0 20"/>
 
-                <TextBlock FontSize="20" Text="{Binding Message}" TextAlignment="Left" Margin="0 20"/>
+            <ComboBox                 
+                FontSize="25"
+                SelectionChanged="CbTargets_SelectionChanged" 
+                SelectedIndex="{Binding SelectedRoseOrPath}" 
+                ItemsSource="{Binding PathsAndRoses}" 
+                Visibility="{Binding RosesAndPathsVisibility}" 
+                Margin="5"/>
 
-                <RadioButton 
-                    FontSize="20"
-                    Content="{x:Static lang:PaintWindowLocalization.WindRose}"          
-                    GroupName="DataType" 
-                    IsChecked="{Binding IsRoseChecked}" 
-                    Visibility="{Binding RoseButtonVisibility}" 
-                    Checked="RbChecked"
-                    Margin="0 20"/>
+                
+            <Button 
+                MaxWidth="300"
+                MinWidth="150"
+                HorizontalAlignment="Center"
+                Content="{x:Static lang:PaintWindowLocalization.Stop}"
+                Click="OnStopClick" 
+                VerticalAlignment="Bottom"    
+                IsEnabled="{Binding IsStopEnabled}"
+                Width="auto"
+                Margin="5"/>
 
-                <RadioButton 
-                    FontSize="20"
-                    GroupName="DataType"
-                    Content="{x:Static lang:PaintWindowLocalization.Path}" 
-                    Visibility="{Binding PathButtonVisibility}" 
-                    IsChecked="{Binding IsPathChecked}"
-                    Checked="RbChecked"
-                    Margin="0 20"/>
+                
+            <Button 
+                MaxWidth="300"
+                MinWidth="150"
+                HorizontalAlignment="Center"
+                Content="{x:Static lang:PaintWindowLocalization.Back}"
+                Command="{Binding NavigateBackCommand}"
+                IsEnabled="{Binding IsBackEnabled}"
+                Width="auto"
+                Margin="5"/>
+            
+        </StackPanel>
 
-                <ComboBox 
-                    FontSize="20"
-                    SelectionChanged="CbTargets_SelectionChanged" 
-                    SelectedIndex="{Binding SelectedRoseOrPath}" 
-                    ItemsSource="{Binding PathsAndRoses}" 
-                    Visibility="{Binding RosesAndPathsVisibility}" 
-                    Margin="0 20"/>
-
-                <Button 
-                    Content="{x:Static lang:PaintWindowLocalization.Stop}"
-                    FontSize="20" 
-                    Name="BtnStop" 
-                    Click="OnStopClick" 
-                    VerticalAlignment="Bottom"    
-                    IsEnabled="{Binding IsStopEnabled}"
-                    Margin="0 20"/>
-
-                <Button 
-                    Content="{x:Static lang:PaintWindowLocalization.Back}"
-                    FontSize="20"  
-                    VerticalAlignment="Bottom"    
-                    Command="{Binding NavigateBackCommand}"
-                    IsEnabled="{Binding IsBackEnabled}"
-                    Margin="0 20"/>
-            </StackPanel>
-        </Viewbox>
-
-        <Canvas Name="PaintArea" Grid.RowSpan="5">
+            <Canvas Name="PaintArea" Grid.RowSpan="5">
             <Path Fill="Transparent" Stretch="Fill" Stroke="Black" 
                   StrokeThickness="2">
                 <Path.Data>

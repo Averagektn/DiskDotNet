@@ -24,17 +24,16 @@ namespace Disk.ViewModel
 {
     public class PaintViewModel : ObserverViewModel
     {
-        public Session CurrentSession { get; set; } = null!;
-
         // Can set on creation
         public event Action? OnSessionOver;
         public string ImagePath = string.Empty;
         public string CurrPath { get; set; } = null!;
+        public Session CurrentSession { get; set; } = null!;
 
         // Scale
         public Converter Converter { get; set; }
 
-        // Properties
+        // Get only
         public Point2D<float>? NextTargetCenter => TargetCenters.Count <= TargetId ? null : TargetCenters[TargetId++];
         private static Settings Settings => Settings.Default;
         private string UsrAngLog => $"{CurrPath}{FilePath.DirectorySeparatorChar}{Settings.UserLogFileName}";
@@ -43,13 +42,13 @@ namespace Disk.ViewModel
         // Disposable
         private readonly Thread DiskNetworkThread;
 
-        // sessions datasets
+        // Sessions datasets
         public List<Point2D<float>> TargetCenters { get; set; } = null!;
         public List<Point2D<float>> FullPath = [];
         public List<List<Point2D<float>>> PathsToTargets = [[]];
         public List<List<Point2D<float>>> PathsInTargets = [];
 
-        // changing
+        // Changing
         public Point3D<float>? CurrentPos;
         public bool IsGame = true;
         public int TargetId { get; set; }
@@ -75,14 +74,15 @@ namespace Disk.ViewModel
         private Stopwatch? PathToTargetStopwatch;
 
         // binding
+        public bool IsRoseChecked { get; set; }
+        public bool IsPathChecked { get; set; }
+        public string ScoreString => $"{Localization.Score}: {Score}";
+
         private bool _isBackEnabled;
         public bool IsBackEnabled { get => _isBackEnabled; set => SetProperty(ref _isBackEnabled, value); }
 
-        public bool IsRoseChecked { get; set; }
-        public bool IsPathChecked { get; set; }
         private int _selectedRoseOrPath;
         public int SelectedRoseOrPath { get => _selectedRoseOrPath; set => SetProperty(ref _selectedRoseOrPath, value); }
-        public string ScoreString => $"{Localization.Score}: {Score}";
 
         private string _message = string.Empty;
         public string Message { get => _message; set => SetProperty(ref _message, value); }
@@ -102,6 +102,7 @@ namespace Disk.ViewModel
         private Visibility _scoreVisiblity = Visibility.Visible;
         public Visibility ScoreVisibility { get => _scoreVisiblity; set => SetProperty(ref _scoreVisiblity, value); }
 
+        // Command
         public ICommand NavigateBackCommand => new Command(_ => _navigationStore.NavigateBack());
 
         public PaintViewModel(NavigationStore navigationStore, IPathToTargetRepository pathToTargetRepository,
