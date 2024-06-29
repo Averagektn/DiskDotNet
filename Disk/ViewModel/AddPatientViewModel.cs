@@ -37,6 +37,8 @@ namespace Disk.ViewModel
         public ICommand DateOfBirthFocusCommand => new Command(_ => BgDateOfBirth = new SolidColorBrush(Colors.White));
         public ICommand MobilePhoneFocusCommand => new Command(_ => BgMobilePhone = new SolidColorBrush(Colors.White));
         public ICommand HomePhoneFocusCommand => new Command(_ => BgHomePhone = new SolidColorBrush(Colors.White));
+        public ICommand AddPatientCommand => new AsyncCommand(AddPatient);
+        public ICommand CancelCommand => new Command(_ => modalNavigationStore.Close());
 
         private Patient _patient = new()
         {
@@ -47,9 +49,6 @@ namespace Disk.ViewModel
             Surname = string.Empty
         };
         public Patient Patient { get => _patient; set => SetProperty(ref _patient, value); }
-
-        public ICommand AddPatientCommand => new AsyncCommand(AddPatient);
-        public ICommand CancelCommand => new Command(_ => modalNavigationStore.Close());
 
         private async Task AddPatient(object? arg)
         {
