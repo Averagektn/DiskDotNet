@@ -32,5 +32,20 @@ namespace Disk.Repository.Implementation
 
             await base.AddAsync(entity);
         }
+
+        public ICollection<Patient> GetPatientsByFullname(string name, string surname, string patronymic)
+        {
+            throw new NotImplementedException();
+        }
+
+        public int GetPatientsCount()
+        {
+            throw new NotImplementedException();
+        }
+
+        public ICollection<Patient> GetPatientsPage(int pageNum, int patientsPerPage)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

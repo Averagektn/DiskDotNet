@@ -123,6 +123,9 @@
   <data name="DateOfBirth" xml:space="preserve">
     <value>Дата рождения</value>
   </data>
+  <data name="Delete" xml:space="preserve">
+    <value>Удалить</value>
+  </data>
   <data name="HomePhone" xml:space="preserve">
     <value>Домашний телефон</value>
   </data>
@@ -135,13 +138,22 @@
   <data name="Name" xml:space="preserve">
     <value>Имя</value>
   </data>
+  <data name="NextPage" xml:space="preserve">
+    <value>Следующая</value>
+  </data>
   <data name="Patronymic" xml:space="preserve">
     <value>Отчество</value>
+  </data>
+  <data name="PrevPage" xml:space="preserve">
+    <value>Предыдущая</value>
   </data>
   <data name="SearchHeader" xml:space="preserve">
     <value>Поиск (ФИО): </value>
   </data>
   <data name="Surname" xml:space="preserve">
     <value>Фамилия</value>
+  </data>
+  <data name="Update" xml:space="preserve">
+    <value>Обновить</value>
   </data>
 </root>

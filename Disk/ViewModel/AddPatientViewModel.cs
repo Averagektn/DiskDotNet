@@ -15,7 +15,8 @@ namespace Disk.ViewModel
 {
     public class AddPatientViewModel(ModalNavigationStore modalNavigationStore, IPatientService patientService) : PopupViewModel
     {
-        public event Action<Patient>? OnAdd;
+        public event Action<Patient>? OnAddEvent;
+        public event Action<Patient>? OnCancelEvent;
 
         private Brush _bgName = new SolidColorBrush(Colors.White);
         public Brush BgName { get => _bgName; set => SetProperty(ref _bgName, value); }
@@ -37,8 +38,13 @@ namespace Disk.ViewModel
         public ICommand DateOfBirthFocusCommand => new Command(_ => BgDateOfBirth = new SolidColorBrush(Colors.White));
         public ICommand MobilePhoneFocusCommand => new Command(_ => BgMobilePhone = new SolidColorBrush(Colors.White));
         public ICommand HomePhoneFocusCommand => new Command(_ => BgHomePhone = new SolidColorBrush(Colors.White));
-        public ICommand AddPatientCommand => new AsyncCommand(AddPatient);
-        public ICommand CancelCommand => new Command(_ => modalNavigationStore.Close());
+        public virtual ICommand AddPatientCommand => new AsyncCommand(AddPatient);
+        public virtual ICommand CancelCommand => new Command(
+            _ =>
+            {
+                OnCancelEvent?.Invoke(Patient);
+                modalNavigationStore.Close();
+            });
 
         private Patient _patient = new()
         {
@@ -102,7 +108,7 @@ namespace Disk.ViewModel
 
             if (success)
             {
-                OnAdd?.Invoke(Patient);
+                OnAddEvent?.Invoke(Patient);
                 modalNavigationStore.Close();
             }
         }

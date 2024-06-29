@@ -123,6 +123,9 @@
   <data name="DateOfBirth" xml:space="preserve">
     <value>Date of birth</value>
   </data>
+  <data name="Delete" xml:space="preserve">
+    <value>Delete</value>
+  </data>
   <data name="HomePhone" xml:space="preserve">
     <value>Home phone</value>
   </data>
@@ -135,13 +138,22 @@
   <data name="Name" xml:space="preserve">
     <value>Name</value>
   </data>
+  <data name="NextPage" xml:space="preserve">
+    <value>Next</value>
+  </data>
   <data name="Patronymic" xml:space="preserve">
     <value>Patronymic</value>
+  </data>
+  <data name="PrevPage" xml:space="preserve">
+    <value>Previous</value>
   </data>
   <data name="SearchHeader" xml:space="preserve">
     <value>Search (Full name): </value>
   </data>
   <data name="Surname" xml:space="preserve">
     <value>Surname</value>
+  </data>
+  <data name="Update" xml:space="preserve">
+    <value>Update</value>
   </data>
 </root>

@@ -8,7 +8,7 @@ namespace Disk.Service.Implementation
 {
     public class PatientService(IPatientRepository patientRepository) : IPatientService
     {
-        public void AddPatient(Patient patient)
+        public void Add(Patient patient)
         {
             if (Validate(patient))
             {
@@ -48,7 +48,14 @@ namespace Disk.Service.Implementation
             }
 
             const int mobilePhoneLength = 13;
-            patient.DateOfBirth = DateTime.Parse(patient.DateOfBirth, CultureInfo.InvariantCulture).ToShortDateString();
+            try
+            {
+                patient.DateOfBirth = DateTime.Parse(patient.DateOfBirth, CultureInfo.CurrentCulture).ToShortDateString();
+            }
+            catch
+            {
+                patient.DateOfBirth = DateTime.Parse(patient.DateOfBirth, CultureInfo.InvariantCulture).ToShortDateString();
+            }
             var date = DateTime.Parse(patient.DateOfBirth);
 
             if (date.Date >= DateTime.Now.Date)
@@ -58,6 +65,14 @@ namespace Disk.Service.Implementation
             return !patient.PhoneMobile.StartsWith("+375") || patient.PhoneMobile.Length < mobilePhoneLength
                 ? throw new InvalidPhoneNumberException("Patient mobile phone exception")
                 : true;
+        }
+
+        public void Update(Patient patient)
+        {
+            if (Validate(patient))
+            {
+                patientRepository.Update(patient);
+            }
         }
     }
 }

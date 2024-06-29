@@ -9,7 +9,7 @@ using System.Windows.Input;
 
 namespace Disk.ViewModel
 {
-    public class AppointmentsListViewModel(NavigationStore navigationStore, IAppointmentRepository appointmentRepository,
+    public class AppointmentsListViewModel(NavigationStore navigationStore, IAppointmentRepository appointmentRepository, 
         ISessionRepository sessionRepository) : ObserverViewModel
     {
         public Patient Patient { get; set; } = null!;
@@ -34,7 +34,7 @@ namespace Disk.ViewModel
                     )
                 );
             });
-
+        
         private async Task StartAppointmentAsync(object? arg)
         {
             var appointment = new Appointment()

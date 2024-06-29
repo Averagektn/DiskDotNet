@@ -22,7 +22,6 @@
             Grid.Column="0" 
             VerticalAlignment="Top" 
             HorizontalAlignment="Left">
-            
             <TextBlock 
                 Text="{x:Static lang:AppointmentsListLocalization.Surname}" 
                 Margin="10" 
