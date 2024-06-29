@@ -34,6 +34,7 @@
                 TextAlignment="Center" 
                 Margin="200 10"
                 MinWidth="300"
+                BorderThickness="0 0 0 1"
                 Height="35"/>
         </StackPanel>
 
@@ -49,6 +50,7 @@
                 TextAlignment="Center" 
                 Margin="200 10"
                 MinWidth="300"
+                BorderThickness="0 0 0 1"
                 Height="35"/>
         </StackPanel>
 
@@ -64,6 +66,7 @@
                 TextAlignment="Center" 
                 Margin="200 10"
                 MinWidth="300"
+                BorderThickness="0 0 0 1"
                 Height="35"/>
         </StackPanel>
 
@@ -79,6 +82,7 @@
                 TextAlignment="Center" 
                 Margin="200 10"
                 MinWidth="300"
+                BorderThickness="0 0 0 1"
                 Height="35"/>
         </StackPanel>
 
@@ -94,6 +98,7 @@
                 TextAlignment="Center" 
                 Margin="200 10"
                 MinWidth="300"
+                BorderThickness="0 0 0 1"
                 Height="35"/>
         </StackPanel>
 
@@ -109,6 +114,7 @@
                 TextAlignment="Center" 
                 Margin="200 10"
                 MinWidth="300"
+                BorderThickness="0 0 0 1"
                 Height="35"/>
         </StackPanel>
 

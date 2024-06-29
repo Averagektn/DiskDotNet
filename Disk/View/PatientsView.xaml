@@ -25,6 +25,7 @@
                 Margin="15"
                 Height="35"
                 Width="300"
+                BorderThickness="0 0 0 1"
                 Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}"
                 Background="LightGray">
                 <i:Interaction.Triggers>
