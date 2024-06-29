@@ -12,7 +12,7 @@
              d:DesignHeight="450" d:DesignWidth="800">
 
     <Grid Name="PaintArea">
-        <Menu Height="20" VerticalAlignment="Top" HorizontalAlignment="Left" Name="Menu">
+        <Menu Height="35" FontSize="25" VerticalAlignment="Top" HorizontalAlignment="Left" Name="Menu">
             <MenuItem Header="{x:Static lang:MapCreatorLocalization.Save}" Click="Save_Click"/>
         </Menu>
 

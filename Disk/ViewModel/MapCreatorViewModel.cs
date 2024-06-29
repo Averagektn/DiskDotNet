@@ -15,7 +15,6 @@ namespace Disk.ViewModel
         private static int IniHeight => Settings.Default.IniScreenHeight;
 
         private readonly List<NumberedTarget> _targets = [];
-
         private Target? _movingTarget;
 
         public void SelectTarget(Point mousePos)
