@@ -81,7 +81,7 @@ namespace Disk.ViewModel
         private bool _isBackEnabled;
         public bool IsBackEnabled { get => _isBackEnabled; set => SetProperty(ref _isBackEnabled, value); }
 
-        private int _selectedRoseOrPath;
+        private int _selectedRoseOrPath = -1;
         public int SelectedRoseOrPath { get => _selectedRoseOrPath; set => SetProperty(ref _selectedRoseOrPath, value); }
 
         private string _message = string.Empty;
@@ -144,14 +144,15 @@ namespace Disk.ViewModel
                     return [];
                 }
                 var converter = DrawableFabric.GetIniConverter();
-                var path = new Path(PathsToTargets[SelectedRoseOrPath], Converter, new SolidColorBrush(Colors.Green));
+                var pathToTarget = new Path(PathsToTargets[SelectedRoseOrPath], Converter, new SolidColorBrush(Colors.Green));
+                var pathInTarget = new Path(PathsInTargets[SelectedRoseOrPath], Converter, new SolidColorBrush(Colors.Blue));
                 var targetCenter = converter.ToWnd_FromRelative(TargetCenters[SelectedRoseOrPath]);
                 var targetToDraw = DrawableFabric.GetIniProgressTarget(targetCenter);
 
                 var userToDraw = DrawableFabric.GetIniUser(ImagePath);
                 userToDraw.Move(converter.ToWndCoord(PathsToTargets[SelectedRoseOrPath][0]));
 
-                return [targetToDraw, userToDraw, path];
+                return [targetToDraw, userToDraw, pathToTarget, pathInTarget];
             }
             return [];
         }
