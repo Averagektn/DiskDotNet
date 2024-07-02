@@ -14,17 +14,17 @@ namespace Disk.ViewModel
         ISessionRepository sessionRepository) : ObserverViewModel
     {
         private Patient _patient = null!;
-        public Patient Patient 
+        public Patient Patient
         {
             get => _patient;
-            set 
+            set
             {
                 _patient = value;
 
                 Appointments = new(appointmentRepository.GetPagedAppointments(Patient.Id, currPage, AppointmentsPerPage));
 
                 IsNextEnabled = currPage < PagesCount - 1;
-            } 
+            }
         }
 
         public ObservableCollection<Appointment> Appointments { get; set; } = [];
