@@ -21,9 +21,7 @@ namespace Disk.ViewModel
             {
                 _patient = value;
 
-                Appointments = new(appointmentRepository
-                    .GetPagedAppointments(_patient.Id, currPage, AppointmentsPerPage)
-                    .OrderByDescending(a => DateTime.ParseExact(a.DateTime, "dd.MM.yyyy HH:mm:ss", CultureInfo.InvariantCulture)));
+                Appointments = new(appointmentRepository.GetPagedAppointments(Patient.Id, currPage, AppointmentsPerPage));
 
                 IsNextEnabled = currPage < PagesCount - 1;
             } 
@@ -48,18 +46,28 @@ namespace Disk.ViewModel
         private const int AppointmentsPerPage = 15;
 
         public ICommand StartAppointmentCommand => new AsyncCommand(StartAppointmentAsync);
-        public ICommand CancelDateCommand => new Command(_ => SelectedDate = null);
+        public ICommand CancelDateCommand => new Command(
+            _ =>
+            {
+                SelectedDate = null;
+                UpdateAppointments();
+            });
         public ICommand ToAppointmentCommand => new Command(
             _ =>
             {
+                if (SelectedAppointment is null)
+                {
+                    return;
+                }
+
                 navigationStore.SetViewModel<NavigationBarLayoutViewModel>(
                     vm => vm.CurrentViewModel = navigationStore.GetViewModel<AppointmentViewModel>(
                         vm =>
                         {
-                            vm.Appointment = SelectedAppointment!;
+                            vm.Appointment = SelectedAppointment;
                             vm.Patient = Patient;
                             vm.Sessions = new ObservableCollection<Session>(sessionRepository
-                                .GetSessionsWithResultsByAppointment(SelectedAppointment!.Id));
+                                .GetSessionsWithResultsByAppointment(SelectedAppointment.Id));
                         }
                     )
                 );
@@ -68,9 +76,25 @@ namespace Disk.ViewModel
         public ICommand DeleteAppointmentCommand => new Command(
             _ =>
             {
-                appointmentRepository.Delete(SelectedAppointment!);
-                _ = Appointments.Remove(SelectedAppointment!);
+                if (SelectedAppointment is null)
+                {
+                    return;
+                }
+
+                appointmentRepository.Delete(SelectedAppointment);
+                _ = Appointments.Remove(SelectedAppointment);
                 OnPropertyChanged(nameof(Appointments));
+
+                if (Appointments.Count == 0 && currPage > 0)
+                {
+                    currPage--;
+                }
+
+                IsPreviousEnabled = currPage > 0;
+                IsNextEnabled = currPage < PagesCount - 1;
+
+                SelectedDate = null;
+                UpdateAppointments();
             });
 
         public ICommand NextPageCommand => new Command(
@@ -79,6 +103,10 @@ namespace Disk.ViewModel
                 currPage++;
                 IsPreviousEnabled = true;
                 IsNextEnabled = currPage < PagesCount - 1;
+
+                SelectedDate = null;
+
+                UpdateAppointments();
             });
 
         public ICommand PrevPageCommand => new Command(
@@ -87,6 +115,10 @@ namespace Disk.ViewModel
                 currPage--;
                 IsPreviousEnabled = currPage > 0;
                 IsNextEnabled = true;
+
+                SelectedDate = null;
+
+                UpdateAppointments();
             });
 
         public ICommand SearchByDateCommand => new Command(
@@ -105,6 +137,12 @@ namespace Disk.ViewModel
                 }
             });
 
+        private void UpdateAppointments()
+        {
+            Appointments = new(appointmentRepository.GetPagedAppointments(Patient.Id, currPage, AppointmentsPerPage));
+            OnPropertyChanged(nameof(Appointments));
+        }
+
         private async Task StartAppointmentAsync(object? arg)
         {
             var appointment = new Appointment()
@@ -115,7 +153,10 @@ namespace Disk.ViewModel
 
             await appointmentRepository.AddAsync(appointment);
 
-            Appointments.Add(appointment);
+            currPage = PagesCount - 1;
+            IsPreviousEnabled = currPage > 0;
+            IsNextEnabled = currPage < PagesCount - 1;
+            UpdateAppointments();
 
             navigationStore.SetViewModel<NavigationBarLayoutViewModel>(
                 vm => vm.CurrentViewModel = navigationStore.GetViewModel<AppointmentViewModel>(

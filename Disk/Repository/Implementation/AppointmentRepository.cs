@@ -22,6 +22,7 @@ namespace Disk.Repository.Implementation
 
             return appointments
                 .Where(a => DateTime.ParseExact(a.DateTime, "dd.MM.yyyy HH:mm:ss", CultureInfo.InvariantCulture).Date.Equals(date.Date))
+                .OrderByDescending(a => a.DateTime)
                 .ToList();
         }
 
@@ -29,6 +30,7 @@ namespace Disk.Repository.Implementation
         {
             return table
                 .Where(a => a.Patient == patientId)
+                .OrderByDescending(a => a.DateTime)
                 .Skip(page * appointmentsPerPage)
                 .Take(appointmentsPerPage)
                 .ToList();
@@ -36,12 +38,12 @@ namespace Disk.Repository.Implementation
 
         public ICollection<Appointment> GetPatientAppointments(long id)
         {
-            return table.Where(a => a.Patient == id).ToList();
+            return table.Where(a => a.Patient == id).OrderByDescending(a => a.DateTime).ToList();
         }
 
         public async Task<ICollection<Appointment>> GetPatientAppointmentsAsync(long id)
         {
-            return await table.Where(a => a.Patient == id).ToListAsync();
+            return await table.Where(a => a.Patient == id).OrderByDescending(a => a.DateTime).ToListAsync();
         }
     }
 }
