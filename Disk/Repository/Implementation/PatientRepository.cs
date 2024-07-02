@@ -1,5 +1,6 @@
 ﻿using Disk.Db.Context;
 using Disk.Entities;
+using Disk.Extensions;
 using Disk.Repository.Common.Implementation;
 using Disk.Repository.Exceptions;
 using Disk.Repository.Interface;
@@ -11,8 +12,13 @@ namespace Disk.Repository.Implementation
     {
         public new void Add(Patient entity)
         {
-            var patientExists = table.Any(p => p.Name == entity.Name && p.Surname == entity.Surname &&
-                p.Patronymic == entity.Patronymic && p.DateOfBirth == entity.DateOfBirth);
+            var patientExists = table
+                .Any(p => 
+                    p.Name == entity.Name && 
+                    p.Surname == entity.Surname &&
+                    p.Patronymic == entity.Patronymic && 
+                    p.DateOfBirth == entity.DateOfBirth);
+
             if (patientExists)
             {
                 throw new DuplicateEntityException("Patient duplication");
@@ -23,8 +29,13 @@ namespace Disk.Repository.Implementation
 
         public new async Task AddAsync(Patient entity)
         {
-            var patientExists = await table.AnyAsync(p => p.Name == entity.Name && p.Surname == entity.Surname &&
-                p.Patronymic == entity.Patronymic && p.DateOfBirth == entity.DateOfBirth);
+            var patientExists = await table
+                .AnyAsync(p => 
+                    p.Name == entity.Name && 
+                    p.Surname == entity.Surname &&
+                    p.Patronymic == entity.Patronymic && 
+                    p.DateOfBirth == entity.DateOfBirth);
+
             if (patientExists)
             {
                 throw new DuplicateEntityException("Patient duplication");
@@ -35,17 +46,29 @@ namespace Disk.Repository.Implementation
 
         public ICollection<Patient> GetPatientsByFullname(string name, string surname, string patronymic)
         {
-            throw new NotImplementedException();
+            name = name.CapitalizeFirstLetter();
+            surname = surname.CapitalizeFirstLetter();
+            patronymic = patronymic.CapitalizeFirstLetter();
+            return table
+                .Where(p =>  
+                    p.Name.Contains(name) &&
+                    p.Surname.Contains(surname) &&
+                    (p.Patronymic == null || p.Patronymic.Contains(patronymic))
+                )
+                .ToList();
         }
 
         public int GetPatientsCount()
         {
-            throw new NotImplementedException();
+            return table.Count();
         }
 
         public ICollection<Patient> GetPatientsPage(int pageNum, int patientsPerPage)
         {
-            throw new NotImplementedException();
+            return table
+                .Skip(pageNum * patientsPerPage)
+                .Take(patientsPerPage)
+                .ToList();
         }
     }
 }

@@ -5,7 +5,6 @@ using Disk.ViewModel.Common.Commands.Sync;
 using Disk.ViewModel.Common.ViewModels;
 using Newtonsoft.Json;
 using System.Collections.ObjectModel;
-using System.Windows;
 using System.Windows.Input;
 
 namespace Disk.ViewModel
@@ -16,7 +15,18 @@ namespace Disk.ViewModel
             => new Command(_ => _modalNavigationStore.SetViewModel<AddPatientViewModel>
             (
                 vm =>
-                    vm.OnAddEvent += patient => SortedPatients.Add(patient),
+                {
+                    vm.OnAddEvent += patient => SortedPatients.Add(patient);
+                    vm.OnAddEvent += _ =>
+                    {
+                        totalPages = (int)float.Ceiling((float)_patientRepository.GetPatientsCount() / PatientsPerPage);
+                        PageNum = totalPages;
+                        IsPrevEnabled = PageNum > 1;
+                        IsNextEnabled = PageNum < totalPages;
+
+                        GetPagedPatients();
+                    };
+                },
                 canClose: true)
             );
         public ICommand SearchCommand => new Command(Search);
@@ -25,9 +35,19 @@ namespace Disk.ViewModel
             _ =>
             {
                 var patient = SelectedPatient!;
-                _ = Patients.Remove(patient);
                 _ = SortedPatients.Remove(patient);
                 _patientRepository.Delete(patient);
+
+                if (SortedPatients.Count == 0 && PageNum > 1)
+                {
+                    PageNum--;
+                }
+                totalPages = (int)float.Ceiling((float)_patientRepository.GetPatientsCount() / PatientsPerPage);
+
+                IsPrevEnabled = PageNum > 1;
+                IsNextEnabled = PageNum < totalPages;
+
+                GetPagedPatients();
             });
         public ICommand UpdatePatientCommand => new Command(
             _ => _modalNavigationStore.SetViewModel<EditPatientViewModel>(
@@ -42,10 +62,26 @@ namespace Disk.ViewModel
                         SortedPatients.Insert(id, _patientRepository.GetById(patient.Id));
                     };
                 }));
-        public ICommand NextPageCommand => new Command(_ => MessageBox.Show("Next"));
-        public ICommand PrevPageCommand => new Command(_ => MessageBox.Show("Prev"));
+        public ICommand NextPageCommand => new Command(
+            _ =>
+            {
+                PageNum++;
+                IsNextEnabled = PageNum < totalPages;
+                IsPrevEnabled = true;
 
-        private bool _isNextEnabled = true;
+                GetPagedPatients();
+            });
+        public ICommand PrevPageCommand => new Command(
+            _ =>
+            {
+                PageNum--;
+                IsPrevEnabled = PageNum > 1;
+                IsNextEnabled = true;
+
+                GetPagedPatients();
+            });
+
+        private bool _isNextEnabled;
         public bool IsNextEnabled { get => _isNextEnabled; set => SetProperty(ref _isNextEnabled, value); }
 
         private bool _isPrevEnabled = false;
@@ -55,7 +91,6 @@ namespace Disk.ViewModel
         public int PageNum { get => _pageNum; set => SetProperty(ref _pageNum, value); }
 
         public ObservableCollection<Patient> SortedPatients { get; set; }
-        public List<Patient> Patients => _patientRepository.GetAll().ToList();
         public Patient? SelectedPatient { get; set; }
         public string SearchText { get; set; } = string.Empty;
 
@@ -63,6 +98,7 @@ namespace Disk.ViewModel
         private readonly ModalNavigationStore _modalNavigationStore;
         private readonly IPatientRepository _patientRepository;
 
+        private int totalPages;
         private const int PatientsPerPage = 10;
 
         public PatientsViewModel(NavigationStore navigationStore, ModalNavigationStore modalNavigationStore,
@@ -72,16 +108,50 @@ namespace Disk.ViewModel
             _modalNavigationStore = modalNavigationStore;
             _patientRepository = patientRepository;
 
-            SortedPatients = new(Patients);
+            SortedPatients = new(_patientRepository.GetAll());
+            totalPages = (int)float.Ceiling((float)patientRepository.GetPatientsCount() / PatientsPerPage);
+            IsNextEnabled = totalPages > 1;
         }
 
         private void Search(object? arg)
         {
-            SortedPatients.Clear();
-            var patients = Patients.Where(p =>
-                $"{p.Surname} {p.Name} {p.Patronymic}".Contains(SearchText, StringComparison.OrdinalIgnoreCase));
+            if (SearchText != string.Empty)
+            {
+                PageNum = 1;
 
-            foreach (var patient in patients)
+                var nsp = SearchText.Split(" ", StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries);
+                var surname = nsp[0];
+                var name = string.Empty;
+                var patronymic = string.Empty;
+
+                if (nsp.Length > 1)
+                {
+                    name = nsp[1];
+                    if (nsp.Length > 2)
+                    {
+                        patronymic = nsp[2];
+                    }
+                }
+                var patients = _patientRepository.GetPatientsByFullname(name, surname, patronymic);
+
+                SortedPatients.Clear();
+                foreach (var patient in patients)
+                {
+                    SortedPatients.Add(patient);
+                }
+            }
+            else
+            {
+                PageNum = 1;
+                SortedPatients.Clear();
+                GetPagedPatients();
+            }
+        }
+
+        private void GetPagedPatients()
+        {
+            SortedPatients.Clear();
+            foreach (var patient in _patientRepository.GetPatientsPage(PageNum - 1, PatientsPerPage))
             {
                 SortedPatients.Add(patient);
             }
