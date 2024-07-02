@@ -99,7 +99,7 @@ namespace Disk.ViewModel
         private readonly IPatientRepository _patientRepository;
 
         private int totalPages;
-        private const int PatientsPerPage = 10;
+        private const int PatientsPerPage = 18;
 
         public PatientsViewModel(NavigationStore navigationStore, ModalNavigationStore modalNavigationStore,
             IPatientRepository patientRepository)
@@ -108,7 +108,7 @@ namespace Disk.ViewModel
             _modalNavigationStore = modalNavigationStore;
             _patientRepository = patientRepository;
 
-            SortedPatients = new(_patientRepository.GetAll());
+            SortedPatients = new(_patientRepository.GetPatientsPage(PageNum - 1, PatientsPerPage));
             totalPages = (int)float.Ceiling((float)patientRepository.GetPatientsCount() / PatientsPerPage);
             IsNextEnabled = totalPages > 1;
         }
