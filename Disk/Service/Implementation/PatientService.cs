@@ -48,15 +48,8 @@ namespace Disk.Service.Implementation
             }
 
             const int mobilePhoneLength = 13;
-            try
-            {
-                patient.DateOfBirth = DateTime.Parse(patient.DateOfBirth, CultureInfo.CurrentCulture).ToShortDateString();
-            }
-            catch
-            {
-                patient.DateOfBirth = DateTime.Parse(patient.DateOfBirth, CultureInfo.InvariantCulture).ToShortDateString();
-            }
-            var date = DateTime.Parse(patient.DateOfBirth);
+            patient.DateOfBirth = DateTime.ParseExact(patient.DateOfBirth, "dd.MM.yyyy", CultureInfo.InvariantCulture).ToShortDateString();
+            var date = DateTime.ParseExact(patient.DateOfBirth, "dd.MM.yyyy", CultureInfo.InvariantCulture);
 
             if (date.Date >= DateTime.Now.Date)
             {

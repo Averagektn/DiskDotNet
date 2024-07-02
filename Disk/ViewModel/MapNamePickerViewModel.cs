@@ -8,6 +8,7 @@ using Disk.ViewModel.Common.ViewModels;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using Serilog;
+using System.Globalization;
 using System.Windows.Input;
 
 namespace Disk.ViewModel
@@ -31,7 +32,7 @@ namespace Disk.ViewModel
             {
                 Name = MapName,
                 CoordinatesJson = JsonConvert.SerializeObject(Map),
-                CreatedAtDateTime = DateTime.Now.ToString(),
+                CreatedAtDateTime = DateTime.Now.ToString("dd.MM.yyyy", CultureInfo.InvariantCulture)
             };
 
             try

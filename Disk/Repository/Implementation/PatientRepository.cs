@@ -58,7 +58,7 @@ namespace Disk.Repository.Implementation
                 .ToList();
         }
 
-        public int GetPatientsCount()
+        public long GetPatientsCount()
         {
             return table.Count();
         }

@@ -1,4 +1,5 @@
 ﻿using Disk.Entities;
+using Disk.Repository.Implementation;
 using Disk.Repository.Interface;
 using Disk.Stores;
 using Disk.ViewModel.Common.Commands.Sync;
@@ -19,10 +20,9 @@ namespace Disk.ViewModel
                     vm.OnAddEvent += patient => SortedPatients.Add(patient);
                     vm.OnAddEvent += _ =>
                     {
-                        totalPages = (int)float.Ceiling((float)_patientRepository.GetPatientsCount() / PatientsPerPage);
-                        PageNum = totalPages;
+                        PageNum = TotalPages;
                         IsPrevEnabled = PageNum > 1;
-                        IsNextEnabled = PageNum < totalPages;
+                        IsNextEnabled = PageNum < TotalPages;
 
                         GetPagedPatients();
                     };
@@ -42,10 +42,9 @@ namespace Disk.ViewModel
                 {
                     PageNum--;
                 }
-                totalPages = (int)float.Ceiling((float)_patientRepository.GetPatientsCount() / PatientsPerPage);
 
                 IsPrevEnabled = PageNum > 1;
-                IsNextEnabled = PageNum < totalPages;
+                IsNextEnabled = PageNum < TotalPages;
 
                 GetPagedPatients();
             });
@@ -66,7 +65,7 @@ namespace Disk.ViewModel
             _ =>
             {
                 PageNum++;
-                IsNextEnabled = PageNum < totalPages;
+                IsNextEnabled = PageNum < TotalPages;
                 IsPrevEnabled = true;
 
                 GetPagedPatients();
@@ -98,7 +97,7 @@ namespace Disk.ViewModel
         private readonly ModalNavigationStore _modalNavigationStore;
         private readonly IPatientRepository _patientRepository;
 
-        private int totalPages;
+        private int TotalPages => (int)float.Ceiling((float)_patientRepository.GetPatientsCount() / PatientsPerPage);
         private const int PatientsPerPage = 18;
 
         public PatientsViewModel(NavigationStore navigationStore, ModalNavigationStore modalNavigationStore,
@@ -109,8 +108,7 @@ namespace Disk.ViewModel
             _patientRepository = patientRepository;
 
             SortedPatients = new(_patientRepository.GetPatientsPage(PageNum - 1, PatientsPerPage));
-            totalPages = (int)float.Ceiling((float)patientRepository.GetPatientsCount() / PatientsPerPage);
-            IsNextEnabled = totalPages > 1;
+            IsNextEnabled = (int)float.Ceiling((float)patientRepository.GetPatientsCount() / PatientsPerPage) > 1;
         }
 
         private void Search(object? arg)

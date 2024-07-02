@@ -139,13 +139,13 @@
     <value>Имя</value>
   </data>
   <data name="NextPage" xml:space="preserve">
-    <value>Следующая</value>
+    <value>Далее</value>
   </data>
   <data name="Patronymic" xml:space="preserve">
     <value>Отчество</value>
   </data>
   <data name="PrevPage" xml:space="preserve">
-    <value>Предыдущая</value>
+    <value>Назад</value>
   </data>
   <data name="SearchHeader" xml:space="preserve">
     <value>Поиск (ФИО): </value>

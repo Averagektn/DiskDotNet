@@ -7,6 +7,7 @@ using Disk.ViewModel.Common.ViewModels;
 using Microsoft.Win32;
 using Newtonsoft.Json;
 using System.Collections.ObjectModel;
+using System.Globalization;
 using System.IO;
 using System.Windows.Input;
 using Localization = Disk.Properties.Langs.StartSession.StartSessionLocalization;
@@ -65,7 +66,7 @@ namespace Disk.ViewModel
             var session = new Session()
             {
                 Appointment = Appointment.Id,
-                DateTime = DateTime.Now.ToString(),
+                DateTime = DateTime.Now.ToString("dd.MM.yyyy", CultureInfo.InvariantCulture),
                 LogFilePath = logPath,
                 Map = SelectedMap!.Id,
                 MaxXAngle = Settings.XMaxAngle,

@@ -123,6 +123,9 @@
   <data name="AppoimentsHeader" xml:space="preserve">
     <value>Посещения</value>
   </data>
+  <data name="Cancel" xml:space="preserve">
+    <value>Отмена</value>
+  </data>
   <data name="DateOfBirth" xml:space="preserve">
     <value>Дата рождения</value>
   </data>
@@ -141,11 +144,17 @@
   <data name="Name" xml:space="preserve">
     <value>Имя</value>
   </data>
+  <data name="Next" xml:space="preserve">
+    <value>Далее</value>
+  </data>
   <data name="NotesHeader" xml:space="preserve">
     <value>Заметки</value>
   </data>
   <data name="Patronymic" xml:space="preserve">
     <value>Отчество</value>
+  </data>
+  <data name="Prev" xml:space="preserve">
+    <value>Назад</value>
   </data>
   <data name="StartAppoiment" xml:space="preserve">
     <value>Новое посещение</value>

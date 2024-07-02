@@ -79,6 +79,15 @@ namespace Disk.Properties.Langs.AppointementsList {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Cancel.
+        /// </summary>
+        public static string Cancel {
+            get {
+                return ResourceManager.GetString("Cancel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Date of birth.
         /// </summary>
         public static string DateOfBirth {
@@ -133,6 +142,15 @@ namespace Disk.Properties.Langs.AppointementsList {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Next.
+        /// </summary>
+        public static string Next {
+            get {
+                return ResourceManager.GetString("Next", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Notes.
         /// </summary>
         public static string NotesHeader {
@@ -147,6 +165,15 @@ namespace Disk.Properties.Langs.AppointementsList {
         public static string Patronymic {
             get {
                 return ResourceManager.GetString("Patronymic", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Previous.
+        /// </summary>
+        public static string Prev {
+            get {
+                return ResourceManager.GetString("Prev", resourceCulture);
             }
         }
         

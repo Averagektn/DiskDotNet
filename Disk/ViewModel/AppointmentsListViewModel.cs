@@ -5,23 +5,50 @@ using Disk.ViewModel.Common.Commands.Async;
 using Disk.ViewModel.Common.Commands.Sync;
 using Disk.ViewModel.Common.ViewModels;
 using System.Collections.ObjectModel;
+using System.Globalization;
 using System.Windows.Input;
 
 namespace Disk.ViewModel
 {
-    public class AppointmentsListViewModel(NavigationStore navigationStore, IAppointmentRepository appointmentRepository, 
+    public class AppointmentsListViewModel(NavigationStore navigationStore, IAppointmentRepository appointmentRepository,
         ISessionRepository sessionRepository) : ObserverViewModel
     {
-        public Patient Patient { get; set; } = null!;
+        private Patient _patient = null!;
+        public Patient Patient 
+        {
+            get => _patient;
+            set 
+            {
+                _patient = value;
 
-        public ObservableCollection<Appointment> Appointments
-            => new(appointmentRepository.GetPatientAppointments(Patient.Id).OrderByDescending(a => DateTime.Parse(a.DateTime)));
+                Appointments = new(appointmentRepository
+                    .GetPagedAppointments(_patient.Id, currPage, AppointmentsPerPage)
+                    .OrderByDescending(a => DateTime.ParseExact(a.DateTime, "dd.MM.yyyy", CultureInfo.InvariantCulture)));
+            } 
+        }
+
+        public ObservableCollection<Appointment> Appointments { get; set; } = [];
 
         public Appointment? SelectedAppointment { get; set; }
 
+        private string _selectedDate = string.Empty;
+        public string SelectedDate { get => _selectedDate; set => SetProperty(ref _selectedDate, value); }
+
+        private bool _isNextEnabled;
+        public bool IsNextEnabled { get => _isNextEnabled; set => SetProperty(ref _isNextEnabled, value); }
+
+        private bool _isPreviousEnabled;
+        public bool IsPreviousEnabled { get => _isPreviousEnabled; set => SetProperty(ref _isPreviousEnabled, value); }
+
+        private int currPage;
+        private int PagesCount => (int)float.Ceiling((float)appointmentRepository.GetAppointmentsCount(Patient.Id) / AppointmentsPerPage);
+
+        private const int AppointmentsPerPage = 15;
+
         public ICommand StartAppointmentCommand => new AsyncCommand(StartAppointmentAsync);
-        public ICommand ToAppointmentCommand =>
-            new Command(_ =>
+        public ICommand CancelDateCommand => new Command(_ => SelectedDate = string.Empty);
+        public ICommand ToAppointmentCommand => new Command(
+            _ =>
             {
                 navigationStore.SetViewModel<NavigationBarLayoutViewModel>(
                     vm => vm.CurrentViewModel = navigationStore.GetViewModel<AppointmentViewModel>(
@@ -35,22 +62,51 @@ namespace Disk.ViewModel
                     )
                 );
             });
-        public ICommand DeleteAppointmentCommand => new Command(_ =>
-        {
-            appointmentRepository.Delete(SelectedAppointment!);
-            Appointments.Remove(SelectedAppointment!);
-            OnPropertyChanged(nameof(Appointments));
-        });
+
+        public ICommand DeleteAppointmentCommand => new Command(
+            _ =>
+            {
+                appointmentRepository.Delete(SelectedAppointment!);
+                _ = Appointments.Remove(SelectedAppointment!);
+                OnPropertyChanged(nameof(Appointments));
+            });
+
+        public ICommand NextPageCommand => new Command(
+            _ =>
+            {
+
+            });
+
+        public ICommand PrevPageCommand => new Command(
+            _ =>
+            {
+
+            });
+
+        public ICommand SearchByDateCommand => new Command(
+            _ =>
+            {
+                if (SelectedDate != string.Empty)
+                {
+                    Appointments.Clear();
+                    foreach (var appointment in appointmentRepository.GetAppoitmentsByDate(Patient.Id, DateTime.ParseExact(SelectedDate, "dd.MM.yyyy", CultureInfo.InvariantCulture)))
+                    {
+                        Appointments.Add(appointment);
+                    }
+                }
+            });
 
         private async Task StartAppointmentAsync(object? arg)
         {
             var appointment = new Appointment()
             {
-                DateTime = DateTime.Now.ToString(),
+                DateTime = DateTime.Now.ToString("dd.MM.yyyy", CultureInfo.InvariantCulture),
                 Patient = Patient.Id
             };
 
             await appointmentRepository.AddAsync(appointment);
+
+            Appointments.Add(appointment);
 
             navigationStore.SetViewModel<NavigationBarLayoutViewModel>(
                 vm => vm.CurrentViewModel = navigationStore.GetViewModel<AppointmentViewModel>(
