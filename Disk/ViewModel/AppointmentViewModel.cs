@@ -37,8 +37,10 @@ namespace Disk.ViewModel
         public ICommand DeleteSessionCommand => new Command(_ =>
         {
             sessionRepository.Delete(SelectedSession!);
-            Sessions.Clear();
+            Sessions.Remove(SelectedSession!);
+            OnPropertyChanged(nameof(Sessions));
             PathsToTargets.Clear();
+
             SelectedSession = null;
         });
 

@@ -117,6 +117,14 @@
                         <i:InvokeCommandAction Command="{Binding ToAppointmentCommand}" />
                     </i:EventTrigger>
                 </i:Interaction.Triggers>
+                <DataGrid.ContextMenu>
+                    <ContextMenu FontSize="20">
+                        <MenuItem 
+                        Header="{x:Static lang:AppointmentsListLocalization.Delete}" 
+                        Command="{Binding DeleteAppointmentCommand}" 
+                        CommandParameter="{Binding SelectedAppointment}" />
+                    </ContextMenu>
+                </DataGrid.ContextMenu>
             </DataGrid>
         </Grid>
     </Grid>

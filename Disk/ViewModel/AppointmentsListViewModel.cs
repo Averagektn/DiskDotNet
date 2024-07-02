@@ -29,12 +29,19 @@ namespace Disk.ViewModel
                         {
                             vm.Appointment = SelectedAppointment!;
                             vm.Patient = Patient;
-                            vm.Sessions = new ObservableCollection<Session>(sessionRepository.GetSessionsWithResultsByAppointment(SelectedAppointment!.Id));
+                            vm.Sessions = new ObservableCollection<Session>(sessionRepository
+                                .GetSessionsWithResultsByAppointment(SelectedAppointment!.Id));
                         }
                     )
                 );
             });
-        
+        public ICommand DeleteAppointmentCommand => new Command(_ =>
+        {
+            appointmentRepository.Delete(SelectedAppointment!);
+            Appointments.Remove(SelectedAppointment!);
+            OnPropertyChanged(nameof(Appointments));
+        });
+
         private async Task StartAppointmentAsync(object? arg)
         {
             var appointment = new Appointment()

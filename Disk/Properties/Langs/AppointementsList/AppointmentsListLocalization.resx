@@ -129,6 +129,9 @@
   <data name="DateTime" xml:space="preserve">
     <value>Time</value>
   </data>
+  <data name="Delete" xml:space="preserve">
+    <value>Delete</value>
+  </data>
   <data name="HomePhone" xml:space="preserve">
     <value>Home phone</value>
   </data>

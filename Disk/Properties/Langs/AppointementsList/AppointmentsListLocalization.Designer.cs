@@ -97,6 +97,15 @@ namespace Disk.Properties.Langs.AppointementsList {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Delete.
+        /// </summary>
+        public static string Delete {
+            get {
+                return ResourceManager.GetString("Delete", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Home phone.
         /// </summary>
         public static string HomePhone {
