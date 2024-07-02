@@ -18,6 +18,20 @@ namespace Disk.ViewModel
         public event Action<Patient>? OnAddEvent;
         public event Action<Patient>? OnCancelEvent;
 
+        private DateTime? _dateOfBirth = null;
+        public DateTime? DateOfBirth
+        {
+            get => _dateOfBirth;
+            set
+            {
+                SetProperty(ref _dateOfBirth, value);
+                if (value is not null)
+                {
+                    Patient.DateOfBirth = value.Value.ToString("dd.MM.yyyy");
+                }
+            }
+        }
+
         private Brush _bgName = new SolidColorBrush(Colors.White);
         public Brush BgName { get => _bgName; set => SetProperty(ref _bgName, value); }
 

@@ -21,7 +21,7 @@ namespace Disk.Repository.Implementation
                 .ToList();
 
             return appointments
-                .Where(a => DateTime.ParseExact(a.DateTime, "dd.MM.yyyy", CultureInfo.InvariantCulture).Date.Equals(date.Date))
+                .Where(a => DateTime.ParseExact(a.DateTime, "dd.MM.yyyy HH:mm:ss", CultureInfo.InvariantCulture).Date.Equals(date.Date))
                 .ToList();
         }
 

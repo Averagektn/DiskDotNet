@@ -23,7 +23,9 @@ namespace Disk.ViewModel
 
                 Appointments = new(appointmentRepository
                     .GetPagedAppointments(_patient.Id, currPage, AppointmentsPerPage)
-                    .OrderByDescending(a => DateTime.ParseExact(a.DateTime, "dd.MM.yyyy", CultureInfo.InvariantCulture)));
+                    .OrderByDescending(a => DateTime.ParseExact(a.DateTime, "dd.MM.yyyy HH:mm:ss", CultureInfo.InvariantCulture)));
+
+                IsNextEnabled = currPage < PagesCount - 1;
             } 
         }
 
@@ -31,8 +33,8 @@ namespace Disk.ViewModel
 
         public Appointment? SelectedAppointment { get; set; }
 
-        private string _selectedDate = string.Empty;
-        public string SelectedDate { get => _selectedDate; set => SetProperty(ref _selectedDate, value); }
+        private DateTime? _selectedDate;
+        public DateTime? SelectedDate { get => _selectedDate; set => SetProperty(ref _selectedDate, value); }
 
         private bool _isNextEnabled;
         public bool IsNextEnabled { get => _isNextEnabled; set => SetProperty(ref _isNextEnabled, value); }
@@ -46,7 +48,7 @@ namespace Disk.ViewModel
         private const int AppointmentsPerPage = 15;
 
         public ICommand StartAppointmentCommand => new AsyncCommand(StartAppointmentAsync);
-        public ICommand CancelDateCommand => new Command(_ => SelectedDate = string.Empty);
+        public ICommand CancelDateCommand => new Command(_ => SelectedDate = null);
         public ICommand ToAppointmentCommand => new Command(
             _ =>
             {
@@ -74,22 +76,29 @@ namespace Disk.ViewModel
         public ICommand NextPageCommand => new Command(
             _ =>
             {
-
+                currPage++;
+                IsPreviousEnabled = true;
+                IsNextEnabled = currPage < PagesCount - 1;
             });
 
         public ICommand PrevPageCommand => new Command(
             _ =>
             {
-
+                currPage--;
+                IsPreviousEnabled = currPage > 0;
+                IsNextEnabled = true;
             });
 
         public ICommand SearchByDateCommand => new Command(
             _ =>
             {
-                if (SelectedDate != string.Empty)
+                if (SelectedDate is not null)
                 {
                     Appointments.Clear();
-                    foreach (var appointment in appointmentRepository.GetAppoitmentsByDate(Patient.Id, DateTime.ParseExact(SelectedDate, "dd.MM.yyyy", CultureInfo.InvariantCulture)))
+                    var appointments = appointmentRepository
+                        .GetAppoitmentsByDate(Patient.Id, SelectedDate.Value.Date);
+
+                    foreach (var appointment in appointments)
                     {
                         Appointments.Add(appointment);
                     }
@@ -100,7 +109,7 @@ namespace Disk.ViewModel
         {
             var appointment = new Appointment()
             {
-                DateTime = DateTime.Now.ToString("dd.MM.yyyy", CultureInfo.InvariantCulture),
+                DateTime = DateTime.Now.ToString("dd.MM.yyyy HH:mm:ss", CultureInfo.InvariantCulture),
                 Patient = Patient.Id
             };
 

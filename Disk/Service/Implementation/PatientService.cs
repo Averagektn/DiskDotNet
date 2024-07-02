@@ -48,13 +48,13 @@ namespace Disk.Service.Implementation
             }
 
             const int mobilePhoneLength = 13;
-            patient.DateOfBirth = DateTime.ParseExact(patient.DateOfBirth, "dd.MM.yyyy", CultureInfo.InvariantCulture).ToShortDateString();
             var date = DateTime.ParseExact(patient.DateOfBirth, "dd.MM.yyyy", CultureInfo.InvariantCulture);
 
             if (date.Date >= DateTime.Now.Date)
             {
                 throw new InvalidDateException("Patient add date exception");
             }
+
             return !patient.PhoneMobile.StartsWith("+375") || patient.PhoneMobile.Length < mobilePhoneLength
                 ? throw new InvalidPhoneNumberException("Patient mobile phone exception")
                 : true;

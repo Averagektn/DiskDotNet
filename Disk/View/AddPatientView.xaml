@@ -83,7 +83,8 @@
 
             <DatePicker 
                 FontSize="25"
-                SelectedDate="{Binding Patient.DateOfBirth, StringFormat={}{0:dd.MM.yyyy}}"          
+                SelectedDateFormat="Short"
+                SelectedDate="{Binding DateOfBirth}"   
                 Width="300"
                 Margin="10 5"
                 BorderThickness="0 0 0 1"

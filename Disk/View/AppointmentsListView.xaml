@@ -106,7 +106,8 @@
                     FontSize="25"
                     Grid.Row="1" 
                     Grid.ColumnSpan="2"
-                    SelectedDate="{Binding SelectedDate, StringFormat={}{0:dd.MM.yyyy}}">
+                    SelectedDateFormat="Short"
+                    SelectedDate="{Binding SelectedDate}">
                     <i:Interaction.Triggers>
                         <i:EventTrigger EventName="SelectedDateChanged">
                             <i:InvokeCommandAction Command="{Binding SearchByDateCommand}" />
