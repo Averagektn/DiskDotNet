@@ -105,6 +105,16 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>PatientsLocalization.resx</DependentUpon>
     </Compile>
+    <Compile Update="Properties\Langs\RepositoryException\RepositoryExceptionLocalization.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>RepositoryExceptionLocalization.resx</DependentUpon>
+    </Compile>
+    <Compile Update="Properties\Langs\ServiceException\ServiceExceptionLocalization.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>ServiceExceptionLocalization.resx</DependentUpon>
+    </Compile>
     <Compile Update="Properties\Langs\Settings\SettingsLocalization.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
@@ -190,6 +200,20 @@
       <LastGenOutput>PatientsLocalization.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Update="Properties\Langs\Patients\PatientsLocalization.ru-RU.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Properties\Langs\RepositoryException\RepositoryExceptionLocalization.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>RepositoryExceptionLocalization.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Properties\Langs\RepositoryException\RepositoryExceptionLocalization.ru-RU.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Properties\Langs\ServiceException\ServiceExceptionLocalization.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>ServiceExceptionLocalization.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Properties\Langs\ServiceException\ServiceExceptionLocalization.ru-RU.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Properties\Langs\Settings\SettingsLocalization.resx">

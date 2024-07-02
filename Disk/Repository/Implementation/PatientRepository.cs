@@ -1,6 +1,7 @@
 ﻿using Disk.Db.Context;
 using Disk.Entities;
 using Disk.Extensions;
+using Disk.Properties.Langs.RepositoryException;
 using Disk.Repository.Common.Implementation;
 using Disk.Repository.Exceptions;
 using Disk.Repository.Interface;
@@ -21,7 +22,7 @@ namespace Disk.Repository.Implementation
 
             if (patientExists)
             {
-                throw new DuplicateEntityException("Patient duplication");
+                throw new DuplicateEntityException("Patient duplication", RepositoryExceptionLocalization.ItemDuplication);
             }
 
             base.Add(entity);
@@ -38,7 +39,7 @@ namespace Disk.Repository.Implementation
 
             if (patientExists)
             {
-                throw new DuplicateEntityException("Patient duplication");
+                throw new DuplicateEntityException("Patient duplication", RepositoryExceptionLocalization.ItemDuplication);
             }
 
             await base.AddAsync(entity);

@@ -45,31 +45,31 @@ namespace Disk.ViewModel
             {
                 Log.Error(ex.Message);
                 BgName = new SolidColorBrush(Colors.Red);
-                await ShowPopup(AddPatientLocalization.ErrorHeader, AddPatientLocalization.EmptyName);
+                await ShowPopup(AddPatientLocalization.ErrorHeader, ex.Output);
             }
             catch (InvalidSurnameException ex)
             {
                 Log.Error(ex.Message);
                 BgSurname = new SolidColorBrush(Colors.Red);
-                await ShowPopup(AddPatientLocalization.ErrorHeader, AddPatientLocalization.EmptySurname);
+                await ShowPopup(AddPatientLocalization.ErrorHeader, ex.Output);
             }
             catch (InvalidDateException ex)
             {
                 Log.Error(ex.Message);
                 BgDateOfBirth = new SolidColorBrush(Colors.Red);
-                await ShowPopup(AddPatientLocalization.ErrorHeader, AddPatientLocalization.InvalidDate);
+                await ShowPopup(AddPatientLocalization.ErrorHeader, ex.Output);
             }
             catch (InvalidPhoneNumberException ex)
             {
                 Log.Error(ex.Message);
                 BgMobilePhone = new SolidColorBrush(Colors.Red);
-                await ShowPopup(AddPatientLocalization.ErrorHeader, AddPatientLocalization.InvalidMobilePhone);
+                await ShowPopup(AddPatientLocalization.ErrorHeader, ex.Output);
             }
             catch (InvalidHomePhoneException ex)
             {
                 Log.Error(ex.Message);
                 BgHomePhone = new SolidColorBrush(Colors.Red);
-                await ShowPopup(AddPatientLocalization.ErrorHeader, AddPatientLocalization.InvalidHomePhone);
+                await ShowPopup(AddPatientLocalization.ErrorHeader, ex.Output);
             }
             catch (Exception ex)
             {

@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Disk.Properties.Langs.AddPatient {
+namespace Disk.Properties.Langs.ServiceException {
     using System;
     
     
@@ -22,14 +22,14 @@ namespace Disk.Properties.Langs.AddPatient {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public class AddPatientLocalization {
+    public class ServiceExceptionLocalization {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal AddPatientLocalization() {
+        internal ServiceExceptionLocalization() {
         }
         
         /// <summary>
@@ -39,7 +39,7 @@ namespace Disk.Properties.Langs.AddPatient {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Disk.Properties.Langs.AddPatient.AddPatientLocalization", typeof(AddPatientLocalization).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Disk.Properties.Langs.ServiceException.ServiceExceptionLocalization", typeof(ServiceExceptionLocalization).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -61,92 +61,47 @@ namespace Disk.Properties.Langs.AddPatient {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Add.
+        ///   Looks up a localized string similar to Invalid date format.
         /// </summary>
-        public static string AddPatient {
+        public static string DateFormatException {
             get {
-                return ResourceManager.GetString("AddPatient", resourceCulture);
+                return ResourceManager.GetString("DateFormatException", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Cancel.
+        ///   Looks up a localized string similar to Date is empty.
         /// </summary>
-        public static string Cancel {
+        public static string EmptyDate {
             get {
-                return ResourceManager.GetString("Cancel", resourceCulture);
+                return ResourceManager.GetString("EmptyDate", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Date of birth.
+        ///   Looks up a localized string similar to Mobile phone is empty.
         /// </summary>
-        public static string DateOfBirth {
+        public static string EmptyMobilePhone {
             get {
-                return ResourceManager.GetString("DateOfBirth", resourceCulture);
+                return ResourceManager.GetString("EmptyMobilePhone", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Patient already exists.
+        ///   Looks up a localized string similar to Name is empty.
         /// </summary>
-        public static string Duplication {
+        public static string EmptyName {
             get {
-                return ResourceManager.GetString("Duplication", resourceCulture);
+                return ResourceManager.GetString("EmptyName", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Adding error.
+        ///   Looks up a localized string similar to Surname is empty.
         /// </summary>
-        public static string ErrorHeader {
+        public static string EmptySurname {
             get {
-                return ResourceManager.GetString("ErrorHeader", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Home phone.
-        /// </summary>
-        public static string HomePhone {
-            get {
-                return ResourceManager.GetString("HomePhone", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Mobile phone.
-        /// </summary>
-        public static string MobilePhone {
-            get {
-                return ResourceManager.GetString("MobilePhone", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Name.
-        /// </summary>
-        public static string Name {
-            get {
-                return ResourceManager.GetString("Name", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Patronymic.
-        /// </summary>
-        public static string Patronymic {
-            get {
-                return ResourceManager.GetString("Patronymic", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Surname.
-        /// </summary>
-        public static string Surname {
-            get {
-                return ResourceManager.GetString("Surname", resourceCulture);
+                return ResourceManager.GetString("EmptySurname", resourceCulture);
             }
         }
     }
