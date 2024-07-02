@@ -19,7 +19,9 @@ public partial class DiskContext : DbContext
     public virtual DbSet<SessionResult> SessionResults { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        => optionsBuilder.UseSqlite(AppConfig.DbConnectionString);
+    {
+        optionsBuilder.UseSqlite(AppConfig.DbConnectionString);
+    }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -33,7 +35,9 @@ public partial class DiskContext : DbContext
             _ = entity.Property(e => e.DateTime).HasColumnName("app_date_time");
             _ = entity.Property(e => e.Patient).HasColumnName("app_patient");
 
-            _ = entity.HasOne(d => d.PatientNavigation).WithMany(p => p.Appointments).HasForeignKey(d => d.Patient);
+            _ = entity.HasOne(d => d.PatientNavigation).WithMany(p => p.Appointments)
+                .HasForeignKey(d => d.Patient)
+                .OnDelete(DeleteBehavior.Cascade);
         });
 
         _ = modelBuilder.Entity<Map>(entity =>
@@ -63,7 +67,7 @@ public partial class DiskContext : DbContext
 
             _ = entity.HasOne(d => d.SessionNavigation).WithMany(p => p.PathInTargets)
                 .HasForeignKey(d => d.Session)
-                .OnDelete(DeleteBehavior.Restrict);
+                .OnDelete(DeleteBehavior.Cascade);
         });
 
         _ = modelBuilder.Entity<PathToTarget>(entity =>
@@ -82,7 +86,7 @@ public partial class DiskContext : DbContext
 
             _ = entity.HasOne(d => d.SessionNavigation).WithMany(p => p.PathToTargets)
                 .HasForeignKey(d => d.Session)
-                .OnDelete(DeleteBehavior.Restrict);
+                .OnDelete(DeleteBehavior.Cascade);
         });
 
         _ = modelBuilder.Entity<Patient>(entity =>
@@ -127,7 +131,7 @@ public partial class DiskContext : DbContext
 
             _ = entity.HasOne(d => d.AppointmentNavigation).WithMany(p => p.Sessions)
                 .HasForeignKey(d => d.Appointment)
-                .OnDelete(DeleteBehavior.ClientSetNull);
+                .OnDelete(DeleteBehavior.Cascade);
 
             _ = entity.HasOne(d => d.MapNavigation).WithMany(p => p.Sessions)
                 .HasForeignKey(d => d.Map)
@@ -150,7 +154,7 @@ public partial class DiskContext : DbContext
 
             _ = entity.HasOne(d => d.Sres).WithOne(p => p.SessionResult)
                 .HasForeignKey<SessionResult>(d => d.Id)
-                .OnDelete(DeleteBehavior.Restrict);
+                .OnDelete(DeleteBehavior.Cascade);
         });
 
         OnModelCreatingPartial(modelBuilder);
