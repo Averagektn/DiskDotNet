@@ -1,5 +1,4 @@
 ﻿using Disk.Entities;
-using Disk.Repository.Implementation;
 using Disk.Repository.Interface;
 using Disk.Stores;
 using Disk.ViewModel.Common.Commands.Sync;
@@ -34,9 +33,13 @@ namespace Disk.ViewModel
         public ICommand DeletePatientCommand => new Command(
             _ =>
             {
-                var patient = SelectedPatient!;
-                _ = SortedPatients.Remove(patient);
-                _patientRepository.Delete(patient);
+                if (SelectedPatient is null)
+                {
+                    return;
+                }
+
+                _patientRepository.Delete(SelectedPatient);
+                _ = SortedPatients.Remove(SelectedPatient);
 
                 if (SortedPatients.Count == 0 && PageNum > 1)
                 {
@@ -46,14 +49,21 @@ namespace Disk.ViewModel
                 IsPrevEnabled = PageNum > 1;
                 IsNextEnabled = PageNum < TotalPages;
 
+                SearchText = string.Empty;
+
                 GetPagedPatients();
             });
         public ICommand UpdatePatientCommand => new Command(
             _ => _modalNavigationStore.SetViewModel<EditPatientViewModel>(
                 vm =>
                 {
+                    if (SelectedPatient is null)
+                    {
+                        return;
+                    }
+
                     vm.Backup = JsonConvert.DeserializeObject<Patient>(JsonConvert.SerializeObject(SelectedPatient))!;
-                    vm.Patient = SelectedPatient!;
+                    vm.Patient = SelectedPatient;
                     vm.OnCancelEvent += patient =>
                     {
                         var id = SortedPatients.IndexOf(patient);
@@ -64,6 +74,8 @@ namespace Disk.ViewModel
         public ICommand NextPageCommand => new Command(
             _ =>
             {
+                SearchText = string.Empty;
+
                 PageNum++;
                 IsNextEnabled = PageNum < TotalPages;
                 IsPrevEnabled = true;
@@ -73,6 +85,8 @@ namespace Disk.ViewModel
         public ICommand PrevPageCommand => new Command(
             _ =>
             {
+                SearchText = string.Empty;
+
                 PageNum--;
                 IsPrevEnabled = PageNum > 1;
                 IsNextEnabled = true;
@@ -91,7 +105,9 @@ namespace Disk.ViewModel
 
         public ObservableCollection<Patient> SortedPatients { get; set; }
         public Patient? SelectedPatient { get; set; }
-        public string SearchText { get; set; } = string.Empty;
+
+        private string _searchText = string.Empty;
+        public string SearchText { get => _searchText; set => SetProperty(ref _searchText, value); }
 
         private readonly NavigationStore _navigationStore;
         private readonly ModalNavigationStore _modalNavigationStore;
@@ -115,8 +131,6 @@ namespace Disk.ViewModel
         {
             if (SearchText != string.Empty)
             {
-                PageNum = 1;
-
                 var nsp = SearchText.Split(" ", StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries);
                 var surname = nsp[0];
                 var name = string.Empty;
@@ -140,7 +154,6 @@ namespace Disk.ViewModel
             }
             else
             {
-                PageNum = 1;
                 SortedPatients.Clear();
                 GetPagedPatients();
             }
@@ -157,9 +170,13 @@ namespace Disk.ViewModel
 
         private void SelectPatient(object? obj)
         {
+            if (SelectedPatient is null)
+            {
+                return;
+            }
             _navigationStore.SetViewModel<NavigationBarLayoutViewModel>(
                 vm => vm.CurrentViewModel = _navigationStore.GetViewModel<AppointmentsListViewModel>(
-                    vm => vm.Patient = SelectedPatient!
+                    vm => vm.Patient = SelectedPatient
                     )
                 );
         }
