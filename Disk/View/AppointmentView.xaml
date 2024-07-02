@@ -67,6 +67,14 @@
                     <i:InvokeCommandAction Command="{Binding ShowSessionCommand}" />
                 </i:EventTrigger>
             </i:Interaction.Triggers>
+            <DataGrid.ContextMenu>
+                <ContextMenu FontSize="20">
+                    <MenuItem 
+                        Header="{x:Static lang:AppointmentLocalization.Delete}" 
+                        Command="{Binding DeleteSessionCommand}" 
+                        CommandParameter="{Binding SelectedSession}" />
+                </ContextMenu>
+            </DataGrid.ContextMenu>
         </DataGrid>
 
         <DataGrid 

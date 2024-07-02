@@ -34,9 +34,21 @@ namespace Disk.ViewModel
         public ICommand SessionSelectedCommand => new Command(SessionSelected);
         public ICommand ExportToExcelCommand => new Command(_ => excelFiller.ExportToExcel(Sessions, Patient));
         public ICommand ShowSessionCommand => new Command(ShowSession);
+        public ICommand DeleteSessionCommand => new Command(_ =>
+        {
+            sessionRepository.Delete(SelectedSession!);
+            Sessions.Clear();
+            PathsToTargets.Clear();
+            SelectedSession = null;
+        });
 
         private void ShowSession(object? obj)
         {
+            if (SelectedSession is null)
+            {
+                return;
+            }
+
             navigationStore.SetViewModel<PaintViewModel>(vm =>
             {
                 vm.PathsToTargets = SelectedSession!.PathToTargets
@@ -45,7 +57,7 @@ namespace Disk.ViewModel
                 vm.PathsInTargets = SelectedSession!.PathInTargets
                     .Select(path => JsonConvert.DeserializeObject<List<Point2D<float>>>(path.CoordinatesJson)!)
                     .ToList();
-                vm.TargetCenters = JsonConvert.DeserializeObject<List<Point2D<float>>>(SelectedSession!.MapNavigation.CoordinatesJson) ?? [];
+                vm.TargetCenters = JsonConvert.DeserializeObject<List<Point2D<float>>>(SelectedSession.MapNavigation.CoordinatesJson) ?? [];
                 vm.IsGame = false;
 
                 vm.ScoreVisibility = Visibility.Hidden;
@@ -53,7 +65,7 @@ namespace Disk.ViewModel
                 vm.IsBackEnabled = true;
                 vm.IsStopEnabled = false;
 
-                vm.CurrentSession = SelectedSession!;
+                vm.CurrentSession = SelectedSession;
 
                 vm.FillTargetsComboBox();
             });
@@ -61,9 +73,14 @@ namespace Disk.ViewModel
 
         private void SessionSelected(object? obj)
         {
+            if (SelectedSession is null)
+            {
+                return;
+            }
+
             PathsToTargets.Clear();
 
-            foreach (var pathToTarget in SelectedSession!.PathToTargets)
+            foreach (var pathToTarget in SelectedSession.PathToTargets)
             {
                 PathsToTargets.Add(pathToTarget);
             }
