@@ -44,18 +44,21 @@ namespace Disk.View
 
         private void SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            PaintArea.Children.Clear();
-
-            if (ViewModel is not null)
+            if (ViewModel is null)
             {
-                var figures = ViewModel.GetPathAndRose(PaintPanelSize);
-                foreach (var figure in figures)
-                {
-                    Scalables.Add(figure);
+                return;
+            }
 
-                    figure.Scale(PaintPanelSize);
-                    figure.Draw(PaintArea);
-                }
+            PaintArea.Children.Clear();
+            Scalables.Clear();
+
+            var figures = ViewModel.GetPathAndRose(PaintPanelSize);
+            foreach (var figure in figures)
+            {
+                Scalables.Add(figure);
+
+                figure.Draw(PaintArea);
+                figure.Scale(PaintPanelSize);
             }
         }
 
