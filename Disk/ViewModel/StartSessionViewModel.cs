@@ -1,4 +1,5 @@
 ﻿using Disk.Entities;
+using Disk.Navigators;
 using Disk.Repository.Interface;
 using Disk.Stores;
 using Disk.ViewModel.Common.Commands.Sync;
@@ -72,15 +73,8 @@ namespace Disk.ViewModel
             };
             sessionRepository.Add(session);
 
-            modalNavigationStore.Close();
-
-            navigationStore.SetViewModel<PaintViewModel>(vm =>
-            {
-                vm.ImagePath = _imageFilePath;
-                vm.CurrPath = logPath;
-                vm.OnSessionOver += OnSessionOver;
-                vm.CurrentSession = session;
-            });
+            IniNavigationStore.Close();
+            PaintNavigator.Navigate(navigationStore, _imageFilePath, logPath, OnSessionOver, session);
         }
     }
 }

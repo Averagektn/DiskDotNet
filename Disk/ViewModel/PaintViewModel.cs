@@ -2,6 +2,7 @@
 using Disk.Calculations.Impl.Converters;
 using Disk.Data.Impl;
 using Disk.Entities;
+using Disk.Navigators;
 using Disk.Repository.Interface;
 using Disk.Service.Implementation;
 using Disk.Stores;
@@ -140,7 +141,7 @@ namespace Disk.ViewModel
                 _ = Application.Current.Dispatcher.BeginInvoke(new Action(() =>
                 {
                     SaveSessionResult();
-                    _ = _navigationStore.NavigateBack();
+                    IniNavigationStore.Close();
                 }));
             }
         }
@@ -184,12 +185,8 @@ namespace Disk.ViewModel
 
             OnSessionOver?.Invoke();
 
-            _ = _navigationStore.NavigateBack();
-            _navigationStore.SetViewModel<SessionResultViewModel>(vm =>
-            {
-                vm.CurrentSession = CurrentSession;
-                Application.Current.MainWindow.WindowState = WindowState.Maximized;
-            });
+            SessionResultNavigator.NavigateAndClose(_navigationStore, CurrentSession);
+            Application.Current.MainWindow.WindowState = WindowState.Maximized;
         }
 
         public void SwitchToPathInTarget(Point2D<int> userShot)

@@ -1,4 +1,5 @@
 ﻿using Disk.Entities;
+using Disk.Navigators;
 using Disk.Repository.Interface;
 using Disk.Stores;
 using Disk.ViewModel.Common.Commands.Sync;
@@ -11,23 +12,20 @@ namespace Disk.ViewModel
 {
     public class PatientsViewModel : ObserverViewModel
     {
-        public ICommand AddPatientCommand
-            => new Command(_ => _modalNavigationStore.SetViewModel<AddPatientViewModel>
-            (
-                vm =>
-                {
-                    vm.OnAddEvent += patient => SortedPatients.Add(patient);
-                    vm.OnAddEvent += _ =>
-                    {
-                        PageNum = TotalPages;
-                        IsPrevEnabled = PageNum > 1;
-                        IsNextEnabled = PageNum < TotalPages;
+        public ICommand AddPatientCommand => new Command(_ =>
+        {
+            Action<Patient> onAdd = patient => SortedPatients.Add(patient);
+            onAdd += _ =>
+            {
+                PageNum = TotalPages;
+                IsPrevEnabled = PageNum > 1;
+                IsNextEnabled = PageNum < TotalPages;
 
-                        GetPagedPatients();
-                    };
-                },
-                canClose: true)
-            );
+                GetPagedPatients();
+            };
+
+            AddPatientNavigator.Navigate(_modalNavigationStore, onAdd);
+        });
         public ICommand SearchCommand => new Command(Search);
         public ICommand SelectPatientCommand => new Command(SelectPatient);
         public ICommand DeletePatientCommand => new Command(
@@ -53,24 +51,25 @@ namespace Disk.ViewModel
 
                 GetPagedPatients();
             });
-        public ICommand UpdatePatientCommand => new Command(
-            _ => _modalNavigationStore.SetViewModel<EditPatientViewModel>(
-                vm =>
-                {
-                    if (SelectedPatient is null)
-                    {
-                        return;
-                    }
 
-                    vm.Backup = JsonConvert.DeserializeObject<Patient>(JsonConvert.SerializeObject(SelectedPatient))!;
-                    vm.Patient = SelectedPatient;
-                    vm.OnCancelEvent += patient =>
-                    {
-                        var id = SortedPatients.IndexOf(patient);
-                        SortedPatients.RemoveAt(id);
-                        SortedPatients.Insert(id, _patientRepository.GetById(patient.Id));
-                    };
-                }));
+        public ICommand UpdatePatientCommand => new Command(
+            _ =>
+            {
+                if (SelectedPatient is null)
+                {
+                    return;
+                }
+
+                void OnCancel(Patient patient)
+                {
+                    var id = SortedPatients.IndexOf(patient);
+                    SortedPatients.RemoveAt(id);
+                    SortedPatients.Insert(id, _patientRepository.GetById(patient.Id));
+                }
+
+                EditPatientNavigator.Navigate(_modalNavigationStore, OnCancel, SelectedPatient);
+            });
+
         public ICommand NextPageCommand => new Command(
             _ =>
             {
@@ -174,11 +173,8 @@ namespace Disk.ViewModel
             {
                 return;
             }
-            _navigationStore.SetViewModel<NavigationBarLayoutViewModel>(
-                vm => vm.CurrentViewModel = _navigationStore.GetViewModel<AppointmentsListViewModel>(
-                    vm => vm.Patient = SelectedPatient
-                    )
-                );
+
+            AppointmentsListNavigator.NavigateWithBar(_navigationStore, SelectedPatient);
         }
     }
 }

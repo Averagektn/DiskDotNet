@@ -1,4 +1,5 @@
 ﻿using Disk.Entities;
+using Disk.Navigators;
 using Disk.Repository.Interface;
 using Disk.Service.Interface;
 using Disk.Stores;
@@ -13,22 +14,13 @@ namespace Disk.ViewModel
     public class AppointmentViewModel(ModalNavigationStore modalNavigationStore, ISessionRepository sessionRepository, IExcelFiller excelFiller,
         NavigationStore navigationStore) : ObserverViewModel
     {
-        public bool IsNewAppointment { get; set; }
         public Patient Patient { get; set; } = null!;
         public Appointment Appointment { get; set; } = null!;
         public Session? SelectedSession { get; set; }
         public ObservableCollection<Session> Sessions { get; set; } = [];
         public ObservableCollection<PathToTarget> PathsToTargets { get; set; } = [];
 
-        public ICommand StartSessionCommand
-            => new Command(_ => modalNavigationStore.SetViewModel<StartSessionViewModel>(
-                vm =>
-                {
-                    vm.OnSessionOver += Update;
-                    vm.Appointment = Appointment;
-                    vm.Patient = Patient;
-                },
-                canClose: true));
+        public ICommand StartSessionCommand => new Command(_ => StartSessionNavigator.Navigate(modalNavigationStore, Update, Appointment, Patient));
         public ICommand SessionSelectedCommand => new Command(SessionSelected);
         public ICommand ExportToExcelCommand => new Command(_ => excelFiller.ExportToExcel(Sessions, Patient));
         public ICommand ShowSessionCommand => new Command(ShowSession);
@@ -49,11 +41,8 @@ namespace Disk.ViewModel
                 return;
             }
 
-            navigationStore.SetViewModel<SessionResultViewModel>(vm =>
-            {
-                vm.CurrentSession = SelectedSession;
-                Application.Current.MainWindow.WindowState = WindowState.Maximized;
-            });
+            SessionResultNavigator.Navigate(navigationStore, SelectedSession);
+            Application.Current.MainWindow.WindowState = WindowState.Maximized;
         }
 
         private void SessionSelected(object? obj)

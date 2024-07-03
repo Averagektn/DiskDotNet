@@ -96,7 +96,7 @@ namespace Disk.ViewModel
         public bool ShowPathInTarget { get; set; }
         public bool ShowPathToTarget { get; set; }
 
-        public ICommand NavigateBackCommand => new Command(_ => navigationStore.NavigateBack());
+        public ICommand NavigateBackCommand => new Command(_ => navigationStore.Close());
 
         public ICommand NewItemSelectedCommand => new Command(_ => Message =
                 $"""

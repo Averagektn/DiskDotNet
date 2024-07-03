@@ -31,8 +31,14 @@ namespace Disk.ViewModel.Common.ViewModels
             base.Dispose();
             GC.SuppressFinalize(this);
 
-            while (_navigationStore.NavigateBack()) { }
-            while (_modalNavigationStore.CanClose) { _modalNavigationStore.Close(); }
+            while (_navigationStore.CanClose) 
+            {
+                _navigationStore.Close();
+            }
+            while (_modalNavigationStore.CanClose) 
+            { 
+                _modalNavigationStore.Close(); 
+            }
         }
 
         private void OnCurrentModalViewModelChanged()

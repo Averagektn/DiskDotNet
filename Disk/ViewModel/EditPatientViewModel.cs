@@ -2,7 +2,6 @@
 using Disk.Properties.Langs.AddPatient;
 using Disk.Service.Exceptions;
 using Disk.Service.Interface;
-using Disk.Stores;
 using Disk.ViewModel.Common.Commands.Async;
 using Disk.ViewModel.Common.Commands.Sync;
 using Serilog;
@@ -11,12 +10,11 @@ using System.Windows.Media;
 
 namespace Disk.ViewModel
 {
-    public class EditPatientViewModel(ModalNavigationStore modalNavigationStore, IPatientService patientService)
-        : AddPatientViewModel(modalNavigationStore, patientService)
+    public class EditPatientViewModel(IPatientService patientService)
+        : AddPatientViewModel(patientService)
     {
         public Patient Backup = null!;
 
-        private readonly ModalNavigationStore _modalNavigationStore = modalNavigationStore;
         private readonly IPatientService _patientService = patientService;
         public override ICommand AddPatientCommand => new AsyncCommand(UpdatePatient);
         public override ICommand CancelCommand => new Command(
@@ -79,7 +77,7 @@ namespace Disk.ViewModel
 
             if (success)
             {
-                _modalNavigationStore.Close();
+                IniNavigationStore.Close();
             }
         }
     }

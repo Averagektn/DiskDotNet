@@ -91,10 +91,10 @@ namespace Disk.ViewModel
 
                 Settings.Save();
 
-                _ = navigationStore.NavigateBack();
+                IniNavigationStore.Close();
             });
 
-        public ICommand CancelCommand => new Command(_ => navigationStore.NavigateBack());
+        public ICommand CancelCommand => new Command(_ => IniNavigationStore.Close());
         public ICommand ChangeLanguageCommand => new Command(ChangeLanguage);
 
         private void ChangeLanguage(object? parameter)

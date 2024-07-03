@@ -1,5 +1,7 @@
 ﻿using Disk.Data.Impl;
+using Disk.Navigators;
 using Disk.Stores;
+using Disk.Stores.Interface;
 using Disk.ViewModel.Common.ViewModels;
 using Disk.Visual.Impl;
 using System.Windows;
@@ -9,7 +11,7 @@ using Settings = Disk.Properties.Config.Config;
 
 namespace Disk.ViewModel
 {
-    public class MapCreatorViewModel(ModalNavigationStore modalNavigationStore, NavigationStore navigationStore) : ObserverViewModel
+    public class MapCreatorViewModel(ModalNavigationStore modalNavigationStore) : ObserverViewModel
     {
         private static int IniWidth => Settings.Default.IniScreenWidth;
         private static int IniHeight => Settings.Default.IniScreenHeight;
@@ -38,18 +40,18 @@ namespace Disk.ViewModel
         {
             if (_targets.Count != 0)
             {
-                modalNavigationStore.SetViewModel<MapNamePickerViewModel>(
-                    vm => vm.Map = _targets
-                        .Select(t => new Point2D<float>
-                        (
-                            (float)(t.Center.X / actualWidth),
-                            (float)(t.Center.Y / actualHeight))
-                        )
-                        .ToList(),
-                    canClose: true);
+                var map = _targets
+                    .Select(t => new Point2D<float>
+                    (
+                        (float)(t.Center.X / actualWidth),
+                        (float)(t.Center.Y / actualHeight))    
+                    )    
+                    .ToList();
+
+                MapNamePickerNavigator.Navigate(modalNavigationStore, map);
             }
 
-            _ = navigationStore.NavigateBack();
+            IniNavigationStore.Close();
         }
 
         public void RemoveTarget(UIElementCollection screenTargets, Point mousePos)

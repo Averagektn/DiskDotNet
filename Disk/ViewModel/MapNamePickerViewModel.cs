@@ -13,7 +13,7 @@ using System.Windows.Input;
 
 namespace Disk.ViewModel
 {
-    public class MapNamePickerViewModel(IMapRepository mapRepository, ModalNavigationStore modalNavigationStore) : PopupViewModel
+    public class MapNamePickerViewModel(IMapRepository mapRepository) : PopupViewModel
     {
         public ICommand SaveMapCommand => new AsyncCommand(SaveMap);
 
@@ -38,7 +38,7 @@ namespace Disk.ViewModel
             try
             {
                 await mapRepository.AddAsync(map);
-                modalNavigationStore.Close();
+                IniNavigationStore.Close();
             }
             catch (DbUpdateException ex)
             {

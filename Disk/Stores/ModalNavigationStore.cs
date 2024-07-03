@@ -1,19 +1,28 @@
-﻿using Disk.ViewModel.Common.ViewModels;
+﻿using Disk.Stores.Interface;
+using Disk.ViewModel.Common.ViewModels;
 
 namespace Disk.Stores
 {
-    public class ModalNavigationStore(Func<Type, ObserverViewModel> getViewModel)
+    public class ModalNavigationStore(Func<Type, ObserverViewModel> getViewModel) : INavigationStore
     {
         public bool IsOpen => CurrentViewModel != null;
-        public bool CanClose => CanCloseStack.Count != 0 && CanCloseStack.Peek();
+        public bool CanClose => ViewModels.Count > 0;
 
-        private readonly Stack<bool> CanCloseStack = [];
         public readonly Stack<ObserverViewModel> ViewModels = [];
         public event Action? CurrentViewModelChanged;
 
+        public ObserverViewModel GetViewModel(Type vmType) => getViewModel.Invoke(vmType);
+        public ObserverViewModel GetViewModel<TViewModel>() where TViewModel : class => getViewModel.Invoke(typeof(TViewModel));
+        public ObserverViewModel GetViewModel<TViewModel>(Action<TViewModel> parametrizeViewModel) where TViewModel : class
+        {
+            var viewModel = getViewModel.Invoke(typeof(TViewModel));
+            parametrizeViewModel((viewModel as TViewModel)!);
+
+            return viewModel;
+        }
+
         public void Close()
         {
-            _ = CanCloseStack.Pop();
             ViewModels.Pop().Dispose();
             OnCurrentViewModelChanged();
         }
@@ -30,19 +39,17 @@ namespace Disk.Stores
             get => ViewModels.Count == 0 ? null : ViewModels.Peek();
         }
 
-        public void SetViewModel<TViewModel>(bool canClose = false)
+        public void SetViewModel<TViewModel>()
         {
-            CanCloseStack.Push(canClose);
             ViewModels.Push(getViewModel.Invoke(typeof(TViewModel)));
             OnCurrentViewModelChanged();
         }
 
-        public void SetViewModel<TViewModel>(Action<TViewModel> parametrizeViewModel, bool canClose = false) where TViewModel : class
+        public void SetViewModel<TViewModel>(Action<TViewModel> parametrizeViewModel) where TViewModel : class
         {
             var viewModel = getViewModel.Invoke(typeof(TViewModel));
             parametrizeViewModel((viewModel as TViewModel)!);
             ViewModels.Push(viewModel);
-            CanCloseStack.Push(canClose);
             OnCurrentViewModelChanged();
         }
     }

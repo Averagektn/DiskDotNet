@@ -3,7 +3,7 @@ using Disk.Properties.Langs.AddPatient;
 using Disk.Repository.Exceptions;
 using Disk.Service.Exceptions;
 using Disk.Service.Interface;
-using Disk.Stores;
+using Disk.Stores.Interface;
 using Disk.ViewModel.Common.Commands.Async;
 using Disk.ViewModel.Common.Commands.Sync;
 using Disk.ViewModel.Common.ViewModels;
@@ -13,7 +13,7 @@ using System.Windows.Media;
 
 namespace Disk.ViewModel
 {
-    public class AddPatientViewModel(ModalNavigationStore modalNavigationStore, IPatientService patientService) : PopupViewModel
+    public class AddPatientViewModel(IPatientService patientService) : PopupViewModel
     {
         public event Action<Patient>? OnAddEvent;
         public event Action<Patient>? OnCancelEvent;
@@ -24,7 +24,7 @@ namespace Disk.ViewModel
             get => _dateOfBirth;
             set
             {
-                SetProperty(ref _dateOfBirth, value);
+                _ = SetProperty(ref _dateOfBirth, value);
                 if (value is not null)
                 {
                     Patient.DateOfBirth = value.Value.ToString("dd.MM.yyyy");
@@ -57,7 +57,7 @@ namespace Disk.ViewModel
             _ =>
             {
                 OnCancelEvent?.Invoke(Patient);
-                modalNavigationStore.Close();
+                IniNavigationStore.Close();
             });
 
         private Patient _patient = new()
@@ -123,7 +123,7 @@ namespace Disk.ViewModel
             if (success)
             {
                 OnAddEvent?.Invoke(Patient);
-                modalNavigationStore.Close();
+                IniNavigationStore.Close();
             }
         }
     }

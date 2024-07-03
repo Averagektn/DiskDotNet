@@ -1,4 +1,5 @@
 ﻿using Disk.Entities;
+using Disk.Navigators;
 using Disk.Repository.Interface;
 using Disk.Stores;
 using Disk.ViewModel.Common.Commands.Async;
@@ -60,17 +61,8 @@ namespace Disk.ViewModel
                     return;
                 }
 
-                navigationStore.SetViewModel<NavigationBarLayoutViewModel>(
-                    vm => vm.CurrentViewModel = navigationStore.GetViewModel<AppointmentViewModel>(
-                        vm =>
-                        {
-                            vm.Appointment = SelectedAppointment;
-                            vm.Patient = Patient;
-                            vm.Sessions = new ObservableCollection<Session>(sessionRepository
-                                .GetSessionsWithResultsByAppointment(SelectedAppointment.Id));
-                        }
-                    )
-                );
+                var sessions = sessionRepository.GetSessionsWithResultsByAppointment(SelectedAppointment.Id).ToList();
+                AppointmentNavigator.NavigateWithBar(navigationStore, sessions, Patient, SelectedAppointment);
             });
 
         public ICommand DeleteAppointmentCommand => new Command(
@@ -158,17 +150,9 @@ namespace Disk.ViewModel
             IsNextEnabled = currPage < PagesCount - 1;
             UpdateAppointments();
 
-            navigationStore.SetViewModel<NavigationBarLayoutViewModel>(
-                vm => vm.CurrentViewModel = navigationStore.GetViewModel<AppointmentViewModel>(
-                    vm =>
-                    {
-                        vm.IsNewAppointment = true;
-                        vm.Appointment = appointment;
-                        vm.Patient = Patient;
-                        vm.Sessions = new ObservableCollection<Session>(sessionRepository.GetSessionsWithResultsByAppointment(appointment.Id));
-                    }
-                )
-            );
+
+            var sessions = sessionRepository.GetSessionsWithResultsByAppointment(appointment.Id).ToList();
+            AppointmentNavigator.NavigateWithBar(navigationStore, sessions, Patient, appointment);
         }
     }
 }
