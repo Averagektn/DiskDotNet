@@ -116,7 +116,7 @@
                 </DatePicker>
 
                 <Button 
-                    Content="Cancel" 
+                    Content="{x:Static lang:AppointmentsListLocalization.Cancel}" 
                     Width="100" 
                     Margin="10" 
                     Height="35"
