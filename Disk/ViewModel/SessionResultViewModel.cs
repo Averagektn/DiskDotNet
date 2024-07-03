@@ -40,10 +40,36 @@ namespace Disk.ViewModel
             }
         }
 
+        public ObservableCollection<string> Indices { get; set; } = [];
         public Converter Converter { get; set; } = DrawableFabric.GetIniConverter();
+        public IEnumerable<(bool IsNewTarget, Point2D<float> Point)> FullPath 
+        { 
+            get
+            {
+                Point2D<float> lastPoint = null!;
+
+                for (int i = 0; i < TargetCenters.Count; i++)
+                {
+                    var ptt = JsonConvert.DeserializeObject<List<Point2D<float>>>(CurrentSession.PathToTargets.ElementAt(i).CoordinatesJson)!;
+                    foreach (var point in ptt)
+                    {
+                        yield return (false, point);
+                    }
+
+                    var pit = JsonConvert.DeserializeObject<List<Point2D<float>>>(CurrentSession.PathInTargets.ElementAt(i).CoordinatesJson)!;
+                    foreach(var point in pit)
+                    {
+                        lastPoint = point;
+                        yield return (false, point);
+                    }
+
+                    yield return (true, lastPoint);
+                }
+            } 
+        }
 
         private List<Point2D<float>> _targetCenters = [];
-        private List<Point2D<float>> TargetCenters
+        public List<Point2D<float>> TargetCenters
         {
             get => _targetCenters;
             set
@@ -52,7 +78,6 @@ namespace Disk.ViewModel
                 FillTargetsComboBox();
             }
         }
-
         private List<List<Point2D<float>>> PathsToTargets { get; set; } = [];
         private List<List<Point2D<float>>> PathsInTargets { get; set; } = [];
 
@@ -64,16 +89,15 @@ namespace Disk.ViewModel
 
         private bool _isPathChecked = false;
         public bool IsPathChecked { get => _isPathChecked; set => SetProperty(ref _isPathChecked, value); }
-        public bool ShowPathInTarget { get; set; }
-        public bool ShowPathToTarget { get; set; }
 
         private int _selectedIndex = -1;
         public int SelectedIndex { get => _selectedIndex; set => SetProperty(ref _selectedIndex, value); }
 
-        public ObservableCollection<string> Indices { get; set; } = [];
+        public bool ShowPathInTarget { get; set; }
+        public bool ShowPathToTarget { get; set; }
 
         public ICommand NavigateBackCommand => new Command(_ => navigationStore.NavigateBack());
-        public ICommand ReplyCommand => new Command(_ => navigationStore.NavigateBack());
+
         public ICommand NewItemSelectedCommand => new Command(_ => Message =
                 $"""
                 {Localization.StandartDeviation}: {CurrentSession.SessionResult?.Deviation:F2}
@@ -113,8 +137,6 @@ namespace Disk.ViewModel
                     return [];
                 }
                 var converter = DrawableFabric.GetIniConverter();
-                var pathToTarget = new Path(PathsToTargets[SelectedIndex], Converter, new SolidColorBrush(Colors.Green));
-                var pathInTarget = new Path(PathsInTargets[SelectedIndex], Converter, new SolidColorBrush(Colors.Blue));
                 var targetCenter = converter.ToWnd_FromRelative(TargetCenters[SelectedIndex]);
                 var targetToDraw = DrawableFabric.GetIniProgressTarget(targetCenter);
 
@@ -122,6 +144,8 @@ namespace Disk.ViewModel
                 userToDraw.Move(converter.ToWndCoord(PathsToTargets[SelectedIndex][0]));
                 var res = new List<IStaticFigure> { userToDraw, targetToDraw };
 
+                var pathToTarget = new Path(PathsToTargets[SelectedIndex], Converter, new SolidColorBrush(Colors.Green));
+                var pathInTarget = new Path(PathsInTargets[SelectedIndex], Converter, new SolidColorBrush(Colors.Blue));
                 if (ShowPathToTarget)
                 {
                     res.Add(pathToTarget);
