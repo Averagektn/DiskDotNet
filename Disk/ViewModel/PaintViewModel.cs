@@ -185,7 +185,11 @@ namespace Disk.ViewModel
             OnSessionOver?.Invoke();
 
             _ = _navigationStore.NavigateBack();
-            _navigationStore.SetViewModel<SessionResultViewModel>(vm => vm.CurrentSession = CurrentSession);
+            _navigationStore.SetViewModel<SessionResultViewModel>(vm =>
+            {
+                vm.CurrentSession = CurrentSession;
+                Application.Current.MainWindow.WindowState = WindowState.Maximized;
+            });
         }
 
         public void SwitchToPathInTarget(Point2D<int> userShot)

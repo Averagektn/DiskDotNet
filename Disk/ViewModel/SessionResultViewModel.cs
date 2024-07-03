@@ -133,6 +133,7 @@ namespace Disk.ViewModel
 
                 return res;
             }
+
             return [];
         }
 
@@ -157,6 +158,14 @@ namespace Disk.ViewModel
                 .ToList();
 
             return new Graph(dataset, paintAreaSize, Brushes.LightGreen, 8);
+        }
+
+        public override void Dispose()
+        {
+            GC.SuppressFinalize(this);
+            base.Dispose();
+
+            Application.Current.MainWindow.WindowState = WindowState.Normal;
         }
     }
 }

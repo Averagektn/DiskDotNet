@@ -5,6 +5,7 @@ using Disk.Stores;
 using Disk.ViewModel.Common.Commands.Sync;
 using Disk.ViewModel.Common.ViewModels;
 using System.Collections.ObjectModel;
+using System.Windows;
 using System.Windows.Input;
 
 namespace Disk.ViewModel
@@ -48,7 +49,11 @@ namespace Disk.ViewModel
                 return;
             }
 
-            navigationStore.SetViewModel<SessionResultViewModel>(vm => vm.CurrentSession = SelectedSession);
+            navigationStore.SetViewModel<SessionResultViewModel>(vm =>
+            {
+                vm.CurrentSession = SelectedSession;
+                Application.Current.MainWindow.WindowState = WindowState.Maximized;
+            });
         }
 
         private void SessionSelected(object? obj)
