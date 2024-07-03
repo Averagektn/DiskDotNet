@@ -21,20 +21,21 @@ namespace Disk
 
         private App()
         {
-            Thread.CurrentThread.CurrentUICulture =
-                new System.Globalization.CultureInfo(Disk.Properties.Config.Config.Default.Language);
+            Thread.CurrentThread.CurrentUICulture = new System.Globalization.CultureInfo(Disk.Properties.Config.Config.Default.Language);
             System.Windows.Media.RenderOptions.ProcessRenderMode = System.Windows.Interop.RenderMode.SoftwareOnly;
 
 
             Log.Logger = new LoggerConfiguration()
-                .WriteTo.File("logs/app.log")
+                .WriteTo
+                .File("logs/app.log")
                 .CreateLogger();
 
             var services = new ServiceCollection();
             _ = services.AddDbContext<DiskContext>();
 
             _ = services.AddSingleton<Func<Type, ObserverViewModel>>(provider =>
-                type => (ObserverViewModel)provider.GetRequiredService(type));
+                type => (ObserverViewModel)provider.GetRequiredService(type)
+            );
             _ = services.AddSingleton<NavigationStore>();
             _ = services.AddSingleton<ModalNavigationStore>();
 
@@ -66,7 +67,10 @@ namespace Disk
 
             _ = services.AddSingleton<MainWindow>(provider =>
             {
-                provider.GetRequiredService<NavigationStore>().SetViewModel<NavigationBarLayoutViewModel>(vm => vm.CurrentViewModel = provider.GetRequiredService<PatientsViewModel>());
+                provider
+                .GetRequiredService<NavigationStore>()
+                .SetViewModel<NavigationBarLayoutViewModel>(vm => vm.CurrentViewModel = provider.GetRequiredService<PatientsViewModel>());
+
                 return new()
                 {
                     DataContext = provider.GetRequiredService<MainViewModel>()

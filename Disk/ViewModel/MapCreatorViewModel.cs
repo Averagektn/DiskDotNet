@@ -1,7 +1,6 @@
 ﻿using Disk.Data.Impl;
 using Disk.Navigators;
 using Disk.Stores;
-using Disk.Stores.Interface;
 using Disk.ViewModel.Common.ViewModels;
 using Disk.Visual.Impl;
 using System.Windows;
@@ -44,8 +43,8 @@ namespace Disk.ViewModel
                     .Select(t => new Point2D<float>
                     (
                         (float)(t.Center.X / actualWidth),
-                        (float)(t.Center.Y / actualHeight))    
-                    )    
+                        (float)(t.Center.Y / actualHeight))
+                    )
                     .ToList();
 
                 MapNamePickerNavigator.Navigate(modalNavigationStore, map);

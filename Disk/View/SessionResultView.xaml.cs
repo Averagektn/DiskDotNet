@@ -96,7 +96,7 @@ namespace Disk.View
             };
             shotTimer.Tick += (_, _) =>
             {
-                user.Shot();
+                _ = user.Shot();
             };
 
             var enumerator = ViewModel.FullPath.GetEnumerator();

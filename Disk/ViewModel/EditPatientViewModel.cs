@@ -10,8 +10,7 @@ using System.Windows.Media;
 
 namespace Disk.ViewModel
 {
-    public class EditPatientViewModel(IPatientService patientService)
-        : AddPatientViewModel(patientService)
+    public class EditPatientViewModel(IPatientService patientService) : AddPatientViewModel(patientService)
     {
         public Patient Backup = null!;
 

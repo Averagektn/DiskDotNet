@@ -27,7 +27,7 @@ namespace Disk.Navigators
 
         public static void NavigateWithBar(INavigationStore navigationStore, Action<Patient>? onAddEvents = null)
         {
-            navigationStore.SetViewModel<NavigationBarLayoutViewModel>(    
+            navigationStore.SetViewModel<NavigationBarLayoutViewModel>(
                 vm =>
                 {
                     vm.IniNavigationStore = navigationStore;

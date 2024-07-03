@@ -1,5 +1,4 @@
-﻿using Disk.Stores;
-using Disk.ViewModel.Common.Commands.Sync;
+﻿using Disk.ViewModel.Common.Commands.Sync;
 using Disk.ViewModel.Common.ViewModels;
 using System.Windows;
 using System.Windows.Input;
@@ -7,7 +6,7 @@ using Settings = Disk.Properties.Config.Config;
 
 namespace Disk.ViewModel
 {
-    public class SettingsViewModel(NavigationStore navigationStore) : ObserverViewModel
+    public class SettingsViewModel : ObserverViewModel
     {
         private static Settings Settings => Settings.Default;
 

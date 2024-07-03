@@ -4,7 +4,6 @@ using Disk.Repository.Interface;
 using Disk.Stores;
 using Disk.ViewModel.Common.Commands.Sync;
 using Disk.ViewModel.Common.ViewModels;
-using Newtonsoft.Json;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
 

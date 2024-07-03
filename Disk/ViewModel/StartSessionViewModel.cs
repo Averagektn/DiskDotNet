@@ -14,8 +14,8 @@ using Settings = Disk.Properties.Config.Config;
 
 namespace Disk.ViewModel
 {
-    public class StartSessionViewModel(ModalNavigationStore modalNavigationStore, NavigationStore navigationStore,
-        ISessionRepository sessionRepository, IMapRepository mapRepository) : ObserverViewModel
+    public class StartSessionViewModel(NavigationStore navigationStore, ISessionRepository sessionRepository, IMapRepository mapRepository)
+        : ObserverViewModel
     {
         public Patient Patient { get; set; } = null!;
         public Appointment Appointment { get; set; } = null!;

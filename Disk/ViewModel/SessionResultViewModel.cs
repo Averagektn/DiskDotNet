@@ -42,8 +42,8 @@ namespace Disk.ViewModel
 
         public ObservableCollection<string> Indices { get; set; } = [];
         public Converter Converter { get; set; } = DrawableFabric.GetIniConverter();
-        public IEnumerable<(bool IsNewTarget, Point2D<float> Point)> FullPath 
-        { 
+        public IEnumerable<(bool IsNewTarget, Point2D<float> Point)> FullPath
+        {
             get
             {
                 Point2D<float> lastPoint = null!;
@@ -57,7 +57,7 @@ namespace Disk.ViewModel
                     }
 
                     var pit = JsonConvert.DeserializeObject<List<Point2D<float>>>(CurrentSession.PathInTargets.ElementAt(i).CoordinatesJson)!;
-                    foreach(var point in pit)
+                    foreach (var point in pit)
                     {
                         lastPoint = point;
                         yield return (false, point);
@@ -65,7 +65,7 @@ namespace Disk.ViewModel
 
                     yield return (true, lastPoint);
                 }
-            } 
+            }
         }
 
         private List<Point2D<float>> _targetCenters = [];

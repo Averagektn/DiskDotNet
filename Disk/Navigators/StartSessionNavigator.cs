@@ -41,7 +41,7 @@ namespace Disk.Navigators
                             vm.OnSessionOver += onSessionOver;
                             vm.Appointment = appointment;
                             vm.Patient = patient;
-                        }); 
+                        });
                 });
         }
 

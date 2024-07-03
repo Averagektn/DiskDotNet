@@ -31,13 +31,13 @@ namespace Disk.ViewModel.Common.ViewModels
             base.Dispose();
             GC.SuppressFinalize(this);
 
-            while (_navigationStore.CanClose) 
+            while (_navigationStore.CanClose)
             {
                 _navigationStore.Close();
             }
-            while (_modalNavigationStore.CanClose) 
-            { 
-                _modalNavigationStore.Close(); 
+            while (_modalNavigationStore.CanClose)
+            {
+                _modalNavigationStore.Close();
             }
         }
 

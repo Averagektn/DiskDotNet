@@ -3,7 +3,6 @@ using Disk.Properties.Langs.AddPatient;
 using Disk.Repository.Exceptions;
 using Disk.Service.Exceptions;
 using Disk.Service.Interface;
-using Disk.Stores.Interface;
 using Disk.ViewModel.Common.Commands.Async;
 using Disk.ViewModel.Common.Commands.Sync;
 using Disk.ViewModel.Common.ViewModels;
