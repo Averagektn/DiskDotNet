@@ -153,8 +153,8 @@ namespace Disk.ViewModel
 
             await appointmentRepository.AddAsync(appointment);
 
-            currPage = PagesCount - 1;
-            IsPreviousEnabled = currPage > 0;
+            currPage = 0;
+            IsPreviousEnabled = false;
             IsNextEnabled = currPage < PagesCount - 1;
             UpdateAppointments();
 
