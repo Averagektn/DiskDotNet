@@ -1,11 +1,9 @@
-﻿using Disk.Data.Impl;
-using Disk.Entities;
+﻿using Disk.Entities;
 using Disk.Repository.Interface;
 using Disk.Stores;
 using Disk.ViewModel.Common.Commands.Sync;
 using Disk.ViewModel.Common.ViewModels;
 using Microsoft.Win32;
-using Newtonsoft.Json;
 using System.Collections.ObjectModel;
 using System.Globalization;
 using System.IO;
@@ -80,7 +78,6 @@ namespace Disk.ViewModel
             {
                 vm.ImagePath = _imageFilePath;
                 vm.CurrPath = logPath;
-                vm.TargetCenters = JsonConvert.DeserializeObject<List<Point2D<float>>>(SelectedMap.CoordinatesJson) ?? [];
                 vm.OnSessionOver += OnSessionOver;
                 vm.CurrentSession = session;
             });

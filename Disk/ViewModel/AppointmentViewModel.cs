@@ -1,13 +1,10 @@
-﻿using Disk.Data.Impl;
-using Disk.Entities;
+﻿using Disk.Entities;
 using Disk.Repository.Interface;
 using Disk.Service.Interface;
 using Disk.Stores;
 using Disk.ViewModel.Common.Commands.Sync;
 using Disk.ViewModel.Common.ViewModels;
-using Newtonsoft.Json;
 using System.Collections.ObjectModel;
-using System.Windows;
 using System.Windows.Input;
 
 namespace Disk.ViewModel
@@ -37,7 +34,7 @@ namespace Disk.ViewModel
         public ICommand DeleteSessionCommand => new Command(_ =>
         {
             sessionRepository.Delete(SelectedSession!);
-            Sessions.Remove(SelectedSession!);
+            _ = Sessions.Remove(SelectedSession!);
             OnPropertyChanged(nameof(Sessions));
             PathsToTargets.Clear();
 
@@ -51,26 +48,7 @@ namespace Disk.ViewModel
                 return;
             }
 
-            navigationStore.SetViewModel<PaintViewModel>(vm =>
-            {
-                vm.PathsToTargets = SelectedSession!.PathToTargets
-                    .Select(path => JsonConvert.DeserializeObject<List<Point2D<float>>>(path.CoordinatesJson)!)
-                    .ToList();
-                vm.PathsInTargets = SelectedSession!.PathInTargets
-                    .Select(path => JsonConvert.DeserializeObject<List<Point2D<float>>>(path.CoordinatesJson)!)
-                    .ToList();
-                vm.TargetCenters = JsonConvert.DeserializeObject<List<Point2D<float>>>(SelectedSession.MapNavigation.CoordinatesJson) ?? [];
-                vm.IsGame = false;
-
-                vm.ScoreVisibility = Visibility.Hidden;
-
-                vm.IsBackEnabled = true;
-                vm.IsStopEnabled = false;
-
-                vm.CurrentSession = SelectedSession;
-
-                vm.FillTargetsComboBox();
-            });
+            navigationStore.SetViewModel<SessionResultViewModel>(vm => vm.CurrentSession = SelectedSession);
         }
 
         private void SessionSelected(object? obj)

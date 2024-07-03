@@ -52,6 +52,9 @@
             <DataTemplate DataType="{x:Type viewmodels:NavigationBarLayoutViewModel}">
                 <views:NavigationBarLayoutView/>
             </DataTemplate>
+            <DataTemplate DataType="{x:Type viewmodels:SessionResultViewModel}">
+                <views:SessionResultView/>
+            </DataTemplate>
         </Grid.Resources>
 
         <modalcontrol:Modal Panel.ZIndex="2" IsOpen="{Binding IsModalOpen}">

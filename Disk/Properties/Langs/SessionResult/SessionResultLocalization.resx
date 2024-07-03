@@ -117,25 +117,46 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="AngleDistance" xml:space="preserve">
+    <value>Distance (in angles)</value>
+  </data>
+  <data name="AngleSpeed" xml:space="preserve">
+    <value>Speed (in angles)</value>
+  </data>
+  <data name="ApproachSpeed" xml:space="preserve">
+    <value>Approach speed</value>
+  </data>
   <data name="Back" xml:space="preserve">
-    <value>Назад</value>
+    <value>Back</value>
   </data>
-  <data name="ConnectionLost" xml:space="preserve">
-    <value>Потеряно соединение с диском</value>
+  <data name="Diagram" xml:space="preserve">
+    <value>Diagram</value>
   </data>
-  <data name="EmptyMap" xml:space="preserve">
-    <value>Карта пуста</value>
+  <data name="Dispersion" xml:space="preserve">
+    <value>Dispersion</value>
   </data>
-  <data name="LeftFoot" xml:space="preserve">
-    <value>Л</value>
+  <data name="MathExp" xml:space="preserve">
+    <value>Average shift from center</value>
   </data>
-  <data name="RightFoot" xml:space="preserve">
-    <value>П</value>
+  <data name="NoContentForDiagramError" xml:space="preserve">
+    <value>No content for diagram</value>
   </data>
-  <data name="Score" xml:space="preserve">
-    <value>Счет</value>
+  <data name="NoContentForPathError" xml:space="preserve">
+    <value>No content for path</value>
   </data>
-  <data name="Stop" xml:space="preserve">
-    <value>Остановить</value>
+  <data name="Path" xml:space="preserve">
+    <value>Path</value>
+  </data>
+  <data name="Precision" xml:space="preserve">
+    <value>Precision</value>
+  </data>
+  <data name="StandartDeviation" xml:space="preserve">
+    <value>Deviation</value>
+  </data>
+  <data name="Target" xml:space="preserve">
+    <value>Target</value>
+  </data>
+  <data name="Time" xml:space="preserve">
+    <value>Time</value>
   </data>
 </root>

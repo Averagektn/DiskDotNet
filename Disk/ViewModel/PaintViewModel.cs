@@ -5,17 +5,12 @@ using Disk.Entities;
 using Disk.Repository.Interface;
 using Disk.Service.Implementation;
 using Disk.Stores;
-using Disk.ViewModel.Common.Commands.Sync;
 using Disk.ViewModel.Common.ViewModels;
 using Disk.Visual.Impl;
-using Disk.Visual.Interface;
 using Newtonsoft.Json;
-using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Net;
 using System.Windows;
-using System.Windows.Input;
-using System.Windows.Media;
 using FilePath = System.IO.Path;
 using Localization = Disk.Properties.Langs.PaintWindow.PaintWindowLocalization;
 using Settings = Disk.Properties.Config.Config;
@@ -28,7 +23,16 @@ namespace Disk.ViewModel
         public event Action? OnSessionOver;
         public string ImagePath = string.Empty;
         public string CurrPath { get; set; } = null!;
-        public Session CurrentSession { get; set; } = null!;
+        private Session _currentSession = null!;
+        public Session CurrentSession
+        {
+            get => _currentSession;
+            set
+            {
+                _currentSession = value;
+                TargetCenters = JsonConvert.DeserializeObject<List<Point2D<float>>>(_currentSession.MapNavigation.CoordinatesJson) ?? [];
+            }
+        }
 
         // Scale
         public Converter Converter { get; set; }
@@ -43,7 +47,8 @@ namespace Disk.ViewModel
         private readonly Thread DiskNetworkThread;
 
         // Sessions datasets
-        public List<Point2D<float>> TargetCenters { get; set; } = null!;
+        public List<Point2D<float>> TargetCenters { get; set; } = [];
+
         public List<Point2D<float>> FullPath = [];
         public List<List<Point2D<float>>> PathsToTargets = [[]];
         public List<List<Point2D<float>>> PathsInTargets = [];
@@ -62,7 +67,14 @@ namespace Disk.ViewModel
                 _ = SetProperty(ref _score, value);
             }
         }
-        public ObservableCollection<string> PathsAndRoses { get; set; } = [];
+
+        private Stopwatch? PathToTargetStopwatch;
+
+        // binding
+        public string ScoreString => $"{Localization.Score}: {Score}";
+
+        private bool _isStopEnabled = true;
+        public bool IsStopEnabled { get => _isStopEnabled; set => SetProperty(ref _isStopEnabled, value); }
 
         // DI
         private readonly NavigationStore _navigationStore;
@@ -70,40 +82,6 @@ namespace Disk.ViewModel
         private readonly IPathInTargetRepository _pathInTargetRepository;
         private readonly ISessionResultRepository _sessionResultRepository;
         private readonly ISessionRepository _sessionRepository;
-
-        private Stopwatch? PathToTargetStopwatch;
-
-        // binding
-        public bool IsRoseChecked { get; set; }
-        public bool IsPathChecked { get; set; }
-        public string ScoreString => $"{Localization.Score}: {Score}";
-
-        private bool _isBackEnabled;
-        public bool IsBackEnabled { get => _isBackEnabled; set => SetProperty(ref _isBackEnabled, value); }
-
-        private int _selectedRoseOrPath = -1;
-        public int SelectedRoseOrPath { get => _selectedRoseOrPath; set => SetProperty(ref _selectedRoseOrPath, value); }
-
-        private string _message = string.Empty;
-        public string Message { get => _message; set => SetProperty(ref _message, value); }
-
-        private bool _isStopEnabled = true;
-        public bool IsStopEnabled { get => _isStopEnabled; set => SetProperty(ref _isStopEnabled, value); }
-
-        private Visibility _rosesAndPathsVisibility = Visibility.Hidden;
-        public Visibility RosesAndPathsVisibility { get => _rosesAndPathsVisibility; set => SetProperty(ref _rosesAndPathsVisibility, value); }
-
-        private Visibility _pathButtonVisibility = Visibility.Hidden;
-        public Visibility PathButtonVisibility { get => _pathButtonVisibility; set => SetProperty(ref _pathButtonVisibility, value); }
-
-        private Visibility _roseButtonVisibility = Visibility.Hidden;
-        public Visibility RoseButtonVisibility { get => _roseButtonVisibility; set => SetProperty(ref _roseButtonVisibility, value); }
-
-        private Visibility _scoreVisiblity = Visibility.Visible;
-        public Visibility ScoreVisibility { get => _scoreVisiblity; set => SetProperty(ref _scoreVisiblity, value); }
-
-        // Command
-        public ICommand NavigateBackCommand => new Command(_ => _navigationStore.NavigateBack());
 
         public PaintViewModel(NavigationStore navigationStore, IPathToTargetRepository pathToTargetRepository,
             IPathInTargetRepository pathInTargetRepository, ISessionResultRepository sessionResultRepository, ISessionRepository sessionRepository)
@@ -123,58 +101,6 @@ namespace Disk.ViewModel
         {
             DiskNetworkThread.Start();
             PathToTargetStopwatch = Stopwatch.StartNew();
-        }
-
-        public List<IStaticFigure> GetPathAndRose(Target target, Size paintAreaSize)
-        {
-            if (SelectedRoseOrPath == -1)
-            {
-                return [];
-            }
-
-            if (IsRoseChecked)
-            {
-                return [GetGraph(target, paintAreaSize)];
-            }
-            else if (IsPathChecked)
-            {
-                if (PathsToTargets.Count <= SelectedRoseOrPath || PathsToTargets[SelectedRoseOrPath].Count == 0)
-                {
-                    _ = MessageBox.Show(Localization.NoContentForPathError);
-                    return [];
-                }
-                var converter = DrawableFabric.GetIniConverter();
-                var pathToTarget = new Path(PathsToTargets[SelectedRoseOrPath], Converter, new SolidColorBrush(Colors.Green));
-                var pathInTarget = new Path(PathsInTargets[SelectedRoseOrPath], Converter, new SolidColorBrush(Colors.Blue));
-                var targetCenter = converter.ToWnd_FromRelative(TargetCenters[SelectedRoseOrPath]);
-                var targetToDraw = DrawableFabric.GetIniProgressTarget(targetCenter);
-
-                var userToDraw = DrawableFabric.GetIniUser(ImagePath);
-                userToDraw.Move(converter.ToWndCoord(PathsToTargets[SelectedRoseOrPath][0]));
-
-                return [targetToDraw, userToDraw, pathToTarget, pathInTarget];
-            }
-            return [];
-        }
-
-        private Graph GetGraph(Target target, Size paintAreaSize)
-        {
-            if (PathsInTargets.Count <= SelectedRoseOrPath || PathsInTargets[SelectedRoseOrPath].Count == 0)
-            {
-                _ = MessageBox.Show(Localization.NoContentForDiagramError);
-                return new Graph([], paintAreaSize, Brushes.LightGreen, 8);
-            }
-
-            var angRadius = (Converter.ToAngleX_FromWnd(target.Radius) + Converter.ToAngleY_FromWnd(target.Radius)) / 2;
-
-            var angCenter = Converter.ToAngle_FromWnd(Converter.ToWnd_FromRelative(TargetCenters[SelectedRoseOrPath]));
-            var dataset =
-                PathsInTargets[SelectedRoseOrPath]
-                .Select(p => new PolarPoint<float>(p.X - angCenter.X, p.Y - angCenter.Y))
-                .Where(p => Math.Abs(p.X) > angRadius && Math.Abs(p.Y) > angRadius)
-                .ToList();
-
-            return new Graph(dataset, paintAreaSize, Brushes.LightGreen, 8);
         }
 
         public ProgressTarget GetProgressTarget()
@@ -252,30 +178,14 @@ namespace Disk.ViewModel
             }
 
             IsStopEnabled = false;
-            IsBackEnabled = true;
-            FillTargetsComboBox();
-
-            EnableResults();
 
             IsGame = false;
             DiskNetworkThread.Join();
 
             OnSessionOver?.Invoke();
-        }
 
-        public void FillTargetsComboBox()
-        {
-            for (int i = 0; i < TargetCenters.Count; i++)
-            {
-                PathsAndRoses.Add($"{Localization.Target} {i + 1}");
-            }
-        }
-
-        public void EnableResults()
-        {
-            RosesAndPathsVisibility = Visibility.Visible;
-            RoseButtonVisibility = Visibility.Visible;
-            PathButtonVisibility = Visibility.Visible;
+            _ = _navigationStore.NavigateBack();
+            _navigationStore.SetViewModel<SessionResultViewModel>(vm => vm.CurrentSession = CurrentSession);
         }
 
         public void SwitchToPathInTarget(Point2D<int> userShot)
@@ -312,14 +222,6 @@ namespace Disk.ViewModel
                 Time = time
             };
             SavePathToTarget(ptt);
-
-            Message =
-                    $"""
-                     {Localization.Time}: {time:F1}
-                     {Localization.AngleDistance}: {distance:F1}
-                     {Localization.AngleSpeed}: {avgSpeed:F1}
-                     {Localization.ApproachSpeed}: {approachSpeed:F1}
-                     """;
         }
 
         public bool SwitchToPathToTarget(ProgressTarget target)
@@ -349,7 +251,6 @@ namespace Disk.ViewModel
                 var wndCenter = Converter.ToWnd_FromRelative(newCenter);
                 target.Move(wndCenter);
 
-                Message = string.Empty;
                 PathToTargetStopwatch!.Restart();
 
                 return true;

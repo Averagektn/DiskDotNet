@@ -115,6 +115,11 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>ServiceExceptionLocalization.resx</DependentUpon>
     </Compile>
+    <Compile Update="Properties\Langs\SessionResult\SessionResultLocalization.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>SessionResultLocalization.resx</DependentUpon>
+    </Compile>
     <Compile Update="Properties\Langs\Settings\SettingsLocalization.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
@@ -216,6 +221,13 @@
     <EmbeddedResource Update="Properties\Langs\ServiceException\ServiceExceptionLocalization.ru-RU.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
     </EmbeddedResource>
+    <EmbeddedResource Update="Properties\Langs\SessionResult\SessionResultLocalization.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>SessionResultLocalization.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Properties\Langs\SessionResult\SessionResultLocalization.ru-RU.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
     <EmbeddedResource Update="Properties\Langs\Settings\SettingsLocalization.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>SettingsLocalization.Designer.cs</LastGenOutput>
@@ -250,6 +262,7 @@
 
   <ItemGroup>
     <Folder Include="Entities\" />
+    <Folder Include="Navigators\" />
   </ItemGroup>
 
 </Project>
