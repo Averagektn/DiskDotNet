@@ -64,6 +64,8 @@ namespace Disk.ViewModel
 
         private bool _isPathChecked = false;
         public bool IsPathChecked { get => _isPathChecked; set => SetProperty(ref _isPathChecked, value); }
+        public bool ShowPathInTarget { get; set; }
+        public bool ShowPathToTarget { get; set; }
 
         private int _selectedIndex = -1;
         public int SelectedIndex { get => _selectedIndex; set => SetProperty(ref _selectedIndex, value); }
@@ -71,6 +73,7 @@ namespace Disk.ViewModel
         public ObservableCollection<string> Indices { get; set; } = [];
 
         public ICommand NavigateBackCommand => new Command(_ => navigationStore.NavigateBack());
+        public ICommand ReplyCommand => new Command(_ => navigationStore.NavigateBack());
         public ICommand NewItemSelectedCommand => new Command(_ => Message =
                 $"""
                 {Localization.StandartDeviation}: {CurrentSession.SessionResult?.Deviation:F2}
@@ -117,8 +120,18 @@ namespace Disk.ViewModel
 
                 var userToDraw = DrawableFabric.GetIniUser(string.Empty);
                 userToDraw.Move(converter.ToWndCoord(PathsToTargets[SelectedIndex][0]));
+                var res = new List<IStaticFigure> { userToDraw, targetToDraw };
 
-                return [targetToDraw, userToDraw, pathToTarget, pathInTarget];
+                if (ShowPathToTarget)
+                {
+                    res.Add(pathToTarget);
+                }
+                if (ShowPathInTarget)
+                {
+                    res.Add(pathInTarget);
+                }
+
+                return res;
             }
             return [];
         }

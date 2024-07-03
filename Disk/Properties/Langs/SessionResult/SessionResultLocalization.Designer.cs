@@ -151,11 +151,38 @@ namespace Disk.Properties.Langs.SessionResult {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to PathInTarget.
+        /// </summary>
+        public static string PathInTarget {
+            get {
+                return ResourceManager.GetString("PathInTarget", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to PathToTarget.
+        /// </summary>
+        public static string PathToTarget {
+            get {
+                return ResourceManager.GetString("PathToTarget", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Precision.
         /// </summary>
         public static string Precision {
             get {
                 return ResourceManager.GetString("Precision", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Reply.
+        /// </summary>
+        public static string Reply {
+            get {
+                return ResourceManager.GetString("Reply", resourceCulture);
             }
         }
         

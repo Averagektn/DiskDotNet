@@ -147,8 +147,17 @@
   <data name="Path" xml:space="preserve">
     <value>Путь</value>
   </data>
+  <data name="PathInTarget" xml:space="preserve">
+    <value>Путь в цели</value>
+  </data>
+  <data name="PathToTarget" xml:space="preserve">
+    <value>Путь к цели</value>
+  </data>
   <data name="Precision" xml:space="preserve">
     <value>Точность</value>
+  </data>
+  <data name="Reply" xml:space="preserve">
+    <value>Повтор</value>
   </data>
   <data name="StandartDeviation" xml:space="preserve">
     <value>Среднее отклонение от центра</value>

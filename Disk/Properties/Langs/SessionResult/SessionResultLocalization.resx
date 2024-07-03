@@ -147,8 +147,17 @@
   <data name="Path" xml:space="preserve">
     <value>Path</value>
   </data>
+  <data name="PathInTarget" xml:space="preserve">
+    <value>PathInTarget</value>
+  </data>
+  <data name="PathToTarget" xml:space="preserve">
+    <value>PathToTarget</value>
+  </data>
   <data name="Precision" xml:space="preserve">
     <value>Precision</value>
+  </data>
+  <data name="Reply" xml:space="preserve">
+    <value>Reply</value>
   </data>
   <data name="StandartDeviation" xml:space="preserve">
     <value>Deviation</value>

@@ -62,6 +62,22 @@
                 IsChecked="{Binding IsPathChecked}"
                 Margin="10"/>
 
+            <CheckBox 
+                FontSize="25"
+                Margin="10"
+                Content="{x:Static lang:SessionResultLocalization.PathToTarget}"
+                Checked="RadioButtonChecked"
+                Unchecked="RadioButtonChecked"
+                IsChecked="{Binding ShowPathToTarget}"/>
+
+            <CheckBox
+                FontSize="25"
+                Margin="10"
+                Content="{x:Static lang:SessionResultLocalization.PathInTarget}"
+                Checked="RadioButtonChecked"
+                Unchecked="RadioButtonChecked"
+                IsChecked="{Binding ShowPathInTarget}"/>
+
             <ComboBox   
                 FontSize="25"
                 SelectionChanged="SelectionChanged" 
@@ -74,6 +90,12 @@
                     </i:EventTrigger>
                 </i:Interaction.Triggers>
             </ComboBox>
+
+            <Button 
+                Command="{Binding ReplyCommand}"
+                Content="{x:Static lang:SessionResultLocalization.Reply}"
+                Width="auto"
+                Margin="10"/>
 
             <Button 
                 Command="{Binding NavigateBackCommand}"

@@ -40,8 +40,8 @@ namespace Disk.View
                 {
                     Scalables.Add(figure);
 
-                    figure.Draw(PaintArea);
                     figure.Scale(PaintPanelSize);
+                    figure.Draw(PaintArea);
                 }
             }
         }
