@@ -11,22 +11,24 @@ namespace Disk.ViewModel
 {
     public class PatientsViewModel : ObserverViewModel
     {
-        public ICommand AddPatientCommand => new Command(_ =>
-        {
-            Action<Patient> onAdd = patient => SortedPatients.Add(patient);
-            onAdd += _ =>
-            {
-                PageNum = TotalPages;
-                IsPrevEnabled = PageNum > 1;
-                IsNextEnabled = PageNum < TotalPages;
-
-                GetPagedPatients();
-            };
-
-            AddPatientNavigator.Navigate(_modalNavigationStore, onAdd);
-        });
         public ICommand SearchCommand => new Command(Search);
         public ICommand SelectPatientCommand => new Command(SelectPatient);
+        public ICommand AddPatientCommand => new Command(
+            _ =>
+            {
+                Action<Patient> onAdd = patient => SortedPatients.Add(patient);
+                onAdd += _ =>
+                {
+                    PageNum = TotalPages;
+                    IsPrevEnabled = PageNum > 1;
+                    IsNextEnabled = PageNum < TotalPages;
+
+                    GetPagedPatients();
+                };
+
+                AddPatientNavigator.Navigate(_modalNavigationStore, onAdd);
+            });
+
         public ICommand DeletePatientCommand => new Command(
             _ =>
             {
@@ -101,11 +103,11 @@ namespace Disk.ViewModel
         private int _pageNum = 1;
         public int PageNum { get => _pageNum; set => SetProperty(ref _pageNum, value); }
 
-        public ObservableCollection<Patient> SortedPatients { get; set; }
-        public Patient? SelectedPatient { get; set; }
-
         private string _searchText = string.Empty;
         public string SearchText { get => _searchText; set => SetProperty(ref _searchText, value); }
+
+        public ObservableCollection<Patient> SortedPatients { get; set; }
+        public Patient? SelectedPatient { get; set; }
 
         private readonly NavigationStore _navigationStore;
         private readonly ModalNavigationStore _modalNavigationStore;

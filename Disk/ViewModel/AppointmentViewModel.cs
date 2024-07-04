@@ -24,15 +24,16 @@ namespace Disk.ViewModel
         public ICommand SessionSelectedCommand => new Command(SessionSelected);
         public ICommand ExportToExcelCommand => new Command(_ => excelFiller.ExportToExcel(Sessions, Patient));
         public ICommand ShowSessionCommand => new Command(ShowSession);
-        public ICommand DeleteSessionCommand => new Command(_ =>
-        {
-            sessionRepository.Delete(SelectedSession!);
-            _ = Sessions.Remove(SelectedSession!);
-            OnPropertyChanged(nameof(Sessions));
-            PathsToTargets.Clear();
+        public ICommand DeleteSessionCommand => new Command(
+            _ =>
+            {
+                sessionRepository.Delete(SelectedSession!);
+                _ = Sessions.Remove(SelectedSession!);
+                OnPropertyChanged(nameof(Sessions));
+                PathsToTargets.Clear();
 
-            SelectedSession = null;
-        });
+                SelectedSession = null;
+            });
 
         private void ShowSession(object? obj)
         {

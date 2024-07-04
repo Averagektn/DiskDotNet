@@ -38,14 +38,14 @@ namespace Disk.Navigators
                 {
                     vm.IniNavigationStore = navigationStore;
                     vm.CurrentViewModel = navigationStore.GetViewModel<PaintViewModel>(
-                    vm =>
-                    {
-                        vm.IniNavigationStore = navigationStore;
-                        vm.ImagePath = imageFilePath;
-                        vm.CurrPath = logPath;
-                        vm.OnSessionOver += onSessionOver;
-                        vm.CurrentSession = session;
-                    });
+                        vm =>
+                        {
+                            vm.IniNavigationStore = navigationStore;
+                            vm.ImagePath = imageFilePath;
+                            vm.CurrPath = logPath;
+                            vm.OnSessionOver += onSessionOver;
+                            vm.CurrentSession = session;
+                        });
                 });
         }
 

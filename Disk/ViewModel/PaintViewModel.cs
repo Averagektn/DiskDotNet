@@ -58,6 +58,7 @@ namespace Disk.ViewModel
         public Point3D<float>? CurrentPos;
         public bool IsGame = true;
         public int TargetId { get; set; }
+
         private int _score;
         public int Score
         {

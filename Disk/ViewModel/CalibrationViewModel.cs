@@ -12,32 +12,37 @@ namespace Disk.ViewModel
 {
     public class CalibrationViewModel : ObserverViewModel
     {
-        public string XCoord { get => _xCoord; set => SetProperty(ref _xCoord, value); }
-        public string YCoord { get => _yCoord; set => SetProperty(ref _yCoord, value); }
-        public bool CalibrateXEnabled { get => _calibrateXEnabled; set => SetProperty(ref _calibrateXEnabled, value); }
-        public bool CalibrateYEnabled { get => _calibrateYEnabled; set => SetProperty(ref _calibrateYEnabled, value); }
-        public bool StartCalibrationEnabled { get => _startCalibrationEnabled; set => SetProperty(ref _startCalibrationEnabled, value); }
         private string _xCoord;
+        public string XCoord { get => _xCoord; set => SetProperty(ref _xCoord, value); }
+
         private string _yCoord;
+        public string YCoord { get => _yCoord; set => SetProperty(ref _yCoord, value); }
+
         private bool _calibrateXEnabled;
+        public bool CalibrateXEnabled { get => _calibrateXEnabled; set => SetProperty(ref _calibrateXEnabled, value); }
+
         private bool _calibrateYEnabled;
+        public bool CalibrateYEnabled { get => _calibrateYEnabled; set => SetProperty(ref _calibrateYEnabled, value); }
+
         private bool _startCalibrationEnabled = true;
+        public bool StartCalibrationEnabled { get => _startCalibrationEnabled; set => SetProperty(ref _startCalibrationEnabled, value); }
 
         // Actions
         public ICommand StartCalibrationCommand => new Command(StartCalibration);
         public ICommand CentralizeXCommand => new Command(_ => XShift += XAngleRes);
         public ICommand CentralizeYCommand => new Command(_ => YShift += YAngleRes);
+        public ICommand ApplyCommand => new Command(ApplyCalibration);
         public ICommand CalibrateXCommand => new Command(_ =>
         {
             CalibrateXEnabled = false;
             IsRunningThread = CalibrateYEnabled;
         });
+
         public ICommand CalibrateYCommand => new Command(_ =>
         {
             CalibrateYEnabled = false;
             IsRunningThread = CalibrateXEnabled;
         });
-        public ICommand ApplyCommand => new Command(ApplyCalibration);
 
         // Non-binded
         private static Settings Settings => Settings.Default;

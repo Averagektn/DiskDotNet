@@ -89,10 +89,11 @@ namespace Disk.ViewModel
 
         private NumberedTarget GetIniCoordTarget(Size renderSize, double actualX, double actualY) =>
             new(
-                new Point2D<int>(
+                new Point2D<int>
+                (
                     (int)(actualX / renderSize.Width * IniWidth),
                     (int)(actualY / renderSize.Height * IniHeight)
-                   ),
+                ),
                 Settings.Default.IniTargetRadius,
                 new Size(IniWidth, IniHeight),
                 _targets.Count + 1

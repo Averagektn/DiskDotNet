@@ -97,18 +97,19 @@ namespace Disk.ViewModel
         public bool ShowPathToTarget { get; set; }
 
         public ICommand NavigateBackCommand => new Command(_ => navigationStore.Close());
-
-        public ICommand NewItemSelectedCommand => new Command(_ => Message =
-                $"""
-                {Localization.StandartDeviation}: {CurrentSession.SessionResult?.Deviation:F2}
-                {Localization.Dispersion}: {CurrentSession.SessionResult?.Dispersion:F2}
-                {Localization.MathExp}: {CurrentSession.SessionResult?.MathExp:F2}
-                {Localization.AngleDistance}: {CurrentSession.PathToTargets.ElementAt(SelectedIndex).AngleDistance:F2}
-                {Localization.AngleSpeed}: {CurrentSession.PathToTargets.ElementAt(SelectedIndex).AngleSpeed:F2}
-                {Localization.ApproachSpeed}: {CurrentSession.PathToTargets.ElementAt(SelectedIndex).ApproachSpeed:F2}
-                {Localization.Time}: {CurrentSession.PathToTargets.ElementAt(SelectedIndex).Time:F2}
-                {Localization.Precision}: {CurrentSession.PathInTargets.ElementAt(SelectedIndex).Precision:F2}
-                """);
+        public ICommand NewItemSelectedCommand => new Command(
+            _ => 
+            Message =
+            $"""
+            {Localization.StandartDeviation}: {CurrentSession.SessionResult?.Deviation:F2}
+            {Localization.Dispersion}: {CurrentSession.SessionResult?.Dispersion:F2}
+            {Localization.MathExp}: {CurrentSession.SessionResult?.MathExp:F2}
+            {Localization.AngleDistance}: {CurrentSession.PathToTargets.ElementAt(SelectedIndex).AngleDistance:F2}
+            {Localization.AngleSpeed}: {CurrentSession.PathToTargets.ElementAt(SelectedIndex).AngleSpeed:F2}
+            {Localization.ApproachSpeed}: {CurrentSession.PathToTargets.ElementAt(SelectedIndex).ApproachSpeed:F2}
+            {Localization.Time}: {CurrentSession.PathToTargets.ElementAt(SelectedIndex).Time:F2}
+            {Localization.Precision}: {CurrentSession.PathInTargets.ElementAt(SelectedIndex).Precision:F2}  
+            """);
 
         public void FillTargetsComboBox()
         {

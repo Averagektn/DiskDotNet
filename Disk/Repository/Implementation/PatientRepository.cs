@@ -31,7 +31,8 @@ namespace Disk.Repository.Implementation
         public new async Task AddAsync(Patient entity)
         {
             var patientExists = await table
-                .AnyAsync(p => 
+                .AnyAsync(
+                    p => 
                     p.Name == entity.Name && 
                     p.Surname == entity.Surname &&
                     p.Patronymic == entity.Patronymic && 
@@ -50,8 +51,10 @@ namespace Disk.Repository.Implementation
             name = name.CapitalizeFirstLetter();
             surname = surname.CapitalizeFirstLetter();
             patronymic = patronymic.CapitalizeFirstLetter();
+
             return table
-                .Where(p =>  
+                .Where(
+                    p =>  
                     p.Name.Contains(name) &&
                     p.Surname.Contains(surname) &&
                     (p.Patronymic == null || p.Patronymic.Contains(patronymic))
@@ -59,10 +62,7 @@ namespace Disk.Repository.Implementation
                 .ToList();
         }
 
-        public long GetPatientsCount()
-        {
-            return table.Count();
-        }
+        public long GetPatientsCount() => table.Count();
 
         public ICollection<Patient> GetPatientsPage(int pageNum, int patientsPerPage)
         {

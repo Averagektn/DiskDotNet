@@ -78,6 +78,8 @@ namespace Disk.ViewModel
             }
         }
 
+        public ICommand CancelCommand => new Command(_ => IniNavigationStore.Close());
+        public ICommand ChangeLanguageCommand => new Command(ChangeLanguage);
         public ICommand SaveCommand => new Command(
             _ =>
             {
@@ -92,9 +94,6 @@ namespace Disk.ViewModel
 
                 IniNavigationStore.Close();
             });
-
-        public ICommand CancelCommand => new Command(_ => IniNavigationStore.Close());
-        public ICommand ChangeLanguageCommand => new Command(ChangeLanguage);
 
         private void ChangeLanguage(object? parameter)
         {

@@ -9,10 +9,7 @@ namespace Disk.Repository.Implementation
 {
     public class AppointmentRepository(DiskContext diskContext) : CrudRepository<Appointment>(diskContext), IAppointmentRepository
     {
-        public long GetAppointmentsCount(long patientId)
-        {
-            return table.Count();
-        }
+        public long GetAppointmentsCount(long patientId) => table.Count();
 
         public ICollection<Appointment> GetAppoitmentsByDate(long patientId, DateTime date)
         {

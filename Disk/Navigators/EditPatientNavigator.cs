@@ -36,13 +36,13 @@ namespace Disk.Navigators
                 {
                     vm.IniNavigationStore = navigationStore;
                     vm.CurrentViewModel = navigationStore.GetViewModel<EditPatientViewModel>(
-                    vm =>
-                    {
-                        vm.IniNavigationStore = navigationStore;
-                        vm.Backup = JsonConvert.DeserializeObject<Patient>(JsonConvert.SerializeObject(patient))!;
-                        vm.Patient = patient;
-                        vm.OnCancelEvent += onCancelEvent;
-                    });
+                        vm =>
+                        {
+                            vm.IniNavigationStore = navigationStore;
+                            vm.Backup = JsonConvert.DeserializeObject<Patient>(JsonConvert.SerializeObject(patient))!;
+                            vm.Patient = patient;
+                            vm.OnCancelEvent += onCancelEvent;
+                        });
                 });
         }
 

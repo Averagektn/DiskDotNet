@@ -24,6 +24,7 @@ namespace Disk.ViewModel
             set
             {
                 _ = SetProperty(ref _dateOfBirth, value);
+
                 if (value is not null)
                 {
                     Patient.DateOfBirth = value.Value.ToString("dd.MM.yyyy");
