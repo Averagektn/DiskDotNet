@@ -129,6 +129,9 @@
   <data name="DateTime" xml:space="preserve">
     <value>Date/Time</value>
   </data>
+  <data name="Delete" xml:space="preserve">
+    <value>Delete</value>
+  </data>
   <data name="Deviation" xml:space="preserve">
     <value>Deviation</value>
   </data>

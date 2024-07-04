@@ -123,6 +123,9 @@
   <data name="Ip" xml:space="preserve">
     <value>IP</value>
   </data>
+  <data name="Language" xml:space="preserve">
+    <value>Language</value>
+  </data>
   <data name="MoveTime" xml:space="preserve">
     <value>Move time</value>
   </data>

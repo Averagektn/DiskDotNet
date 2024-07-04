@@ -1,25 +1,17 @@
-﻿using Disk.Stores;
-using Disk.ViewModel.Common.Commands.Sync;
+﻿using Disk.ViewModel.Common.Commands.Sync;
 using Disk.ViewModel.Common.ViewModels;
-using System.Drawing;
+using System.Windows;
 using System.Windows.Input;
 using Settings = Disk.Properties.Config.Config;
 
 namespace Disk.ViewModel
 {
-    public class SettingsViewModel(NavigationStore navigationStore) : ObserverViewModel
+    public class SettingsViewModel : ObserverViewModel
     {
         private static Settings Settings => Settings.Default;
 
         private string _ip = Settings.IP;
-        public string Ip
-        {
-            get => _ip;
-            set
-            {
-                _ = SetProperty(ref _ip, value);
-            }
-        }
+        public string Ip { get => _ip; set => _ = SetProperty(ref _ip, value); }
 
         private int _moveTime = Settings.MoveTime;
         public string MoveTime
@@ -86,6 +78,8 @@ namespace Disk.ViewModel
             }
         }
 
+        public ICommand CancelCommand => new Command(_ => IniNavigationStore.Close());
+        public ICommand ChangeLanguageCommand => new Command(ChangeLanguage);
         public ICommand SaveCommand => new Command(
             _ =>
             {
@@ -98,9 +92,35 @@ namespace Disk.ViewModel
 
                 Settings.Save();
 
-                _ = navigationStore.NavigateBack();
+                IniNavigationStore.Close();
             });
 
-        public ICommand CancelCommand => new Command(_ => navigationStore.NavigateBack());
+        private void ChangeLanguage(object? parameter)
+        {
+            if (parameter is not null)
+            {
+                var selectedLanguage = parameter.ToString();
+
+                if (Settings.Language != selectedLanguage)
+                {
+                    Settings.Language = selectedLanguage;
+                    Settings.Save();
+
+                    RestartApplication();
+                }
+            }
+        }
+
+        private static void RestartApplication()
+        {
+            var appPath = Environment.ProcessPath;
+
+            if (appPath is not null)
+            {
+                _ = System.Diagnostics.Process.Start(appPath);
+            }
+
+            Application.Current.Shutdown();
+        }
     }
 }

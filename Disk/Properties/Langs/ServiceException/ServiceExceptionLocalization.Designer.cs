@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Disk.Properties.Langs.NavigateBack {
+namespace Disk.Properties.Langs.ServiceException {
     using System;
     
     
@@ -22,14 +22,14 @@ namespace Disk.Properties.Langs.NavigateBack {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public class NavigateBackLocalization {
+    public class ServiceExceptionLocalization {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal NavigateBackLocalization() {
+        internal ServiceExceptionLocalization() {
         }
         
         /// <summary>
@@ -39,7 +39,7 @@ namespace Disk.Properties.Langs.NavigateBack {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Disk.Properties.Langs.NavigateBack.NavigateBackLocalization", typeof(NavigateBackLocalization).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Disk.Properties.Langs.ServiceException.ServiceExceptionLocalization", typeof(ServiceExceptionLocalization).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -61,11 +61,47 @@ namespace Disk.Properties.Langs.NavigateBack {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Back.
+        ///   Looks up a localized string similar to Invalid date format.
         /// </summary>
-        public static string Back {
+        public static string DateFormatException {
             get {
-                return ResourceManager.GetString("Back", resourceCulture);
+                return ResourceManager.GetString("DateFormatException", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Date is empty.
+        /// </summary>
+        public static string EmptyDate {
+            get {
+                return ResourceManager.GetString("EmptyDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Mobile phone is empty.
+        /// </summary>
+        public static string EmptyMobilePhone {
+            get {
+                return ResourceManager.GetString("EmptyMobilePhone", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Name is empty.
+        /// </summary>
+        public static string EmptyName {
+            get {
+                return ResourceManager.GetString("EmptyName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Surname is empty.
+        /// </summary>
+        public static string EmptySurname {
+            get {
+                return ResourceManager.GetString("EmptySurname", resourceCulture);
             }
         }
     }

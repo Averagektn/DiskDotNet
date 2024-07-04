@@ -117,22 +117,19 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Calibration" xml:space="preserve">
-    <value>Calibration</value>
+  <data name="Back" xml:space="preserve">
+    <value>Назад</value>
   </data>
-  <data name="Language" xml:space="preserve">
-    <value>Language</value>
+  <data name="Calibration" xml:space="preserve">
+    <value>Калибровка</value>
   </data>
   <data name="MapConstructor" xml:space="preserve">
-    <value>Map creator</value>
+    <value>Конструктор карт</value>
   </data>
   <data name="Patients" xml:space="preserve">
-    <value>Patients</value>
-  </data>
-  <data name="Quit" xml:space="preserve">
-    <value>Quit</value>
+    <value>Пациенты</value>
   </data>
   <data name="Settings" xml:space="preserve">
-    <value>Settings</value>
+    <value>Настройки</value>
   </data>
 </root>

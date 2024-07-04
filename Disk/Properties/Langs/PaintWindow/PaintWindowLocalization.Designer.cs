@@ -61,33 +61,6 @@ namespace Disk.Properties.Langs.PaintWindow {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Distance (in angles).
-        /// </summary>
-        public static string AngleDistance {
-            get {
-                return ResourceManager.GetString("AngleDistance", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Speed (in angles).
-        /// </summary>
-        public static string AngleSpeed {
-            get {
-                return ResourceManager.GetString("AngleSpeed", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Approach speed.
-        /// </summary>
-        public static string ApproachSpeed {
-            get {
-                return ResourceManager.GetString("ApproachSpeed", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Back.
         /// </summary>
         public static string Back {
@@ -102,15 +75,6 @@ namespace Disk.Properties.Langs.PaintWindow {
         public static string ConnectionLost {
             get {
                 return ResourceManager.GetString("ConnectionLost", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Dispersion.
-        /// </summary>
-        public static string Dispersion {
-            get {
-                return ResourceManager.GetString("Dispersion", resourceCulture);
             }
         }
         
@@ -133,42 +97,6 @@ namespace Disk.Properties.Langs.PaintWindow {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Average shift from center.
-        /// </summary>
-        public static string MathExp {
-            get {
-                return ResourceManager.GetString("MathExp", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to No content for diagram.
-        /// </summary>
-        public static string NoContentForDiagramError {
-            get {
-                return ResourceManager.GetString("NoContentForDiagramError", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to No content for path.
-        /// </summary>
-        public static string NoContentForPathError {
-            get {
-                return ResourceManager.GetString("NoContentForPathError", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Path.
-        /// </summary>
-        public static string Path {
-            get {
-                return ResourceManager.GetString("Path", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to R.
         /// </summary>
         public static string RightFoot {
@@ -187,47 +115,11 @@ namespace Disk.Properties.Langs.PaintWindow {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Deviation.
-        /// </summary>
-        public static string StandartDeviation {
-            get {
-                return ResourceManager.GetString("StandartDeviation", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Stop.
         /// </summary>
         public static string Stop {
             get {
                 return ResourceManager.GetString("Stop", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Target.
-        /// </summary>
-        public static string Target {
-            get {
-                return ResourceManager.GetString("Target", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Time.
-        /// </summary>
-        public static string Time {
-            get {
-                return ResourceManager.GetString("Time", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Wind rose.
-        /// </summary>
-        public static string WindRose {
-            get {
-                return ResourceManager.GetString("WindRose", resourceCulture);
             }
         }
     }

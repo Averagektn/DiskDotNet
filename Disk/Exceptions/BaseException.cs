@@ -6,7 +6,7 @@
 
         public BaseException(string message) : base(message) { }
 
-        public BaseException(string output, string message) : base(message)
+        public BaseException(string message, string output) : base(message)
         {
             Output = output;
         }

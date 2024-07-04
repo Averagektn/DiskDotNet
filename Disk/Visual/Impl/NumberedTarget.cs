@@ -58,7 +58,8 @@ namespace Disk.Visual.Impl
         private void UpdateSizes()
         {
             var numSize = _numberText.Text.Length;
-            _numberText.FontSize = (MaxRadius * 2 - Radius * 2) / numSize + Radius * (numSize - 1);
+            _numberText.FontSize = (MaxRadius * 2 - Radius * 2) / numSize;
+
             _numberText.Margin = new(Left + MaxRadius / 2, Top - Radius / 2 + MaxRadius * (numSize - 1) / 2, 0, 0);
         }
 

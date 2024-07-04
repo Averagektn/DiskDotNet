@@ -127,10 +127,6 @@ namespace Disk.View.PaintWindow
                 MoveTimer.Start();
                 ShotTimer.Start();
             }
-            else
-            {
-                ViewModel.EnableResults();
-            }
         }
 
         private void StopGame()
@@ -162,33 +158,10 @@ namespace Disk.View.PaintWindow
         private void OnStopClick(object sender, RoutedEventArgs e)
         {
             StopGame();
+            // navigate to result
             ViewModel.SaveSessionResult();
-            CbTargets_SelectionChanged(sender, null!);
-        }
-
-        private void CbTargets_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            PaintArea.Children.Clear();
-
-            if (ViewModel is not null)
-            {
-                var figures = ViewModel.GetPathAndRose(Target, PaintPanelSize);
-                foreach (var figure in figures)
-                {
-                    Scalables.Add(figure);
-
-                    figure.Draw(PaintArea);
-                    figure.Scale(PaintPanelSize);
-                }
-            }
-        }
-
-        private void RbChecked(object sender, RoutedEventArgs e)
-        {
-            if (!ViewModel.IsGame)
-            {
-                CbTargets_SelectionChanged(sender, null!);
-            }
+            // navigate to result
+            //CbTargets_SelectionChanged(sender, null!);
         }
     }
 }

@@ -1,5 +1,7 @@
 ﻿using Disk.Db.Context;
 using Disk.Entities;
+using Disk.Extensions;
+using Disk.Properties.Langs.RepositoryException;
 using Disk.Repository.Common.Implementation;
 using Disk.Repository.Exceptions;
 using Disk.Repository.Interface;
@@ -11,11 +13,16 @@ namespace Disk.Repository.Implementation
     {
         public new void Add(Patient entity)
         {
-            var patientExists = table.Any(p => p.Name == entity.Name && p.Surname == entity.Surname &&
-                p.Patronymic == entity.Patronymic && p.DateOfBirth == entity.DateOfBirth);
+            var patientExists = table
+                .Any(p => 
+                    p.Name == entity.Name && 
+                    p.Surname == entity.Surname &&
+                    p.Patronymic == entity.Patronymic && 
+                    p.DateOfBirth == entity.DateOfBirth);
+
             if (patientExists)
             {
-                throw new DuplicateEntityException("Patient duplication");
+                throw new DuplicateEntityException("Patient duplication", RepositoryExceptionLocalization.ItemDuplication);
             }
 
             base.Add(entity);
@@ -23,14 +30,46 @@ namespace Disk.Repository.Implementation
 
         public new async Task AddAsync(Patient entity)
         {
-            var patientExists = await table.AnyAsync(p => p.Name == entity.Name && p.Surname == entity.Surname &&
-                p.Patronymic == entity.Patronymic && p.DateOfBirth == entity.DateOfBirth);
+            var patientExists = await table
+                .AnyAsync(
+                    p => 
+                    p.Name == entity.Name && 
+                    p.Surname == entity.Surname &&
+                    p.Patronymic == entity.Patronymic && 
+                    p.DateOfBirth == entity.DateOfBirth);
+
             if (patientExists)
             {
-                throw new DuplicateEntityException("Patient duplication");
+                throw new DuplicateEntityException("Patient duplication", RepositoryExceptionLocalization.ItemDuplication);
             }
 
             await base.AddAsync(entity);
+        }
+
+        public ICollection<Patient> GetPatientsByFullname(string name, string surname, string patronymic)
+        {
+            name = name.CapitalizeFirstLetter();
+            surname = surname.CapitalizeFirstLetter();
+            patronymic = patronymic.CapitalizeFirstLetter();
+
+            return table
+                .Where(
+                    p =>  
+                    p.Name.Contains(name) &&
+                    p.Surname.Contains(surname) &&
+                    (p.Patronymic == null || p.Patronymic.Contains(patronymic))
+                )
+                .ToList();
+        }
+
+        public long GetPatientsCount() => table.Count();
+
+        public ICollection<Patient> GetPatientsPage(int pageNum, int patientsPerPage)
+        {
+            return table
+                .Skip(pageNum * patientsPerPage)
+                .Take(patientsPerPage)
+                .ToList();
         }
     }
 }

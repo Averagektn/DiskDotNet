@@ -5,6 +5,7 @@ public partial class PathToTarget
     public long Session { get; set; }
 
     public long TargetNum { get; set; }
+    public long TargetNumInc => TargetNum + 1;
 
     public string CoordinatesJson { get; set; } = null!;
 

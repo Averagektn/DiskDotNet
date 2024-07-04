@@ -129,35 +129,11 @@
   <data name="Duplication" xml:space="preserve">
     <value>Пациент уже существует</value>
   </data>
-  <data name="EmptyDate" xml:space="preserve">
-    <value>Дата не выбрана</value>
-  </data>
-  <data name="EmptyHomePhone" xml:space="preserve">
-    <value>Домашний телефон не введен</value>
-  </data>
-  <data name="EmptyMobilePhone" xml:space="preserve">
-    <value>Мобильный телефон не введен</value>
-  </data>
-  <data name="EmptyName" xml:space="preserve">
-    <value>Имя не введено</value>
-  </data>
-  <data name="EmptySurname" xml:space="preserve">
-    <value>Фамилия не введена</value>
-  </data>
   <data name="ErrorHeader" xml:space="preserve">
     <value>Ошибка добавления пациента</value>
   </data>
   <data name="HomePhone" xml:space="preserve">
     <value>Домашний телефон</value>
-  </data>
-  <data name="InvalidDate" xml:space="preserve">
-    <value>Неверная дата</value>
-  </data>
-  <data name="InvalidHomePhone" xml:space="preserve">
-    <value>Неверный домашний телефон</value>
-  </data>
-  <data name="InvalidMobilePhone" xml:space="preserve">
-    <value>Неверный мобильный телефон(формат: +375*********)</value>
   </data>
   <data name="MobilePhone" xml:space="preserve">
     <value>Мобильный телефон</value>

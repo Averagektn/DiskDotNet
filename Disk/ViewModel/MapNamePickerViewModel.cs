@@ -2,17 +2,17 @@
 using Disk.Entities;
 using Disk.Properties.Langs.MapNamePicker;
 using Disk.Repository.Interface;
-using Disk.Stores;
 using Disk.ViewModel.Common.Commands.Async;
 using Disk.ViewModel.Common.ViewModels;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using Serilog;
+using System.Globalization;
 using System.Windows.Input;
 
 namespace Disk.ViewModel
 {
-    public class MapNamePickerViewModel(IMapRepository mapRepository, ModalNavigationStore modalNavigationStore) : PopupViewModel
+    public class MapNamePickerViewModel(IMapRepository mapRepository) : PopupViewModel
     {
         public ICommand SaveMapCommand => new AsyncCommand(SaveMap);
 
@@ -31,13 +31,13 @@ namespace Disk.ViewModel
             {
                 Name = MapName,
                 CoordinatesJson = JsonConvert.SerializeObject(Map),
-                CreatedAtDateTime = DateTime.Now.ToString(),
+                CreatedAtDateTime = DateTime.Now.ToString("dd.MM.yyyy", CultureInfo.InvariantCulture)
             };
 
             try
             {
                 await mapRepository.AddAsync(map);
-                modalNavigationStore.Close();
+                IniNavigationStore.Close();
             }
             catch (DbUpdateException ex)
             {

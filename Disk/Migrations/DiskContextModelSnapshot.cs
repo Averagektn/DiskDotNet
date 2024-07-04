@@ -261,7 +261,7 @@ namespace Disk.Migrations
                     b.HasOne("Disk.Entities.Session", "SessionNavigation")
                         .WithMany("PathInTargets")
                         .HasForeignKey("Session")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("SessionNavigation");
@@ -272,7 +272,7 @@ namespace Disk.Migrations
                     b.HasOne("Disk.Entities.Session", "SessionNavigation")
                         .WithMany("PathToTargets")
                         .HasForeignKey("Session")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("SessionNavigation");
@@ -283,6 +283,7 @@ namespace Disk.Migrations
                     b.HasOne("Disk.Entities.Appointment", "AppointmentNavigation")
                         .WithMany("Sessions")
                         .HasForeignKey("Appointment")
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Disk.Entities.Map", "MapNavigation")
@@ -301,7 +302,7 @@ namespace Disk.Migrations
                     b.HasOne("Disk.Entities.Session", "Sres")
                         .WithOne("SessionResult")
                         .HasForeignKey("Disk.Entities.SessionResult", "Id")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Sres");

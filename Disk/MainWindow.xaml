@@ -14,16 +14,13 @@
         Title="Disk" 
         Height="800" 
         Width="800"
-        MinHeight="650"
-        MinWidth="500">
+        MinHeight="800"
+        MinWidth="800">
     
     <Grid>
         <Grid.Resources>
             <DataTemplate DataType="{x:Type viewmodels:MapCreatorViewModel}">
                 <views:MapCreatorView/>
-            </DataTemplate>
-            <DataTemplate DataType="{x:Type viewmodels:MenuViewModel}">
-                <views:MenuView/>
             </DataTemplate>
             <DataTemplate DataType="{x:Type viewmodels:MapNamePickerViewModel}">
                 <views:MapNamePickerView/>
@@ -52,8 +49,11 @@
             <DataTemplate DataType="{x:Type viewmodels:PaintViewModel}">
                 <paintview:PaintView/>
             </DataTemplate>
-            <DataTemplate DataType="{x:Type viewmodels:NavigateBackViewModel}">
-                <views:NavigateBackView/>
+            <DataTemplate DataType="{x:Type viewmodels:NavigationBarLayoutViewModel}">
+                <views:NavigationBarLayoutView/>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type viewmodels:SessionResultViewModel}">
+                <views:SessionResultView/>
             </DataTemplate>
         </Grid.Resources>
 

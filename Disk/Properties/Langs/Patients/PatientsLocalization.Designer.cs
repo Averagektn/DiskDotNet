@@ -79,6 +79,15 @@ namespace Disk.Properties.Langs.Patients {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Delete.
+        /// </summary>
+        public static string Delete {
+            get {
+                return ResourceManager.GetString("Delete", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Home phone.
         /// </summary>
         public static string HomePhone {
@@ -115,11 +124,29 @@ namespace Disk.Properties.Langs.Patients {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Next.
+        /// </summary>
+        public static string NextPage {
+            get {
+                return ResourceManager.GetString("NextPage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Patronymic.
         /// </summary>
         public static string Patronymic {
             get {
                 return ResourceManager.GetString("Patronymic", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Previous.
+        /// </summary>
+        public static string PrevPage {
+            get {
+                return ResourceManager.GetString("PrevPage", resourceCulture);
             }
         }
         
@@ -138,6 +165,15 @@ namespace Disk.Properties.Langs.Patients {
         public static string Surname {
             get {
                 return ResourceManager.GetString("Surname", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Update.
+        /// </summary>
+        public static string Update {
+            get {
+                return ResourceManager.GetString("Update", resourceCulture);
             }
         }
     }

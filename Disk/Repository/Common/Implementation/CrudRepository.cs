@@ -1,4 +1,5 @@
-﻿using Disk.Repository.Common.Interface;
+﻿using Disk.Properties.Langs.RepositoryException;
+using Disk.Repository.Common.Interface;
 using Disk.Repository.Exceptions;
 using Microsoft.EntityFrameworkCore;
 
@@ -46,11 +47,15 @@ namespace Disk.Repository.Common.Implementation
 
         public async Task<ICollection<T>> GetAllAsync() => await table.ToListAsync();
 
-        public T GetById(long id) =>
-            table.Find(id) ?? throw new EntityNotFoundException($"No such {typeof(T)} with id {id}");
+        public T GetById(long id) 
+            =>
+            table.Find(id) 
+            ?? throw new EntityNotFoundException($"No such {typeof(T)} with id {id}", RepositoryExceptionLocalization.NoSuchItem);
 
         public async Task<T> GetByIdAsync(long id)
-            => await table.FindAsync(id) ?? throw new EntityNotFoundException($"No such {typeof(T)} with id {id}");
+            => 
+            await table.FindAsync(id) 
+            ?? throw new EntityNotFoundException($"No such {typeof(T)} with id {id}", RepositoryExceptionLocalization.NoSuchItem);
 
         public void Update(T entity)
         {

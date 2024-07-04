@@ -8,86 +8,112 @@
              d:DataContext="{d:DesignInstance Type=viewmodel:CalibrationViewModel}"
              xmlns:lang="clr-namespace:Disk.Properties.Langs.Calibration"
              mc:Ignorable="d" 
-             d:DesignHeight="450" 
+             d:DesignHeight="800" 
              d:DesignWidth="800">
 
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="1*"/>
-            <RowDefinition Height="2*"/>
+            <RowDefinition Height="3*"/>
             <RowDefinition Height="1*"/>
-            <RowDefinition Height="2*"/>
-            <RowDefinition Height="2*"/>
+            <RowDefinition Height="3*"/>
+            <RowDefinition Height="3*"/>
             <RowDefinition Height="1*"/>
-            <RowDefinition Height="2*"/>
-            <RowDefinition Height="2*"/>
-            <RowDefinition Height="2*"/>
+            <RowDefinition Height="3*"/>
+            <RowDefinition Height="3*"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="3*"/>
             <RowDefinition Height="1*"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="1*"/>
-            <ColumnDefinition Width="3*"/>
             <ColumnDefinition Width="2*"/>
+            <ColumnDefinition Width="1*"/>
         </Grid.ColumnDefinitions>
 
-        <Viewbox Grid.Row="1" Grid.Column="1">
-            <Button 
-                Content="{x:Static lang:CalibrationLocalization.Start}" 
-                IsEnabled="{Binding StartCalibrationEnabled}" 
-                Command="{Binding StartCalibrationCommand}" 
-                Margin="0,25"/>
-        </Viewbox>
+        <Button
+            Grid.Row="1" Grid.Column="1"
+            Width="350"
+            Margin="10"
+            Content="{x:Static lang:CalibrationLocalization.Start}" 
+            IsEnabled="{Binding StartCalibrationEnabled}" 
+            Command="{Binding StartCalibrationCommand}" />
 
-        <Viewbox Grid.Row="2" Grid.Column="1">
-            <TextBlock Text="{x:Static lang:CalibrationLocalization.AngleX}"/>
-        </Viewbox>
+        <TextBlock 
+            HorizontalAlignment="Center"
+            Grid.Row="2" 
+            Grid.Column="1"
+            FontSize="25" 
+            Text="{x:Static lang:CalibrationLocalization.AngleX}"/>
 
-        <Viewbox Grid.Row="3" Grid.Column="1">
-            <TextBox Text="{Binding XCoord}" FontSize="20" TextAlignment="Center" Margin="10 10 10 10" Width="200"/>
-        </Viewbox>
+        <TextBox 
+            Grid.Row="3" 
+            Grid.Column="1"
+            Text="{Binding XCoord}" 
+            FontSize="25"
+            Height="35"
+            TextAlignment="Center" 
+            BorderThickness="0 0 0 1"
+            Margin="10"/>
 
-        <Viewbox Grid.Row="3" Grid.Column="2">
-            <Button 
-                Content="{x:Static lang:CalibrationLocalization.Centralize}" 
-                Command="{Binding CentralizeXCommand}"
-                Margin="0,25"/>
-        </Viewbox>
+        <Button 
+            Grid.Row="3" 
+            Grid.Column="2"
+            Margin="10"
+            Width="auto"
+            MaxWidth="350"
+            Content="{x:Static lang:CalibrationLocalization.Centralize}" 
+            Command="{Binding CentralizeXCommand}"/>
 
-        <Viewbox Grid.Row="4" Grid.Column="1">
-            <Button 
-                Content="{x:Static lang:CalibrationLocalization.SetX}" 
-                Command="{Binding CalibrateXCommand}"
-                Margin="0,25"/>
-        </Viewbox>
+        <Button 
+            Grid.Row="4" 
+            Grid.Column="1"
+            Width="350"
+            Margin="10"
+            Content="{x:Static lang:CalibrationLocalization.SetX}" 
+            Command="{Binding CalibrateXCommand}"/>
 
-        <Viewbox Grid.Row="5" Grid.Column="1">
-            <TextBlock Text="{x:Static lang:CalibrationLocalization.AngleY}"/>
-        </Viewbox>
+        <TextBlock 
+            HorizontalAlignment="Center"
+            Grid.Row="5" 
+            Grid.Column="1"
+            FontSize="25" 
+            Text="{x:Static lang:CalibrationLocalization.AngleY}"/>
 
-        <Viewbox Grid.Row="6" Grid.Column="1">
-            <TextBox Text="{Binding YCoord}" FontSize="20" TextAlignment="Center" Margin="10 10 10 10" Width="200"/>
-        </Viewbox>
+        <TextBox 
+            Grid.Row="6" 
+            Grid.Column="1"
+            Text="{Binding YCoord}" 
+            FontSize="25" 
+            Height="35"
+            TextAlignment="Center" 
+            BorderThickness="0 0 0 1"
+            Margin="10"/>
+
+        <Button 
+            Grid.Row="6" 
+            Grid.Column="2"
+            Margin="10"
+            Width="auto"
+            MaxWidth="350"
+            Content="{x:Static lang:CalibrationLocalization.Centralize}" 
+            Command="{Binding CentralizeYCommand}"/>
 
 
-        <Viewbox Grid.Row="6" Grid.Column="2">
-            <Button 
-                Content="{x:Static lang:CalibrationLocalization.Centralize}" 
-                Command="{Binding CentralizeYCommand}" 
-                Margin="0,25"/>
-        </Viewbox>
+        <Button 
+            Grid.Row="7" 
+            Grid.Column="1"
+            Width="350"
+            Margin="10"
+            Content="{x:Static lang:CalibrationLocalization.SetY}" 
+            Command="{Binding CalibrateYCommand}"/>
 
-        <Viewbox Grid.Row="7" Grid.Column="1">
-            <Button 
-                Content="{x:Static lang:CalibrationLocalization.SetY}" 
-                Command="{Binding CalibrateYCommand}"
-                Margin="0,25"/>
-        </Viewbox>
-
-        <Viewbox Grid.Row="8" Grid.Column="1">
-            <Button 
-                Content="{x:Static lang:CalibrationLocalization.Apply}" 
-                Command="{Binding ApplyCommand}"
-                Margin="0,25"/>
-        </Viewbox>
+        <Button 
+            Grid.Row="9" 
+            Grid.Column="1"
+            Width="350"
+            Margin="10"
+            Content="{x:Static lang:CalibrationLocalization.Apply}" 
+            Command="{Binding ApplyCommand}"/>
     </Grid>
 </UserControl>

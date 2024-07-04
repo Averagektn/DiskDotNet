@@ -90,15 +90,10 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>MapNamePickerLocalization.resx</DependentUpon>
     </Compile>
-    <Compile Update="Properties\Langs\Menu\MenuLocalization.Designer.cs">
+    <Compile Update="Properties\Langs\NavigationBar\NavigationBarLocalization.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
-      <DependentUpon>MenuLocalization.resx</DependentUpon>
-    </Compile>
-    <Compile Update="Properties\Langs\NavigateBack\NavigateBackLocalization.Designer.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>NavigateBackLocalization.resx</DependentUpon>
+      <DependentUpon>NavigationBarLocalization.resx</DependentUpon>
     </Compile>
     <Compile Update="Properties\Langs\PaintWindow\PaintWindowLocalization.Designer.cs">
       <DesignTime>True</DesignTime>
@@ -109,6 +104,21 @@
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>PatientsLocalization.resx</DependentUpon>
+    </Compile>
+    <Compile Update="Properties\Langs\RepositoryException\RepositoryExceptionLocalization.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>RepositoryExceptionLocalization.resx</DependentUpon>
+    </Compile>
+    <Compile Update="Properties\Langs\ServiceException\ServiceExceptionLocalization.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>ServiceExceptionLocalization.resx</DependentUpon>
+    </Compile>
+    <Compile Update="Properties\Langs\SessionResult\SessionResultLocalization.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>SessionResultLocalization.resx</DependentUpon>
     </Compile>
     <Compile Update="Properties\Langs\Settings\SettingsLocalization.Designer.cs">
       <DesignTime>True</DesignTime>
@@ -176,18 +186,11 @@
     <EmbeddedResource Update="Properties\Langs\MapNamePicker\MapNamePickerLocalization.ru-RU.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="Properties\Langs\Menu\MenuLocalization.resx">
+    <EmbeddedResource Update="Properties\Langs\NavigationBar\NavigationBarLocalization.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>MenuLocalization.Designer.cs</LastGenOutput>
+      <LastGenOutput>NavigationBarLocalization.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Update="Properties\Langs\Menu\MenuLocalization.ru-RU.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Properties\Langs\NavigateBack\NavigateBackLocalization.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>NavigateBackLocalization.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Properties\Langs\NavigateBack\NavigateBackLocalization.ru-RU.resx">
+    <EmbeddedResource Update="Properties\Langs\NavigationBar\NavigationBarLocalization.ru-RU.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Properties\Langs\PaintWindow\PaintWindowLocalization.resx">
@@ -202,6 +205,27 @@
       <LastGenOutput>PatientsLocalization.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Update="Properties\Langs\Patients\PatientsLocalization.ru-RU.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Properties\Langs\RepositoryException\RepositoryExceptionLocalization.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>RepositoryExceptionLocalization.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Properties\Langs\RepositoryException\RepositoryExceptionLocalization.ru-RU.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Properties\Langs\ServiceException\ServiceExceptionLocalization.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>ServiceExceptionLocalization.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Properties\Langs\ServiceException\ServiceExceptionLocalization.ru-RU.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Properties\Langs\SessionResult\SessionResultLocalization.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>SessionResultLocalization.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Properties\Langs\SessionResult\SessionResultLocalization.ru-RU.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Properties\Langs\Settings\SettingsLocalization.resx">
