@@ -16,14 +16,17 @@
         HorizontalAlignment="Center" 
         VerticalAlignment="Center">
         <TextBlock 
+            FontSize="25"
             Text="{x:Static lang:MapNamePickerLocalization.MapName}" 
             Margin="15"
             HorizontalAlignment="Left"/>
         <TextBox 
             Padding="0,5"
             Margin="15 0"
+            FontSize="25"
+            Height="35"
             Width="255"
-            BorderThickness="0,0,0,1"
+            BorderThickness="0 0 0 1"
             HorizontalAlignment="Left"
             Text="{Binding MapName}"/>
 
@@ -31,7 +34,6 @@
             Content="{x:Static lang:MapNamePickerLocalization.Add}" 
             Command="{Binding SaveMapCommand}"                    
             Margin="0 25"/>
-
 
         <popup:Popup 
             IsPopupOpen="{Binding IsShowPopup}" 

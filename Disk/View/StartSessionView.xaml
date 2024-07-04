@@ -11,12 +11,12 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="1*"/>
-            <RowDefinition Height="1*"/>
+            <RowDefinition Height="5*"/>
             <RowDefinition Height="1*"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="1*"/>
-            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="5*"/>
             <ColumnDefinition Width="1*"/>
         </Grid.ColumnDefinitions>
         <Grid Grid.Row="1" Grid.Column="1">
@@ -27,47 +27,46 @@
                 <RowDefinition Height="1*"/>
             </Grid.RowDefinitions>
 
-            <Viewbox Grid.Row="0">
+            <TextBlock 
+                HorizontalAlignment="Center"
+                Grid.Row="0"
+                FontSize="25"
+                Text="{x:Static lang:StartSessionLocalization.Map}" 
+                Margin="15"/>
+
+            <ComboBox 
+                Grid.Row="1"
+                FontSize="20"
+                Height="25"
+                Margin="10"
+                MinWidth="200"
+                HorizontalAlignment="Center"
+                ItemsSource="{Binding Maps}" 
+                SelectedItem="{Binding SelectedMap}"/>
+
+            <StackPanel Orientation="Horizontal" Grid.Row="2" HorizontalAlignment="Center">
                 <TextBlock 
-                        FontSize="15"
-                        Text="{x:Static lang:StartSessionLocalization.Map}" 
-                        Margin="15"
-                        HorizontalAlignment="Left"/>
-            </Viewbox>
-
-            <Viewbox Grid.Row="1">
-                <ComboBox 
-                        FontSize="10"
-                        Margin="15"
-                        Width="200"
-                        ItemsSource="{Binding Maps}" 
-                        SelectedItem="{Binding SelectedMap}"/>
-            </Viewbox>
-
-            <Viewbox Grid.Row="2">
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock 
-                        FontSize="20"
-                        Text="{Binding ImageFileName}" 
-                        VerticalAlignment="Center" 
-                        HorizontalAlignment="Center" 
-                        Width="200"/>
-                    <Button 
+                    Margin="10"
+                    FontSize="25"
+                    Text="{Binding ImageFileName}" 
+                    VerticalAlignment="Center" 
+                    HorizontalAlignment="Center" 
+                    Width="auto"/>
+                <Button 
                         Content="..." 
                         Command="{Binding PickImageCommand}" 
                         Margin="0 10" 
                         Height="50"
                         Width="50"/>
-                </StackPanel>
-            </Viewbox>
-            
-            <Viewbox Grid.Row="3">
-                <Button
-                    Margin="10 5"
-                    Height="50"
-                    Content="{x:Static lang:StartSessionLocalization.Start}" 
-                    Command="{Binding StartSessionCommand}"/>
-            </Viewbox>
+            </StackPanel>
+
+            <Button
+                HorizontalAlignment="Center"
+                Grid.Row="3"
+                Margin="10 5"
+                Width="200"
+                Content="{x:Static lang:StartSessionLocalization.Start}" 
+                Command="{Binding StartSessionCommand}"/>
         </Grid>
     </Grid>
 

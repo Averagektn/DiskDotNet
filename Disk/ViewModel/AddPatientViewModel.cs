@@ -3,7 +3,6 @@ using Disk.Properties.Langs.AddPatient;
 using Disk.Repository.Exceptions;
 using Disk.Service.Exceptions;
 using Disk.Service.Interface;
-using Disk.Stores;
 using Disk.ViewModel.Common.Commands.Async;
 using Disk.ViewModel.Common.Commands.Sync;
 using Disk.ViewModel.Common.ViewModels;
@@ -13,9 +12,25 @@ using System.Windows.Media;
 
 namespace Disk.ViewModel
 {
-    public class AddPatientViewModel(ModalNavigationStore modalNavigationStore, IPatientService patientService) : PopupViewModel
+    public class AddPatientViewModel(IPatientService patientService) : PopupViewModel
     {
-        public event Action<Patient>? OnAdd;
+        public event Action<Patient>? OnAddEvent;
+        public event Action<Patient>? OnCancelEvent;
+
+        private DateTime? _dateOfBirth = null;
+        public DateTime? DateOfBirth
+        {
+            get => _dateOfBirth;
+            set
+            {
+                _ = SetProperty(ref _dateOfBirth, value);
+
+                if (value is not null)
+                {
+                    Patient.DateOfBirth = value.Value.ToString("dd.MM.yyyy");
+                }
+            }
+        }
 
         private Brush _bgName = new SolidColorBrush(Colors.White);
         public Brush BgName { get => _bgName; set => SetProperty(ref _bgName, value); }
@@ -37,6 +52,13 @@ namespace Disk.ViewModel
         public ICommand DateOfBirthFocusCommand => new Command(_ => BgDateOfBirth = new SolidColorBrush(Colors.White));
         public ICommand MobilePhoneFocusCommand => new Command(_ => BgMobilePhone = new SolidColorBrush(Colors.White));
         public ICommand HomePhoneFocusCommand => new Command(_ => BgHomePhone = new SolidColorBrush(Colors.White));
+        public virtual ICommand AddPatientCommand => new AsyncCommand(AddPatient);
+        public virtual ICommand CancelCommand => new Command(
+            _ =>
+            {
+                OnCancelEvent?.Invoke(Patient);
+                IniNavigationStore.Close();
+            });
 
         private Patient _patient = new()
         {
@@ -47,9 +69,6 @@ namespace Disk.ViewModel
             Surname = string.Empty
         };
         public Patient Patient { get => _patient; set => SetProperty(ref _patient, value); }
-
-        public ICommand AddPatientCommand => new AsyncCommand(AddPatient);
-        public ICommand CancelCommand => new Command(_ => modalNavigationStore.Close());
 
         private async Task AddPatient(object? arg)
         {
@@ -69,31 +88,31 @@ namespace Disk.ViewModel
             {
                 Log.Error(ex.Message);
                 BgName = new SolidColorBrush(Colors.Red);
-                await ShowPopup(AddPatientLocalization.ErrorHeader, AddPatientLocalization.EmptyName);
+                await ShowPopup(AddPatientLocalization.ErrorHeader, ex.Output);
             }
             catch (InvalidSurnameException ex)
             {
                 Log.Error(ex.Message);
                 BgSurname = new SolidColorBrush(Colors.Red);
-                await ShowPopup(AddPatientLocalization.ErrorHeader, AddPatientLocalization.EmptySurname);
+                await ShowPopup(AddPatientLocalization.ErrorHeader, ex.Output);
             }
             catch (InvalidDateException ex)
             {
                 Log.Error(ex.Message);
                 BgDateOfBirth = new SolidColorBrush(Colors.Red);
-                await ShowPopup(AddPatientLocalization.ErrorHeader, AddPatientLocalization.InvalidDate);
+                await ShowPopup(AddPatientLocalization.ErrorHeader, ex.Output);
             }
             catch (InvalidPhoneNumberException ex)
             {
                 Log.Error(ex.Message);
                 BgMobilePhone = new SolidColorBrush(Colors.Red);
-                await ShowPopup(AddPatientLocalization.ErrorHeader, AddPatientLocalization.InvalidMobilePhone);
+                await ShowPopup(AddPatientLocalization.ErrorHeader, ex.Output);
             }
             catch (InvalidHomePhoneException ex)
             {
                 Log.Error(ex.Message);
                 BgHomePhone = new SolidColorBrush(Colors.Red);
-                await ShowPopup(AddPatientLocalization.ErrorHeader, AddPatientLocalization.InvalidHomePhone);
+                await ShowPopup(AddPatientLocalization.ErrorHeader, ex.Output);
             }
             catch (Exception ex)
             {
@@ -103,8 +122,8 @@ namespace Disk.ViewModel
 
             if (success)
             {
-                OnAdd?.Invoke(Patient);
-                modalNavigationStore.Close();
+                OnAddEvent?.Invoke(Patient);
+                IniNavigationStore.Close();
             }
         }
     }

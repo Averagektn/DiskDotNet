@@ -97,6 +97,15 @@ namespace Disk.Properties.Langs.Appointment {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Delete.
+        /// </summary>
+        public static string Delete {
+            get {
+                return ResourceManager.GetString("Delete", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Deviation.
         /// </summary>
         public static string Deviation {

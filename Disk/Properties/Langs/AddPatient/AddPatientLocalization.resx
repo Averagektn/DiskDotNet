@@ -129,35 +129,11 @@
   <data name="Duplication" xml:space="preserve">
     <value>Patient already exists</value>
   </data>
-  <data name="EmptyDate" xml:space="preserve">
-    <value>Empty date</value>
-  </data>
-  <data name="EmptyHomePhone" xml:space="preserve">
-    <value>Empty home phone</value>
-  </data>
-  <data name="EmptyMobilePhone" xml:space="preserve">
-    <value>Empty mobile phone</value>
-  </data>
-  <data name="EmptyName" xml:space="preserve">
-    <value>Empty name</value>
-  </data>
-  <data name="EmptySurname" xml:space="preserve">
-    <value>Empty surname</value>
-  </data>
   <data name="ErrorHeader" xml:space="preserve">
     <value>Adding error</value>
   </data>
   <data name="HomePhone" xml:space="preserve">
     <value>Home phone</value>
-  </data>
-  <data name="InvalidDate" xml:space="preserve">
-    <value>Invalid date of birth</value>
-  </data>
-  <data name="InvalidHomePhone" xml:space="preserve">
-    <value>Invalid home phone</value>
-  </data>
-  <data name="InvalidMobilePhone" xml:space="preserve">
-    <value>Invalid mobile phone(format: +375*********)</value>
   </data>
   <data name="MobilePhone" xml:space="preserve">
     <value>Mobile phone</value>

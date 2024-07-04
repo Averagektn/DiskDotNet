@@ -117,23 +117,11 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="AngleDistance" xml:space="preserve">
-    <value>Distance (in angles)</value>
-  </data>
-  <data name="AngleSpeed" xml:space="preserve">
-    <value>Speed (in angles)</value>
-  </data>
-  <data name="ApproachSpeed" xml:space="preserve">
-    <value>Approach speed</value>
-  </data>
   <data name="Back" xml:space="preserve">
     <value>Back</value>
   </data>
   <data name="ConnectionLost" xml:space="preserve">
     <value>Connection lost</value>
-  </data>
-  <data name="Dispersion" xml:space="preserve">
-    <value>Dispersion</value>
   </data>
   <data name="EmptyMap" xml:space="preserve">
     <value>Map is empty</value>
@@ -141,37 +129,13 @@
   <data name="LeftFoot" xml:space="preserve">
     <value>L</value>
   </data>
-  <data name="MathExp" xml:space="preserve">
-    <value>Average shift from center</value>
-  </data>
-  <data name="NoContentForDiagramError" xml:space="preserve">
-    <value>No content for diagram</value>
-  </data>
-  <data name="NoContentForPathError" xml:space="preserve">
-    <value>No content for path</value>
-  </data>
-  <data name="Path" xml:space="preserve">
-    <value>Path</value>
-  </data>
   <data name="RightFoot" xml:space="preserve">
     <value>R</value>
   </data>
   <data name="Score" xml:space="preserve">
     <value>Score</value>
   </data>
-  <data name="StandartDeviation" xml:space="preserve">
-    <value>Deviation</value>
-  </data>
   <data name="Stop" xml:space="preserve">
     <value>Stop</value>
-  </data>
-  <data name="Target" xml:space="preserve">
-    <value>Target</value>
-  </data>
-  <data name="Time" xml:space="preserve">
-    <value>Time</value>
-  </data>
-  <data name="WindRose" xml:space="preserve">
-    <value>Wind rose</value>
   </data>
 </root>

@@ -5,9 +5,12 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
              xmlns:lang="clr-namespace:Disk.Properties.Langs.Appointment" 
-             xmlns:local="clr-namespace:Disk.View" xmlns:viewmodel="clr-namespace:Disk.ViewModel" d:DataContext="{d:DesignInstance Type=viewmodel:AppointmentViewModel}"
+             xmlns:local="clr-namespace:Disk.View" 
+             xmlns:viewmodel="clr-namespace:Disk.ViewModel" 
+             d:DataContext="{d:DesignInstance Type=viewmodel:AppointmentViewModel}"
              mc:Ignorable="d" 
-             d:DesignHeight="500" d:DesignWidth="800">
+             d:DesignHeight="800" 
+             d:DesignWidth="800">
 
     <Grid>
         <Grid.RowDefinitions>
@@ -16,17 +19,22 @@
             <RowDefinition Height="6*"/>
             <RowDefinition Height="2*"/>
         </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
 
         <TextBlock 
             Grid.Row="0" 
+            Grid.ColumnSpan="2"
             Margin="5" 
-            FontSize="15" 
-            Name="TbPatient" 
+            FontSize="25" 
             Text="{Binding Patient}"/>
 
         <DataGrid 
+            FontSize="25"
             Grid.Row="1" 
-            Name="SessionResultGrid"
+            Grid.ColumnSpan="2"
             ScrollViewer.VerticalScrollBarVisibility="Auto" 
             ItemsSource="{Binding Sessions}" 
             IsReadOnly="True"
@@ -59,12 +67,21 @@
                     <i:InvokeCommandAction Command="{Binding ShowSessionCommand}" />
                 </i:EventTrigger>
             </i:Interaction.Triggers>
+            <DataGrid.ContextMenu>
+                <ContextMenu FontSize="20">
+                    <MenuItem 
+                        Header="{x:Static lang:AppointmentLocalization.Delete}" 
+                        Command="{Binding DeleteSessionCommand}" 
+                        CommandParameter="{Binding SelectedSession}" />
+                </ContextMenu>
+            </DataGrid.ContextMenu>
         </DataGrid>
 
         <DataGrid 
-            Name="PathToTargetGrid" 
             Grid.Row="2" 
+            FontSize="25"
             IsReadOnly="True" 
+            Grid.ColumnSpan="2"
             ItemsSource="{Binding PathsToTargets}" 
             AutoGenerateColumns="False" 
             ScrollViewer.VerticalScrollBarVisibility="Auto">
@@ -92,17 +109,17 @@
             </DataGrid.Columns>
         </DataGrid>
 
-        <Viewbox Grid.Row="3">
-            <StackPanel Orientation="Horizontal">
-                <Button 
-                    Content="{x:Static lang:AppointmentLocalization.Start}" 
-                    Command="{Binding StartSessionCommand}"                    
-                    Margin="100 10"/>
-                <Button 
-                    Content="{x:Static lang:AppointmentLocalization.ExportToExcel}"
-                    Command="{Binding ExportToExcelCommand}"
-                    Margin="100 10"/>
-            </StackPanel>
-        </Viewbox>
+        <Button     
+            Grid.Row="3"
+            Grid.Column="0"
+            Content="{x:Static lang:AppointmentLocalization.Start}" 
+            Command="{Binding StartSessionCommand}"                    
+            Margin="10"/>
+        <Button 
+            Grid.Row="3"
+            Grid.Column="1"
+            Content="{x:Static lang:AppointmentLocalization.ExportToExcel}"
+            Command="{Binding ExportToExcelCommand}"
+            Margin="10"/>
     </Grid>
 </UserControl>

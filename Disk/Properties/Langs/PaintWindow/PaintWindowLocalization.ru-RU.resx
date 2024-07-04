@@ -117,23 +117,11 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="AngleDistance" xml:space="preserve">
-    <value>Расстояние (в углах)</value>
-  </data>
-  <data name="AngleSpeed" xml:space="preserve">
-    <value>Скорость (в углах)</value>
-  </data>
-  <data name="ApproachSpeed" xml:space="preserve">
-    <value>Скорость сближения</value>
-  </data>
   <data name="Back" xml:space="preserve">
     <value>Назад</value>
   </data>
   <data name="ConnectionLost" xml:space="preserve">
     <value>Потеряно соединение с диском</value>
-  </data>
-  <data name="Dispersion" xml:space="preserve">
-    <value>Дисперсия</value>
   </data>
   <data name="EmptyMap" xml:space="preserve">
     <value>Карта пуста</value>
@@ -141,37 +129,13 @@
   <data name="LeftFoot" xml:space="preserve">
     <value>Л</value>
   </data>
-  <data name="MathExp" xml:space="preserve">
-    <value>Среднее смещение от центра</value>
-  </data>
-  <data name="NoContentForDiagramError" xml:space="preserve">
-    <value>Нет данных для построения диаграммы</value>
-  </data>
-  <data name="NoContentForPathError" xml:space="preserve">
-    <value>Нет данных для построения пути</value>
-  </data>
-  <data name="Path" xml:space="preserve">
-    <value>Путь</value>
-  </data>
   <data name="RightFoot" xml:space="preserve">
     <value>П</value>
   </data>
   <data name="Score" xml:space="preserve">
     <value>Счет</value>
   </data>
-  <data name="StandartDeviation" xml:space="preserve">
-    <value>Среднее отклонение от центра</value>
-  </data>
   <data name="Stop" xml:space="preserve">
     <value>Остановить</value>
-  </data>
-  <data name="Target" xml:space="preserve">
-    <value>Цель</value>
-  </data>
-  <data name="Time" xml:space="preserve">
-    <value>Время</value>
-  </data>
-  <data name="WindRose" xml:space="preserve">
-    <value>Диаграмма частот</value>
   </data>
 </root>

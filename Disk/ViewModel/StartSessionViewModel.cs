@@ -1,12 +1,12 @@
-﻿using Disk.Data.Impl;
-using Disk.Entities;
+﻿using Disk.Entities;
+using Disk.Navigators;
 using Disk.Repository.Interface;
 using Disk.Stores;
 using Disk.ViewModel.Common.Commands.Sync;
 using Disk.ViewModel.Common.ViewModels;
 using Microsoft.Win32;
-using Newtonsoft.Json;
 using System.Collections.ObjectModel;
+using System.Globalization;
 using System.IO;
 using System.Windows.Input;
 using Localization = Disk.Properties.Langs.StartSession.StartSessionLocalization;
@@ -14,8 +14,8 @@ using Settings = Disk.Properties.Config.Config;
 
 namespace Disk.ViewModel
 {
-    public class StartSessionViewModel(ModalNavigationStore modalNavigationStore, NavigationStore navigationStore,
-        ISessionRepository sessionRepository, IMapRepository mapRepository) : ObserverViewModel
+    public class StartSessionViewModel(NavigationStore navigationStore, ISessionRepository sessionRepository, IMapRepository mapRepository)
+        : ObserverViewModel
     {
         public Patient Patient { get; set; } = null!;
         public Appointment Appointment { get; set; } = null!;
@@ -65,7 +65,7 @@ namespace Disk.ViewModel
             var session = new Session()
             {
                 Appointment = Appointment.Id,
-                DateTime = DateTime.Now.ToString(),
+                DateTime = DateTime.Now.ToString("dd.MM.yyyy", CultureInfo.InvariantCulture),
                 LogFilePath = logPath,
                 Map = SelectedMap!.Id,
                 MaxXAngle = Settings.XMaxAngle,
@@ -73,16 +73,8 @@ namespace Disk.ViewModel
             };
             sessionRepository.Add(session);
 
-            modalNavigationStore.Close();
-
-            navigationStore.SetViewModel<PaintViewModel>(vm =>
-            {
-                vm.ImagePath = _imageFilePath;
-                vm.CurrPath = logPath;
-                vm.TargetCenters = JsonConvert.DeserializeObject<List<Point2D<float>>>(SelectedMap.CoordinatesJson) ?? [];
-                vm.OnSessionOver += OnSessionOver;
-                vm.CurrentSession = session;
-            });
+            IniNavigationStore.Close();
+            PaintNavigator.Navigate(navigationStore, _imageFilePath, logPath, OnSessionOver, session);
         }
     }
 }

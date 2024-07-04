@@ -129,6 +129,9 @@
   <data name="DateTime" xml:space="preserve">
     <value>Дата</value>
   </data>
+  <data name="Delete" xml:space="preserve">
+    <value>Удалить</value>
+  </data>
   <data name="Deviation" xml:space="preserve">
     <value>Отклонение</value>
   </data>

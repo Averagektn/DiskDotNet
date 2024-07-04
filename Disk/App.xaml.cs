@@ -21,20 +21,21 @@ namespace Disk
 
         private App()
         {
-            Thread.CurrentThread.CurrentUICulture =
-                new System.Globalization.CultureInfo(Disk.Properties.Config.Config.Default.Language);
+            Thread.CurrentThread.CurrentUICulture = new System.Globalization.CultureInfo(Disk.Properties.Config.Config.Default.Language);
             System.Windows.Media.RenderOptions.ProcessRenderMode = System.Windows.Interop.RenderMode.SoftwareOnly;
 
 
             Log.Logger = new LoggerConfiguration()
-                .WriteTo.File("logs/app.log")
+                .WriteTo
+                .File("logs/app.log")
                 .CreateLogger();
 
             var services = new ServiceCollection();
             _ = services.AddDbContext<DiskContext>();
 
             _ = services.AddSingleton<Func<Type, ObserverViewModel>>(provider =>
-                type => (ObserverViewModel)provider.GetRequiredService(type));
+                type => (ObserverViewModel)provider.GetRequiredService(type)
+            );
             _ = services.AddSingleton<NavigationStore>();
             _ = services.AddSingleton<ModalNavigationStore>();
 
@@ -50,7 +51,6 @@ namespace Disk
             _ = services.AddSingleton<IExcelFiller, ExcelFiller>();
 
             _ = services.AddTransient<MainViewModel>();
-            _ = services.AddTransient<MenuViewModel>();
             _ = services.AddTransient<MapCreatorViewModel>();
             _ = services.AddTransient<MapNamePickerViewModel>();
             _ = services.AddTransient<CalibrationViewModel>();
@@ -61,11 +61,16 @@ namespace Disk
             _ = services.AddTransient<AppointmentViewModel>();
             _ = services.AddTransient<StartSessionViewModel>();
             _ = services.AddTransient<PaintViewModel>();
-            _ = services.AddTransient<NavigateBackViewModel>();
+            _ = services.AddTransient<NavigationBarLayoutViewModel>();
+            _ = services.AddTransient<EditPatientViewModel>();
+            _ = services.AddTransient<SessionResultViewModel>();
 
             _ = services.AddSingleton<MainWindow>(provider =>
             {
-                provider.GetRequiredService<NavigationStore>().SetViewModel<MenuViewModel>();
+                provider
+                .GetRequiredService<NavigationStore>()
+                .SetViewModel<NavigationBarLayoutViewModel>(vm => vm.CurrentViewModel = provider.GetRequiredService<PatientsViewModel>());
+
                 return new()
                 {
                     DataContext = provider.GetRequiredService<MainViewModel>()

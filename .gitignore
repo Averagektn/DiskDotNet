@@ -410,3 +410,4 @@ Db/disk.db
 /Disk/Properties/Config/AppConfig.cs
 /Db/disk.db-wal
 /Db/disk.db-shm
+*.docx

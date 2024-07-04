@@ -1,14 +1,15 @@
-﻿using Disk.ViewModel.Common.ViewModels;
+﻿using Disk.Stores.Interface;
+using Disk.ViewModel.Common.ViewModels;
 
 namespace Disk.Stores
 {
-    public class NavigationStore(Func<Type, ObserverViewModel> getViewModel)
+    public class NavigationStore(Func<Type, ObserverViewModel> getViewModel) : INavigationStore
     {
         public readonly Stack<ObserverViewModel> ViewModels = [];
         public event Action? CurrentViewModelChanged;
 
         public ObserverViewModel GetViewModel(Type vmType) => getViewModel.Invoke(vmType);
-        public ObserverViewModel GetViewModel<TViewModel>() => getViewModel.Invoke(typeof(TViewModel));
+        public ObserverViewModel GetViewModel<TViewModel>() where TViewModel : class => getViewModel.Invoke(typeof(TViewModel));
         public ObserverViewModel GetViewModel<TViewModel>(Action<TViewModel> parametrizeViewModel) where TViewModel : class
         {
             var viewModel = getViewModel.Invoke(typeof(TViewModel));
@@ -33,31 +34,20 @@ namespace Disk.Stores
             OnCurrentViewModelChanged();
         }
 
-        public void SetViewModel<TViewModel>() where TViewModel : class
+        public void SetViewModel<TViewModel>()
         {
             ViewModels.Push(getViewModel.Invoke(typeof(TViewModel)));
             OnCurrentViewModelChanged();
         }
 
-        public bool CanNavigateBack => ViewModels.Count > 1;
+        public bool CanClose => ViewModels.Count > 1;
 
-        public bool NavigateBack()
+        public void Close()
         {
-            if (ViewModels.Count == 0)
+            if (ViewModels.Count != 0)
             {
-                return false;
-            }
-
-            ViewModels.Pop().Dispose();
-
-            if (ViewModels.Count == 0)
-            {
-                return false;
-            }
-            else
-            {
+                ViewModels.Pop().Dispose();
                 OnCurrentViewModelChanged();
-                return true;
             }
         }
 

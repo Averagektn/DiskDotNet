@@ -6,32 +6,23 @@ using System.Windows.Markup;
 
 namespace Disk.Visual.Impl
 {
-    public abstract class Figure<TFigure> : IDynamicFigure where TFigure : FrameworkElement, new()
+    public abstract class Figure<TFigure>(Point2D<int> center) : IDynamicFigure where TFigure : FrameworkElement, new()
     {
         private readonly double DIAGONAL_CORRECTION = Math.Sqrt(2);
-        public Point2D<int> Center { get; protected set; }
+        public Point2D<int> Center { get; protected set; } = center;
 
-        public int Right => throw new NotImplementedException();
+        public int Right => Center.X;
+        public int Top => Center.Y;
+        public int Bottom => Center.Y;
+        public int Left => Center.X;
 
-        public int Top => throw new NotImplementedException();
-
-        public int Bottom => throw new NotImplementedException();
-
-        public int Left => throw new NotImplementedException();
         protected int Speed;
-        //private readonly int _iniSpeed;
         protected Size CurrSize;
+
         private Size IniSize;
-        //private readonly int IniRadius;
         public int Radius { get; protected set; }
 
-        protected readonly TFigure _figure;
-
-        public Figure(Point2D<int> center)
-        {
-            _figure = new();
-            Center = center;
-        }
+        protected readonly TFigure _figure = new();
 
         public void Draw(IAddChild addChild)
         {
@@ -107,9 +98,6 @@ namespace Disk.Visual.Impl
         {
             _ = (double)newSize.Width / IniSize.Width;
             _ = (double)newSize.Height / IniSize.Height;
-
-            //Speed = (int)Math.Round(_iniSpeed * (coeffX + coeffY) / 2);
-            //Radius = (int)Math.Round(IniRadius * (coeffX + coeffY) / 2);
 
             Center = new(
                     (int)Math.Round(Center.X * (newSize.Width / CurrSize.Width)),
