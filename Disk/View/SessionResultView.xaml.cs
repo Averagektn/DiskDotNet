@@ -45,13 +45,6 @@ namespace Disk.View
         {
             Scalables.AddRange([_user, _target]);
 
-            _target.Move(ViewModel!.TargetCenter);
-            _user.Move(ViewModel!.UserCenter);
-
-            PaintArea.Children.Clear();
-            _target.Draw(PaintArea);
-            _user.Draw(PaintArea);
-
             OnSizeChanged(sender, null!);
             SelectionChanged(sender, null!);
         }
