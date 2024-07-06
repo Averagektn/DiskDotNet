@@ -116,10 +116,25 @@ namespace Disk.View
                 }
                 else
                 {
-                    moveTimer.Stop();
-                    shotTimer.Stop();
+                    StopTimers(sender, e);
+                    this.Unloaded -= StopTimers;
                 }
             };
+
+            this.Unloaded += StopTimers;
+
+            void StopTimers(object sender, RoutedEventArgs e)
+            {
+                if (moveTimer.IsEnabled)
+                {
+                    moveTimer.Stop();
+                }
+
+                if (moveTimer.IsEnabled)
+                {
+                    moveTimer.Stop();
+                }
+            }
 
             shotTimer.Start();
             moveTimer.Start();
