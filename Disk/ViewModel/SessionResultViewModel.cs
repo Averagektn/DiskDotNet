@@ -40,6 +40,8 @@ namespace Disk.ViewModel
             }
         }
 
+        public Point2D<int> UserCenter => Converter.ToWndCoord(PathsToTargets[SelectedIndex][0]);
+        public Point2D<int> TargetCenter => Converter.ToWnd_FromRelative(TargetCenters[SelectedIndex]);
         public ObservableCollection<string> Indices { get; set; } = [];
         public Converter Converter { get; set; } = DrawableFabric.GetIniConverter();
         public IEnumerable<(bool IsNewTarget, Point2D<float> Point)> FullPath
@@ -48,7 +50,7 @@ namespace Disk.ViewModel
             {
                 Point2D<float> lastPoint = null!;
 
-                for (int i = 0; i < TargetCenters.Count; i++)
+                for (int i = SelectedIndex; i < TargetCenters.Count; i++)
                 {
                     var ptt = JsonConvert.DeserializeObject<List<Point2D<float>>>(CurrentSession.PathToTargets.ElementAt(i).CoordinatesJson)!;
                     foreach (var point in ptt)
@@ -98,7 +100,7 @@ namespace Disk.ViewModel
 
         public ICommand NavigateBackCommand => new Command(_ => navigationStore.Close());
         public ICommand NewItemSelectedCommand => new Command(
-            _ => 
+            _ =>
             Message =
             $"""
             {Localization.StandartDeviation}: {CurrentSession.SessionResult?.Deviation:F2}
@@ -137,16 +139,11 @@ namespace Disk.ViewModel
                     _ = MessageBox.Show(Localization.NoContentForPathError);
                     return [];
                 }
-                var converter = DrawableFabric.GetIniConverter();
-                var targetCenter = converter.ToWnd_FromRelative(TargetCenters[SelectedIndex]);
-                var targetToDraw = DrawableFabric.GetIniProgressTarget(targetCenter);
 
-                var userToDraw = DrawableFabric.GetIniUser(string.Empty);
-                userToDraw.Move(converter.ToWndCoord(PathsToTargets[SelectedIndex][0]));
-                var res = new List<IStaticFigure> { userToDraw, targetToDraw };
-
+                var res = new List<IStaticFigure>();
                 var pathToTarget = new Path(PathsToTargets[SelectedIndex], Converter, new SolidColorBrush(Colors.Green));
                 var pathInTarget = new Path(PathsInTargets[SelectedIndex], Converter, new SolidColorBrush(Colors.Blue));
+
                 if (ShowPathToTarget)
                 {
                     res.Add(pathToTarget);

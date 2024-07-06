@@ -26,6 +26,22 @@
 
         <Canvas Name="PaintArea" Grid.Column="0"/>
 
+        <TextBlock 
+            Grid.Column="0"
+            Margin="10 10 0 0" 
+            HorizontalAlignment="Left" 
+            VerticalAlignment="Top"
+            Text="{x:Static lang:SessionResultLocalization.LeftFoot}" 
+            FontSize="55" />
+
+        <TextBlock 
+            Grid.Column="0" 
+            Margin="0 10 10 0" 
+            HorizontalAlignment="Right" 
+            VerticalAlignment="Top"    
+            Text="{x:Static lang:SessionResultLocalization.RightFoot}" 
+            FontSize="55" />
+
         <Line  
             Panel.ZIndex="-5"
             Grid.Column="0"

@@ -50,11 +50,6 @@ namespace Disk.Visual.Impl
         public int Speed { get; protected set; }
 
         /// <summary>
-        ///     Specifies whether figure is drawn or not
-        /// </summary>
-        protected bool IsDrawn = false;
-
-        /// <summary>
         ///     Correction multiplier for diagonal movement
         /// </summary>
         private const float DIAGONAL_CORRECTION = 1.41f;
@@ -146,12 +141,8 @@ namespace Disk.Visual.Impl
         /// </param>
         public virtual void Draw(IAddChild addChild)
         {
-            if (!IsDrawn)
-            {
-                addChild.AddChild(Figure);
-                Figure.Margin = new(Left, Top, 0, 0);
-                IsDrawn = true;
-            }
+            addChild.AddChild(Figure);
+            Figure.Margin = new(Left, Top, 0, 0);
         }
 
         /// <summary>
