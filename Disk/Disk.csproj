@@ -50,11 +50,6 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Config.settings</DependentUpon>
     </Compile>
-    <Compile Update="Properties\Langs\AddNote\AddNoteLocalization.Designer.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>AddNoteLocalization.resx</DependentUpon>
-    </Compile>
     <Compile Update="Properties\Langs\AddPatient\AddPatientLocalization.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
@@ -133,13 +128,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Update="Properties\Langs\AddNote\AddNoteLocalization.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>AddNoteLocalization.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Properties\Langs\AddNote\AddNoteLocalization.ru-RU.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-    </EmbeddedResource>
     <EmbeddedResource Update="Properties\Langs\AddPatient\AddPatientLocalization.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>AddPatientLocalization.Designer.cs</LastGenOutput>

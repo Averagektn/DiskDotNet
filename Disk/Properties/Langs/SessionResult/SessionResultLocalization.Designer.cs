@@ -115,6 +115,15 @@ namespace Disk.Properties.Langs.SessionResult {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to L.
+        /// </summary>
+        public static string LeftFoot {
+            get {
+                return ResourceManager.GetString("LeftFoot", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Average shift from center.
         /// </summary>
         public static string MathExp {
@@ -183,6 +192,15 @@ namespace Disk.Properties.Langs.SessionResult {
         public static string Reply {
             get {
                 return ResourceManager.GetString("Reply", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to R.
+        /// </summary>
+        public static string RightFoot {
+            get {
+                return ResourceManager.GetString("RightFoot", resourceCulture);
             }
         }
         
