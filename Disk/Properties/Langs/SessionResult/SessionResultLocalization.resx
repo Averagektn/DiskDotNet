@@ -135,6 +135,9 @@
   <data name="Dispersion" xml:space="preserve">
     <value>Dispersion</value>
   </data>
+  <data name="LeftFoot" xml:space="preserve">
+    <value>L</value>
+  </data>
   <data name="MathExp" xml:space="preserve">
     <value>Average shift from center</value>
   </data>
@@ -158,6 +161,9 @@
   </data>
   <data name="Reply" xml:space="preserve">
     <value>Reply</value>
+  </data>
+  <data name="RightFoot" xml:space="preserve">
+    <value>R</value>
   </data>
   <data name="StandartDeviation" xml:space="preserve">
     <value>Deviation</value>

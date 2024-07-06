@@ -135,6 +135,9 @@
   <data name="Dispersion" xml:space="preserve">
     <value>Дисперсия</value>
   </data>
+  <data name="LeftFoot" xml:space="preserve">
+    <value>Л</value>
+  </data>
   <data name="MathExp" xml:space="preserve">
     <value>Среднее смещение от центра</value>
   </data>
@@ -158,6 +161,9 @@
   </data>
   <data name="Reply" xml:space="preserve">
     <value>Повтор</value>
+  </data>
+  <data name="RightFoot" xml:space="preserve">
+    <value>П</value>
   </data>
   <data name="StandartDeviation" xml:space="preserve">
     <value>Среднее отклонение от центра</value>

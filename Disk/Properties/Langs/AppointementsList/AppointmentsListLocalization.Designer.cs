@@ -61,15 +61,6 @@ namespace Disk.Properties.Langs.AppointementsList {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Add note.
-        /// </summary>
-        public static string AddNote {
-            get {
-                return ResourceManager.GetString("AddNote", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Appointments.
         /// </summary>
         public static string AppoimentsHeader {

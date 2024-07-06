@@ -1,5 +1,7 @@
-﻿using Disk.Service.Implementation;
+﻿using Disk.Calculations.Impl.Converters;
+using Disk.Service.Implementation;
 using Disk.ViewModel;
+using Disk.Visual.Impl;
 using Disk.Visual.Interface;
 using System.Windows;
 using System.Windows.Controls;
@@ -17,27 +19,32 @@ namespace Disk.View
         private SessionResultViewModel? ViewModel => DataContext as SessionResultViewModel;
 
         private Size PaintPanelSize => PaintArea.RenderSize;
-        private int PaintPanelCenterX => (int)PaintPanelSize.Width / 2;
-        private int PaintPanelCenterY => (int)PaintPanelSize.Height / 2;
 
         private List<IScalable> Scalables { get; set; } = [];
+
+        private static readonly User _user = DrawableFabric.GetIniUser(string.Empty);
+        private static readonly Target _target = DrawableFabric.GetIniProgressTarget(new(0, 0));
+        private Converter? Converter => ViewModel?.Converter;
+        private bool _isReply;
 
         public SessionResultView()
         {
             InitializeComponent();
 
             SizeChanged += OnSizeChanged;
+            Loaded += OnLoaded;
         }
 
         private void OnSizeChanged(object sender, SizeChangedEventArgs e)
         {
-            ViewModel?.Converter.Scale(PaintPanelSize);
+            Converter?.Scale(PaintPanelSize);
             Scalables.ForEach(s => s.Scale(PaintPanelSize));
-            Loaded += OnLoaded;
         }
 
         private void OnLoaded(object sender, RoutedEventArgs e)
         {
+            Scalables.AddRange([_user, _target]);
+
             OnSizeChanged(sender, null!);
             SelectionChanged(sender, null!);
         }
@@ -49,8 +56,15 @@ namespace Disk.View
                 return;
             }
 
+            if (!_isReply)
+            {
+                _user.Move(ViewModel.UserCenter);
+                _target.Move(ViewModel.TargetCenter);
+            }
+
             PaintArea.Children.Clear();
-            Scalables.Clear();
+            _target.Draw(PaintArea);
+            _user.Draw(PaintArea);
 
             var figures = ViewModel.GetPathAndRose(PaintPanelSize);
             foreach (var figure in figures)
@@ -74,30 +88,9 @@ namespace Disk.View
                 return;
             }
 
-            PaintArea.Children.Clear();
+            _isReply = true;
 
-            int targetNum = 0;
-            var target = DrawableFabric.GetIniProgressTarget(new(0, 0));
-
-            var user = DrawableFabric.GetIniUser(string.Empty);
-            user.Move(new(PaintPanelCenterX, PaintPanelCenterY));
-
-            Scalables.Add(user);
-            Scalables.Add(target);
             Scalables.ForEach(item => item.Scale(PaintPanelSize));
-            target.Move(ViewModel.Converter.ToWnd_FromRelative(ViewModel.TargetCenters[targetNum++]));
-
-            target.Draw(PaintArea);
-            user.Draw(PaintArea);
-
-            var shotTimer = new DispatcherTimer(DispatcherPriority.Normal)
-            {
-                Interval = TimeSpan.FromMilliseconds(Settings.ShotTime)
-            };
-            shotTimer.Tick += (_, _) =>
-            {
-                _ = user.Shot();
-            };
 
             var enumerator = ViewModel.FullPath.GetEnumerator();
             var moveTimer = new DispatcherTimer(DispatcherPriority.Normal)
@@ -108,35 +101,31 @@ namespace Disk.View
             {
                 if (enumerator.MoveNext())
                 {
-                    user.Move(ViewModel.Converter.ToWndCoord(enumerator.Current.Point));
-                    if (enumerator.Current.IsNewTarget && targetNum < ViewModel.TargetCenters.Count)
+                    _user.Move(ViewModel.Converter.ToWndCoord(enumerator.Current.Point));
+
+                    if (enumerator.Current.IsNewTarget && ++ViewModel.SelectedIndex < ViewModel.TargetCenters.Count)
                     {
-                        target.Move(ViewModel.Converter.ToWnd_FromRelative(ViewModel.TargetCenters[targetNum++]));
+                        _target.Move(ViewModel.Converter.ToWnd_FromRelative(ViewModel.TargetCenters[ViewModel.SelectedIndex]));
                     }
                 }
                 else
                 {
-                    StopTimers(sender, e);
-                    this.Unloaded -= StopTimers;
+                    StopTimer(sender, e);
+                    Unloaded -= StopTimer;
                 }
             };
 
-            this.Unloaded += StopTimers;
+            Unloaded += StopTimer;
 
-            void StopTimers(object sender, RoutedEventArgs e)
+            void StopTimer(object sender, RoutedEventArgs e)
             {
                 if (moveTimer.IsEnabled)
                 {
-                    moveTimer.Stop();
-                }
-
-                if (moveTimer.IsEnabled)
-                {
+                    _isReply = false;
                     moveTimer.Stop();
                 }
             }
 
-            shotTimer.Start();
             moveTimer.Start();
         }
     }

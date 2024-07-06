@@ -83,11 +83,7 @@ namespace Disk.Visual.Impl
         /// </param>
         public override void Draw(IAddChild addChild)
         {
-            if (!IsDrawn)
-            {
-                addChild.AddChild(_border);
-            }
-
+            addChild.AddChild(_border);
             base.Draw(addChild);
         }
 
