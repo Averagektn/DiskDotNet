@@ -80,7 +80,7 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="1*"/>
                 <RowDefinition Height="1*"/>
-                <RowDefinition Height="8*"/>
+                <RowDefinition Height="7*"/>
                 <RowDefinition Height="1*"/>
             </Grid.RowDefinitions>
 
@@ -90,21 +90,34 @@
                 VerticalAlignment="Center"
                 FontSize="25" 
                 Text="{x:Static lang:AppointmentsListLocalization.AppoimentsHeader}" 
-                Margin="10,0,0,0" Height="34" Width="132"/>
+                Margin="10"/>
 
             <Button
                 VerticalAlignment="Center"
-                HorizontalAlignment="Center"
+                HorizontalAlignment="Right"
+                Margin="10"
                 Grid.Column="1"
                 Content="{x:Static lang:AppointmentsListLocalization.StartAppoiment}"  
-                Command="{Binding StartAppointmentCommand}" Height="50" Width="250"/>
+                Command="{Binding StartAppointmentCommand}"
+                Padding="10"/>
 
-            <StackPanel Grid.Row="1" Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalAlignment="Center">
+            <DockPanel Grid.Row="1" Grid.ColumnSpan="2">
+                <Button 
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Center"
+                    Content="{x:Static lang:AppointmentsListLocalization.Cancel}" 
+                    DockPanel.Dock="Right"
+                    Margin="10"
+                    Padding="10"
+                    Command="{Binding CancelDateCommand}"/>
+
                 <DatePicker 
-                    Width="250"
+                    DockPanel.Dock="Left"
+                    HorizontalAlignment="Stretch"
                     Margin="10"
                     FontSize="25"
                     Grid.Row="1" 
+                    MinWidth="250"
                     Grid.ColumnSpan="2"
                     SelectedDateFormat="Short"
                     SelectedDate="{Binding SelectedDate}">
@@ -114,27 +127,23 @@
                         </i:EventTrigger>
                     </i:Interaction.Triggers>
                 </DatePicker>
-
-                <Button 
-                    Content="{x:Static lang:AppointmentsListLocalization.Cancel}" 
-                    Width="100" 
-                    Margin="10" 
-                    Height="35"
-                    Command="{Binding CancelDateCommand}"/>
-            </StackPanel>
-            
+            </DockPanel>
 
             <DataGrid 
                 FontSize="25"
                 Grid.Row="2"
                 Grid.ColumnSpan="2"
-                Margin="5,0,5,0"
+                Margin="5 0"
                 ItemsSource="{Binding Appointments}" 
                 AutoGenerateColumns="False" 
                 SelectedItem="{Binding SelectedAppointment}" 
                 IsReadOnly="True">
+                
                 <DataGrid.Columns>
-                    <DataGridTextColumn Width="1*" Header="{x:Static lang:AppointmentsListLocalization.DateTime}" Binding="{Binding DateTime}" />
+                    <DataGridTextColumn 
+                        Width="1*" 
+                        Header="{x:Static lang:AppointmentsListLocalization.DateTime}" 
+                        Binding="{Binding DateTime}" />
                 </DataGrid.Columns>
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="MouseDoubleClick">
@@ -144,27 +153,33 @@
                 <DataGrid.ContextMenu>
                     <ContextMenu FontSize="20">
                         <MenuItem 
-                        Header="{x:Static lang:AppointmentsListLocalization.Delete}" 
-                        Command="{Binding DeleteAppointmentCommand}" 
-                        CommandParameter="{Binding SelectedAppointment}" />
+                            Header="{x:Static lang:AppointmentsListLocalization.Delete}" 
+                            Command="{Binding DeleteAppointmentCommand}" 
+                            CommandParameter="{Binding SelectedAppointment}" />
                     </ContextMenu>
                 </DataGrid.ContextMenu>
             </DataGrid>
-            <StackPanel Grid.Row="3" Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0 10 0 0">
+            <DockPanel 
+                Grid.Row="3" 
+                Grid.ColumnSpan="2"
+                LastChildFill="False">
+                
                 <Button 
-                    Margin="10 0" 
-                    Width="200" 
-                    Content="Prev"
+                    DockPanel.Dock="Left"
+                    Margin="15"
+                    Padding="50 0"
+                    Content="{x:Static lang:AppointmentsListLocalization.Prev}"
                     IsEnabled="{Binding IsPreviousEnabled}"
                     Command="{Binding PrevPageCommand}"/>
                 
                 <Button 
-                    Margin="10 0" 
-                    Width="200" 
-                    Content="Next"
+                    DockPanel.Dock="Right"
+                    Margin="15"
+                    Padding="50 0"
+                    Content="{x:Static lang:AppointmentsListLocalization.Next}"
                     IsEnabled="{Binding IsNextEnabled}"
                     Command="{Binding NextPageCommand}"/>
-            </StackPanel>
+            </DockPanel>
         </Grid>
     </Grid>
 </UserControl>

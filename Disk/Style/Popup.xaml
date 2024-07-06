@@ -19,20 +19,23 @@
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="*" />
-                    <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
 
-                <TextBlock x:Name="PART_Header"
-                           Foreground="White"
-                           FontSize="18"
-                           FontWeight="Bold"
-                           Margin="0,0,0,10" />
+                <TextBlock 
+                    x:Name="PART_Header"
+                    Foreground="White"
+                    FontSize="25"
+                    FontWeight="Bold"
+                    Margin="0,0,0,10"
+                    Grid.Row="0"/>
 
-                <TextBlock x:Name="PART_Message"
-                           Foreground="White"
-                           VerticalAlignment="Center"
-                           HorizontalAlignment="Center"
-                           Grid.Row="1" />
+                <TextBlock 
+                    FontSize="25"
+                    x:Name="PART_Message"
+                    Foreground="White"
+                    VerticalAlignment="Center"
+                    HorizontalAlignment="Center"
+                    Grid.Row="1" />
             </Grid>
         </Border>
     </Popup>

@@ -19,16 +19,23 @@
             <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
 
-        <StackPanel Grid.Row="0" Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
+        <DockPanel Grid.Row="0" LastChildFill="True">
             <TextBlock 
                 Text="{x:Static lang:PatientsLocalization.SearchHeader}" 
                 FontSize="25"
-                Margin="0 15"/>
+                Margin="0 15"
+                DockPanel.Dock="Left"/>
+            <Button 
+                DockPanel.Dock="Right"
+                Padding="10"
+                Margin="10"
+                Width="auto"
+                Content="{x:Static lang:PatientsLocalization.Add}" 
+                Command="{Binding AddPatientCommand}"/>
+
             <TextBox
                 FontSize="25"
                 Margin="15"
-                Height="35"
-                Width="300"
                 BorderThickness="0 0 0 1"
                 Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}"
                 Background="LightGray">
@@ -38,10 +45,7 @@
                     </i:EventTrigger>
                 </i:Interaction.Triggers>
             </TextBox>
-            <Button 
-                Content="{x:Static lang:PatientsLocalization.Add}" 
-                Command="{Binding AddPatientCommand}"/>
-        </StackPanel>
+        </DockPanel>
 
         <DataGrid 
             Grid.Row="1"
@@ -51,11 +55,26 @@
             SelectedItem="{Binding SelectedPatient}" 
             IsReadOnly="True">
             <DataGrid.Columns>
-                <DataGridTextColumn Width="1*" Header="{x:Static lang:PatientsLocalization.Surname}" Binding="{Binding Surname}" />
-                <DataGridTextColumn Width="1*" Header="{x:Static lang:PatientsLocalization.Name}" Binding="{Binding Name}" />
-                <DataGridTextColumn Width="1*" Header="{x:Static lang:PatientsLocalization.Patronymic}" Binding="{Binding Patronymic}" />
-                <DataGridTextColumn Width="1*" Header="{x:Static lang:PatientsLocalization.DateOfBirth}" Binding="{Binding DateOfBirth}" />
-                <DataGridTextColumn Width="1*" Header="{x:Static lang:PatientsLocalization.MobilePhone}" Binding="{Binding PhoneMobile}" />
+                <DataGridTextColumn 
+                    Width="1*" 
+                    Header="{x:Static lang:PatientsLocalization.Surname}" 
+                    Binding="{Binding Surname}" />
+                <DataGridTextColumn 
+                    Width="1*" 
+                    Header="{x:Static lang:PatientsLocalization.Name}" 
+                    Binding="{Binding Name}" />
+                <DataGridTextColumn 
+                    Width="1*" 
+                    Header="{x:Static lang:PatientsLocalization.Patronymic}" 
+                    Binding="{Binding Patronymic}" />
+                <DataGridTextColumn 
+                    Width="1*" 
+                    Header="{x:Static lang:PatientsLocalization.DateOfBirth}" 
+                    Binding="{Binding DateOfBirth}" />
+                <DataGridTextColumn 
+                    Width="1*" 
+                    Header="{x:Static lang:PatientsLocalization.MobilePhone}" 
+                    Binding="{Binding PhoneMobile}" />
             </DataGrid.Columns>
             <i:Interaction.Triggers>
                 <i:EventTrigger EventName="MouseDoubleClick">
@@ -85,10 +104,10 @@
             <Button 
                 Command="{Binding PrevPageCommand}"
                 IsEnabled="{Binding IsPrevEnabled}"
-                Margin="10"
                 Content="{x:Static lang:PatientsLocalization.PrevPage}" 
                 Grid.Column="0" 
-                HorizontalAlignment="Center"/>
+                Margin="10"
+                Padding="0 10"/>
             <TextBlock 
                 VerticalAlignment="Center"
                 Text="{Binding PageNum}" 
@@ -99,9 +118,9 @@
                 Command="{Binding NextPageCommand}"
                 IsEnabled="{Binding IsNextEnabled}"
                 Margin="10"
+                Padding="0 10"
                 Content="{x:Static lang:PatientsLocalization.NextPage}" 
-                Grid.Column="2" 
-                HorizontalAlignment="Center"/>
+                Grid.Column="2" />
         </Grid>
     </Grid>
 </UserControl>

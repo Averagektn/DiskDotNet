@@ -19,6 +19,7 @@
             <ColumnDefinition Width="5*"/>
             <ColumnDefinition Width="1*"/>
         </Grid.ColumnDefinitions>
+        
         <Grid Grid.Row="1" Grid.Column="1">
             <Grid.RowDefinitions>
                 <RowDefinition Height="1*"/>
@@ -36,35 +37,32 @@
 
             <ComboBox 
                 Grid.Row="1"
-                FontSize="20"
-                Height="25"
-                Margin="10"
-                MinWidth="200"
-                HorizontalAlignment="Center"
+                FontSize="25"
+                VerticalAlignment="Center"
+                Margin="20"
+                HorizontalAlignment="Stretch"
                 ItemsSource="{Binding Maps}" 
                 SelectedItem="{Binding SelectedMap}"/>
 
-            <StackPanel Orientation="Horizontal" Grid.Row="2" HorizontalAlignment="Center">
+            <DockPanel Grid.Row="2">
+                <Button 
+                    DockPanel.Dock="Right"
+                    Content="..." 
+                    Command="{Binding PickImageCommand}" 
+                    Margin="10 20"
+                    Padding="10 0"/>
+
                 <TextBlock 
+                    DockPanel.Dock="Left"
                     Margin="10"
                     FontSize="25"
-                    Text="{Binding ImageFileName}" 
-                    VerticalAlignment="Center" 
-                    HorizontalAlignment="Center" 
-                    Width="auto"/>
-                <Button 
-                        Content="..." 
-                        Command="{Binding PickImageCommand}" 
-                        Margin="0 10" 
-                        Height="50"
-                        Width="50"/>
-            </StackPanel>
+                    VerticalAlignment="Center"
+                    Text="{Binding ImageFileName}"/>
+            </DockPanel>
 
             <Button
-                HorizontalAlignment="Center"
                 Grid.Row="3"
-                Margin="10 5"
-                Width="200"
+                Margin="15"
                 Content="{x:Static lang:StartSessionLocalization.Start}" 
                 Command="{Binding StartSessionCommand}"/>
         </Grid>
