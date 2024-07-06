@@ -40,8 +40,13 @@
             IsReadOnly="True"
             AutoGenerateColumns="False"
             SelectedItem="{Binding SelectedSession}">
+            
         <DataGrid.Columns>
-            <DataGridTextColumn Width="1*" Header="{x:Static lang:AppointmentLocalization.DateTime}" Binding="{Binding DateTime}" />
+            <DataGridTextColumn 
+                Width="1*" 
+                Header="{x:Static lang:AppointmentLocalization.DateTime}" 
+                Binding="{Binding DateTime}" />
+            
                 <DataGridTextColumn 
                     Width="1*" 
                     Header="{x:Static lang:AppointmentLocalization.Deviation}" 
@@ -85,6 +90,7 @@
             ItemsSource="{Binding PathsToTargets}" 
             AutoGenerateColumns="False" 
             ScrollViewer.VerticalScrollBarVisibility="Auto">
+            
             <DataGrid.Columns>
                 <DataGridTextColumn 
                     Width="1*" 
@@ -110,16 +116,21 @@
         </DataGrid>
 
         <Button     
+            VerticalAlignment="Center"
             Grid.Row="3"
             Grid.Column="0"
             Content="{x:Static lang:AppointmentLocalization.Start}" 
             Command="{Binding StartSessionCommand}"                    
-            Margin="10"/>
+            Margin="15"
+            Padding="10"/>
+        
         <Button 
+            VerticalAlignment="Center"
             Grid.Row="3"
             Grid.Column="1"
             Content="{x:Static lang:AppointmentLocalization.ExportToExcel}"
             Command="{Binding ExportToExcelCommand}"
-            Margin="10"/>
+            Margin="15"
+            Padding="10"/>
     </Grid>
 </UserControl>

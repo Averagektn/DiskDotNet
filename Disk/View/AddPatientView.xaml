@@ -18,7 +18,11 @@
             <RowDefinition Height="1*"/>
         </Grid.RowDefinitions>
 
-        <StackPanel Grid.Row="1" HorizontalAlignment="Center" CanVerticallyScroll="True">
+        <StackPanel 
+            Grid.Row="1" 
+            HorizontalAlignment="Center" 
+            CanVerticallyScroll="True">
+            
             <TextBlock 
                 FontSize="25"
                 Text="{x:Static lang:AddPatientLocalization.Surname}" 
@@ -27,10 +31,9 @@
 
             <TextBox 
                 FontSize="25"
-                Width="300"
                 Margin="10 5"
                 BorderThickness="0 0 0 1"
-                HorizontalAlignment="Left"
+                HorizontalAlignment="Stretch"
                 Text="{Binding Patient.Surname}"
                 Background="{Binding BgSurname}">
                 <i:Interaction.Triggers>
@@ -48,10 +51,9 @@
 
             <TextBox 
                 FontSize="25"
-                Width="300"
                 Margin="10 5"
                 BorderThickness="0 0 0 1"
-                HorizontalAlignment="Left"
+                HorizontalAlignment="Stretch"
                 Text="{Binding Patient.Name}"
                 Background="{Binding BgName}">
                 <i:Interaction.Triggers>
@@ -69,10 +71,9 @@
 
             <TextBox 
                 FontSize="25"
-                Width="300"
                 Margin="10 5"
                 BorderThickness="0 0 0 1"
-                HorizontalAlignment="Left"
+                HorizontalAlignment="Stretch"
                 Text="{Binding Patient.Patronymic}"/>
 
             <TextBlock 
@@ -85,10 +86,9 @@
                 FontSize="25"
                 SelectedDateFormat="Short"
                 SelectedDate="{Binding DateOfBirth}"   
-                Width="300"
                 Margin="10 5"
                 BorderThickness="0 0 0 1"
-                HorizontalAlignment="Left" 
+                HorizontalAlignment="Stretch" 
                 Background="{Binding BgDateOfBirth}">
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="GotFocus">
@@ -105,10 +105,9 @@
 
             <TextBox 
                 FontSize="25"
-                Width="300"
                 Margin="10 5"
                 BorderThickness="0 0 0 1"
-                HorizontalAlignment="Left"
+                HorizontalAlignment="Stretch"
                 Text="{Binding Patient.PhoneMobile}"
                 Background="{Binding BgMobilePhone}">
                 <i:Interaction.Triggers>
@@ -126,10 +125,9 @@
 
             <TextBox 
                 FontSize="25"
-                Width="300"
                 Margin="10 5"
                 BorderThickness="0 0 0 1"
-                HorizontalAlignment="Left"
+                HorizontalAlignment="Stretch"
                 Text="{Binding Patient.PhoneHome}"
                 Background="{Binding BgHomePhone}">
                 <i:Interaction.Triggers>
@@ -141,12 +139,14 @@
 
             <Button 
                 Content="{x:Static lang:AddPatientLocalization.AddPatient}" 
-                Margin="0 20 0 0"  
+                Margin="10"
+                Padding="100 10"
                 Command="{Binding AddPatientCommand}"/>
 
             <Button 
                 Content="{x:Static lang:AddPatientLocalization.Cancel}" 
-                Margin="0 20"                    
+                Margin="10"
+                Padding="100 10"
                 Command="{Binding CancelCommand}"/>
 
             <styles:Popup 

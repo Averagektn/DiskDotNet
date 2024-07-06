@@ -22,44 +22,46 @@
                     Command="{Binding NavigateToPatientsCommand}"
                     IsEnabled="{Binding CanNavigateToPatients}"
                     Margin="10" 
-                    Background="Transparent"
-                    Width="auto"/>
+                    Padding="5"
+                    Background="Transparent"/>
                 
                 <Button 
                     Content="{x:Static lang:NavigationBarLocalization.Settings}"  
                     Command="{Binding NavigateToSettingsCommand}"
                     IsEnabled="{Binding CanNavigateToSettings}"
                     Margin="10" 
-                    Background="Transparent"
-                    Width="auto"/>
+                    Padding="5"
+                    Background="Transparent"/>
 
                 <Button 
                     Content="{x:Static lang:NavigationBarLocalization.Calibration}"  
                     Command="{Binding NavigateToCalibrationCommand}"
                     IsEnabled="{Binding CanNavigateToCalibration}"
                     Margin="10" 
-                    Background="Transparent"
-                    Width="auto"/>
+                    Padding="5"
+                    Background="Transparent"/>
 
                 <Button 
                     Content="{x:Static lang:NavigationBarLocalization.MapConstructor}" 
                     Command="{Binding NavigateToMapCreatorCommand}"
                     IsEnabled="{Binding CanNavigateToMapCreator}"
                     Margin="10" 
-                    Background="Transparent"
-                    Width="auto"/>
+                    Padding="5"
+                    Background="Transparent"/>
 
                 <Button 
                     Content="{x:Static lang:NavigationBarLocalization.Back}" 
                     Command="{Binding NavigateBackCommand}" 
                     IsEnabled="{Binding CanNavigateBack}"
                     Margin="10"
-                    Background="Transparent"
-                    Width="auto"/>
+                    Padding="5"
+                    Background="Transparent"/>
 
             </StackPanel>
         </Border>
         
-        <ContentControl Grid.Row="1" Content="{Binding CurrentViewModel}"/>
+        <ContentControl 
+            Grid.Row="1" 
+            Content="{Binding CurrentViewModel}"/>
     </Grid>
 </UserControl>

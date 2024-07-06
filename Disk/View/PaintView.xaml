@@ -22,7 +22,7 @@
             <RowDefinition Height="1*"/>
         </Grid.RowDefinitions>
 
-        <Menu Grid.Row="0" Height="30" FontSize="20" VerticalAlignment="Top" HorizontalAlignment="Left">
+        <Menu Grid.Row="0" FontSize="20" VerticalAlignment="Top" HorizontalAlignment="Left">
             <MenuItem 
                 Header="{x:Static lang:PaintWindowLocalization.Stop}" 
                 IsEnabled="{Binding IsStopEnabled}" 
@@ -46,18 +46,16 @@
             HorizontalAlignment="Left" 
             VerticalAlignment="Top"
             Text="{x:Static lang:PaintWindowLocalization.LeftFoot}" 
-            FontSize="55" 
-            Height="65"/>
+            FontSize="55" />
 
         <TextBlock 
             Grid.Row="1" 
             Grid.Column="0" 
-            Margin="10 10 0 0" 
+            Margin="0 10 10 0" 
             HorizontalAlignment="Right" 
             VerticalAlignment="Top"    
             Text="{x:Static lang:PaintWindowLocalization.RightFoot}" 
-            FontSize="55" 
-            Height="65"/>
+            FontSize="55" />
 
         <Canvas Name="PaintArea" Grid.Row="1" Grid.RowSpan="5">
             <Path Fill="Transparent" Stretch="Fill" Stroke="Black" 
@@ -75,15 +73,20 @@
             Name="PaintRect"/>
 
         <Line 
-            Grid.Row="1" Grid.RowSpan="5" 
-            X1="0" Y1="0" X2="0" 
+            Grid.Row="1" 
+            Grid.RowSpan="5" 
+            X1="0" Y1="0" 
+            X2="0" 
             Y2="{Binding ActualHeight, RelativeSource={RelativeSource AncestorType=Grid}}"   
             Stroke="Black" StrokeThickness="2" 
-            HorizontalAlignment="Center" Panel.ZIndex="-10" />
+            HorizontalAlignment="Center" 
+            Panel.ZIndex="-10" />
 
         <Line 
-            Grid.Row="1" Grid.RowSpan="5" 
-            X1="0" Y1="0" 
+            Grid.Row="1" 
+            Grid.RowSpan="5" 
+            X1="0" 
+            Y1="0" 
             X2="{Binding ActualWidth, RelativeSource={RelativeSource AncestorType=Grid}}" 
             Y2="0" Stroke="Black" StrokeThickness="2" 
             VerticalAlignment="Center" Panel.ZIndex="-10" />

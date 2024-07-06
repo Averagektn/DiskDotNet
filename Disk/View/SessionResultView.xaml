@@ -97,14 +97,14 @@
             <Button 
                 Click="ReplyClick"
                 Content="{x:Static lang:SessionResultLocalization.Reply}"
-                Width="auto"
-                Margin="10"/>
+                Margin="10"
+                Padding="0 10"/>
 
             <Button 
                 Command="{Binding NavigateBackCommand}"
                 Content="{x:Static lang:SessionResultLocalization.Back}"
-                Width="auto"
-                Margin="10"/>
+                Margin="10"
+                Padding="0 10"/>
         </StackPanel>
     </Grid>
 </UserControl>

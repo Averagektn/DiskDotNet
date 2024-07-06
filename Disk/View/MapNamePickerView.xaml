@@ -9,31 +9,31 @@
              xmlns:popup="clr-namespace:Disk.Style"
              xmlns:lang="clr-namespace:Disk.Properties.Langs.MapNamePicker"
              mc:Ignorable="d" 
-             d:DesignHeight="150" 
+             d:DesignHeight="200" 
              d:DesignWidth="300">
 
     <StackPanel 
         HorizontalAlignment="Center" 
         VerticalAlignment="Center">
+        
         <TextBlock 
             FontSize="25"
             Text="{x:Static lang:MapNamePickerLocalization.MapName}" 
             Margin="15"
             HorizontalAlignment="Left"/>
+        
         <TextBox 
-            Padding="0,5"
             Margin="15 0"
             FontSize="25"
-            Height="35"
-            Width="255"
             BorderThickness="0 0 0 1"
-            HorizontalAlignment="Left"
+            MaxHeight="35"
+            HorizontalAlignment="Stretch"
             Text="{Binding MapName}"/>
 
         <Button 
             Content="{x:Static lang:MapNamePickerLocalization.Add}" 
             Command="{Binding SaveMapCommand}"                    
-            Margin="0 25"/>
+            Margin="25"/>
 
         <popup:Popup 
             IsPopupOpen="{Binding IsShowPopup}" 
