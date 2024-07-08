@@ -116,6 +116,13 @@
                 Margin="10"
                 Padding="0 10"/>
 
+            <Button
+                Click="StopTimer"
+                Content="{x:Static lang:SessionResultLocalization.Stop}"
+                IsEnabled="{Binding IsStopEnabled}"
+                Margin="10"
+                Padding="0 10"/>
+
             <Button 
                 Command="{Binding NavigateBackCommand}"
                 Content="{x:Static lang:SessionResultLocalization.Back}"

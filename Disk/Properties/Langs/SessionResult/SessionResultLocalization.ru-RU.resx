@@ -168,6 +168,9 @@
   <data name="StandartDeviation" xml:space="preserve">
     <value>Среднее отклонение от центра</value>
   </data>
+  <data name="Stop" xml:space="preserve">
+    <value>Остановить</value>
+  </data>
   <data name="Target" xml:space="preserve">
     <value>Цель</value>
   </data>
