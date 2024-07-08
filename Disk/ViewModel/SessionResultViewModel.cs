@@ -95,6 +95,9 @@ namespace Disk.ViewModel
         private int _selectedIndex = -1;
         public int SelectedIndex { get => _selectedIndex; set => SetProperty(ref _selectedIndex, value); }
 
+        private bool _isStopEnabled;
+        public bool IsStopEnabled { get => _isStopEnabled; set => SetProperty(ref _isStopEnabled, value); }
+
         public bool ShowPathInTarget { get; set; }
         public bool ShowPathToTarget { get; set; }
 

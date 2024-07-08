@@ -8,6 +8,7 @@ using Microsoft.Win32;
 using System.Collections.ObjectModel;
 using System.Globalization;
 using System.IO;
+using System.Windows;
 using System.Windows.Input;
 using Localization = Disk.Properties.Langs.StartSession.StartSessionLocalization;
 using Settings = Disk.Properties.Config.Config;
@@ -75,6 +76,7 @@ namespace Disk.ViewModel
 
             IniNavigationStore.Close();
             PaintNavigator.Navigate(navigationStore, _imageFilePath, logPath, OnSessionOver, session);
+            Application.Current.MainWindow.WindowState = WindowState.Maximized;
         }
     }
 }

@@ -15,6 +15,11 @@ namespace Disk.View
     /// </summary>
     public partial class SessionResultView : UserControl
     {
+        private DispatcherTimer MoveTimer = new(DispatcherPriority.Normal)
+        {
+            Interval = TimeSpan.FromMilliseconds(Settings.MoveTime)
+        };
+
         private static Settings Settings => Settings.Default;
         private SessionResultViewModel? ViewModel => DataContext as SessionResultViewModel;
 
@@ -22,10 +27,23 @@ namespace Disk.View
 
         private List<IScalable> Scalables { get; set; } = [];
 
-        private static readonly User _user = DrawableFabric.GetIniUser(string.Empty);
-        private static readonly Target _target = DrawableFabric.GetIniProgressTarget(new(0, 0));
+        private readonly User _user = DrawableFabric.GetIniUser(string.Empty);
+        private readonly Target _target = DrawableFabric.GetIniProgressTarget(new(0, 0));
         private Converter? Converter => ViewModel?.Converter;
+
         private bool _isReply;
+        private bool IsReply
+        {
+            get => _isReply;
+            set
+            {
+                _isReply = value;
+                if (ViewModel is not null)
+                {
+                    ViewModel.IsStopEnabled = value;
+                }
+            }
+        }
 
         public SessionResultView()
         {
@@ -33,6 +51,7 @@ namespace Disk.View
 
             SizeChanged += OnSizeChanged;
             Loaded += OnLoaded;
+            Unloaded += StopTimer;
         }
 
         private void OnSizeChanged(object sender, SizeChangedEventArgs e)
@@ -56,7 +75,7 @@ namespace Disk.View
                 return;
             }
 
-            if (!_isReply)
+            if (!IsReply)
             {
                 _user.Move(ViewModel.UserCenter);
                 _target.Move(ViewModel.TargetCenter);
@@ -88,45 +107,44 @@ namespace Disk.View
                 return;
             }
 
-            _isReply = true;
+            IsReply = true;
 
             Scalables.ForEach(item => item.Scale(PaintPanelSize));
 
+            var selectedIndex = ViewModel.SelectedIndex;
             var enumerator = ViewModel.FullPath.GetEnumerator();
-            var moveTimer = new DispatcherTimer(DispatcherPriority.Normal)
+            MoveTimer = new DispatcherTimer(DispatcherPriority.Normal)
             {
                 Interval = TimeSpan.FromMilliseconds(Settings.MoveTime)
             };
-            moveTimer.Tick += (_, _) =>
+            MoveTimer.Tick += (_, _) =>
             {
-                if (enumerator.MoveNext())
+                if (enumerator.MoveNext() && IsReply)
                 {
                     _user.Move(ViewModel.Converter.ToWndCoord(enumerator.Current.Point));
 
-                    if (enumerator.Current.IsNewTarget && ++ViewModel.SelectedIndex < ViewModel.TargetCenters.Count)
+                    if (enumerator.Current.IsNewTarget && ++selectedIndex < ViewModel.TargetCenters.Count)
                     {
-                        _target.Move(ViewModel.Converter.ToWnd_FromRelative(ViewModel.TargetCenters[ViewModel.SelectedIndex]));
+                        _target.Move(ViewModel.Converter.ToWnd_FromRelative(ViewModel.TargetCenters[selectedIndex]));
+                        ViewModel.SelectedIndex = selectedIndex;
                     }
                 }
                 else
                 {
                     StopTimer(sender, e);
-                    Unloaded -= StopTimer;
                 }
             };
 
-            Unloaded += StopTimer;
+            MoveTimer.Start();
+        }
 
-            void StopTimer(object sender, RoutedEventArgs e)
+        private void StopTimer(object sender, RoutedEventArgs e)
+        {
+            if (MoveTimer.IsEnabled)
             {
-                if (moveTimer.IsEnabled)
-                {
-                    _isReply = false;
-                    moveTimer.Stop();
-                }
+                IsReply = false;
+                MoveTimer.Stop();
             }
-
-            moveTimer.Start();
         }
     }
 }
