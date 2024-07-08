@@ -411,3 +411,4 @@ Db/disk.db
 /Db/disk.db-wal
 /Db/disk.db-shm
 *.docx
+/Disk/Db/disk.db
