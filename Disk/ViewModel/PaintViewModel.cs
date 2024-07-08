@@ -71,6 +71,7 @@ namespace Disk.ViewModel
         }
 
         private Stopwatch? PathToTargetStopwatch;
+        private bool connectionFailed;
 
         // binding
         public string ScoreString => $"{Localization.Score}: {Score}";
@@ -138,12 +139,10 @@ namespace Disk.ViewModel
             }
             catch
             {
+                connectionFailed = true;
+
                 _ = MessageBox.Show(Localization.ConnectionLost);
-                _ = Application.Current.Dispatcher.BeginInvoke(new Action(() =>
-                {
-                    SaveSessionResult();
-                    IniNavigationStore.Close();
-                }));
+                _ = Application.Current.Dispatcher.BeginInvoke(new Action(SaveSessionResult));
             }
         }
 
@@ -186,8 +185,14 @@ namespace Disk.ViewModel
 
             OnSessionOver?.Invoke();
 
-            SessionResultNavigator.NavigateAndClose(_navigationStore, CurrentSession);
-            Application.Current.MainWindow.WindowState = WindowState.Maximized;
+            if (connectionFailed)
+            {
+                IniNavigationStore.Close();
+            }
+            else
+            {
+                SessionResultNavigator.NavigateAndClose(_navigationStore, CurrentSession);
+            }
         }
 
         public void SwitchToPathInTarget(Point2D<int> userShot)
@@ -265,7 +270,7 @@ namespace Disk.ViewModel
             base.Dispose();
             GC.SuppressFinalize(this);
 
-            if (CurrentSession.SessionResult is null)
+            if (_sessionRepository.Exists(CurrentSession))
             {
                 _sessionRepository.Delete(CurrentSession);
             }
@@ -274,6 +279,8 @@ namespace Disk.ViewModel
             {
                 DiskNetworkThread.Join();
             }
+
+            Application.Current.MainWindow.WindowState = WindowState.Normal;
         }
 
         public void SavePathToTarget(PathToTarget pathToTarget) => _pathToTargetRepository.Add(pathToTarget);

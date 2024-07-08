@@ -8,6 +8,11 @@ namespace Disk.Repository.Implementation
 {
     public class SessionRepository(DiskContext diskContext) : CrudRepository<Session>(diskContext), ISessionRepository
     {
+        public bool Exists(Session session)
+        {
+            return table.Any(s => s.Id == session.Id);
+        }
+
         public ICollection<Session> GetSessionsWithResultsByAppointment(long appointmentId)
         {
             return table.Where(s => s.Appointment == appointmentId)
