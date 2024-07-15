@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.10.35027.167
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DiskEmulator", "DiskEmulator\DiskEmulator.csproj", "{F6206684-75B9-4549-8B94-8D6DAB82F8C0}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DiskEmulator", "DiskEmulator\DiskEmulator.csproj", "{93282269-3FF1-4477-B04C-00F557E76DD6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,15 +11,15 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{F6206684-75B9-4549-8B94-8D6DAB82F8C0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F6206684-75B9-4549-8B94-8D6DAB82F8C0}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F6206684-75B9-4549-8B94-8D6DAB82F8C0}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F6206684-75B9-4549-8B94-8D6DAB82F8C0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{93282269-3FF1-4477-B04C-00F557E76DD6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{93282269-3FF1-4477-B04C-00F557E76DD6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{93282269-3FF1-4477-B04C-00F557E76DD6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{93282269-3FF1-4477-B04C-00F557E76DD6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {3E92FC4C-1429-4470-99BB-C18377FE9750}
+		SolutionGuid = {8E2E2902-C55D-4448-96BA-7CE27E0ED74D}
 	EndGlobalSection
 EndGlobal
