@@ -33,7 +33,7 @@ namespace DiskEmulator
             {
                 var pos = e.GetPosition(DrawArea);
 
-                if (e.LeftButton == MouseButtonState.Pressed && TargetContains(pos))
+                if (e.LeftButton == MouseButtonState.Pressed)
                 {
                     Target.SetValue(Canvas.LeftProperty, pos.X - Radius);
                     Target.SetValue(Canvas.TopProperty, pos.Y - Radius);
