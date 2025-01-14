@@ -1,28 +1,60 @@
 ﻿using Listener;
+using Newtonsoft.Json;
 using System.Diagnostics;
 using System.Net;
 
-var connection = Connection.GetConnection(IPAddress.Parse("192.168.150.2"), 9998);
+var connection = Connection.GetConnection(IPAddress.Parse("192.168.0.106"), 9998);
 var stopwatch = new Stopwatch();
-var coords = new List<string>();
+const int Seconds = 1 * 60;
+const int Freq = 60;
+var time = new List<long>(Freq * Seconds);
+var avgs = new List<double>(Freq * Seconds);
+var endTime = DateTime.Now.AddSeconds(Seconds);
 
-while (true)
+while (DateTime.Now < endTime)
 {
-    stopwatch.Start();
-    var str = connection.GetXYZ();
-    coords.Add(str);
-    stopwatch.Stop();
+    stopwatch.Restart();
+    _ = connection.GetXYZ();
     var ms = stopwatch.ElapsedMilliseconds;
-    Console.ForegroundColor = ms switch
-    {
-        < 10 => ConsoleColor.Green,
-        >= 10 and < 50 => ConsoleColor.Yellow,
-        >= 50 and < 100 => ConsoleColor.Red,
-        >= 100 => ConsoleColor.DarkRed
-    };
 
-    Console.WriteLine($"{str} timeout {stopwatch.ElapsedMilliseconds}ms");
+    time.Add(ms);
+    avgs.Add(time.Average());
 
-    Console.ResetColor();
-    stopwatch.Reset();
+    Console.WriteLine($"After add to list: {stopwatch.ElapsedMilliseconds}");
 }
+
+var avgsTask = File.WriteAllTextAsync("../../../../Plot/avgs.json", JsonConvert.SerializeObject(avgs));
+var timeTask = File.WriteAllTextAsync("../../../../Plot/time.json", JsonConvert.SerializeObject(time));
+await avgsTask;
+await timeTask;
+
+Console.WriteLine($"Avg: {time.Average()}");
+connection.Dispose();
+
+Console.WriteLine(time.Count);
+
+var startInfoAvgs = new ProcessStartInfo
+{
+    FileName = "python",
+    Arguments = $"../../../../Plot/Plot.py avgs.json",
+    RedirectStandardOutput = true,
+    RedirectStandardError = true,
+    UseShellExecute = false,
+    CreateNoWindow = true
+};
+var processAvgs = Process.Start(startInfoAvgs);
+processAvgs?.WaitForExit();
+Console.WriteLine(processAvgs?.StandardError.ReadToEnd());
+
+var startInfoTime = new ProcessStartInfo
+{
+    FileName = "python",
+    Arguments = $"../../../../Plot/Plot.py time.json",
+    RedirectStandardOutput = true,
+    RedirectStandardError = true,
+    UseShellExecute = false,
+    CreateNoWindow = true
+};
+var processTime = Process.Start(startInfoTime);
+processTime?.WaitForExit();
+Console.WriteLine(processTime?.StandardError.ReadToEnd());

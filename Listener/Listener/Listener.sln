@@ -5,6 +5,8 @@ VisualStudioVersion = 17.9.34728.123
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Listener", "Listener.csproj", "{EB735167-12B4-40F4-B9D2-D5CF38095F58}"
 EndProject
+Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "Plot", "..\Plot\Plot.pyproj", "{CB66DD40-A0DA-4229-A3BB-CFF54EA9FB90}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,8 @@ Global
 		{EB735167-12B4-40F4-B9D2-D5CF38095F58}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EB735167-12B4-40F4-B9D2-D5CF38095F58}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EB735167-12B4-40F4-B9D2-D5CF38095F58}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CB66DD40-A0DA-4229-A3BB-CFF54EA9FB90}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CB66DD40-A0DA-4229-A3BB-CFF54EA9FB90}.Release|Any CPU.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
