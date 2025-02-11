@@ -14,9 +14,9 @@ namespace Disk.ViewModel
     public class AppointmentViewModel(ModalNavigationStore modalNavigationStore, ISessionRepository sessionRepository, IExcelFiller excelFiller,
         NavigationStore navigationStore) : ObserverViewModel
     {
-        public Patient Patient { get; set; } = null!;
-        public Appointment Appointment { get; set; } = null!;
-        public Session? SelectedSession { get; set; }
+        public required Patient Patient { get; set; }
+        public required Appointment Appointment { get; set; } 
+        public Session? SelectedSession { get; set; } = null;
         public ObservableCollection<Session> Sessions { get; set; } = [];
         public ObservableCollection<PathToTarget> PathsToTargets { get; set; } = [];
 

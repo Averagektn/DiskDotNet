@@ -14,7 +14,7 @@ namespace Disk.Navigators
                 {
                     vm.IniNavigationStore = navigationStore;
                     vm.ImagePath = imageFilePath;
-                    vm.CurrPath = logPath;
+                    vm.CurrentPath = logPath;
                     vm.OnSessionOver += onSessionOver;
                     vm.CurrentSession = session;
                 });
@@ -42,7 +42,7 @@ namespace Disk.Navigators
                         {
                             vm.IniNavigationStore = navigationStore;
                             vm.ImagePath = imageFilePath;
-                            vm.CurrPath = logPath;
+                            vm.CurrentPath = logPath;
                             vm.OnSessionOver += onSessionOver;
                             vm.CurrentSession = session;
                         });

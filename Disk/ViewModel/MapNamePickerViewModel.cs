@@ -16,7 +16,7 @@ namespace Disk.ViewModel
     {
         public ICommand SaveMapCommand => new AsyncCommand(SaveMap);
 
-        public List<Point2D<float>> Map { get; set; } = null!;
+        public required List<Point2D<float>> Map { get; set; } 
         public string MapName { get; set; } = string.Empty;
 
         private async Task SaveMap(object? arg)

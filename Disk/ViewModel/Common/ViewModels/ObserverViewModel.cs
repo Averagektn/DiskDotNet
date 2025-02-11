@@ -6,7 +6,7 @@ namespace Disk.ViewModel.Common.ViewModels
 {
     public class ObserverViewModel : INotifyPropertyChanged, IDisposable
     {
-        public INavigationStore IniNavigationStore = null!;
+        public required INavigationStore IniNavigationStore;
 
         public event PropertyChangedEventHandler? PropertyChanged;
         protected bool SetProperty<T>(ref T field, T newValue, [CallerMemberName] string? propertyName = null)
