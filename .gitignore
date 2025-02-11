@@ -412,3 +412,5 @@ Db/disk.db
 /Db/disk.db-shm
 *.docx
 /Disk/Db/disk.db
+Listener/Plot/avgs.json
+Listener/Plot/time.json

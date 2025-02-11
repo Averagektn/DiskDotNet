@@ -1,4 +1,5 @@
-﻿using System.Net;
+﻿using System.Diagnostics;
+using System.Net;
 using System.Net.Sockets;
 
 namespace Listener
@@ -105,6 +106,7 @@ namespace Listener
             return conn;
         }
 
+        private readonly Stopwatch _stopwatch = new();
         /// <summary>
         ///     Retrieves XYZ coordinates from the connection
         /// </summary>
@@ -116,17 +118,23 @@ namespace Listener
             var coordX = new byte[4];
             var coordY = new byte[4];
             var coordZ = new byte[4];
-
+            _stopwatch.Restart();
             Socket.Receive(coordX);
+            var xTime = _stopwatch.ElapsedMilliseconds;
+            Console.WriteLine($"X: {xTime}ms");
             Socket.Receive(coordY);
+            var yTime = _stopwatch.ElapsedMilliseconds;
+            Console.WriteLine($"Y: {yTime - xTime}ms");
             Socket.Receive(coordZ);
+            var zTime = _stopwatch.ElapsedMilliseconds;
+            Console.WriteLine($"Z: {zTime - yTime}ms");
 
             var x = -BitConverter.ToSingle(coordX, 0);
-            Console.WriteLine($"Received x {x}");
+            //Console.WriteLine($"Received x {x}");
             var y = BitConverter.ToSingle(coordY, 0);
-            Console.WriteLine($"Received y {y}");
+            //Console.WriteLine($"Received y {y}");
             var z = BitConverter.ToSingle(coordZ, 0);
-            Console.WriteLine($"Received z {z}");
+            //Console.WriteLine($"Received z {z}");
 
             return $"{x} {y} {z}";
         }
