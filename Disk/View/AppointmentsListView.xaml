@@ -134,6 +134,7 @@
                 Grid.Row="2"
                 Grid.ColumnSpan="2"
                 Margin="5 0"
+                SelectionMode="Single"
                 ItemsSource="{Binding Appointments}" 
                 AutoGenerateColumns="False" 
                 SelectedItem="{Binding SelectedAppointment}" 

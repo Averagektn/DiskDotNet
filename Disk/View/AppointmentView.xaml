@@ -34,6 +34,7 @@
         <DataGrid 
             FontSize="25"
             Grid.Row="1" 
+            SelectionMode="Single"
             Grid.ColumnSpan="2"
             ScrollViewer.VerticalScrollBarVisibility="Auto" 
             ItemsSource="{Binding Sessions}" 
@@ -85,6 +86,7 @@
         <DataGrid 
             Grid.Row="2" 
             FontSize="25"
+            SelectionMode="Single"
             IsReadOnly="True" 
             Grid.ColumnSpan="2"
             ItemsSource="{Binding PathsToTargets}" 
