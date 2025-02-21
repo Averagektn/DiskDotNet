@@ -142,12 +142,15 @@ namespace Disk.Visual.Impl
         /// </returns>
         public override int ReceiveShot(Point2D<int> shot)
         {
-            int res = 0;
+            int res = 1;
+
+            // uncomment to make progressive target fill
+            /*int res = 0;
 
             foreach (var circle in Circles)
             {
                 res += circle.Contains(shot) ? 1 : 0;
-            }
+            }*/
 
             OnReceiveShot?.Invoke(res);
 

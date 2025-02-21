@@ -88,7 +88,7 @@ namespace Disk.Properties.Langs.Settings {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Move time.
+        ///   Looks up a localized string similar to Frames per second.
         /// </summary>
         public static string MoveTime {
             get {
@@ -106,7 +106,7 @@ namespace Disk.Properties.Langs.Settings {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Show time.
+        ///   Looks up a localized string similar to Sample rate, Hz.
         /// </summary>
         public static string ShotTime {
             get {

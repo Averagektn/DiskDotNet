@@ -13,7 +13,8 @@ namespace Disk.ViewModel
         private string _ip = Settings.IP;
         public string Ip { get => _ip; set => _ = SetProperty(ref _ip, value); }
 
-        private int _moveTime = Settings.MoveTime;
+        // Convert ms to hz
+        private int _moveTime = 1000 / Settings.MoveTime;
         public string MoveTime
         {
             get => _moveTime.ToString();
@@ -26,7 +27,8 @@ namespace Disk.ViewModel
             }
         }
 
-        private int _shotTime = Settings.ShotTime;
+        // Convert ms to hz
+        private int _shotTime = 1000 / Settings.ShotTime;
         public string ShotTime
         {
             get => _shotTime.ToString();
@@ -84,8 +86,11 @@ namespace Disk.ViewModel
             _ =>
             {
                 Settings.IP = _ip;
-                Settings.MoveTime = _moveTime;
-                Settings.ShotTime = _shotTime;
+
+                // Convert hz to ms
+                Settings.MoveTime = 1000 / _moveTime;
+                Settings.ShotTime = 1000 / _shotTime;
+
                 Settings.IniUserRadius = _userRadius;
                 Settings.IniTargetRadius = _targetRadius;
                 Settings.TargetHp = _targetHp;

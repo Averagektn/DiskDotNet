@@ -127,13 +127,13 @@
     <value>Language</value>
   </data>
   <data name="MoveTime" xml:space="preserve">
-    <value>Move time</value>
+    <value>Frames per second</value>
   </data>
   <data name="Save" xml:space="preserve">
     <value>Save</value>
   </data>
   <data name="ShotTime" xml:space="preserve">
-    <value>Show time</value>
+    <value>Sample rate, Hz</value>
   </data>
   <data name="TargetHp" xml:space="preserve">
     <value>Target HP</value>

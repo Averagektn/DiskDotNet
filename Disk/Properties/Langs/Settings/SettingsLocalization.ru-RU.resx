@@ -127,13 +127,13 @@
     <value>Язык</value>
   </data>
   <data name="MoveTime" xml:space="preserve">
-    <value>Интервал обновления экрана(мс)</value>
+    <value>Интервал обновления экрана, Гц</value>
   </data>
   <data name="Save" xml:space="preserve">
     <value>Сохранить</value>
   </data>
   <data name="ShotTime" xml:space="preserve">
-    <value>Интервал сбора информации(мс)</value>
+    <value>Интервал сбора информации, Гц</value>
   </data>
   <data name="TargetHp" xml:space="preserve">
     <value>Время жизни мишени</value>
