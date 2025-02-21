@@ -1,6 +1,5 @@
-﻿namespace Disk.Navigators.Interface
+﻿namespace Disk.Navigators.Interface;
+
+public interface INavigator
 {
-    public interface INavigator
-    {
-    }
 }

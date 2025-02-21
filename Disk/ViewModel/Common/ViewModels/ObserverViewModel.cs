@@ -2,33 +2,32 @@
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
-namespace Disk.ViewModel.Common.ViewModels
+namespace Disk.ViewModel.Common.ViewModels;
+
+public class ObserverViewModel : INotifyPropertyChanged, IDisposable
 {
-    public class ObserverViewModel : INotifyPropertyChanged, IDisposable
+    public required INavigationStore IniNavigationStore;
+
+    public event PropertyChangedEventHandler? PropertyChanged;
+    protected bool SetProperty<T>(ref T field, T newValue, [CallerMemberName] string? propertyName = null)
     {
-        public required INavigationStore IniNavigationStore;
-
-        public event PropertyChangedEventHandler? PropertyChanged;
-        protected bool SetProperty<T>(ref T field, T newValue, [CallerMemberName] string? propertyName = null)
+        if (!Equals(field, newValue))
         {
-            if (!Equals(field, newValue))
-            {
-                field = newValue;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-                return true;
-            }
-
-            return false;
-        }
-
-        protected void OnPropertyChanged(string propertyName)
-        {
+            field = newValue;
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+            return true;
         }
 
-        public virtual void Dispose()
-        {
-            GC.SuppressFinalize(this);
-        }
+        return false;
+    }
+
+    protected void OnPropertyChanged(string propertyName)
+    {
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+    }
+
+    public virtual void Dispose()
+    {
+        GC.SuppressFinalize(this);
     }
 }

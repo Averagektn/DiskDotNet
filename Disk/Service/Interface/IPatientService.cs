@@ -1,12 +1,11 @@
 ﻿using Disk.Entities;
 
-namespace Disk.Service.Interface
-{
-    public interface IPatientService
-    {
-        void Add(Patient patient);
-        Task AddPatientAsync(Patient patient);
+namespace Disk.Service.Interface;
 
-        void Update(Patient patient);
-    }
+public interface IPatientService
+{
+    void Add(Patient patient);
+    Task AddPatientAsync(Patient patient);
+
+    void Update(Patient patient);
 }

@@ -1,9 +1,8 @@
 ﻿using Disk.Data.Impl;
 
-namespace Disk.Visual.Interface
+namespace Disk.Visual.Interface;
+
+public interface ITarget
 {
-    public interface ITarget
-    {
-        int ReceiveShot(Point2D<int> shot);
-    }
+    int ReceiveShot(Point2D<int> shot);
 }

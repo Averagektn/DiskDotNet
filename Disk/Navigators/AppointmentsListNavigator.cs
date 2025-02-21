@@ -3,51 +3,50 @@ using Disk.Navigators.Interface;
 using Disk.Stores.Interface;
 using Disk.ViewModel;
 
-namespace Disk.Navigators
+namespace Disk.Navigators;
+
+public class AppointmentsListNavigator : INavigator
 {
-    public class AppointmentsListNavigator : INavigator
+    public static void Navigate(INavigationStore navigationStore, Patient patient)
     {
-        public static void Navigate(INavigationStore navigationStore, Patient patient)
-        {
-            navigationStore.SetViewModel<AppointmentsListViewModel>(
-                vm =>
-                {
-                    vm.IniNavigationStore = navigationStore;
-                    vm.Patient = patient;
-                });
-        }
-
-        public static void NavigateAndClose(INavigationStore navigationStore, Patient patient)
-        {
-            if (navigationStore.CanClose)
+        navigationStore.SetViewModel<AppointmentsListViewModel>(
+            vm =>
             {
-                navigationStore.Close();
-                Navigate(navigationStore, patient);
-            }
-        }
+                vm.IniNavigationStore = navigationStore;
+                vm.Patient = patient;
+            });
+    }
 
-        public static void NavigateWithBar(INavigationStore navigationStore, Patient patient)
+    public static void NavigateAndClose(INavigationStore navigationStore, Patient patient)
+    {
+        if (navigationStore.CanClose)
         {
-            navigationStore.SetViewModel<NavigationBarLayoutViewModel>(
-                vm =>
-                {
-                    vm.IniNavigationStore = navigationStore;
-                    vm.CurrentViewModel = navigationStore.GetViewModel<AppointmentsListViewModel>(
-                        vm =>
-                        {
-                            vm.IniNavigationStore = navigationStore;
-                            vm.Patient = patient;
-                        });
-                });
+            navigationStore.Close();
+            Navigate(navigationStore, patient);
         }
+    }
 
-        public static void NavigateWithBarAndClose(INavigationStore navigationStore, Patient patient)
-        {
-            if (navigationStore.CanClose)
+    public static void NavigateWithBar(INavigationStore navigationStore, Patient patient)
+    {
+        navigationStore.SetViewModel<NavigationBarLayoutViewModel>(
+            vm =>
             {
-                navigationStore.Close();
-                NavigateWithBar(navigationStore, patient);
-            }
+                vm.IniNavigationStore = navigationStore;
+                vm.CurrentViewModel = navigationStore.GetViewModel<AppointmentsListViewModel>(
+                    vm =>
+                    {
+                        vm.IniNavigationStore = navigationStore;
+                        vm.Patient = patient;
+                    });
+            });
+    }
+
+    public static void NavigateWithBarAndClose(INavigationStore navigationStore, Patient patient)
+    {
+        if (navigationStore.CanClose)
+        {
+            navigationStore.Close();
+            NavigateWithBar(navigationStore, patient);
         }
     }
 }

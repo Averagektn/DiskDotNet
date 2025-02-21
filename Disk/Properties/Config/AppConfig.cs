@@ -1,7 +1,6 @@
-﻿namespace Disk.Properties.Config
+﻿namespace Disk.Properties.Config;
+
+public static class AppConfig
 {
-    public static class AppConfig
-    {
-        public const string DbConnectionString = @"DataSource=Db\disk.db";
-    }
+    public const string DbConnectionString = @"DataSource=Db\disk.db";
 }

@@ -8,139 +8,138 @@ using System.Windows.Input;
 using System.Windows.Threading;
 using Settings = Disk.Properties.Config.Config;
 
-namespace Disk.ViewModel
+namespace Disk.ViewModel;
+
+public class CalibrationViewModel : ObserverViewModel
 {
-    public class CalibrationViewModel : ObserverViewModel
+    private string _xCoord;
+    public string XCoord { get => _xCoord; set => SetProperty(ref _xCoord, value); }
+
+    private string _yCoord;
+    public string YCoord { get => _yCoord; set => SetProperty(ref _yCoord, value); }
+
+    private bool _calibrateXEnabled;
+    public bool CalibrateXEnabled { get => _calibrateXEnabled; set => SetProperty(ref _calibrateXEnabled, value); }
+
+    private bool _calibrateYEnabled;
+    public bool CalibrateYEnabled { get => _calibrateYEnabled; set => SetProperty(ref _calibrateYEnabled, value); }
+
+    private bool _startCalibrationEnabled = true;
+    public bool StartCalibrationEnabled { get => _startCalibrationEnabled; set => SetProperty(ref _startCalibrationEnabled, value); }
+
+    // Actions
+    public ICommand StartCalibrationCommand => new Command(StartCalibration);
+    public ICommand CentralizeXCommand => new Command(_ => XShift += XAngleRes);
+    public ICommand CentralizeYCommand => new Command(_ => YShift += YAngleRes);
+    public ICommand ApplyCommand => new Command(ApplyCalibration);
+    public ICommand CalibrateXCommand => new Command(_ =>
     {
-        private string _xCoord;
-        public string XCoord { get => _xCoord; set => SetProperty(ref _xCoord, value); }
+        CalibrateXEnabled = false;
+        IsRunningThread = CalibrateYEnabled;
+    });
 
-        private string _yCoord;
-        public string YCoord { get => _yCoord; set => SetProperty(ref _yCoord, value); }
+    public ICommand CalibrateYCommand => new Command(_ =>
+    {
+        CalibrateYEnabled = false;
+        IsRunningThread = CalibrateXEnabled;
+    });
 
-        private bool _calibrateXEnabled;
-        public bool CalibrateXEnabled { get => _calibrateXEnabled; set => SetProperty(ref _calibrateXEnabled, value); }
+    // Non-binded
+    private static Settings Settings => Settings.Default;
+    private readonly Thread DataThread;
+    private readonly DispatcherTimer TextBoxUpdateTimer;
 
-        private bool _calibrateYEnabled;
-        public bool CalibrateYEnabled { get => _calibrateYEnabled; set => SetProperty(ref _calibrateYEnabled, value); }
+    private float XAngleRes => XAngle - XShift;
+    private float YAngleRes => YAngle - YShift;
 
-        private bool _startCalibrationEnabled = true;
-        public bool StartCalibrationEnabled { get => _startCalibrationEnabled; set => SetProperty(ref _startCalibrationEnabled, value); }
+    private float XShift = Settings.XAngleShift;
+    private float YShift = Settings.YAngleShift;
 
-        // Actions
-        public ICommand StartCalibrationCommand => new Command(StartCalibration);
-        public ICommand CentralizeXCommand => new Command(_ => XShift += XAngleRes);
-        public ICommand CentralizeYCommand => new Command(_ => YShift += YAngleRes);
-        public ICommand ApplyCommand => new Command(ApplyCalibration);
-        public ICommand CalibrateXCommand => new Command(_ =>
+    private float XAngle = Settings.XMaxAngle;
+    private float YAngle = Settings.YMaxAngle;
+
+    private bool IsRunningThread = true;
+
+    public CalibrationViewModel()
+    {
+        _xCoord = $"{XAngle:F2}";
+        _yCoord = $"{YAngle:F2}";
+
+        DataThread = new(ReceiveFromDisk);
+
+        TextBoxUpdateTimer = new(DispatcherPriority.Normal)
         {
-            CalibrateXEnabled = false;
-            IsRunningThread = CalibrateYEnabled;
-        });
+            Interval = TimeSpan.FromMilliseconds(Settings.ShotTime)
+        };
+        TextBoxUpdateTimer.Tick += UpdateText;
+    }
 
-        public ICommand CalibrateYCommand => new Command(_ =>
+    private void UpdateText(object? sender, EventArgs e)
+    {
+        if (CalibrateXEnabled)
         {
-            CalibrateYEnabled = false;
-            IsRunningThread = CalibrateXEnabled;
-        });
-
-        // Non-binded
-        private static Settings Settings => Settings.Default;
-        private readonly Thread DataThread;
-        private readonly DispatcherTimer TextBoxUpdateTimer;
-
-        private float XAngleRes => XAngle - XShift;
-        private float YAngleRes => YAngle - YShift;
-
-        private float XShift = Settings.XAngleShift;
-        private float YShift = Settings.YAngleShift;
-
-        private float XAngle = Settings.XMaxAngle;
-        private float YAngle = Settings.YMaxAngle;
-
-        private bool IsRunningThread = true;
-
-        public CalibrationViewModel()
-        {
-            _xCoord = $"{XAngle:F2}";
-            _yCoord = $"{YAngle:F2}";
-
-            DataThread = new(ReceiveFromDisk);
-
-            TextBoxUpdateTimer = new(DispatcherPriority.Normal)
-            {
-                Interval = TimeSpan.FromMilliseconds(Settings.ShotTime)
-            };
-            TextBoxUpdateTimer.Tick += UpdateText;
+            XCoord = $"{XAngleRes:F2}";
         }
-
-        private void UpdateText(object? sender, EventArgs e)
+        if (CalibrateYEnabled)
         {
-            if (CalibrateXEnabled)
-            {
-                XCoord = $"{XAngleRes:F2}";
-            }
-            if (CalibrateYEnabled)
-            {
-                YCoord = $"{YAngleRes:F2}";
-            }
+            YCoord = $"{YAngleRes:F2}";
         }
+    }
 
-        private void ReceiveFromDisk()
+    private void ReceiveFromDisk()
+    {
+        try
         {
-            try
-            {
-                using var con = Connection.GetConnection(IPAddress.Parse(Settings.IP), Settings.Port);
+            using var con = Connection.GetConnection(IPAddress.Parse(Settings.IP), Settings.Port);
 
-                while (IsRunningThread)
+            while (IsRunningThread)
+            {
+                var data = con.GetXYZ();
+
+                if (data is not null)
                 {
-                    var data = con.GetXYZ();
-
-                    if (data is not null)
-                    {
-                        XAngle = data.X;
-                        YAngle = data.Y;
-                    }
+                    XAngle = data.X;
+                    YAngle = data.Y;
                 }
             }
-            catch
-            {
-                _ = MessageBox.Show(CalibrationLocalization.ConnectionLost);
-                IniNavigationStore.Close();
-            }
         }
-
-        private void StartCalibration(object? parameter)
+        catch
         {
-            StartCalibrationEnabled = false;
-
-            IsRunningThread = true;
-            CalibrateXEnabled = true;
-            CalibrateYEnabled = true;
-
-            DataThread.Start();
-            TextBoxUpdateTimer.Start();
-        }
-
-        private void ApplyCalibration(object? parameter)
-        {
-            IsRunningThread = false;
-
-            TextBoxUpdateTimer.Stop();
-
-            if (DataThread.IsAlive)
-            {
-                DataThread.Join();
-            }
-
-            Settings.XMaxAngle = Math.Abs(Convert.ToSingle(XCoord));
-            Settings.YMaxAngle = Math.Abs(Convert.ToSingle(YCoord));
-
-            Settings.XAngleShift = XShift;
-            Settings.YAngleShift = YShift;
-
-            Settings.Save();
+            _ = MessageBox.Show(CalibrationLocalization.ConnectionLost);
             IniNavigationStore.Close();
         }
+    }
+
+    private void StartCalibration(object? parameter)
+    {
+        StartCalibrationEnabled = false;
+
+        IsRunningThread = true;
+        CalibrateXEnabled = true;
+        CalibrateYEnabled = true;
+
+        DataThread.Start();
+        TextBoxUpdateTimer.Start();
+    }
+
+    private void ApplyCalibration(object? parameter)
+    {
+        IsRunningThread = false;
+
+        TextBoxUpdateTimer.Stop();
+
+        if (DataThread.IsAlive)
+        {
+            DataThread.Join();
+        }
+
+        Settings.XMaxAngle = Math.Abs(Convert.ToSingle(XCoord));
+        Settings.YMaxAngle = Math.Abs(Convert.ToSingle(YCoord));
+
+        Settings.XAngleShift = XShift;
+        Settings.YAngleShift = YShift;
+
+        Settings.Save();
+        IniNavigationStore.Close();
     }
 }

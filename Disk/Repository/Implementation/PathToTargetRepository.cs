@@ -3,10 +3,9 @@ using Disk.Entities;
 using Disk.Repository.Common.Implementation;
 using Disk.Repository.Interface;
 
-namespace Disk.Repository.Implementation
+namespace Disk.Repository.Implementation;
+
+public class PathToTargetRepository(DiskContext diskContext) : CrudRepository<PathToTarget>(diskContext), IPathToTargetRepository
 {
-    public class PathToTargetRepository(DiskContext diskContext) : CrudRepository<PathToTarget>(diskContext), IPathToTargetRepository
-    {
-        public ICollection<PathToTarget> GetPathsToTargetsBySession(long sessionId) => table.Where(p => p.Session == sessionId).ToList();
-    }
+    public ICollection<PathToTarget> GetPathsToTargetsBySession(long sessionId) => [.. table.Where(p => p.Session == sessionId)];
 }

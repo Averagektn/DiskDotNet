@@ -5,56 +5,55 @@ using Disk.ViewModel;
 using Newtonsoft.Json;
 using System.Globalization;
 
-namespace Disk.Navigators
+namespace Disk.Navigators;
+
+public class EditPatientNavigator : INavigator
 {
-    public class EditPatientNavigator : INavigator
+    public static void Navigate(INavigationStore navigationStore, Action? afterUpdateEvent, Patient patient)
     {
-        public static void Navigate(INavigationStore navigationStore, Action? afterUpdateEvent, Patient patient)
-        {
-            navigationStore.SetViewModel<EditPatientViewModel>(
-                vm =>
-                {
-                    vm.IniNavigationStore = navigationStore;
-                    vm.Patient = JsonConvert.DeserializeObject<Patient>(JsonConvert.SerializeObject(patient))!;
-                    vm.AttachedPatient = patient;
-                    vm.DateOfBirth = DateTime.ParseExact(patient.DateOfBirth, "dd.MM.yyyy", CultureInfo.InvariantCulture);
-                    vm.AfterUpdateEvent += afterUpdateEvent;
-                });
-        }
-
-        public static void NavigateAndClose(INavigationStore navigationStore, Action? afterUpdateEvent, Patient patient)
-        {
-            if (navigationStore.CanClose)
+        navigationStore.SetViewModel<EditPatientViewModel>(
+            vm =>
             {
-                navigationStore.Close();
-                Navigate(navigationStore, afterUpdateEvent, patient);
-            }
-        }
+                vm.IniNavigationStore = navigationStore;
+                vm.Patient = JsonConvert.DeserializeObject<Patient>(JsonConvert.SerializeObject(patient))!;
+                vm.AttachedPatient = patient;
+                vm.DateOfBirth = DateTime.ParseExact(patient.DateOfBirth, "dd.MM.yyyy", CultureInfo.InvariantCulture);
+                vm.AfterUpdateEvent += afterUpdateEvent;
+            });
+    }
 
-        public static void NavigateWithBar(INavigationStore navigationStore, Action? afterUpdateEvent, Patient patient)
+    public static void NavigateAndClose(INavigationStore navigationStore, Action? afterUpdateEvent, Patient patient)
+    {
+        if (navigationStore.CanClose)
         {
-            navigationStore.SetViewModel<NavigationBarLayoutViewModel>(
-                vm =>
-                {
-                    vm.IniNavigationStore = navigationStore;
-                    vm.CurrentViewModel = navigationStore.GetViewModel<EditPatientViewModel>(
-                        vm =>
-                        {
-                            vm.IniNavigationStore = navigationStore;
-                            vm.Patient = JsonConvert.DeserializeObject<Patient>(JsonConvert.SerializeObject(patient))!;
-                            vm.AttachedPatient = patient;
-                            vm.AfterUpdateEvent += afterUpdateEvent;
-                        });
-                });
+            navigationStore.Close();
+            Navigate(navigationStore, afterUpdateEvent, patient);
         }
+    }
 
-        public static void NavigateWithBarAndClose(INavigationStore navigationStore, Action? afterUpdateEvent, Patient patient)
-        {
-            if (navigationStore.CanClose)
+    public static void NavigateWithBar(INavigationStore navigationStore, Action? afterUpdateEvent, Patient patient)
+    {
+        navigationStore.SetViewModel<NavigationBarLayoutViewModel>(
+            vm =>
             {
-                navigationStore.Close();
-                NavigateWithBar(navigationStore, afterUpdateEvent, patient);
-            }
+                vm.IniNavigationStore = navigationStore;
+                vm.CurrentViewModel = navigationStore.GetViewModel<EditPatientViewModel>(
+                    vm =>
+                    {
+                        vm.IniNavigationStore = navigationStore;
+                        vm.Patient = JsonConvert.DeserializeObject<Patient>(JsonConvert.SerializeObject(patient))!;
+                        vm.AttachedPatient = patient;
+                        vm.AfterUpdateEvent += afterUpdateEvent;
+                    });
+            });
+    }
+
+    public static void NavigateWithBarAndClose(INavigationStore navigationStore, Action? afterUpdateEvent, Patient patient)
+    {
+        if (navigationStore.CanClose)
+        {
+            navigationStore.Close();
+            NavigateWithBar(navigationStore, afterUpdateEvent, patient);
         }
     }
 }

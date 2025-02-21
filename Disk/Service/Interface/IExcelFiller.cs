@@ -1,9 +1,8 @@
 ﻿using Disk.Entities;
 
-namespace Disk.Service.Interface
+namespace Disk.Service.Interface;
+
+public interface IExcelFiller
 {
-    public interface IExcelFiller
-    {
-        void ExportToExcel(IEnumerable<Session> sessions, Patient patient);
-    }
+    void ExportToExcel(IEnumerable<Session> sessions, Patient patient);
 }

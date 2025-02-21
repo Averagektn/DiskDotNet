@@ -3,51 +3,50 @@ using Disk.Navigators.Interface;
 using Disk.Stores.Interface;
 using Disk.ViewModel;
 
-namespace Disk.Navigators
+namespace Disk.Navigators;
+
+public class MapNamePickerNavigator : INavigator
 {
-    public class MapNamePickerNavigator : INavigator
+    public static void Navigate(INavigationStore navigationStore, List<Point2D<float>> map)
     {
-        public static void Navigate(INavigationStore navigationStore, List<Point2D<float>> map)
-        {
-            navigationStore.SetViewModel<MapNamePickerViewModel>(
-                vm =>
-                {
-                    vm.IniNavigationStore = navigationStore;
-                    vm.Map = map;
-                });
-        }
-
-        public static void NavigateAndClose(INavigationStore navigationStore, List<Point2D<float>> map)
-        {
-            if (navigationStore.CanClose)
+        navigationStore.SetViewModel<MapNamePickerViewModel>(
+            vm =>
             {
-                navigationStore.Close();
-                Navigate(navigationStore, map);
-            }
-        }
+                vm.IniNavigationStore = navigationStore;
+                vm.Map = map;
+            });
+    }
 
-        public static void NavigateWithBar(INavigationStore navigationStore, List<Point2D<float>> map)
+    public static void NavigateAndClose(INavigationStore navigationStore, List<Point2D<float>> map)
+    {
+        if (navigationStore.CanClose)
         {
-            navigationStore.SetViewModel<NavigationBarLayoutViewModel>(
-                vm =>
-                {
-                    vm.IniNavigationStore = navigationStore;
-                    vm.CurrentViewModel = navigationStore.GetViewModel<MapNamePickerViewModel>(
-                        vm =>
-                        {
-                            vm.IniNavigationStore = navigationStore;
-                            vm.Map = map;
-                        });
-                });
+            navigationStore.Close();
+            Navigate(navigationStore, map);
         }
+    }
 
-        public static void NavigateWithBarAndClose(INavigationStore navigationStore, List<Point2D<float>> map)
-        {
-            if (navigationStore.CanClose)
+    public static void NavigateWithBar(INavigationStore navigationStore, List<Point2D<float>> map)
+    {
+        navigationStore.SetViewModel<NavigationBarLayoutViewModel>(
+            vm =>
             {
-                navigationStore.Close();
-                NavigateWithBar(navigationStore, map);
-            }
+                vm.IniNavigationStore = navigationStore;
+                vm.CurrentViewModel = navigationStore.GetViewModel<MapNamePickerViewModel>(
+                    vm =>
+                    {
+                        vm.IniNavigationStore = navigationStore;
+                        vm.Map = map;
+                    });
+            });
+    }
+
+    public static void NavigateWithBarAndClose(INavigationStore navigationStore, List<Point2D<float>> map)
+    {
+        if (navigationStore.CanClose)
+        {
+            navigationStore.Close();
+            NavigateWithBar(navigationStore, map);
         }
     }
 }
