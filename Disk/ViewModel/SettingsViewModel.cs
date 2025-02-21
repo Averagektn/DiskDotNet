@@ -1,131 +1,175 @@
 ﻿using Disk.ViewModel.Common.Commands.Sync;
 using Disk.ViewModel.Common.ViewModels;
+using System.Net;
 using System.Windows;
 using System.Windows.Input;
+using Localization = Disk.Properties.Langs.Settings.SettingsLocalization;
 using Settings = Disk.Properties.Config.Config;
 
-namespace Disk.ViewModel
+namespace Disk.ViewModel;
+
+public class SettingsViewModel : ObserverViewModel
 {
-    public class SettingsViewModel : ObserverViewModel
+    private static Settings Settings => Settings.Default;
+
+    private string _ip = Settings.IP;
+    public string Ip
     {
-        private static Settings Settings => Settings.Default;
-
-        private string _ip = Settings.IP;
-        public string Ip { get => _ip; set => _ = SetProperty(ref _ip, value); }
-
-        // Convert ms to hz
-        private int _moveTime = 1000 / Settings.MoveTime;
-        public string MoveTime
+        get => _ip;
+        set
         {
-            get => _moveTime.ToString();
-            set
+            if (IPAddress.TryParse(value, out _))
             {
-                if (int.TryParse(value, out var res))
-                {
-                    _ = SetProperty(ref _moveTime, res);
-                }
+                _ = SetProperty(ref _ip, value);
+            }
+            else
+            {
+                _ = MessageBox.Show(Localization.InvalidIpError, "", MessageBoxButton.OK, MessageBoxImage.Error);
+                _ = SetProperty(ref _ip, Settings.IP);
             }
         }
+    }
 
-        // Convert ms to hz
-        private int _shotTime = 1000 / Settings.ShotTime;
-        public string ShotTime
+    // Convert ms to hz
+    private int _moveTime = 1000 / Settings.MoveTime;
+    public string MoveTime
+    {
+        get => _moveTime.ToString();
+        set
         {
-            get => _shotTime.ToString();
-            set
+            if (int.TryParse(value, out var res) || _moveTime > 1000 || _moveTime < 10)
             {
-                if (int.TryParse(value, out var res))
-                {
-                    _ = SetProperty(ref _shotTime, res);
-                }
+                _ = SetProperty(ref _moveTime, res);
+            }
+            else
+            {
+                _ = MessageBox.Show(Localization.InvalidMoveTime, "", MessageBoxButton.OK, MessageBoxImage.Error);
+                _ = SetProperty(ref _moveTime, Settings.MoveTime);
             }
         }
+    }
 
-        private int _userRadius = Settings.IniUserRadius;
-        public string UserRadius
+    // Convert ms to hz
+    private int _shotTime = 1000 / Settings.ShotTime;
+    public string ShotTime
+    {
+        get => _shotTime.ToString();
+        set
         {
-            get => _userRadius.ToString();
-            set
+            if (int.TryParse(value, out var res) || _shotTime > 1000 || _shotTime < 1)
             {
-                if (int.TryParse(value, out var res))
-                {
-                    _ = SetProperty(ref _userRadius, res);
-                }
+                _ = SetProperty(ref _shotTime, res);
+            }
+            else
+            {
+                _ = MessageBox.Show(Localization.InvalidShotTime, "", MessageBoxButton.OK, MessageBoxImage.Error);
+                _ = SetProperty(ref _shotTime, Settings.ShotTime);
             }
         }
+    }
 
-        private int _targetRadius = Settings.IniTargetRadius;
-        public string TargetRadius
+    private int _userRadius = Settings.IniUserRadius;
+    public string UserRadius
+    {
+        get => _userRadius.ToString();
+        set
         {
-            get => _targetRadius.ToString();
-            set
+            if (int.TryParse(value, out var res) || res < 1 || res > 15)
             {
-                if (int.TryParse(value, out var res))
-                {
-                    _ = SetProperty(ref _targetRadius, res);
-                }
+                _ = SetProperty(ref _userRadius, res);
+            }
+            else
+            {
+                _ = MessageBox.Show(Localization.InvalidUserRadius, "", MessageBoxButton.OK, MessageBoxImage.Error);
+                _ = SetProperty(ref _userRadius, Settings.IniUserRadius);
             }
         }
+    }
 
-        private int _targetHp = Settings.TargetHp;
-        public string TargetHp
+    private int _targetRadius = Settings.IniTargetRadius;
+    public string TargetRadius
+    {
+        get => _targetRadius.ToString();
+        set
         {
-            get => _targetHp.ToString();
-            set
+            if (int.TryParse(value, out var res) || _targetRadius < 1 || _targetRadius > 15)
             {
-                if (int.TryParse(value, out var res))
-                {
-                    _ = SetProperty(ref _targetHp, res);
-                }
+                _ = SetProperty(ref _targetRadius, res);
+            }
+            else
+            {
+                _ = MessageBox.Show(Localization.InvalidTargetRadius, "", MessageBoxButton.OK, MessageBoxImage.Error);
+                _ = SetProperty(ref _targetRadius, Settings.IniTargetRadius);
             }
         }
+    }
 
-        public ICommand CancelCommand => new Command(_ => IniNavigationStore.Close());
-        public ICommand ChangeLanguageCommand => new Command(ChangeLanguage);
-        public ICommand SaveCommand => new Command(
-            _ =>
+    // convert int hp to ms
+    private int _targetTtl = 1000 * Settings.TargetHp / (1000 / Settings.ShotTime);
+    public string TargetTtl
+    {
+        get => _targetTtl.ToString();
+        set
+        {
+            if (int.TryParse(value, out var res) || _targetTtl < 1)
             {
-                Settings.IP = _ip;
+                _ = SetProperty(ref _targetTtl, res);
+            }
+            else
+            {
+                _ = MessageBox.Show(Localization.InvalidTargetHP, "", MessageBoxButton.OK, MessageBoxImage.Error);
+                _ = SetProperty(ref _targetTtl, Settings.TargetHp);
+            }
+        }
+    }
 
-                // Convert hz to ms
-                Settings.MoveTime = 1000 / _moveTime;
-                Settings.ShotTime = 1000 / _shotTime;
+    public ICommand CancelCommand => new Command(_ => IniNavigationStore.Close());
+    public ICommand ChangeLanguageCommand => new Command(ChangeLanguage);
+    public ICommand SaveCommand => new Command(
+        _ =>
+        {
+            Settings.IP = _ip;
 
-                Settings.IniUserRadius = _userRadius;
-                Settings.IniTargetRadius = _targetRadius;
-                Settings.TargetHp = _targetHp;
+            // Convert hz to ms
+            Settings.MoveTime = 1000 / _moveTime;
+            Settings.ShotTime = 1000 / _shotTime;
 
+            Settings.IniUserRadius = _userRadius;
+            Settings.IniTargetRadius = _targetRadius;
+
+            // convert ms to int hp
+            Settings.TargetHp = _targetTtl * _shotTime / 1000;
+
+            Settings.Save();
+
+            IniNavigationStore.Close();
+        });
+
+    private void ChangeLanguage(object? parameter)
+    {
+        if (parameter is not null)
+        {
+            var selectedLanguage = parameter.ToString();
+
+            if (Settings.Language != selectedLanguage)
+            {
+                Settings.Language = selectedLanguage;
                 Settings.Save();
 
-                IniNavigationStore.Close();
-            });
-
-        private void ChangeLanguage(object? parameter)
-        {
-            if (parameter is not null)
-            {
-                var selectedLanguage = parameter.ToString();
-
-                if (Settings.Language != selectedLanguage)
-                {
-                    Settings.Language = selectedLanguage;
-                    Settings.Save();
-
-                    RestartApplication();
-                }
+                RestartApplication();
             }
         }
+    }
 
-        private static void RestartApplication()
+    private static void RestartApplication()
+    {
+        var appPath = Environment.ProcessPath;
+
+        if (appPath is not null)
         {
-            var appPath = Environment.ProcessPath;
-
-            if (appPath is not null)
-            {
-                _ = System.Diagnostics.Process.Start(appPath);
-            }
-
-            Application.Current.Shutdown();
+            _ = System.Diagnostics.Process.Start(appPath);
         }
+
+        Application.Current.Shutdown();
     }
 }

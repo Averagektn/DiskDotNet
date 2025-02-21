@@ -120,6 +120,27 @@
   <data name="Cancel" xml:space="preserve">
     <value>Отменить</value>
   </data>
+  <data name="HzTip" xml:space="preserve">
+    <value>Увеличение частоты может привести к рассинхронизации. Рекомендуемое значение 50 Гц </value>
+  </data>
+  <data name="InvalidIpError" xml:space="preserve">
+    <value>Некорректный IP адрес</value>
+  </data>
+  <data name="InvalidMoveTime" xml:space="preserve">
+    <value>Частота обновления экрана должна быть в диапазоне от 10 до 1000</value>
+  </data>
+  <data name="InvalidShotTime" xml:space="preserve">
+    <value>Частота сбора информации должна быть в диапазоне от 1 до 1000</value>
+  </data>
+  <data name="InvalidTargetHP" xml:space="preserve">
+    <value>Время жизни мишени должно быть больше 1</value>
+  </data>
+  <data name="InvalidTargetRadius" xml:space="preserve">
+    <value>Размер мишени должен быть в диапазоне от 1 до 15</value>
+  </data>
+  <data name="InvalidUserRadius" xml:space="preserve">
+    <value>Рахмер курсора должен быть в диапазоне от 1 до 15</value>
+  </data>
   <data name="Ip" xml:space="preserve">
     <value>IP</value>
   </data>
@@ -127,16 +148,16 @@
     <value>Язык</value>
   </data>
   <data name="MoveTime" xml:space="preserve">
-    <value>Интервал обновления экрана, Гц</value>
+    <value>Частота обновления экрана, Гц</value>
   </data>
   <data name="Save" xml:space="preserve">
     <value>Сохранить</value>
   </data>
   <data name="ShotTime" xml:space="preserve">
-    <value>Интервал сбора информации, Гц</value>
+    <value>Частота сбора информации, Гц</value>
   </data>
   <data name="TargetHp" xml:space="preserve">
-    <value>Время жизни мишени</value>
+    <value>Время жизни мишени, мс</value>
   </data>
   <data name="TargetRadius" xml:space="preserve">
     <value>Размер мишени</value>

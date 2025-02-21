@@ -120,6 +120,27 @@
   <data name="Cancel" xml:space="preserve">
     <value>Cancel</value>
   </data>
+  <data name="HzTip" xml:space="preserve">
+    <value>Increasing the frequency can lead to desynchronization. The recommended value is 50 Hz </value>
+  </data>
+  <data name="InvalidIpError" xml:space="preserve">
+    <value>Invalid IP</value>
+  </data>
+  <data name="InvalidMoveTime" xml:space="preserve">
+    <value>Frames per second must be in range of 10 to 1000</value>
+  </data>
+  <data name="InvalidShotTime" xml:space="preserve">
+    <value>Sample rate must be in range of 1 to 1000</value>
+  </data>
+  <data name="InvalidTargetHP" xml:space="preserve">
+    <value>Target time to live must be above 1</value>
+  </data>
+  <data name="InvalidTargetRadius" xml:space="preserve">
+    <value>Target radius must be in rage of 1 to 15</value>
+  </data>
+  <data name="InvalidUserRadius" xml:space="preserve">
+    <value>User radius must be in range of 1 to 15</value>
+  </data>
   <data name="Ip" xml:space="preserve">
     <value>IP</value>
   </data>
@@ -136,12 +157,12 @@
     <value>Sample rate, Hz</value>
   </data>
   <data name="TargetHp" xml:space="preserve">
-    <value>Target HP</value>
+    <value>Target time to live, ms</value>
   </data>
   <data name="TargetRadius" xml:space="preserve">
     <value>Target radius</value>
   </data>
   <data name="UserRadius" xml:space="preserve">
-    <value>User radius</value>
+    <value>Cursor radius</value>
   </data>
 </root>

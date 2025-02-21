@@ -70,6 +70,69 @@ namespace Disk.Properties.Langs.Settings {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Increasing the frequency can lead to desynchronization. The recommended value is 50 Hz .
+        /// </summary>
+        public static string HzTip {
+            get {
+                return ResourceManager.GetString("HzTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invalid IP.
+        /// </summary>
+        public static string InvalidIpError {
+            get {
+                return ResourceManager.GetString("InvalidIpError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Frames per second must be in range of 10 to 1000.
+        /// </summary>
+        public static string InvalidMoveTime {
+            get {
+                return ResourceManager.GetString("InvalidMoveTime", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sample rate must be in range of 1 to 1000.
+        /// </summary>
+        public static string InvalidShotTime {
+            get {
+                return ResourceManager.GetString("InvalidShotTime", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Target time to live must be above 1.
+        /// </summary>
+        public static string InvalidTargetHP {
+            get {
+                return ResourceManager.GetString("InvalidTargetHP", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Target radius must be in rage of 1 to 15.
+        /// </summary>
+        public static string InvalidTargetRadius {
+            get {
+                return ResourceManager.GetString("InvalidTargetRadius", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to User radius must be in range of 1 to 15.
+        /// </summary>
+        public static string InvalidUserRadius {
+            get {
+                return ResourceManager.GetString("InvalidUserRadius", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to IP.
         /// </summary>
         public static string Ip {
@@ -115,7 +178,7 @@ namespace Disk.Properties.Langs.Settings {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Target HP.
+        ///   Looks up a localized string similar to Target time to live, ms.
         /// </summary>
         public static string TargetHp {
             get {
@@ -133,7 +196,7 @@ namespace Disk.Properties.Langs.Settings {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to User radius.
+        ///   Looks up a localized string similar to Cursor radius.
         /// </summary>
         public static string UserRadius {
             get {
