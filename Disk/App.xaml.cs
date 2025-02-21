@@ -24,10 +24,9 @@ namespace Disk
             Thread.CurrentThread.CurrentUICulture = new System.Globalization.CultureInfo(Disk.Properties.Config.Config.Default.Language);
             System.Windows.Media.RenderOptions.ProcessRenderMode = System.Windows.Interop.RenderMode.SoftwareOnly;
 
-
             Log.Logger = new LoggerConfiguration()
-                .WriteTo
-                .File("logs/app.log")
+                .MinimumLevel.Information() 
+                .WriteTo.File("logs/app.log")
                 .CreateLogger();
 
             var services = new ServiceCollection();
@@ -78,6 +77,9 @@ namespace Disk
             });
 
             _serviceProvider = services.BuildServiceProvider();
+
+            var db = _serviceProvider.GetService<DiskContext>();
+            db?.EnsureDatabaseExists();
         }
 
         protected override void OnStartup(StartupEventArgs e)

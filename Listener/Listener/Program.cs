@@ -2,8 +2,9 @@
 using System.Diagnostics;
 using System.Net;
 
-var connection = Connection.GetConnection(IPAddress.Parse("192.168.150.2"), 9998);
+var connection = Connection.GetConnection(IPAddress.Parse("192.168.0.104"), 9998);
 var stopwatch = new Stopwatch();
+
 var coords = new List<string>();
 
 while (true)

@@ -45,10 +45,10 @@ namespace Listener
             IP = ip;
             Port = port;
 
-            Socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp)
-            /*            {
-                            ReceiveTimeout = receiveTimeout
-                        }*/;
+            Socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+            Socket.SetSocketOption(SocketOptionLevel.Tcp, SocketOptionName.NoDelay, true);
+            //Socket.ReceiveTimeout = 200; // Таймаут ожидания данных
+            Socket.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReceiveBuffer, 12000);
             Socket.Connect(new IPEndPoint(IP, Port));
 
             Handshake();

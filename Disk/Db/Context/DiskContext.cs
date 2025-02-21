@@ -1,6 +1,8 @@
 ﻿using Disk.Entities;
 using Disk.Properties.Config;
 using Microsoft.EntityFrameworkCore;
+using Serilog;
+using System.IO;
 
 namespace Disk.Db.Context;
 
@@ -21,6 +23,23 @@ public partial class DiskContext : DbContext
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         optionsBuilder.UseSqlite(AppConfig.DbConnectionString);
+    }
+
+    public void EnsureDatabaseExists()
+    {
+        if (!Directory.Exists("./Db"))
+        {
+            Log.Fatal("Db folder not found");
+            Directory.CreateDirectory("./Db");
+            Log.Information("Created new db folder");
+        }
+
+        if (!File.Exists(AppConfig.DbConnectionString))
+        {
+            Log.Fatal("Db file not found");
+            Database.EnsureCreated();
+            Log.Information("Created new db file");
+        }
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
