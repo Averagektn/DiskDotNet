@@ -52,6 +52,7 @@
             FontSize="25"
             ItemsSource="{Binding SortedPatients}" 
             AutoGenerateColumns="False" 
+            SelectionMode="Single"
             SelectedItem="{Binding SelectedPatient}" 
             IsReadOnly="True">
             <DataGrid.Columns>

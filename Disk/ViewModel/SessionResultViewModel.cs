@@ -19,7 +19,7 @@ namespace Disk.ViewModel
     public class SessionResultViewModel(NavigationStore navigationStore) : ObserverViewModel
     {
         private Session _currentSession = null!;
-        public Session CurrentSession
+        public required Session CurrentSession
         {
             get => _currentSession;
             set
@@ -179,7 +179,8 @@ namespace Disk.ViewModel
             var dataset =
                 PathsInTargets[SelectedIndex]
                 .Select(p => new PolarPoint<float>(p.X - angCenter.X, p.Y - angCenter.Y))
-                .Where(p => Math.Abs(p.X) > angRadius && Math.Abs(p.Y) > angRadius)
+                // Cutoff points in target
+                //.Where(p => Math.Abs(p.X) > angRadius && Math.Abs(p.Y) > angRadius)
                 .ToList();
 
             return new Graph(dataset, paintAreaSize, Brushes.LightGreen, 8);

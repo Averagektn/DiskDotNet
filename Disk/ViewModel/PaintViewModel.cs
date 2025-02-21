@@ -22,10 +22,10 @@ namespace Disk.ViewModel
     {
         // Can set on creation
         public event Action? OnSessionOver;
-        public string ImagePath = string.Empty;
-        public string CurrPath { get; set; } = null!;
+        public required string ImagePath { get; set; }
+        public required string CurrentPath { get; set; } = null!;
         private Session _currentSession = null!;
-        public Session CurrentSession
+        public required Session CurrentSession
         {
             get => _currentSession;
             set
@@ -41,7 +41,7 @@ namespace Disk.ViewModel
         // Get only
         public Point2D<float>? NextTargetCenter => TargetCenters.Count <= TargetId ? null : TargetCenters[TargetId++];
         private static Settings Settings => Settings.Default;
-        private string UsrAngLog => $"{CurrPath}{FilePath.DirectorySeparatorChar}{Settings.UserLogFileName}";
+        private string UsrAngLog => $"{CurrentPath}{FilePath.DirectorySeparatorChar}{Settings.UserLogFileName}";
         public bool IsPathToTarget => PathToTargetStopwatch?.IsRunning ?? false;
 
         // Disposable

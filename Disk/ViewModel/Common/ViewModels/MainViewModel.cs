@@ -51,5 +51,13 @@ namespace Disk.ViewModel.Common.ViewModels
         {
             OnPropertyChanged(nameof(CurrentViewModel));
         }
+
+        public void Close()
+        {
+            if (_modalNavigationStore.CanClose)
+                _modalNavigationStore.Close();
+            else if (_navigationStore.CanClose)
+                _navigationStore.Close();
+        }
     }
 }

@@ -18,8 +18,8 @@ namespace Disk.ViewModel
     public class StartSessionViewModel(NavigationStore navigationStore, ISessionRepository sessionRepository, IMapRepository mapRepository)
         : ObserverViewModel
     {
-        public Patient Patient { get; set; } = null!;
-        public Appointment Appointment { get; set; } = null!;
+        public required Patient Patient { get; set; } 
+        public required Appointment Appointment { get; set; }
         public event Action? OnSessionOver;
 
         private string _imageFilePath = string.Empty;

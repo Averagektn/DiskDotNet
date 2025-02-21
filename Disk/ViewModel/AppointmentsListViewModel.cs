@@ -15,7 +15,7 @@ namespace Disk.ViewModel
         ISessionRepository sessionRepository) : ObserverViewModel
     {
         private Patient _patient = null!;
-        public Patient Patient
+        public required Patient Patient
         {
             get => _patient;
             set

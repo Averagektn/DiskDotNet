@@ -12,7 +12,7 @@ namespace Disk.ViewModel
 {
     public class EditPatientViewModel(IPatientService patientService) : AddPatientViewModel(patientService)
     {
-        public Patient Backup = null!;
+        public required Patient Backup { get; set; }
 
         private readonly IPatientService _patientService = patientService;
         public override ICommand AddPatientCommand => new AsyncCommand(UpdatePatient);

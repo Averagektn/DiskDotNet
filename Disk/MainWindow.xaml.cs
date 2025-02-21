@@ -1,6 +1,7 @@
 ﻿using Disk.ViewModel.Common.ViewModels;
 using System.ComponentModel;
 using System.Windows;
+using System.Windows.Input;
 
 namespace Disk
 {
@@ -31,6 +32,15 @@ namespace Disk
                 {
                     ViewModel.Dispose();
                 }
+            }
+        }
+
+        private void OnKeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Back)
+            {
+                ViewModel.Close();
+                e.Handled = true; 
             }
         }
     }
