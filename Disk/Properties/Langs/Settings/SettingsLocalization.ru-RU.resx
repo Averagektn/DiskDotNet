@@ -159,10 +159,16 @@
   <data name="TargetHp" xml:space="preserve">
     <value>Время жизни мишени, мс</value>
   </data>
+  <data name="CursorImagePath" xml:space="preserve">
+    <value>Путь к картинке курсора</value>
+  </data>
   <data name="TargetRadius" xml:space="preserve">
     <value>Размер мишени</value>
   </data>
   <data name="UserRadius" xml:space="preserve">
     <value>Размер курсора</value>
+  </data>
+  <data name="CursorImagePathTip" xml:space="preserve">
+    <value>Очистка поля приведет к использованию курсора по умолчанию</value>
   </data>
 </root>

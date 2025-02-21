@@ -53,5 +53,8 @@
     <Setting Name="UserLogFileName" Type="System.String" Scope="Application">
       <Value Profile="(Default)">userAngles.log</Value>
     </Setting>
+    <Setting Name="CursorFilePath" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
   </Settings>
 </SettingsFile>

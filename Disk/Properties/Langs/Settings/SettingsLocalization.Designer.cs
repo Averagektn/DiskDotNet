@@ -70,6 +70,24 @@ namespace Disk.Properties.Langs.Settings {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Cursor image path.
+        /// </summary>
+        public static string CursorImagePath {
+            get {
+                return ResourceManager.GetString("CursorImagePath", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Clearing the field will cause the default cursor to be used.
+        /// </summary>
+        public static string CursorImagePathTip {
+            get {
+                return ResourceManager.GetString("CursorImagePathTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Increasing the frequency can lead to desynchronization. The recommended value is 50 Hz .
         /// </summary>
         public static string HzTip {

@@ -1,5 +1,6 @@
 ﻿using Disk.ViewModel.Common.Commands.Sync;
 using Disk.ViewModel.Common.ViewModels;
+using Microsoft.Win32;
 using System.Net;
 using System.Windows;
 using System.Windows.Input;
@@ -125,25 +126,47 @@ public class SettingsViewModel : ObserverViewModel
 
     public ICommand CancelCommand => new Command(_ => IniNavigationStore.Close());
     public ICommand ChangeLanguageCommand => new Command(ChangeLanguage);
-    public ICommand SaveCommand => new Command(
-        _ =>
+    public ICommand SaveCommand => new Command(_ =>
+    {
+        Settings.IP = _ip;
+
+        // Convert hz to ms
+        Settings.MoveTime = 1000 / _moveTime;
+        Settings.ShotTime = 1000 / _shotTime;
+
+        Settings.IniUserRadius = _userRadius;
+        Settings.IniTargetRadius = _targetRadius;
+
+        // convert ms to int hp
+        Settings.TargetHp = _targetTtl * _shotTime / 1000;
+
+        Settings.CursorFilePath = CursorFilePath;
+
+        Settings.Save();
+
+        IniNavigationStore.Close();
+    });
+
+    private string _cursorFilePath = Settings.CursorFilePath;
+    public string CursorFilePath { get => _cursorFilePath; set => SetProperty(ref _cursorFilePath, value); }
+
+    public ICommand PickImageCommand => new Command(_ =>
+    {
+        var filePicker = new OpenFileDialog
         {
-            Settings.IP = _ip;
+            Filter = "Images|*.png"
+        };
 
-            // Convert hz to ms
-            Settings.MoveTime = 1000 / _moveTime;
-            Settings.ShotTime = 1000 / _shotTime;
+        if (filePicker.ShowDialog() == true)
+        {
+            CursorFilePath = filePicker.FileName;
+        }
+    });
 
-            Settings.IniUserRadius = _userRadius;
-            Settings.IniTargetRadius = _targetRadius;
-
-            // convert ms to int hp
-            Settings.TargetHp = _targetTtl * _shotTime / 1000;
-
-            Settings.Save();
-
-            IniNavigationStore.Close();
-        });
+    public ICommand ClearImageCommand => new Command(_ =>
+    {
+        CursorFilePath = string.Empty;
+    });
 
     private void ChangeLanguage(object? parameter)
     {

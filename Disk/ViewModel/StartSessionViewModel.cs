@@ -4,13 +4,11 @@ using Disk.Repository.Interface;
 using Disk.Stores;
 using Disk.ViewModel.Common.Commands.Sync;
 using Disk.ViewModel.Common.ViewModels;
-using Microsoft.Win32;
 using System.Collections.ObjectModel;
 using System.Globalization;
 using System.IO;
 using System.Windows;
 using System.Windows.Input;
-using Localization = Disk.Properties.Langs.StartSession.StartSessionLocalization;
 using Settings = Disk.Properties.Config.Config;
 
 namespace Disk.ViewModel
@@ -18,35 +16,17 @@ namespace Disk.ViewModel
     public class StartSessionViewModel(NavigationStore navigationStore, ISessionRepository sessionRepository, IMapRepository mapRepository)
         : ObserverViewModel
     {
-        public required Patient Patient { get; set; } 
+        public required Patient Patient { get; set; }
         public required Appointment Appointment { get; set; }
         public event Action? OnSessionOver;
 
-        private string _imageFilePath = string.Empty;
-        private string _imageFileName = Localization.PickAFile;
-        public string ImageFileName { get => _imageFileName; set => SetProperty(ref _imageFileName, value); }
-
-        public ObservableCollection<Map> Maps => new(mapRepository.GetAll());
+        public ObservableCollection<Map> Maps => [.. mapRepository.GetAll()];
         public Map? SelectedMap { get; set; }
 
         public ICommand StartSessionCommand => new Command(StartSession);
-        public ICommand PickImageCommand => new Command(PickImage);
+        public ICommand CancelCommand => new Command(_ => IniNavigationStore.Close());
 
         private static Settings Settings => Settings.Default;
-
-        private void PickImage(object? obj)
-        {
-            var filePicker = new OpenFileDialog
-            {
-                Filter = "Images|*.png"
-            };
-
-            if (filePicker.ShowDialog() == true)
-            {
-                _imageFilePath = filePicker.FileName;
-                ImageFileName = filePicker.SafeFileName;
-            }
-        }
 
         private void StartSession(object? obj)
         {
@@ -58,6 +38,7 @@ namespace Disk.ViewModel
             var logPath = $"{Settings.MainDirPath}{Path.DirectorySeparatorChar}" +
                     $"{Patient.Surname} {Patient.Name}{Path.DirectorySeparatorChar}" +
                     $"{DateTime.Now:dd.MM.yyyy HH-mm-ss}";
+
             if (!Directory.Exists(logPath))
             {
                 _ = Directory.CreateDirectory(logPath);
@@ -75,7 +56,7 @@ namespace Disk.ViewModel
             sessionRepository.Add(session);
 
             IniNavigationStore.Close();
-            PaintNavigator.Navigate(navigationStore, _imageFilePath, logPath, OnSessionOver, session);
+            PaintNavigator.Navigate(navigationStore, Settings.CursorFilePath, logPath, OnSessionOver, session);
             Application.Current.MainWindow.WindowState = WindowState.Maximized;
         }
     }

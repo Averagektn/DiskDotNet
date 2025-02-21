@@ -44,27 +44,17 @@
                 ItemsSource="{Binding Maps}" 
                 SelectedItem="{Binding SelectedMap}"/>
 
-            <DockPanel Grid.Row="2">
-                <Button 
-                    DockPanel.Dock="Right"
-                    Content="..." 
-                    Command="{Binding PickImageCommand}" 
-                    Margin="10 20"
-                    Padding="10 0"/>
-
-                <TextBlock 
-                    DockPanel.Dock="Left"
-                    Margin="10"
-                    FontSize="25"
-                    VerticalAlignment="Center"
-                    Text="{Binding ImageFileName}"/>
-            </DockPanel>
+            <Button
+                Grid.Row="2"
+                Margin="15"
+                Content="{x:Static lang:StartSessionLocalization.Start}" 
+                Command="{Binding StartSessionCommand}"/>
 
             <Button
                 Grid.Row="3"
                 Margin="15"
-                Content="{x:Static lang:StartSessionLocalization.Start}" 
-                Command="{Binding StartSessionCommand}"/>
+                Content="{x:Static lang:StartSessionLocalization.Cancel}" 
+                Command="{Binding CancelCommand}"/>
         </Grid>
     </Grid>
 

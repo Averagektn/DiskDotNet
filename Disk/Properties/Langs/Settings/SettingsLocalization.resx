@@ -159,10 +159,16 @@
   <data name="TargetHp" xml:space="preserve">
     <value>Target time to live, ms</value>
   </data>
+  <data name="CursorImagePath" xml:space="preserve">
+    <value>Cursor image path</value>
+  </data>
   <data name="TargetRadius" xml:space="preserve">
     <value>Target radius</value>
   </data>
   <data name="UserRadius" xml:space="preserve">
     <value>Cursor radius</value>
+  </data>
+  <data name="CursorImagePathTip" xml:space="preserve">
+    <value>Clearing the field will cause the default cursor to be used</value>
   </data>
 </root>

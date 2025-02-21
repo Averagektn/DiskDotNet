@@ -211,5 +211,17 @@ namespace Disk.Properties.Config {
                 return ((string)(this["UserLogFileName"]));
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string CursorFilePath {
+            get {
+                return ((string)(this["CursorFilePath"]));
+            }
+            set {
+                this["CursorFilePath"] = value;
+            }
+        }
     }
 }
