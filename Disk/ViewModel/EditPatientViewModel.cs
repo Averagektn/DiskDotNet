@@ -12,21 +12,14 @@ namespace Disk.ViewModel
 {
     public class EditPatientViewModel(IPatientService patientService) : AddPatientViewModel(patientService)
     {
-        public required Patient Backup { get; set; }
         public event Action? AfterUpdateEvent;
+        public required Patient AttachedPatient;
 
         private readonly IPatientService _patientService = patientService;
         public override ICommand AddPatientCommand => new AsyncCommand(UpdatePatient);
         public override ICommand CancelCommand => new Command(
             _ =>
             {
-                Patient.Patronymic = Backup.Patronymic;
-                Patient.Surname = Backup.Surname;
-                Patient.DateOfBirth = Backup.DateOfBirth;
-                Patient.Name = Backup.Name;
-                Patient.PhoneHome = Backup.PhoneHome;
-                Patient.PhoneMobile = Backup.PhoneMobile;
-
                 AfterUpdateEvent?.Invoke();
                 base.CancelCommand.Execute(null);
             });
@@ -35,9 +28,16 @@ namespace Disk.ViewModel
         {
             bool success = false;
 
+            AttachedPatient.Surname = Patient.Surname;
+            AttachedPatient.Name = Patient.Name;
+            AttachedPatient.Patronymic = Patient.Patronymic;
+            AttachedPatient.DateOfBirth = Patient.DateOfBirth;
+            AttachedPatient.PhoneHome = Patient.PhoneHome;
+            AttachedPatient.PhoneMobile = Patient.PhoneMobile;
+
             try
             {
-                _patientService.Update(Patient);
+                _patientService.Update(AttachedPatient);
                 success = true;
             }
             catch (InvalidNameException ex)
@@ -72,7 +72,7 @@ namespace Disk.ViewModel
             }
             catch (Exception ex)
             {
-                Log.Fatal(ex.Message);
+                Log.Error(ex.Message);
                 throw;
             }
 

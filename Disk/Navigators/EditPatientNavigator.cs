@@ -3,6 +3,7 @@ using Disk.Navigators.Interface;
 using Disk.Stores.Interface;
 using Disk.ViewModel;
 using Newtonsoft.Json;
+using System.Globalization;
 
 namespace Disk.Navigators
 {
@@ -14,8 +15,9 @@ namespace Disk.Navigators
                 vm =>
                 {
                     vm.IniNavigationStore = navigationStore;
-                    vm.Backup = JsonConvert.DeserializeObject<Patient>(JsonConvert.SerializeObject(patient))!;
-                    vm.Patient = patient;
+                    vm.Patient = JsonConvert.DeserializeObject<Patient>(JsonConvert.SerializeObject(patient))!;
+                    vm.AttachedPatient = patient;
+                    vm.DateOfBirth = DateTime.ParseExact(patient.DateOfBirth, "dd.MM.yyyy", CultureInfo.InvariantCulture);
                     vm.AfterUpdateEvent += afterUpdateEvent;
                 });
         }
@@ -39,8 +41,8 @@ namespace Disk.Navigators
                         vm =>
                         {
                             vm.IniNavigationStore = navigationStore;
-                            vm.Backup = JsonConvert.DeserializeObject<Patient>(JsonConvert.SerializeObject(patient))!;
-                            vm.Patient = patient;
+                            vm.Patient = JsonConvert.DeserializeObject<Patient>(JsonConvert.SerializeObject(patient))!;
+                            vm.AttachedPatient = patient;
                             vm.AfterUpdateEvent += afterUpdateEvent;
                         });
                 });
