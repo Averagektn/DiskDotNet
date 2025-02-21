@@ -12,22 +12,17 @@ namespace Disk.ViewModel
     public class PatientsViewModel : ObserverViewModel
     {
         public ICommand SearchCommand => new Command(Search);
-        public ICommand SelectPatientCommand => new Command(SelectPatient);
-        public ICommand AddPatientCommand => new Command(
+        public ICommand SelectPatientCommand => new Command(
             _ =>
             {
-                Action<Patient> onAdd = patient => SortedPatients.Add(patient);
-                onAdd += _ =>
+                if (SelectedPatient is not null)
                 {
-                    PageNum = TotalPages;
-                    IsPrevEnabled = PageNum > 1;
-                    IsNextEnabled = PageNum < TotalPages;
-
-                    GetPagedPatients();
-                };
-
-                AddPatientNavigator.Navigate(_modalNavigationStore, onAdd);
+                    AppointmentsListNavigator.NavigateWithBar(_navigationStore, SelectedPatient);
+                }
             });
+
+        public ICommand AddPatientCommand => new Command(
+            _ => AddPatientNavigator.Navigate(_modalNavigationStore, patient => SortedPatients = [.. SortedPatients.Prepend(patient)]));
 
         public ICommand DeletePatientCommand => new Command(
             _ =>
@@ -44,13 +39,15 @@ namespace Disk.ViewModel
                 {
                     PageNum--;
                 }
+                else
+                {
+                    GetPagedPatients();
+                }
 
                 IsPrevEnabled = PageNum > 1;
                 IsNextEnabled = PageNum < TotalPages;
 
                 SearchText = string.Empty;
-
-                GetPagedPatients();
             });
 
         public ICommand UpdatePatientCommand => new Command(
@@ -69,6 +66,7 @@ namespace Disk.ViewModel
                 }
 
                 EditPatientNavigator.Navigate(_modalNavigationStore, OnCancel, SelectedPatient);
+                GetPagedPatients();
             });
 
         public ICommand NextPageCommand => new Command(
@@ -82,6 +80,7 @@ namespace Disk.ViewModel
 
                 GetPagedPatients();
             });
+
         public ICommand PrevPageCommand => new Command(
             _ =>
             {
@@ -101,12 +100,22 @@ namespace Disk.ViewModel
         public bool IsPrevEnabled { get => _isPrevEnabled; set => SetProperty(ref _isPrevEnabled, value); }
 
         private int _pageNum = 1;
-        public int PageNum { get => _pageNum; set => SetProperty(ref _pageNum, value); }
+        public int PageNum
+        {
+            get => _pageNum;
+            set
+            {
+                _ = SetProperty(ref _pageNum, value);
+                GetPagedPatients();
+            }
+        }
 
         private string _searchText = string.Empty;
         public string SearchText { get => _searchText; set => SetProperty(ref _searchText, value); }
 
-        public ObservableCollection<Patient> SortedPatients { get; set; }
+        private ObservableCollection<Patient> _sortedPatients = [];
+        public ObservableCollection<Patient> SortedPatients { get => _sortedPatients; set => SetProperty(ref _sortedPatients, value); }
+
         public Patient? SelectedPatient { get; set; }
 
         private readonly NavigationStore _navigationStore;
@@ -123,7 +132,7 @@ namespace Disk.ViewModel
             _modalNavigationStore = modalNavigationStore;
             _patientRepository = patientRepository;
 
-            SortedPatients = new(_patientRepository.GetPatientsPage(PageNum - 1, PatientsPerPage));
+            SortedPatients = [.. _patientRepository.GetPatientsPage(PageNum - 1, PatientsPerPage)];
             IsNextEnabled = (int)float.Ceiling((float)patientRepository.GetPatientsCount() / PatientsPerPage) > 1;
         }
 
@@ -146,36 +155,17 @@ namespace Disk.ViewModel
                 }
                 var patients = _patientRepository.GetPatientsByFullname(name, surname, patronymic);
 
-                SortedPatients.Clear();
-                foreach (var patient in patients)
-                {
-                    SortedPatients.Add(patient);
-                }
+                SortedPatients = [.. patients];
             }
             else
             {
-                SortedPatients.Clear();
                 GetPagedPatients();
             }
         }
 
         private void GetPagedPatients()
         {
-            SortedPatients.Clear();
-            foreach (var patient in _patientRepository.GetPatientsPage(PageNum - 1, PatientsPerPage))
-            {
-                SortedPatients.Add(patient);
-            }
-        }
-
-        private void SelectPatient(object? obj)
-        {
-            if (SelectedPatient is null)
-            {
-                return;
-            }
-
-            AppointmentsListNavigator.NavigateWithBar(_navigationStore, SelectedPatient);
+            SortedPatients = [.. _patientRepository.GetPatientsPage(PageNum - 1, PatientsPerPage)];
         }
     }
 }

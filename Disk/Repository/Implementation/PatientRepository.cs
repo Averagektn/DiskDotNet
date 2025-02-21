@@ -67,6 +67,7 @@ namespace Disk.Repository.Implementation
         public ICollection<Patient> GetPatientsPage(int pageNum, int patientsPerPage)
         {
             return table
+                .OrderBy(p => p.Surname)
                 .Skip(pageNum * patientsPerPage)
                 .Take(patientsPerPage)
                 .ToList();
