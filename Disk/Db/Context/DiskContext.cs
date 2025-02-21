@@ -22,7 +22,7 @@ public partial class DiskContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        optionsBuilder.UseSqlite(AppConfig.DbConnectionString);
+        _ = optionsBuilder.UseSqlite(AppConfig.DbConnectionString);
     }
 
     public void EnsureDatabaseExists()
@@ -30,14 +30,14 @@ public partial class DiskContext : DbContext
         if (!Directory.Exists("./Db"))
         {
             Log.Fatal("Db folder not found");
-            Directory.CreateDirectory("./Db");
+            _ = Directory.CreateDirectory("./Db");
             Log.Information("Created new db folder");
         }
 
         if (!File.Exists(AppConfig.DbConnectionString))
         {
             Log.Fatal("Db file not found");
-            Database.EnsureCreated();
+            _ = Database.EnsureCreated();
             Log.Information("Created new db file");
         }
     }

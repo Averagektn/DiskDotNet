@@ -18,8 +18,12 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Resource Include="Properties\feet_projection.png" />
-    <Content Include="Properties\Icon.ico" />
+    <Content Include="Properties\feet_projection.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Properties\Icon.ico">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
   <ItemGroup>
@@ -41,7 +45,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Resource Include="Properties\logo.jpg" />
+    <Content Include="Properties\logo.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
   <ItemGroup>

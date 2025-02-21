@@ -25,7 +25,7 @@ namespace Disk
             System.Windows.Media.RenderOptions.ProcessRenderMode = System.Windows.Interop.RenderMode.SoftwareOnly;
 
             Log.Logger = new LoggerConfiguration()
-                .MinimumLevel.Information() 
+                .MinimumLevel.Information()
                 .WriteTo.File("logs/app.log")
                 .CreateLogger();
 
