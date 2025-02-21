@@ -15,7 +15,6 @@ namespace Disk.ViewModel
     public class AddPatientViewModel(IPatientService patientService) : PopupViewModel
     {
         public event Action<Patient>? OnAddEvent;
-        public event Action<Patient>? OnCancelEvent;
 
         private DateTime? _dateOfBirth = null;
         public DateTime? DateOfBirth
@@ -53,12 +52,7 @@ namespace Disk.ViewModel
         public ICommand MobilePhoneFocusCommand => new Command(_ => BgMobilePhone = new SolidColorBrush(Colors.White));
         public ICommand HomePhoneFocusCommand => new Command(_ => BgHomePhone = new SolidColorBrush(Colors.White));
         public virtual ICommand AddPatientCommand => new AsyncCommand(AddPatient);
-        public virtual ICommand CancelCommand => new Command(
-            _ =>
-            {
-                OnCancelEvent?.Invoke(Patient);
-                IniNavigationStore.Close();
-            });
+        public virtual ICommand CancelCommand => new Command(_ => IniNavigationStore.Close());
 
         private Patient _patient = new()
         {

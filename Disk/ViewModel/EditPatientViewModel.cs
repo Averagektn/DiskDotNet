@@ -13,6 +13,7 @@ namespace Disk.ViewModel
     public class EditPatientViewModel(IPatientService patientService) : AddPatientViewModel(patientService)
     {
         public required Patient Backup { get; set; }
+        public event Action? AfterUpdateEvent;
 
         private readonly IPatientService _patientService = patientService;
         public override ICommand AddPatientCommand => new AsyncCommand(UpdatePatient);
@@ -26,6 +27,7 @@ namespace Disk.ViewModel
                 Patient.PhoneHome = Backup.PhoneHome;
                 Patient.PhoneMobile = Backup.PhoneMobile;
 
+                AfterUpdateEvent?.Invoke();
                 base.CancelCommand.Execute(null);
             });
 
@@ -40,31 +42,31 @@ namespace Disk.ViewModel
             }
             catch (InvalidNameException ex)
             {
-                Log.Error(ex.Message);
+                Log.Information(ex.Message);
                 BgName = new SolidColorBrush(Colors.Red);
                 await ShowPopup(AddPatientLocalization.ErrorHeader, ex.Output);
             }
             catch (InvalidSurnameException ex)
             {
-                Log.Error(ex.Message);
+                Log.Information(ex.Message);
                 BgSurname = new SolidColorBrush(Colors.Red);
                 await ShowPopup(AddPatientLocalization.ErrorHeader, ex.Output);
             }
             catch (InvalidDateException ex)
             {
-                Log.Error(ex.Message);
+                Log.Information(ex.Message);
                 BgDateOfBirth = new SolidColorBrush(Colors.Red);
                 await ShowPopup(AddPatientLocalization.ErrorHeader, ex.Output);
             }
             catch (InvalidPhoneNumberException ex)
             {
-                Log.Error(ex.Message);
+                Log.Information(ex.Message);
                 BgMobilePhone = new SolidColorBrush(Colors.Red);
                 await ShowPopup(AddPatientLocalization.ErrorHeader, ex.Output);
             }
             catch (InvalidHomePhoneException ex)
             {
-                Log.Error(ex.Message);
+                Log.Information(ex.Message);
                 BgHomePhone = new SolidColorBrush(Colors.Red);
                 await ShowPopup(AddPatientLocalization.ErrorHeader, ex.Output);
             }
@@ -77,6 +79,7 @@ namespace Disk.ViewModel
             if (success)
             {
                 IniNavigationStore.Close();
+                AfterUpdateEvent?.Invoke();
             }
         }
     }

@@ -8,7 +8,7 @@ namespace Disk.Navigators
 {
     public class EditPatientNavigator : INavigator
     {
-        public static void Navigate(INavigationStore navigationStore, Action<Patient>? onCancelEvent, Patient patient)
+        public static void Navigate(INavigationStore navigationStore, Action? afterUpdateEvent, Patient patient)
         {
             navigationStore.SetViewModel<EditPatientViewModel>(
                 vm =>
@@ -16,20 +16,20 @@ namespace Disk.Navigators
                     vm.IniNavigationStore = navigationStore;
                     vm.Backup = JsonConvert.DeserializeObject<Patient>(JsonConvert.SerializeObject(patient))!;
                     vm.Patient = patient;
-                    vm.OnCancelEvent += onCancelEvent;
+                    vm.AfterUpdateEvent += afterUpdateEvent;
                 });
         }
 
-        public static void NavigateAndClose(INavigationStore navigationStore, Action<Patient>? onCancelEvent, Patient patient)
+        public static void NavigateAndClose(INavigationStore navigationStore, Action? afterUpdateEvent, Patient patient)
         {
             if (navigationStore.CanClose)
             {
                 navigationStore.Close();
-                Navigate(navigationStore, onCancelEvent, patient);
+                Navigate(navigationStore, afterUpdateEvent, patient);
             }
         }
 
-        public static void NavigateWithBar(INavigationStore navigationStore, Action<Patient>? onCancelEvent, Patient patient)
+        public static void NavigateWithBar(INavigationStore navigationStore, Action? afterUpdateEvent, Patient patient)
         {
             navigationStore.SetViewModel<NavigationBarLayoutViewModel>(
                 vm =>
@@ -41,17 +41,17 @@ namespace Disk.Navigators
                             vm.IniNavigationStore = navigationStore;
                             vm.Backup = JsonConvert.DeserializeObject<Patient>(JsonConvert.SerializeObject(patient))!;
                             vm.Patient = patient;
-                            vm.OnCancelEvent += onCancelEvent;
+                            vm.AfterUpdateEvent += afterUpdateEvent;
                         });
                 });
         }
 
-        public static void NavigateWithBarAndClose(INavigationStore navigationStore, Action<Patient>? onCancelEvent, Patient patient)
+        public static void NavigateWithBarAndClose(INavigationStore navigationStore, Action? afterUpdateEvent, Patient patient)
         {
             if (navigationStore.CanClose)
             {
                 navigationStore.Close();
-                NavigateWithBar(navigationStore, onCancelEvent, patient);
+                NavigateWithBar(navigationStore, afterUpdateEvent, patient);
             }
         }
     }

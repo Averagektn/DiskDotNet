@@ -58,15 +58,7 @@ namespace Disk.ViewModel
                     return;
                 }
 
-                void OnCancel(Patient patient)
-                {
-                    var id = SortedPatients.IndexOf(patient);
-                    SortedPatients.RemoveAt(id);
-                    SortedPatients.Insert(id, _patientRepository.GetById(patient.Id));
-                }
-
-                EditPatientNavigator.Navigate(_modalNavigationStore, OnCancel, SelectedPatient);
-                GetPagedPatients();
+                EditPatientNavigator.Navigate(_modalNavigationStore, GetPagedPatients, SelectedPatient);
             });
 
         public ICommand NextPageCommand => new Command(
