@@ -56,10 +56,10 @@ public class Target(Point2D<int> center, int radius, Size iniSize) : User(center
     protected readonly List<Circle> Circles =
         [
             new(center, radius * 5, 0, Brushes.Red, iniSize),
-                new(center, radius * 4, 0, Brushes.White, iniSize),
-                new(center, radius * 3, 0, Brushes.Red, iniSize),
-                new(center, radius * 2, 0, Brushes.White, iniSize),
-                new(center, radius * 1, 0, Brushes.Red, iniSize)
+            new(center, radius * 4, 0, Brushes.White, iniSize),
+            new(center, radius * 3, 0, Brushes.Red, iniSize),
+            new(center, radius * 2, 0, Brushes.White, iniSize),
+            new(center, radius * 1, 0, Brushes.Red, iniSize)
         ];
 
     /// <summary>

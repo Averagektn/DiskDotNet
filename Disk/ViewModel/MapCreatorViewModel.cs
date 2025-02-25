@@ -1,10 +1,13 @@
-﻿using Disk.Data.Impl;
+﻿using Disk.Calculations.Impl.Converters;
+using Disk.Data.Impl;
 using Disk.Navigators;
 using Disk.Stores;
+using Disk.ViewModel.Common.Commands.Sync;
 using Disk.ViewModel.Common.ViewModels;
 using Disk.Visual.Impl;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using System.Windows.Markup;
 using Settings = Disk.Properties.Config.Config;
 
@@ -14,37 +17,27 @@ public class MapCreatorViewModel(ModalNavigationStore modalNavigationStore) : Ob
 {
     private static int IniWidth => Settings.Default.IniScreenWidth;
     private static int IniHeight => Settings.Default.IniScreenHeight;
-
     private readonly List<NumberedTarget> _targets = [];
-    private Target? _movingTarget;
+    public Target? MovingTarget;
+    public virtual ICommand CancelCommand => new Command(_ => IniNavigationStore.Close());
 
-    public void SelectTarget(Point mousePos)
+    public Target? GetTarget(Point mousePos)
     {
         var x = (int)mousePos.X;
         var y = (int)mousePos.Y;
 
-        _movingTarget = _targets.FindLast(target => target.Contains(new Point2D<int>(x, y)));
+        return _targets.FindLast(target => target.Contains(new Point2D<int>(x, y)));
     }
 
-    public void MoveTarget(Point mousePos)
-    {
-        var x = (int)mousePos.X;
-        var y = (int)mousePos.Y;
-        var clickPoint = new Point2D<int>(x, y);
-
-        _movingTarget?.Move(clickPoint);
-    }
-
+    // rework saving
+    //public ICommand Save => new Command(_ => SaveMap());
     public void SaveMap(double actualWidth, double actualHeight)
     {
+        var converter = new Converter((int)actualWidth, (int)actualHeight, Settings.Default.XMaxAngle, Settings.Default.YMaxAngle);
         if (_targets.Count != 0)
         {
             var map = _targets
-                .Select(t => new Point2D<float>
-                (
-                    (float)(t.Center.X / actualWidth),
-                    (float)(t.Center.Y / actualHeight))
-                )
+                .Select(t => new Point2D<float>(converter.ToAngleX_FromWnd(t.Center.X), converter.ToAngleX_FromWnd(t.Center.Y)))
                 .ToList();
 
             MapNamePickerNavigator.Navigate(modalNavigationStore, map);
@@ -97,5 +90,5 @@ public class MapCreatorViewModel(ModalNavigationStore modalNavigationStore) : Ob
             Settings.Default.IniTargetRadius,
             new Size(IniWidth, IniHeight),
             _targets.Count + 1
-           );
+        );
 }

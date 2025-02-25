@@ -70,6 +70,15 @@ namespace Disk.Properties.Langs.MapNamePicker {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Cancel.
+        /// </summary>
+        public static string Cancel {
+            get {
+                return ResourceManager.GetString("Cancel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Name is empty.
         /// </summary>
         public static string EmptyName {

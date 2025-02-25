@@ -33,7 +33,12 @@
         <Button 
             Content="{x:Static lang:MapNamePickerLocalization.Add}" 
             Command="{Binding SaveMapCommand}"                    
-            Margin="25"/>
+            Margin="25 10"/>
+
+        <Button 
+            Content="{x:Static lang:MapNamePickerLocalization.Cancel}" 
+            Command="{Binding CancelCommand}"                    
+            Margin="25 0 25 5"/>
 
         <popup:Popup 
             IsPopupOpen="{Binding IsShowPopup}" 

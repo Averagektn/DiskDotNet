@@ -9,6 +9,7 @@ namespace Disk.Visual.Impl;
 public class NumberedTarget : Target
 {
     private readonly TextBlock _numberText;
+    private readonly TextBox _lifespan;
 
     public NumberedTarget(Point2D<int> center, int radius, Size iniSize, int number) : base(center, radius, iniSize)
     {
@@ -17,6 +18,16 @@ public class NumberedTarget : Target
             Text = number.ToString(),
             Foreground = Brushes.DarkBlue
         };
+
+        _lifespan = new TextBox()
+        {
+            Text = "1",
+            FontSize = 25,
+            Height = 30,
+            Width = MaxRadius * 2,
+            Padding = new(200, 300, 0, 0)
+        };
+
         UpdateSizes();
 
         for (int i = 1; i < Circles.Count; i++)
@@ -35,6 +46,7 @@ public class NumberedTarget : Target
     {
         base.Draw(addChild);
         addChild.AddChild(_numberText);
+        addChild.AddChild(_lifespan);
     }
 
     public override void Move(bool moveTop, bool moveRight, bool moveBottom, bool moveLeft)
@@ -58,9 +70,10 @@ public class NumberedTarget : Target
     private void UpdateSizes()
     {
         var numSize = _numberText.Text.Length;
-        _numberText.FontSize = (MaxRadius * 2 - Radius * 2) / numSize;
+        _numberText.FontSize = (double)(MaxRadius * 2 - Radius * 2) / numSize;
 
-        _numberText.Margin = new(Left + MaxRadius / 2, Top - Radius / 2 + MaxRadius * (numSize - 1) / 2, 0, 0);
+        _numberText.Margin = new(Left + (double)MaxRadius / 2 + 2, Top - (double)Radius / 2 + (double)MaxRadius * (numSize - 1) / 2, 0, 0);
+        _lifespan.Margin = new(Left + (double)MaxRadius / 2 + 2, Top - (double)Radius / 2 + (double)MaxRadius * (numSize - 1) / 2, 0, 0);
     }
 
     public override void Remove(UIElementCollection collection)

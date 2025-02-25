@@ -57,7 +57,7 @@ public class Circle : IDynamicFigure
     /// <summary>
     ///     Figure to be drawn
     /// </summary>
-    private readonly Ellipse Figure;
+    protected readonly Ellipse Figure;
 
     /// <summary>
     ///     Initial ize for scaling

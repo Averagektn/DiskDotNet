@@ -3,6 +3,7 @@ using Disk.Entities;
 using Disk.Properties.Langs.MapNamePicker;
 using Disk.Repository.Interface;
 using Disk.ViewModel.Common.Commands.Async;
+using Disk.ViewModel.Common.Commands.Sync;
 using Disk.ViewModel.Common.ViewModels;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
@@ -15,6 +16,7 @@ namespace Disk.ViewModel;
 public class MapNamePickerViewModel(IMapRepository mapRepository) : PopupViewModel
 {
     public ICommand SaveMapCommand => new AsyncCommand(SaveMap);
+    public ICommand CancelCommand => new Command(_ => IniNavigationStore.Close());
 
     public required List<Point2D<float>> Map { get; set; }
     public string MapName { get; set; } = string.Empty;

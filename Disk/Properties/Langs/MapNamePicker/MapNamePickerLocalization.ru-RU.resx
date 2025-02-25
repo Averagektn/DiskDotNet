@@ -120,6 +120,9 @@
   <data name="Add" xml:space="preserve">
     <value>Добавить</value>
   </data>
+  <data name="Cancel" xml:space="preserve">
+    <value>Отмена</value>
+  </data>
   <data name="EmptyName" xml:space="preserve">
     <value>Не введено имя карты</value>
   </data>
