@@ -15,11 +15,6 @@ namespace Disk.Visual.Impl;
 public class Graph : IStaticFigure
 {
     /// <summary>
-    ///     The size of the graph
-    /// </summary>
-    private Size Size;
-
-    /// <summary>
     ///     The polygon used to draw the graph
     /// </summary>
     private readonly Polygon Polygon;
@@ -54,11 +49,12 @@ public class Graph : IStaticFigure
     /// <param name="segmentsNum">
     ///     The number of segments in the graph. Default is 4
     /// </param>
-    public Graph(IEnumerable<PolarPoint<float>> points, Size currSize, Brush color, int segmentsNum = 4)
+    private readonly Panel _parent;
+    public Graph(IEnumerable<PolarPoint<float>> points, Size currSize, Brush color, Panel parent, int segmentsNum = 4)
     {
+        _parent = parent;
         SegmentsNum = segmentsNum;
-        Size = currSize;
-        Radius = (int)(Math.Min(Size.Width, Size.Height) * 0.9) / 2;
+        Radius = (int)(Math.Min(_parent.RenderSize.Width, _parent.RenderSize.Height) * 0.9) / 2;
 
         Frequency = GetFrequency(Classifier<float>.Classify(points.ToList(), segmentsNum));
 
@@ -74,11 +70,11 @@ public class Graph : IStaticFigure
     /// <param name="addChild">
     ///     The child element to add the graph to
     /// </param>
-    public void Draw(IAddChild addChild)
+    public void Draw()
     {
         FillPolygon();
 
-        addChild.AddChild(Polygon);
+        _parent.Children.Add(Polygon);
     }
 
     /// <summary>
@@ -87,11 +83,9 @@ public class Graph : IStaticFigure
     /// <param name="newSize">
     ///     The new size of the graph
     /// </param>
-    public void Scale(Size newSize)
+    public void Scale()
     {
-        Size = newSize;
-
-        Radius = (int)(Math.Min(Size.Width, Size.Height) * 0.9) / 2;
+        Radius = (int)(Math.Min(_parent.ActualWidth, _parent.ActualHeight) * 0.9) / 2;
 
         Polygon.Points.Clear();
 
@@ -113,7 +107,7 @@ public class Graph : IStaticFigure
             var radius = Radius * Frequency.ElementAt(i) / (double)maxFrequency;
             var point = new PolarPoint<float>(radius, Math.PI * angle / 180);
 
-            Polygon.Points.Add(new((Size.Width / 2) + point.X, (Size.Height / 2) - point.Y));
+            Polygon.Points.Add(new((_parent.RenderSize.Width / 2) + point.X, (_parent.RenderSize.Height / 2) - point.Y));
         }
     }
 
@@ -145,8 +139,8 @@ public class Graph : IStaticFigure
     /// <param name="collection">
     ///     The UI element collection
     /// </param>
-    public void Remove(UIElementCollection collection)
+    public void Remove()
     {
-        collection.Remove(Polygon);
+        _parent.Children.Remove(Polygon);
     }
 }

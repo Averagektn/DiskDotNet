@@ -27,8 +27,8 @@ namespace Disk.View
 
         private List<IScalable> Scalables { get; set; } = [];
 
-        private readonly User _user = DrawableFabric.GetIniUser(string.Empty);
-        private readonly Target _target = DrawableFabric.GetIniProgressTarget(new(0, 0));
+        private readonly User _user = null!; //DrawableFabric.GetIniUser(string.Empty);
+        private readonly Target _target = null!;// DrawableFabric.GetIniProgressTarget(new(0, 0));
         private Converter? Converter => ViewModel?.Converter;
 
         private bool _isReply;
@@ -57,7 +57,7 @@ namespace Disk.View
         private void OnSizeChanged(object sender, SizeChangedEventArgs e)
         {
             Converter?.Scale(PaintPanelSize);
-            Scalables.ForEach(s => s.Scale(PaintPanelSize));
+            Scalables.ForEach(s => s.Scale());
         }
 
         private void OnLoaded(object sender, RoutedEventArgs e)
@@ -82,16 +82,16 @@ namespace Disk.View
             }
 
             PaintArea.Children.Clear();
-            _target.Draw(PaintArea);
-            _user.Draw(PaintArea);
+            _target.Draw();
+            _user.Draw();
 
-            var figures = ViewModel.GetPathAndRose(PaintPanelSize);
+            var figures = ViewModel.GetPathAndRose(PaintPanelSize, PaintArea);
             foreach (var figure in figures)
             {
                 Scalables.Add(figure);
 
-                figure.Draw(PaintArea);
-                figure.Scale(PaintPanelSize);
+                //figure.Draw(PaintArea);
+                figure.Scale();
             }
         }
 
@@ -109,7 +109,7 @@ namespace Disk.View
 
             IsReply = true;
 
-            Scalables.ForEach(item => item.Scale(PaintPanelSize));
+            Scalables.ForEach(item => item.Scale());
 
             var selectedIndex = ViewModel.SelectedIndex;
             var enumerator = ViewModel.FullPath.GetEnumerator();

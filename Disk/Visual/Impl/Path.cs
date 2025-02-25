@@ -44,9 +44,11 @@ public class Path : IStaticFigure
     /// <param name="color">
     ///     The color of the path
     /// </param>
-    public Path(IEnumerable<Point2D<float>> points, Converter converter, Brush color)
+    private readonly Panel _parent;
+    public Path(IEnumerable<Point2D<float>> points, Converter converter, Brush color, Panel parent)
     {
         Converter = converter;
+        _parent = parent;
 
         Polyline = new Polyline()
         {
@@ -67,9 +69,9 @@ public class Path : IStaticFigure
     /// <param name="addChild">
     ///     The child element to add the path to
     /// </param>
-    public void Draw(IAddChild addChild)
+    public void Draw()
     {
-        addChild.AddChild(Polyline);
+        _parent.Children.Add(Polyline);
     }
 
     /// <summary>
@@ -78,9 +80,9 @@ public class Path : IStaticFigure
     /// <param name="collection">
     ///     The UI element collection
     /// </param>
-    public void Remove(UIElementCollection collection)
+    public void Remove()
     {
-        collection.Remove(Polyline);
+        _parent.Children.Remove(Polyline);
     }
 
     /// <summary>
@@ -89,7 +91,7 @@ public class Path : IStaticFigure
     /// <param name="newSize">
     ///     The new size of the path
     /// </param>
-    public void Scale(Size newSize)
+    public void Scale()
     {
         Polyline.Points.Clear();
 

@@ -12,7 +12,7 @@
              d:DesignHeight="800" 
              d:DesignWidth="800">
 
-    <Grid Name="PaintArea">
+    <Grid>
         <Menu 
             FontSize="25" 
             VerticalAlignment="Top" 
@@ -44,7 +44,7 @@
             StrokeThickness="2" 
             VerticalAlignment="Center" />
         
-        <Canvas>
+        <Canvas x:Name="PaintArea">
             <Path Fill="Transparent" Stretch="Fill" Stroke="Black" StrokeThickness="2">
                 <Path.Data>
                     <EllipseGeometry x:Name="AllowedArea"/>

@@ -10,6 +10,7 @@ using Disk.Visual.Interface;
 using Newtonsoft.Json;
 using System.Collections.ObjectModel;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using Localization = Disk.Properties.Langs.SessionResult.SessionResultLocalization;
@@ -123,7 +124,7 @@ public class SessionResultViewModel(NavigationStore navigationStore) : ObserverV
         }
     }
 
-    public List<IStaticFigure> GetPathAndRose(Size paintAreaSize)
+    public List<IStaticFigure> GetPathAndRose(Size paintAreaSize, Canvas canvas)
     {
         if (SelectedIndex == -1)
         {
@@ -132,7 +133,7 @@ public class SessionResultViewModel(NavigationStore navigationStore) : ObserverV
 
         if (IsDiagramChecked)
         {
-            return [GetGraph(paintAreaSize)];
+            return [GetGraph(paintAreaSize, canvas)];
         }
         else if (IsPathChecked)
         {
@@ -143,8 +144,8 @@ public class SessionResultViewModel(NavigationStore navigationStore) : ObserverV
             }
 
             var res = new List<IStaticFigure>();
-            var pathToTarget = new Path(PathsToTargets[SelectedIndex], Converter, new SolidColorBrush(Colors.Green));
-            var pathInTarget = new Path(PathsInTargets[SelectedIndex], Converter, new SolidColorBrush(Colors.Blue));
+            var pathToTarget = new Path(PathsToTargets[SelectedIndex], Converter, new SolidColorBrush(Colors.Green), canvas);
+            var pathInTarget = new Path(PathsInTargets[SelectedIndex], Converter, new SolidColorBrush(Colors.Blue), canvas);
 
             if (ShowPathToTarget)
             {
@@ -161,16 +162,16 @@ public class SessionResultViewModel(NavigationStore navigationStore) : ObserverV
         return [];
     }
 
-    private Graph GetGraph(Size paintAreaSize)
+    private Graph GetGraph(Size paintAreaSize, Canvas canvas)
     {
         if (PathsInTargets.Count <= SelectedIndex || PathsInTargets[SelectedIndex].Count == 0)
         {
             _ = MessageBox.Show(Localization.NoContentForDiagramError);
-            return new Graph([], paintAreaSize, Brushes.LightGreen, 8);
+            return new Graph([], paintAreaSize, Brushes.LightGreen, canvas, 8);
         }
 
-        var target = DrawableFabric.GetIniProgressTarget(new(0, 0));
-        target.Scale(paintAreaSize);
+        var target = DrawableFabric.GetIniProgressTarget(new(0, 0), canvas);
+        target.Scale();
 
         var angRadius = (Converter.ToAngleX_FromWnd(target.Radius) + Converter.ToAngleY_FromWnd(target.Radius)) / 2;
 
@@ -182,7 +183,7 @@ public class SessionResultViewModel(NavigationStore navigationStore) : ObserverV
             //.Where(p => Math.Abs(p.X) > angRadius && Math.Abs(p.Y) > angRadius)
             .ToList();
 
-        return new Graph(dataset, paintAreaSize, Brushes.LightGreen, 8);
+        return new Graph(dataset, paintAreaSize, Brushes.LightGreen, canvas, 8);
     }
 
     public override void Dispose()

@@ -1,5 +1,6 @@
 ﻿using Disk.Data.Impl;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Media;
 
 namespace Disk.Visual.Impl;
@@ -22,7 +23,8 @@ namespace Disk.Visual.Impl;
 /// <param name="iniSize">
 ///     The initial size of the enemy
 /// </param>
-public class Enemy(Point2D<int> center, int radius, int speed, Brush color, Size iniSize) : User(center, radius, speed, color, iniSize)
+public class Enemy(Point2D<int> center, int radius, int speed, Brush color, Canvas parent, Size iniSize) : 
+    User(center, radius, speed, color, parent, iniSize)
 {
     /// <summary>
     ///     Makes the enemy follow the specified target point.

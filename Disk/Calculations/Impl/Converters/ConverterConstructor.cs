@@ -1,4 +1,4 @@
-﻿using Disk.Visual.Interface;
+﻿using Disk.Calculations.Interface;
 using System.Drawing;
 using Size = System.Windows.Size;
 

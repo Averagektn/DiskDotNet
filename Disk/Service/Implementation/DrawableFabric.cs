@@ -3,6 +3,7 @@ using Disk.Data.Impl;
 using Disk.Visual.Impl;
 using System.IO;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Media;
 using Settings = Disk.Properties.Config.Config;
 
@@ -20,13 +21,13 @@ public static class DrawableFabric
     private static readonly float YAngleSize = Settings.YMaxAngle * 2;
     private static readonly int TargetHp = Settings.TargetHp;
 
-    public static User GetIniUser(string userImagePath) =>
+    public static User GetIniUser(string userImagePath, Canvas parent) =>
         File.Exists(userImagePath)
-            ? new UserPicture(userImagePath, new(ScreenIniCenterX, ScreenIniCenterY), 0, new(50, 50), ScreenIniSize)
-            : new User(new(ScreenIniCenterX, ScreenIniCenterY), Settings.IniUserRadius, 0, UserBrush, ScreenIniSize);
+            ? new UserPicture(userImagePath, new(ScreenIniCenterX, ScreenIniCenterY), 0, new(50, 50), parent, ScreenIniSize)
+            : new User(new(ScreenIniCenterX, ScreenIniCenterY), Settings.IniUserRadius, 0, UserBrush, parent, ScreenIniSize);
 
-    public static ProgressTarget GetIniProgressTarget(Point2D<int> center) => new(center, Settings.IniTargetRadius, ScreenIniSize, 
-        TargetHp);
+    public static ProgressTarget GetIniProgressTarget(Point2D<int> center, Canvas parent) => new(center, Settings.IniTargetRadius, 
+        parent, TargetHp, ScreenIniSize);
 
     public static Converter GetIniConverter() => new(ScreenIniSize, new(XAngleSize, YAngleSize));
 }

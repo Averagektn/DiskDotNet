@@ -1,8 +1,6 @@
 ﻿using Disk.Data.Impl;
 using Disk.Visual.Interface;
-using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Markup;
 using System.Windows.Media;
 using System.Windows.Shapes;
 using Size = System.Windows.Size;
@@ -17,32 +15,52 @@ public class Circle : IDynamicFigure
     /// <summary>
     ///     Gets or sets the center point of the circle
     /// </summary>
-    public Point2D<int> Center { get; protected set; }
+    private Point2D<int> _center = new();
+    public Point2D<int> Center
+    {
+        get => _center;
+        protected set
+        {
+            _center = value;
+            Canvas.SetLeft(Figure, Left);
+            Canvas.SetTop(Figure, Top);
+        }
+    }
 
     /// <summary>
     ///     Gets the X-coordinate of the right edge of the circle
     /// </summary>
-    public int Right => Center.X + Radius;
+    public virtual int Right => Center.X + Radius;
 
     /// <summary>
     ///     Gets the Y-coordinate of the top edge of the circle
     /// </summary>
-    public int Top => Center.Y - Radius;
+    public virtual int Top => Center.Y - Radius;
 
     /// <summary>
     ///     Gets the Y-coordinate of the bottom edge of the circle
     /// </summary>
-    public int Bottom => Center.Y + Radius;
+    public virtual int Bottom => Center.Y + Radius;
 
     /// <summary>
     ///     Gets the X-coordinate of the left edge of the circle
     /// </summary>
-    public int Left => Center.X - Radius;
+    public virtual int Left => Center.X - Radius;
 
     /// <summary>
     ///     Gets or sets the radius of the circle
     /// </summary>
-    public int Radius { get; protected set; }
+    private int _radius = 0;
+    public int Radius
+    {
+        get => _radius;
+        protected set
+        {
+            _radius = value;
+            Figure.Height = value * 2;
+            Figure.Width = value * 2;
+        }
+    }
 
     /// <summary>
     ///     Gets or sets the speed of the circle
@@ -57,12 +75,12 @@ public class Circle : IDynamicFigure
     /// <summary>
     ///     Figure to be drawn
     /// </summary>
-    protected readonly Ellipse Figure;
+    private readonly Ellipse Figure;
 
     /// <summary>
     ///     Initial ize for scaling
     /// </summary>
-    private readonly Size IniSize;
+    protected readonly Size IniSize;
 
     /// <summary>
     ///     Initial speed to be scaled
@@ -74,10 +92,7 @@ public class Circle : IDynamicFigure
     /// </summary>
     private readonly int IniRadius;
 
-    /// <summary>
-    ///     Gets or sets the current size of the circle
-    /// </summary>
-    private Size CurrSize { get; set; }
+    protected readonly Canvas Parent;
 
     /// <summary>
     ///     Initializes a new instance of the Circle class with the specified center, radius, speed, color, and initial 
@@ -98,26 +113,24 @@ public class Circle : IDynamicFigure
     /// <param name="iniSize">
     ///     The initial size of the circle
     /// </param>
-    public Circle(Point2D<int> center, int radius, int speed, Brush color, Size iniSize)
+    public Circle(Point2D<int> center, int radius, int speed, Brush color, Canvas canvas, Size iniSize)
     {
         IniRadius = radius;
         IniSpeed = speed;
 
-        Center = center;
-        Radius = radius;
-        Speed = speed;
+        Parent = canvas;
 
         Figure = new()
         {
             Width = radius * 2,
             Height = radius * 2,
-            Fill = color,
-            HorizontalAlignment = HorizontalAlignment.Left,
-            VerticalAlignment = VerticalAlignment.Top,
-            Margin = new(Left, Top, 0, 0)
+            Fill = color
         };
 
-        CurrSize = iniSize;
+        Speed = speed;
+        Center = center;
+        Radius = radius;
+
         IniSize = iniSize;
     }
 
@@ -139,10 +152,9 @@ public class Circle : IDynamicFigure
     /// <param name="addChild">
     ///     The container to draw the circle on
     /// </param>
-    public virtual void Draw(IAddChild addChild)
+    public virtual void Draw()
     {
-        addChild.AddChild(Figure);
-        Figure.Margin = new(Left, Top, 0, 0);
+        _ = Parent.Children.Add(Figure);
     }
 
     /// <summary>
@@ -151,7 +163,7 @@ public class Circle : IDynamicFigure
     /// <param name="collection">
     ///     The collection to remove the circle from
     /// </param>
-    public virtual void Remove(UIElementCollection collection) => collection.Remove(Figure);
+    public virtual void Remove() => Parent.Children.Remove(Figure);
 
     /// <summary>
     ///     Moves the circle in the specified directions
@@ -200,7 +212,7 @@ public class Circle : IDynamicFigure
         {
             xSpeed = 0;
         }
-        if (Right >= CurrSize.Width && xSpeed > 0)
+        if (Right >= Parent.RenderSize.Width && xSpeed > 0)
         {
             xSpeed = 0;
         }
@@ -208,41 +220,23 @@ public class Circle : IDynamicFigure
         {
             ySpeed = 0;
         }
-        if (Bottom >= CurrSize.Height && ySpeed > 0)
+        if (Bottom >= Parent.RenderSize.Height && ySpeed > 0)
         {
             ySpeed = 0;
         }
 
         Center = new(Center.X + xSpeed, Center.Y + ySpeed);
-
-        Figure.Margin = new(Left, Top, 0, 0);
     }
 
-    /// <summary>
-    ///     Scales the circle to the specified new size
-    /// </summary>
-    /// <param name="newSize">
-    ///     The new size to scale the circle to
-    /// </param>
-    public virtual void Scale(Size newSize)
+    public virtual void Scale()
     {
-        double coeffX = (double)newSize.Width / IniSize.Width;
-        double coeffY = (double)newSize.Height / IniSize.Height;
+        double coeffX = Parent.RenderSize.Width / IniSize.Width;
+        double coeffY = Parent.RenderSize.Height / IniSize.Height;
 
         Speed = (int)Math.Round(IniSpeed * (coeffX + coeffY) / 2);
         Radius = (int)Math.Round(IniRadius * (coeffX + coeffY) / 2);
 
-        Center = new(
-                (int)Math.Round(Center.X * (newSize.Width / CurrSize.Width)),
-                (int)Math.Round(Center.Y * (newSize.Height / CurrSize.Height))
-            );
-
-        Figure.Width = Radius * 2;
-        Figure.Height = Radius * 2;
-
-        CurrSize = newSize;
-
-        Figure.Margin = new(Left, Top, 0, 0);
+        Center = new((int)Math.Round(Center.X * coeffX), (int)Math.Round(Center.Y * coeffY));
     }
 
     /// <summary>
@@ -253,11 +247,9 @@ public class Circle : IDynamicFigure
     /// </param>
     public virtual void Move(Point2D<int> center)
     {
-        if (center.X <= CurrSize.Width && center.Y <= CurrSize.Height && center.X > 0 && center.Y > 0)
+        if (center.X <= Parent.RenderSize.Width && center.Y <= Parent.RenderSize.Height && center.X > 0 && center.Y > 0)
         {
             Center = center;
-
-            Figure.Margin = new(Left, Top, 0, 0);
         }
     }
 }

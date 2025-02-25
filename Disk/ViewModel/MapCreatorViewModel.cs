@@ -8,7 +8,6 @@ using Disk.Visual.Impl;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using System.Windows.Markup;
 using Settings = Disk.Properties.Config.Config;
 
 namespace Disk.ViewModel;
@@ -46,7 +45,7 @@ public class MapCreatorViewModel(ModalNavigationStore modalNavigationStore) : Ob
         IniNavigationStore.Close();
     }
 
-    public void RemoveTarget(UIElementCollection screenTargets, Point mousePos)
+    public void RemoveTarget(Point mousePos)
     {
         var x = (int)mousePos.X;
         var y = (int)mousePos.Y;
@@ -54,7 +53,7 @@ public class MapCreatorViewModel(ModalNavigationStore modalNavigationStore) : Ob
         var removableTagets = _targets.Where(target => target.Contains(new(x, y)));
         foreach (var target in removableTagets)
         {
-            target.Remove(screenTargets);
+            target.Remove();
         }
         _ = _targets.RemoveAll(target => target.Contains(new(x, y)));
 
@@ -68,27 +67,31 @@ public class MapCreatorViewModel(ModalNavigationStore modalNavigationStore) : Ob
     {
         foreach (var target in _targets)
         {
-            target?.Scale(size);
+            target?.Scale();
         }
     }
 
-    public void AddTarget(Point mousePos, Size renderSize, IAddChild paintArea)
+    public void AddTarget(Point mousePos, Size renderSize, Canvas canvas)
     {
-        var newTarget = GetIniCoordTarget(renderSize, mousePos.X, mousePos.Y);
-        newTarget.Scale(renderSize);
-        newTarget.Draw(paintArea);
+        var newTarget = GetIniCoordTarget(mousePos.X, mousePos.Y, canvas);
+        newTarget.Scale();
+        newTarget.Draw();
         _targets.Add(newTarget);
     }
 
-    private NumberedTarget GetIniCoordTarget(Size renderSize, double actualX, double actualY) =>
-        new(
-            new Point2D<int>
+    private NumberedTarget GetIniCoordTarget(double actualX, double actualY, Canvas canvas)
+    {
+        return new(
+            center: new Point2D<int>
             (
-                (int)(actualX / renderSize.Width * IniWidth),
-                (int)(actualY / renderSize.Height * IniHeight)
+                (int)(actualX / canvas.RenderSize.Width * IniWidth),
+                (int)(actualY / canvas.RenderSize.Height * IniHeight)
             ),
-            Settings.Default.IniTargetRadius,
-            new Size(IniWidth, IniHeight),
-            _targets.Count + 1
+            radius: Settings.Default.IniTargetRadius,
+            parent: canvas,
+            number: _targets.Count + 1,
+            iniSize: new(IniWidth, IniHeight),
+            converter: new Converter(800, 800, 40, 40)
         );
+    }
 }

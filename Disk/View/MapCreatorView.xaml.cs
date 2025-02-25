@@ -76,7 +76,7 @@ namespace Disk.View
         private void OnMouseRightButtonDown(object sender, MouseButtonEventArgs e)
         {
             var mousePos = e.GetPosition(sender as UIElement);
-            ViewModel?.RemoveTarget(PaintArea.Children, mousePos);
+            ViewModel?.RemoveTarget(mousePos);
         }
 
         private void OnSizeChanged(object sender, SizeChangedEventArgs e)

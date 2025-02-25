@@ -18,7 +18,8 @@ namespace Disk.Visual.Impl;
 /// <param name="iniSize">
 ///     The initial size of the target
 /// </param>
-public class Target(Point2D<int> center, int radius, Size iniSize) : User(center, radius, 0, Brushes.White, iniSize)
+public class Target(Point2D<int> center, int radius, Canvas parent, Size iniSize) : 
+    User(center, radius, 0, Brushes.White, parent, iniSize)
 {
     /// <summary>
     ///     Invoked on ReceiveShot method call
@@ -33,33 +34,33 @@ public class Target(Point2D<int> center, int radius, Size iniSize) : User(center
     /// <summary>
     ///     Gets the X-coordinate of the right edge of the circle
     /// </summary>
-    public new int Right => Center.X + MaxRadius;
+    public override int Right => Center.X + MaxRadius;
 
     /// <summary>
     ///     Gets the Y-coordinate of the top edge of the circle
     /// </summary>
-    public new int Top => Center.Y - MaxRadius;
+    public override int Top => Center.Y - MaxRadius;
 
     /// <summary>
     ///     Gets the Y-coordinate of the bottom edge of the circle
     /// </summary>
-    public new int Bottom => Center.Y + MaxRadius;
+    public override int Bottom => Center.Y + MaxRadius;
 
     /// <summary>
     ///     Gets the X-coordinate of the left edge of the circle
     /// </summary>
-    public new int Left => Center.X - MaxRadius;
+    public override int Left => Center.X - MaxRadius;
 
     /// <summary>
     ///     List of circles representing the concentric rings of the target
     /// </summary>
     protected readonly List<Circle> Circles =
         [
-            new(center, radius * 5, 0, Brushes.Red, iniSize),
-            new(center, radius * 4, 0, Brushes.White, iniSize),
-            new(center, radius * 3, 0, Brushes.Red, iniSize),
-            new(center, radius * 2, 0, Brushes.White, iniSize),
-            new(center, radius * 1, 0, Brushes.Red, iniSize)
+            new(center, radius * 5, 0, Brushes.Red, parent, iniSize),
+            new(center, radius * 4, 0, Brushes.White, parent, iniSize),
+            new(center, radius * 3, 0, Brushes.Red, parent, iniSize),
+            new(center, radius * 2, 0, Brushes.White, parent, iniSize),
+            new(center, radius * 1, 0, Brushes.Red, parent, iniSize)
         ];
 
     /// <summary>
@@ -68,12 +69,9 @@ public class Target(Point2D<int> center, int radius, Size iniSize) : User(center
     /// <param name="addChild">
     ///     The UI element collection to add the circles to
     /// </param>
-    public override void Draw(IAddChild addChild)
+    public override void Draw()
     {
-        foreach (var circle in Circles)
-        {
-            circle.Draw(addChild);
-        }
+        Circles.ForEach(circle => circle.Draw());
     }
 
     /// <summary>
@@ -93,10 +91,7 @@ public class Target(Point2D<int> center, int radius, Size iniSize) : User(center
     /// </param>
     public override void Move(bool moveTop, bool moveRight, bool moveBottom, bool moveLeft)
     {
-        foreach (var circle in Circles)
-        {
-            circle.Move(moveTop, moveRight, moveBottom, moveLeft);
-        }
+        Circles.ForEach(circle => circle.Move(moveTop, moveRight, moveBottom, moveLeft));
     }
 
     /// <summary>
@@ -105,14 +100,11 @@ public class Target(Point2D<int> center, int radius, Size iniSize) : User(center
     /// <param name="newSize">
     ///     The new size of the target
     /// </param>
-    public override void Scale(Size newSize)
+    public override void Scale()
     {
-        base.Scale(newSize);
+        base.Scale();
 
-        foreach (var circle in Circles)
-        {
-            circle.Scale(newSize);
-        }
+        Circles.ForEach(circle => circle.Scale());
     }
 
     /// <summary>
@@ -125,10 +117,7 @@ public class Target(Point2D<int> center, int radius, Size iniSize) : User(center
     {
         Center = center;
 
-        foreach (var circle in Circles)
-        {
-            circle.Move(center);
-        }
+        Circles.ForEach(circle => circle.Move(center));
     }
 
     /// <summary>
@@ -184,11 +173,8 @@ public class Target(Point2D<int> center, int radius, Size iniSize) : User(center
     /// <param name="collection">
     ///     The UI element collection to remove the circles from
     /// </param>
-    public override void Remove(UIElementCollection collection)
+    public override void Remove()
     {
-        foreach (var circle in Circles)
-        {
-            circle.Remove(collection);
-        }
+        Circles.ForEach(circle => circle.Remove());
     }
 }

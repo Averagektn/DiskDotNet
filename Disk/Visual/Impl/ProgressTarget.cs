@@ -40,7 +40,8 @@ public class ProgressTarget : Target
 
     private readonly RadialProgressBar _border;
 
-    public ProgressTarget(Point2D<int> center, int radius, Size iniSize, int hp) : base(center, radius, iniSize)
+    public ProgressTarget(Point2D<int> center, int radius, Canvas parent, int hp, Size iniSize) 
+        : base(center, radius, parent, iniSize)
     {
         _border = new()
         {
@@ -65,13 +66,13 @@ public class ProgressTarget : Target
         return res;
     }
 
-    public override void Remove(UIElementCollection collection)
+    public override void Remove()
     {
-        base.Remove(collection);
+        base.Remove();
 
-        if (collection.Contains(_border))
+        if (Parent.Children.Contains(_border))
         {
-            collection.Remove(_border);
+            Parent.Children.Remove(_border);
         }
     }
 
@@ -81,10 +82,10 @@ public class ProgressTarget : Target
     /// <param name="addChild">
     ///     The UI element collection to add the circles to
     /// </param>
-    public override void Draw(IAddChild addChild)
+    public override void Draw()
     {
-        addChild.AddChild(_border);
-        base.Draw(addChild);
+        Parent.Children.Add(_border);
+        base.Draw();
     }
 
     /// <summary>
@@ -109,9 +110,9 @@ public class ProgressTarget : Target
         _border.Margin = new(Left, Top, 0, 0);
     }
 
-    public override void Scale(Size newSize)
+    public override void Scale()
     {
-        base.Scale(newSize);
+        base.Scale();
 
         _border.Width = MaxRadius * 2;
         _border.Height = MaxRadius * 2;

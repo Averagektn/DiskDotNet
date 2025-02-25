@@ -14,18 +14,14 @@ internal class UserPicture : User
     public new int Bottom => (int)(Center.Y + (_image.Height / 2));
     public new int Left => (int)(Center.X - (_image.Width / 2));
 
-    protected Size CurrSize { get; private set; }
     protected const double DIAGONAL_CORRECTION = 1.41;
 
     private readonly Image _image;
     private readonly Size IniImageSize;
-    protected readonly Size IniSize;
 
-    public UserPicture(string filePath, Point2D<int> center, int speed, Size imageSize, Size iniSize)
-        : base(center, 0, speed, new SolidColorBrush(Colors.Transparent), iniSize)
+    public UserPicture(string filePath, Point2D<int> center, int speed, Size imageSize, Canvas parent, Size iniSize)
+        : base(center, 0, speed, new SolidColorBrush(Colors.Transparent), parent, iniSize)
     {
-        IniSize = iniSize;
-        CurrSize = iniSize;
         IniImageSize = imageSize;
         _image = new()
         {
@@ -37,9 +33,9 @@ internal class UserPicture : User
         };
     }
 
-    public override void Draw(IAddChild addChild)
+    public override void Draw()
     {
-        addChild.AddChild(_image);
+        Parent.Children.Add(_image);
     }
 
     public override void Move(bool moveTop, bool moveRight, bool moveBottom, bool moveLeft)
@@ -74,7 +70,7 @@ internal class UserPicture : User
         {
             xSpeed = 0;
         }
-        if (Right >= CurrSize.Width && xSpeed > 0)
+        if (Right >= Parent.RenderSize.Width && xSpeed > 0)
         {
             xSpeed = 0;
         }
@@ -82,7 +78,7 @@ internal class UserPicture : User
         {
             ySpeed = 0;
         }
-        if (Bottom >= CurrSize.Height && ySpeed > 0)
+        if (Bottom >= Parent.RenderSize.Height && ySpeed > 0)
         {
             ySpeed = 0;
         }
@@ -94,7 +90,7 @@ internal class UserPicture : User
 
     public override void Move(Point2D<int> center)
     {
-        if (center.X <= CurrSize.Width && center.Y <= CurrSize.Height && center.X > 0 && center.Y > 0)
+        if (center.X <= Parent.RenderSize.Width && center.Y <= Parent.RenderSize.Height && center.X > 0 && center.Y > 0)
         {
             Center = center;
 
@@ -102,25 +98,23 @@ internal class UserPicture : User
         }
     }
 
-    public override void Remove(UIElementCollection collection)
+    public override void Remove()
     {
-        collection.Remove(_image);
+        Parent.Children.Remove(_image);
     }
 
-    public override void Scale(Size newSize)
+    public override void Scale()
     {
-        double coeffX = (double)newSize.Width / IniSize.Width;
-        double coeffY = (double)newSize.Height / IniSize.Height;
+        double coeffX = (double)Parent.RenderSize.Width / IniSize.Width;
+        double coeffY = (double)Parent.RenderSize.Height / IniSize.Height;
 
         Center = new(
-                (int)Math.Round(Center.X * (newSize.Width / CurrSize.Width)),
-                (int)Math.Round(Center.Y * (newSize.Height / CurrSize.Height))
+                (int)Math.Round(Center.X * coeffX),
+                (int)Math.Round(Center.Y * coeffY)
             );
 
         _image.Width = IniImageSize.Width * coeffX;
         _image.Height = IniImageSize.Height * coeffY;
-
-        CurrSize = newSize;
 
         _image.Margin = new(Left, Top, 0, 0);
     }

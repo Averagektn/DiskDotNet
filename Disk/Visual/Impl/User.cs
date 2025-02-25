@@ -1,5 +1,6 @@
 ﻿using Disk.Data.Impl;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Media;
 
 namespace Disk.Visual.Impl;
@@ -22,7 +23,8 @@ namespace Disk.Visual.Impl;
 /// <param name="iniSize">
 ///     The initial size of the user
 /// </param>
-public class User(Point2D<int> center, int radius, int speed, Brush color, Size iniSize) : Circle(center, radius, speed, color, iniSize)
+public class User(Point2D<int> center, int radius, int speed, Brush color, Canvas canvas, Size iniSize) : 
+    Circle(center, radius, speed, color, canvas, iniSize)
 {
     /// <summary>
     ///     Event that is triggered when the user shoots

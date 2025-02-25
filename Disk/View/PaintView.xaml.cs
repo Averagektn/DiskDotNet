@@ -113,8 +113,8 @@ namespace Disk.View.PaintWindow
             User = ViewModel.GetUser();
             Target = ViewModel.GetProgressTarget();
 
-            Scalables.Add(Target); Scalables.Add(User); Scalables.Add(Converter);
-            Scalables.ForEach(elem => elem?.Scale(PaintPanelSize));
+            Scalables.Add(Target); Scalables.Add(User); //Scalables.Add(Converter);
+            Scalables.ForEach(elem => elem?.Scale());
 
             if (ViewModel.IsGame)
             {
@@ -122,7 +122,7 @@ namespace Disk.View.PaintWindow
 
                 Drawables.Add(Target); Drawables.Add(User);
 
-                Drawables.ForEach(elem => elem?.Draw(PaintArea));
+                //Drawables.ForEach(elem => elem?.Draw(PaintArea));
 
                 MoveTimer.Start();
                 ShotTimer.Start();
@@ -131,8 +131,8 @@ namespace Disk.View.PaintWindow
 
         private void StopGame()
         {
-            Target.Remove(PaintArea.Children);
-            User.Remove(PaintArea.Children);
+            //Target.Remove(PaintArea.Children);
+            //User.Remove(PaintArea.Children);
 
             _ = Drawables.Remove(Target);
             _ = Scalables.Remove(Target);
@@ -152,7 +152,7 @@ namespace Disk.View.PaintWindow
             AllowedArea.RadiusY = PaintPanelCenterY;
             AllowedArea.Center = new(PaintPanelCenterX, PaintPanelCenterY);
 
-            Scalables.ForEach(elem => elem?.Scale(PaintPanelSize));
+            Scalables.ForEach(elem => elem?.Scale());
         }
 
         private void OnStopClick(object sender, RoutedEventArgs e)
