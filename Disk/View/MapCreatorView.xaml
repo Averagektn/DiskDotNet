@@ -50,6 +50,7 @@
                     <EllipseGeometry x:Name="AllowedArea"/>
                 </Path.Data>
             </Path>
+            <Button Visibility="Collapsed" Name="FocusButton"/>
         </Canvas>
     </Grid>
 </UserControl>

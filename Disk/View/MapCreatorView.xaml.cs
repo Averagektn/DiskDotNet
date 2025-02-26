@@ -15,31 +15,61 @@ namespace Disk.View
     public partial class MapCreatorView : UserControl
     {
         private MapCreatorViewModel? ViewModel => DataContext as MapCreatorViewModel;
-        private Target? _selectedTarget = null;
+        private NumberedTarget? _selectedTarget = null;
+        private static int IniWidth = Settings.Default.IniScreenWidth;
+        private static int IniHeight = Settings.Default.IniScreenHeight;
+        private static float AngleWidth => Settings.Default.XMaxAngle * 2;
+        private static float AngleHeight => Settings.Default.YMaxAngle * 2;
+
+        private readonly List<NumberedTarget> _targets = [];
+
+        private Converter? _converter = null;
 
         public MapCreatorView()
         {
             InitializeComponent();
 
             MouseLeftButtonDown += OnMouseLeftButtonDown;
+            MouseLeftButtonUp += OnMouseLeftButtonUp;
             MouseRightButtonDown += OnMouseRightButtonDown;
             MouseDoubleClick += OnMouseDoubleClick;
             MouseMove += OnMouseMove;
             SizeChanged += OnSizeChanged;
+            Loaded += OnLoaded;
         }
 
+        private void OnLoaded(object sender, RoutedEventArgs e)
+        {
+            _converter = new Converter((int)PaintArea.ActualWidth, (int)PaintArea.ActualHeight, AngleWidth, AngleHeight);
+            IniWidth = (int)PaintArea.ActualWidth;
+            IniHeight = (int)PaintArea.ActualHeight;
+        }
+
+        private bool _isMoveTriggered = false;
+        private void OnMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            _isMoveTriggered = false;
+        }
         private void OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             var mousePos = e.GetPosition(sender as UIElement);
-            _selectedTarget = ViewModel?.GetTarget(mousePos);
+            var x = (int)mousePos.X;
+            var y = (int)mousePos.Y;
+
+            var prevTarget = _selectedTarget;
+            _selectedTarget = _targets.FindLast(target => target.Contains(new Point2D<int>(x, y)));
+
+            prevTarget?.HideAngles();
+            _selectedTarget?.ShowAngles();
+
+            _isMoveTriggered = _selectedTarget is not null;
+
+            Keyboard.ClearFocus();
         }
 
         private void OnMouseMove(object sender, MouseEventArgs e)
         {
-            var window = Window.GetWindow(this);
-            var converter = new Converter((int)window.ActualWidth, (int)window.ActualHeight, Settings.Default.XMaxAngle * 2, Settings.Default.YMaxAngle * 2);
-
-            if (e.LeftButton == MouseButtonState.Pressed)
+            if (e.LeftButton == MouseButtonState.Pressed && _isMoveTriggered)
             {
                 var mousePos = e.GetPosition(sender as UIElement);
                 var x = (int)mousePos.X;
@@ -47,10 +77,6 @@ namespace Disk.View
                 if (AllowedArea.FillContains(mousePos))
                 {
                     var clickPoint = new Point2D<int>(x, y);
-
-                    var point = converter.ToAngle_FromWnd(new(x, y));
-                    // replace
-                    window.Title = $"{point.X:f2}; {point.Y:f2}";
                     _selectedTarget?.Move(clickPoint);
                 }
                 else
@@ -62,11 +88,11 @@ namespace Disk.View
                     double normalizedX = (x - center.X) / radiusX;
                     double normalizedY = (y - center.Y) / radiusY;
 
-                    double length = Math.Sqrt(normalizedX * normalizedX + normalizedY * normalizedY);
+                    double length = Math.Sqrt((normalizedX * normalizedX) + (normalizedY * normalizedY));
 
                     double scale = 1 / length;
-                    int nearestX = (int)(center.X + normalizedX * radiusX * scale);
-                    int nearestY = (int)(center.Y + normalizedY * radiusY * scale);
+                    int nearestX = (int)(center.X + (normalizedX * radiusX * scale));
+                    int nearestY = (int)(center.Y + (normalizedY * radiusY * scale));
 
                     _selectedTarget?.Move(new(nearestX, nearestY));
                 }
@@ -76,7 +102,20 @@ namespace Disk.View
         private void OnMouseRightButtonDown(object sender, MouseButtonEventArgs e)
         {
             var mousePos = e.GetPosition(sender as UIElement);
-            ViewModel?.RemoveTarget(mousePos);
+            var x = (int)mousePos.X;
+            var y = (int)mousePos.Y;
+
+            var target = _targets.FindLast(target => target.Contains(new(x, y)));
+            if (target is not null)
+            {
+                _targets.Remove(target);
+                target.Remove();
+
+                for (int i = 0; i < _targets.Count; i++)
+                {
+                    _targets[i].UpdateNumber(i + 1);
+                }
+            }
         }
 
         private void OnSizeChanged(object sender, SizeChangedEventArgs e)
@@ -85,7 +124,8 @@ namespace Disk.View
             AllowedArea.RadiusY = ActualHeight / 2;
             AllowedArea.Center = new(ActualWidth / 2, ActualHeight / 2);
 
-            ViewModel?.ScaleTargets(RenderSize);
+            _converter?.Scale(new(ActualWidth, ActualHeight));
+            _targets.ForEach(target => target.Scale());
         }
 
         private void OnMouseDoubleClick(object sender, MouseButtonEventArgs e)
@@ -96,13 +136,32 @@ namespace Disk.View
 
             if (e.ChangedButton == MouseButton.Left && AllowedArea.FillContains(new Point(x, y)))
             {
-                ViewModel?.AddTarget(mousePos, RenderSize, PaintArea);
+                var target = GetIniCoordTarget(mousePos.X, mousePos.Y);
+                target.Scale();
+                target.Draw();
+                _targets.Add(target);
             }
+        }
+
+        private NumberedTarget GetIniCoordTarget(double actualX, double actualY)
+        {
+            return new(
+                center: new Point2D<int>
+                (
+                    (int)(actualX / PaintArea.ActualWidth * IniWidth),
+                    (int)(actualY / PaintArea.ActualHeight * IniHeight)
+                ),
+                radius: Settings.Default.IniTargetRadius,
+                parent: PaintArea,
+                number: _targets.Count + 1,
+                iniSize: new(IniWidth, IniHeight),
+                converter: _converter!
+            );
         }
 
         private void Save_Click(object sender, RoutedEventArgs e)
         {
-            ViewModel?.SaveMap(PaintArea.ActualWidth, PaintArea.ActualHeight);
+            ViewModel?.SaveMap(_targets);
         }
     }
 }

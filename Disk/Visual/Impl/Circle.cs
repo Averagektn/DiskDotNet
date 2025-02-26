@@ -81,6 +81,7 @@ public class Circle : IDynamicFigure
     ///     Initial ize for scaling
     /// </summary>
     protected readonly Size IniSize;
+    protected Size CurrSize;
 
     /// <summary>
     ///     Initial speed to be scaled
@@ -132,6 +133,7 @@ public class Circle : IDynamicFigure
         Radius = radius;
 
         IniSize = iniSize;
+        CurrSize = iniSize;
     }
 
     /// <summary>
@@ -230,13 +232,17 @@ public class Circle : IDynamicFigure
 
     public virtual void Scale()
     {
-        double coeffX = Parent.RenderSize.Width / IniSize.Width;
-        double coeffY = Parent.RenderSize.Height / IniSize.Height;
+        double coeffX = Parent.ActualWidth / IniSize.Width;
+        double coeffY = Parent.ActualHeight / IniSize.Height;
 
         Speed = (int)Math.Round(IniSpeed * (coeffX + coeffY) / 2);
         Radius = (int)Math.Round(IniRadius * (coeffX + coeffY) / 2);
 
-        Center = new((int)Math.Round(Center.X * coeffX), (int)Math.Round(Center.Y * coeffY));
+        Center = new(
+            (int)Math.Round(Center.X * (Parent.ActualWidth / CurrSize.Width)), 
+            (int)Math.Round(Center.Y * (Parent.ActualHeight / CurrSize.Height)));
+
+        CurrSize = Parent.RenderSize;
     }
 
     /// <summary>

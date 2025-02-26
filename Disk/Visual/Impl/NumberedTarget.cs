@@ -1,9 +1,7 @@
 ﻿using Disk.Calculations.Impl.Converters;
 using Disk.Data.Impl;
-using DocumentFormat.OpenXml.Wordprocessing;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Input;
 using System.Windows.Media;
 
 namespace Disk.Visual.Impl;
@@ -14,53 +12,51 @@ public class NumberedTarget : Target
     private readonly TextBox _coordY;
     private readonly TextBox _coordX;
     private readonly Converter _converter;
-    private float y;
-    private float x;
-    public Point2D<float> Angles => new(x, y);
+
+    private float _y;
+    private float _x;
+
+    public Point2D<float> Angles => new(_x, _y);
 
     public NumberedTarget(Point2D<int> center, int radius, Canvas parent, int number, Size iniSize, Converter converter)
         : base(center, radius, parent, iniSize)
     {
         _converter = converter;
         var point = converter.ToAngle_FromWnd(center);
-        x = point.X;
-        y = point.Y;
+        _x = point.X;
+        _y = point.Y;
+
+        void OnLostKeyboardFocus(TextBox textBox, ref float coord)
+        {
+            if (float.TryParse($"{textBox.Text:f1}", out var res))
+            {
+                coord = res;
+                var newCenter = converter.ToWndCoord(new Point2D<float>(_x, _y));
+                Move(newCenter);
+            }
+            else
+            {
+                textBox.Text = $"{coord:f1}";
+            }
+        }
 
         _coordY = new TextBox()
         {
-            Text = $"{y:f2}",
-            MaxLength = 5,
-            FontSize = 15,
+            Text = $"{_y:f1}",
+            MaxLength = 3,
+            FontSize = 25,
+            MinWidth = MaxRadius,
         };
-        _coordY.TextChanged += (_, _) =>
-        {
-            if (float.TryParse($"{_coordY.Text:f2}", out var res))
-            {
-                y = res;
-            }
-            else
-            {
-                _coordY.Text = y.ToString();
-            }
-        };
+        _coordY.LostKeyboardFocus += (_, _) => OnLostKeyboardFocus(_coordY, ref _y);
 
         _coordX = new TextBox()
         {
-            Text = $"{x:f2}",
-            MaxLength = 5,
-            FontSize = 15,
+            Text = $"{_x:f1}",
+            MaxLength = 3,
+            FontSize = 25,
+            MinWidth = MaxRadius,
         };
-        _coordX.TextChanged += (_, _) =>
-        {
-            if (float.TryParse($"{_coordX.Text:f2}", out var res))
-            {
-                x = res;
-            }
-            else
-            {
-                _coordX.Text = x.ToString();
-            }
-        };
+        _coordX.LostKeyboardFocus += (_, _) => OnLostKeyboardFocus(_coordX, ref _x);
 
         _numberText = new TextBlock()
         {
@@ -88,18 +84,20 @@ public class NumberedTarget : Target
     public void HideAngles()
     {
         _coordY.Visibility = Visibility.Hidden;
+        _coordX.Visibility = Visibility.Hidden;
     }
 
     public void ShowAngles()
     {
         _coordY.Visibility = Visibility.Visible;
+        _coordX.Visibility = Visibility.Visible;
     }
 
     public void UpdateNumber(int number)
     {
         _numberText.Text = number.ToString();
 
-        UpdateSizes();
+        UpdateNumSize();
     }
 
     public override void Draw()
@@ -117,21 +115,62 @@ public class NumberedTarget : Target
     {
         base.Scale();
 
-        UpdateSizes();
+        UpdateNumSize();
     }
 
     public override void Move(Point2D<int> center)
     {
         base.Move(center);
-        
-        var point = _converter.ToAngle_FromWnd(Center);
-        _coordX.Text = $"{point.X:f2}";
-        _coordY.Text = $"{point.Y:f2}";
+
+        var point = _converter.ToAngle_FromWnd(center);
+        _coordX.Text = $"{point.X:f1}";
+        _coordY.Text = $"{point.Y:f1}";
 
         ChangePosition();
+
+        CheckOutOfBounds();
     }
 
-    private void UpdateSizes()
+    private void CheckOutOfBounds()
+    {
+        // X coord right
+        if (Right + _coordX.ActualWidth > Parent.ActualWidth)
+        {
+            Canvas.SetLeft(_coordX, Left - 2 - _coordX.ActualWidth);
+        }
+
+        // X coord bottom
+        if (Center.Y + (_coordX.ActualHeight / 2) > Parent.ActualHeight)
+        {
+            Canvas.SetTop(_coordX, Parent.ActualHeight - 2 - _coordX.ActualHeight);
+        }
+
+        // X coord top
+        if (Center.Y - (_coordX.ActualHeight / 2) < 0)
+        {
+            Canvas.SetTop(_coordX, 2);
+        }
+
+        // Y coord left
+        if (Center.X - (_coordY.ActualWidth / 2) < 0)
+        {
+            Canvas.SetLeft(_coordY, 2);
+        }
+
+        // Y coord right
+        if (Center.X + (_coordY.ActualWidth / 2) > Parent.ActualWidth)
+        {
+            Canvas.SetLeft(_coordY, Parent.ActualWidth - 2 - _coordY.ActualWidth);
+        }
+
+        // Y coord top
+        if (Top - _coordY.ActualWidth < 0)
+        {
+            Canvas.SetTop(_coordY, Bottom + 2);
+        }
+    }
+
+    private void UpdateNumSize()
     {
         var numSize = _numberText.Text.Length;
         var fontSize = (double)((MaxRadius * 2) - (Radius * 2)) / numSize;

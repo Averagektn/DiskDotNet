@@ -115,9 +115,9 @@ public class Target(Point2D<int> center, int radius, Canvas parent, Size iniSize
     /// </param>
     public override void Move(Point2D<int> center)
     {
-        Center = center;
-
-        Circles.ForEach(circle => circle.Move(center));
+        base.Move(center);
+     
+        Circles.ForEach(circle => circle.Move(Center));
     }
 
     /// <summary>
