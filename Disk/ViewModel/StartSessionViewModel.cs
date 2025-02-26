@@ -13,20 +13,38 @@ using Settings = Disk.Properties.Config.Config;
 
 namespace Disk.ViewModel;
 
-public class StartSessionViewModel(NavigationStore navigationStore, ISessionRepository sessionRepository, IMapRepository mapRepository)
-    : ObserverViewModel
+public class StartSessionViewModel : ObserverViewModel
 {
     public required Patient Patient { get; set; }
     public required Appointment Appointment { get; set; }
     public event Action? OnSessionOver;
 
-    public ObservableCollection<Map> Maps => [.. mapRepository.GetAll()];
+    private ObservableCollection<Map> _maps = [];
+    public ObservableCollection<Map> Maps
+    {
+        get => _maps;
+        set => SetProperty(ref _maps, value);
+    }
+
     public Map? SelectedMap { get; set; }
 
     public ICommand StartSessionCommand => new Command(StartSession);
     public ICommand CancelCommand => new Command(_ => IniNavigationStore.Close());
 
     private static Settings Settings => Settings.Default;
+
+    private readonly NavigationStore _navigationStore;
+    private readonly ISessionRepository _sessionRepository;
+    private readonly IMapRepository _mapRepository;
+
+    public StartSessionViewModel(NavigationStore navigationStore, ISessionRepository sessionRepository, IMapRepository mapRepository)
+    {
+        _navigationStore = navigationStore;
+        _sessionRepository = sessionRepository;
+        _mapRepository = mapRepository;
+
+        Maps = [.. _mapRepository.GetAll()];
+    }
 
     private void StartSession(object? obj)
     {
@@ -53,10 +71,26 @@ public class StartSessionViewModel(NavigationStore navigationStore, ISessionRepo
             MaxXAngle = Settings.XMaxAngle,
             MaxYAngle = Settings.YMaxAngle
         };
-        sessionRepository.Add(session);
+        _sessionRepository.Add(session);
 
         IniNavigationStore.Close();
-        PaintNavigator.Navigate(navigationStore, Settings.CursorFilePath, logPath, OnSessionOver, session);
+        PaintNavigator.Navigate(_navigationStore, Settings.CursorFilePath, logPath, OnSessionOver, session);
         Application.Current.MainWindow.WindowState = WindowState.Maximized;
+    }
+
+    public void FilterMapNames(string filter)
+    {
+        if (filter == string.Empty)
+        {
+            Maps = [.. _mapRepository.GetAll()];
+        }
+
+        var filteredMaps = Maps
+            .Where(map => map.Name.StartsWith(filter, StringComparison.CurrentCultureIgnoreCase))
+            .Union(Maps.Where(map => map.Name.Contains(filter, StringComparison.CurrentCultureIgnoreCase)))
+            .Distinct()
+            .ToList();
+
+        Maps = [.. filteredMaps];
     }
 }

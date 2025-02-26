@@ -61,29 +61,20 @@ namespace Disk.Properties.Langs.Appointment {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Angle distance.
-        /// </summary>
-        public static string AngleDistance {
-            get {
-                return ResourceManager.GetString("AngleDistance", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Angle speed.
-        /// </summary>
-        public static string AngleSpeed {
-            get {
-                return ResourceManager.GetString("AngleSpeed", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Approach speed.
         /// </summary>
         public static string ApproachSpeed {
             get {
                 return ResourceManager.GetString("ApproachSpeed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Average speed.
+        /// </summary>
+        public static string AverageSpeed {
+            get {
+                return ResourceManager.GetString("AverageSpeed", resourceCulture);
             }
         }
         
@@ -111,15 +102,6 @@ namespace Disk.Properties.Langs.Appointment {
         public static string Deviation {
             get {
                 return ResourceManager.GetString("Deviation", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Dispersion.
-        /// </summary>
-        public static string Dispersion {
-            get {
-                return ResourceManager.GetString("Dispersion", resourceCulture);
             }
         }
         

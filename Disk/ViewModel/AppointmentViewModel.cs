@@ -17,8 +17,20 @@ public class AppointmentViewModel(ModalNavigationStore modalNavigationStore, ISe
     public required Patient Patient { get; set; }
     public required Appointment Appointment { get; set; }
     public Session? SelectedSession { get; set; } = null;
-    public ObservableCollection<Session> Sessions { get; set; } = [];
-    public ObservableCollection<PathToTarget> PathsToTargets { get; set; } = [];
+    
+    private ObservableCollection<Session> _sessions = [];
+    public ObservableCollection<Session> Sessions 
+    {
+        get => _sessions;
+        set => SetProperty(ref _sessions, value);
+    }
+
+    private ObservableCollection<PathToTarget> _pathsToTargets = [];
+    public ObservableCollection<PathToTarget> PathsToTargets 
+    { 
+        get => _pathsToTargets;
+        set => SetProperty(ref _pathsToTargets, value); 
+    }
 
     public ICommand StartSessionCommand => 
         new Command(_ => StartSessionNavigator.Navigate(modalNavigationStore, Update, Appointment, Patient));
@@ -53,22 +65,11 @@ public class AppointmentViewModel(ModalNavigationStore modalNavigationStore, ISe
             return;
         }
 
-        PathsToTargets.Clear();
-
-        foreach (var pathToTarget in SelectedSession.PathToTargets)
-        {
-            PathsToTargets.Add(pathToTarget);
-        }
+        PathsToTargets = [.. SelectedSession.PathToTargets];
     }
 
     private void Update()
     {
-        Sessions.Clear();
-        var sessions = sessionRepository.GetSessionsWithResultsByAppointment(Appointment.Id);
-
-        foreach (var session in sessions)
-        {
-            Sessions.Add(session);
-        }
+        Sessions = [.. sessionRepository.GetSessionsWithResultsByAppointment(Appointment.Id)];
     }
 }

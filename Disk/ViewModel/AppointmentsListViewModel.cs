@@ -28,7 +28,12 @@ public class AppointmentsListViewModel(NavigationStore navigationStore, IAppoint
         }
     }
 
-    public ObservableCollection<Appointment> Appointments { get; set; } = [];
+    private ObservableCollection<Appointment> _appointments = [];
+    public ObservableCollection<Appointment> Appointments 
+    {
+        get => _appointments;
+        set => SetProperty(ref _appointments, value);
+    }
 
     public Appointment? SelectedAppointment { get; set; }
 
@@ -109,21 +114,13 @@ public class AppointmentsListViewModel(NavigationStore navigationStore, IAppoint
         UpdateAppointments();
     });
 
-    public ICommand SearchByDateCommand => new Command(
-        _ =>
+    public ICommand SearchByDateCommand => new Command(_ =>
+    {
+        if (SelectedDate is not null)
         {
-            if (SelectedDate is not null)
-            {
-                Appointments.Clear();
-                var appointments = appointmentRepository
-                    .GetAppoitmentsByDate(Patient.Id, SelectedDate.Value.Date);
-
-                foreach (var appointment in appointments)
-                {
-                    Appointments.Add(appointment);
-                }
-            }
-        });
+            Appointments = [.. appointmentRepository.GetAppoitmentsByDate(Patient.Id, SelectedDate.Value.Date)];
+        }
+    });
 
     private void UpdateAppointments()
     {

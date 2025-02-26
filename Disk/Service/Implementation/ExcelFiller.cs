@@ -58,10 +58,9 @@ public class ExcelFiller(IMapRepository mapRepository) : IExcelFiller
             worksheet.Cell(2, 1).Value = session.DateTime;
             worksheet.Cell(2, 2).Value = mapRepository.GetById(session.Map).Name;
 
-            worksheet.Cell(4, 1).Value = Localization.Dispersion;
-            worksheet.Cell(4, 2).Value = Localization.Deviation;
-            worksheet.Cell(4, 3).Value = Localization.MathExp;
-            worksheet.Cell(4, 4).Value = Localization.Score;
+            worksheet.Cell(4, 1).Value = Localization.Deviation;
+            worksheet.Cell(4, 2).Value = Localization.MathExp;
+            worksheet.Cell(4, 3).Value = Localization.Score;
 
             var sres = session.SessionResult;
             if (sres is not null)
@@ -73,10 +72,8 @@ public class ExcelFiller(IMapRepository mapRepository) : IExcelFiller
             }
 
             worksheet.Cell(7, 1).Value = Localization.TargetNum;
-            worksheet.Cell(7, 2).Value = Localization.AngleDistance;
-            worksheet.Cell(7, 3).Value = Localization.Time;
-            worksheet.Cell(7, 4).Value = Localization.AngleSpeed;
-            worksheet.Cell(7, 5).Value = Localization.ApproachSpeed;
+            worksheet.Cell(7, 2).Value = Localization.Time;
+            worksheet.Cell(7, 3).Value = Localization.ApproachSpeed;
 
             const int pathCol = 7;
 

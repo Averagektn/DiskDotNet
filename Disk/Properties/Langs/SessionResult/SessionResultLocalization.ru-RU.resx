@@ -117,11 +117,8 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="AngleDistance" xml:space="preserve">
-    <value>Расстояние (в углах)</value>
-  </data>
-  <data name="AngleSpeed" xml:space="preserve">
-    <value>Скорость (в углах)</value>
+  <data name="AverageSpeed" xml:space="preserve">
+    <value>Средняя скорость</value>
   </data>
   <data name="ApproachSpeed" xml:space="preserve">
     <value>Скорость сближения</value>
@@ -131,9 +128,6 @@
   </data>
   <data name="Diagram" xml:space="preserve">
     <value>Диаграмма частот</value>
-  </data>
-  <data name="Dispersion" xml:space="preserve">
-    <value>Дисперсия</value>
   </data>
   <data name="LeftFoot" xml:space="preserve">
     <value>Л</value>

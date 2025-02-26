@@ -47,15 +47,10 @@
                 Width="1*" 
                 Header="{x:Static lang:AppointmentLocalization.DateTime}" 
                 Binding="{Binding DateTime}" />
-            
                 <DataGridTextColumn 
                     Width="1*" 
                     Header="{x:Static lang:AppointmentLocalization.Deviation}" 
                     Binding="{Binding SessionResult.Deviation, StringFormat=N1}" />
-                <DataGridTextColumn 
-                    Width="1*" 
-                    Header="{x:Static lang:AppointmentLocalization.Dispersion}" 
-                    Binding="{Binding SessionResult.Dispersion, StringFormat=N1}" />
                 <DataGridTextColumn 
                     Width="1*" 
                     Header="{x:Static lang:AppointmentLocalization.MathExp}" 
@@ -100,11 +95,7 @@
                     Binding="{Binding TargetNumInc}" />                
                 <DataGridTextColumn 
                     Width="1*" 
-                    Header="{x:Static lang:AppointmentLocalization.AngleDistance}" 
-                    Binding="{Binding AngleDistance, StringFormat=N1}" />
-                <DataGridTextColumn 
-                    Width="1*" 
-                    Header="{x:Static lang:AppointmentLocalization.AngleSpeed}" 
+                    Header="{x:Static lang:AppointmentLocalization.AverageSpeed}" 
                     Binding="{Binding AngleSpeed, StringFormat=N1}" />
                 <DataGridTextColumn 
                     Width="1*" 

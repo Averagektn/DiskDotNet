@@ -4,9 +4,10 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Disk.View" xmlns:viewmodel="clr-namespace:Disk.ViewModel" d:DataContext="{d:DesignInstance Type=viewmodel:StartSessionViewModel}"
-             xmlns:lang="clr-namespace:Disk.Properties.Langs.StartSession" 
+             xmlns:lang="clr-namespace:Disk.Properties.Langs.StartSession" xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="400">
+             d:DesignHeight="450" d:DesignWidth="400"
+             MinHeight="450" MinWidth="400">
 
     <Grid>
         <Grid.RowDefinitions>
@@ -38,11 +39,15 @@
             <ComboBox 
                 Grid.Row="1"
                 FontSize="25"
+                IsTextSearchEnabled="False"
                 VerticalAlignment="Center"
                 Margin="20"
                 HorizontalAlignment="Stretch"
+                IsEditable="True"
                 ItemsSource="{Binding Maps}" 
-                SelectedItem="{Binding SelectedMap}"/>
+                SelectedItem="{Binding SelectedMap}"
+                TextBoxBase.TextChanged="ComboBox_TextChanged">
+            </ComboBox>
 
             <Button
                 Grid.Row="2"

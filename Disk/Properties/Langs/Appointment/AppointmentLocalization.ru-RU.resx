@@ -117,11 +117,8 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="AngleDistance" xml:space="preserve">
-    <value>Угловое расстояние</value>
-  </data>
-  <data name="AngleSpeed" xml:space="preserve">
-    <value>Угловая скорость</value>
+  <data name="AverageSpeed" xml:space="preserve">
+    <value>Средняя скорость</value>
   </data>
   <data name="ApproachSpeed" xml:space="preserve">
     <value>Скорость сближения</value>
@@ -134,9 +131,6 @@
   </data>
   <data name="Deviation" xml:space="preserve">
     <value>Отклонение</value>
-  </data>
-  <data name="Dispersion" xml:space="preserve">
-    <value>Дисперсия</value>
   </data>
   <data name="ExportToExcel" xml:space="preserve">
     <value>Экспорт в Excel</value>
@@ -154,7 +148,7 @@
     <value>Карта</value>
   </data>
   <data name="MathExp" xml:space="preserve">
-    <value>Математическое ожидание</value>
+    <value>Матожидание</value>
   </data>
   <data name="PathInTarget" xml:space="preserve">
     <value>Путь в цели</value>

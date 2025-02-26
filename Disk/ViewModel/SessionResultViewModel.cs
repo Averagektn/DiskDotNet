@@ -107,10 +107,8 @@ public class SessionResultViewModel(NavigationStore navigationStore) : ObserverV
         Message =
         $"""
             {Localization.StandartDeviation}: {CurrentSession.SessionResult?.Deviation:F2}
-            {Localization.Dispersion}: {CurrentSession.SessionResult?.Dispersion:F2}
             {Localization.MathExp}: {CurrentSession.SessionResult?.MathExp:F2}
-            {Localization.AngleDistance}: {CurrentSession.PathToTargets.ElementAt(SelectedIndex).AngleDistance:F2}
-            {Localization.AngleSpeed}: {CurrentSession.PathToTargets.ElementAt(SelectedIndex).AngleSpeed:F2}
+            {Localization.AverageSpeed}: {CurrentSession.PathToTargets.ElementAt(SelectedIndex).AngleSpeed:F2}
             {Localization.ApproachSpeed}: {CurrentSession.PathToTargets.ElementAt(SelectedIndex).ApproachSpeed:F2}
             {Localization.Time}: {CurrentSession.PathToTargets.ElementAt(SelectedIndex).Time:F2}
             {Localization.Precision}: {CurrentSession.PathInTargets.ElementAt(SelectedIndex).Precision:F2}  
@@ -171,6 +169,7 @@ public class SessionResultViewModel(NavigationStore navigationStore) : ObserverV
         }
 
         var target = DrawableFabric.GetIniProgressTarget(new(0, 0), canvas);
+        target.Draw();
         target.Scale();
 
         var angRadius = (Converter.ToAngleX_FromWnd(target.Radius) + Converter.ToAngleY_FromWnd(target.Radius)) / 2;

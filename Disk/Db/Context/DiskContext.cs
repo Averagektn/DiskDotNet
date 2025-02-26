@@ -26,10 +26,7 @@ public partial class DiskContext : DbContext
     }
 
     public void EnsureDatabaseExists()
-    {
-        // dev
-        Database.EnsureDeleted();
-        
+    {   
         if (!Directory.Exists("./Db"))
         {
             Log.Fatal("Db folder not found");
