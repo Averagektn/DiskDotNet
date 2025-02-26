@@ -131,15 +131,9 @@ public class Target(Point2D<int> center, int radius, Canvas parent, Size iniSize
     /// </returns>
     public override int ReceiveShot(Point2D<int> shot)
     {
-        int res = 1;
-
+        int res = Circles.Any(circle => circle.Contains(shot)) ? 1 : 0;
         // uncomment to make progressive target fill
-        /*int res = 0;
-
-        foreach (var circle in Circles)
-        {
-            res += circle.Contains(shot) ? 1 : 0;
-        }*/
+        // int res = Circles.Count(circle => circle.Contains(shot));
 
         OnReceiveShot?.Invoke(res);
 

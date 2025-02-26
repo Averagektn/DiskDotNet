@@ -12,37 +12,48 @@
              d:DesignHeight="200" 
              d:DesignWidth="300">
 
-    <StackPanel 
-        HorizontalAlignment="Center" 
-        VerticalAlignment="Center">
-        
-        <TextBlock 
-            FontSize="25"
-            Text="{x:Static lang:MapNamePickerLocalization.MapName}" 
-            Margin="15"
-            HorizontalAlignment="Left"/>
-        
-        <TextBox 
-            Margin="15 0"
-            FontSize="25"
-            BorderThickness="0 0 0 1"
-            MaxHeight="35"
-            HorizontalAlignment="Stretch"
-            Text="{Binding MapName}"/>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="5*"/>
+            <ColumnDefinition Width="1*"/>
+        </Grid.ColumnDefinitions>
 
-        <Button 
-            Content="{x:Static lang:MapNamePickerLocalization.Add}" 
-            Command="{Binding SaveMapCommand}"                    
-            Margin="25 10"/>
+        <StackPanel 
+            Grid.Column="1"
+            HorizontalAlignment="Center" 
+            VerticalAlignment="Center">
 
-        <Button 
-            Content="{x:Static lang:MapNamePickerLocalization.Cancel}" 
-            Command="{Binding CancelCommand}"                    
-            Margin="25 0 25 5"/>
+            <TextBlock 
+                FontSize="25"
+                Text="{x:Static lang:MapNamePickerLocalization.MapName}" 
+                Margin="15"
+                HorizontalAlignment="Left"/>
 
-        <popup:Popup 
-            IsPopupOpen="{Binding IsShowPopup}" 
-            PopupHeader="{Binding PopupHeader}" 
-            PopupMessage="{Binding PopupMessage}"/>
-    </StackPanel>
+            <TextBox 
+                Margin="15 0"
+                FontSize="25"
+                BorderThickness="0 0 0 1"
+                MaxHeight="35"
+                HorizontalAlignment="Stretch"
+                Text="{Binding MapName}"/>
+
+            <Button 
+                Content="{x:Static lang:MapNamePickerLocalization.Add}" 
+                Command="{Binding SaveMapCommand}"                    
+                Margin="25 10"
+                MaxWidth="400"/>
+
+            <Button 
+                Content="{x:Static lang:MapNamePickerLocalization.Cancel}" 
+                Command="{Binding CancelCommand}"                    
+                Margin="25 0 25 5"
+                MaxWidth="400"/>
+
+            <popup:Popup 
+                IsPopupOpen="{Binding IsShowPopup}" 
+                PopupHeader="{Binding PopupHeader}" 
+                PopupMessage="{Binding PopupMessage}"/>
+        </StackPanel>
+    </Grid>
 </UserControl>

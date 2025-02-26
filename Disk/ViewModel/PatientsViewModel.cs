@@ -20,8 +20,8 @@ public class PatientsViewModel : ObserverViewModel
         }
     });
 
-    public ICommand AddPatientCommand => new Command(
-        _ => AddPatientNavigator.Navigate(_modalNavigationStore, patient => SortedPatients = [.. SortedPatients.Prepend(patient)]));
+    public ICommand AddPatientCommand => new Command(_ => 
+    AddPatientNavigator.Navigate(_modalNavigationStore, patient => SortedPatients = [.. SortedPatients.Prepend(patient)]));
 
     public ICommand DeletePatientCommand => new Command(_ =>
     {
