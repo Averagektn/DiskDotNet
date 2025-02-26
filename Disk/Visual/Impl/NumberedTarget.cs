@@ -43,20 +43,26 @@ public class NumberedTarget : Target
         _coordY = new TextBox()
         {
             Text = $"{_y:f1}",
-            MaxLength = 3,
+            MaxLength = 5,
             FontSize = 25,
             MinWidth = MaxRadius,
         };
-        _coordY.LostKeyboardFocus += (_, _) => OnLostKeyboardFocus(_coordY, ref _y);
+        _coordY.LostFocus += (_, _) =>
+        {
+            OnLostKeyboardFocus(_coordY, ref _y);
+        };
 
         _coordX = new TextBox()
         {
             Text = $"{_x:f1}",
-            MaxLength = 3,
+            MaxLength = 5,
             FontSize = 25,
             MinWidth = MaxRadius,
         };
-        _coordX.LostKeyboardFocus += (_, _) => OnLostKeyboardFocus(_coordX, ref _x);
+        _coordX.LostFocus += (_, _) =>
+        {
+            OnLostKeyboardFocus(_coordX, ref _x);
+        };
 
         _numberText = new TextBlock()
         {

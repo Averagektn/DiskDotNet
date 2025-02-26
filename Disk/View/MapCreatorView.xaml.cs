@@ -36,6 +36,12 @@ namespace Disk.View
             MouseMove += OnMouseMove;
             SizeChanged += OnSizeChanged;
             Loaded += OnLoaded;
+            LayoutUpdated += OnLayoutUpdated;
+        }
+
+        private void OnLayoutUpdated(object? sender, EventArgs e)
+        {
+            Canvas.SetLeft(MaxX, PaintArea.ActualWidth - 2 - MaxX.ActualWidth);
         }
 
         private void OnLoaded(object sender, RoutedEventArgs e)
@@ -43,6 +49,9 @@ namespace Disk.View
             _converter = new Converter((int)PaintArea.ActualWidth, (int)PaintArea.ActualHeight, AngleWidth, AngleHeight);
             IniWidth = (int)PaintArea.ActualWidth;
             IniHeight = (int)PaintArea.ActualHeight;
+
+            MaxX.Text = $"X:{Settings.Default.XMaxAngle:f1}";
+            MaxY.Text = $"Y: {Settings.Default.YMaxAngle:f1}";
         }
 
         private bool _isMoveTriggered = false;
@@ -63,8 +72,6 @@ namespace Disk.View
             _selectedTarget?.ShowAngles();
 
             _isMoveTriggered = _selectedTarget is not null;
-
-            Keyboard.ClearFocus();
         }
 
         private void OnMouseMove(object sender, MouseEventArgs e)
@@ -108,7 +115,7 @@ namespace Disk.View
             var target = _targets.FindLast(target => target.Contains(new(x, y)));
             if (target is not null)
             {
-                _targets.Remove(target);
+                _ = _targets.Remove(target);
                 target.Remove();
 
                 for (int i = 0; i < _targets.Count; i++)
@@ -126,6 +133,12 @@ namespace Disk.View
 
             _converter?.Scale(new(ActualWidth, ActualHeight));
             _targets.ForEach(target => target.Scale());
+
+            Canvas.SetLeft(MaxX, PaintArea.ActualWidth - 2 - MaxX.ActualWidth);
+            Canvas.SetTop(MaxX, PaintArea.ActualHeight / 2 + 2);
+
+            Canvas.SetLeft(MaxY, PaintArea.ActualWidth / 2 + 2);
+            Canvas.SetTop(MaxY, 2);
         }
 
         private void OnMouseDoubleClick(object sender, MouseButtonEventArgs e)
