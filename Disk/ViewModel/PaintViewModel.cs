@@ -141,7 +141,7 @@ public class PaintViewModel : ObserverViewModel
                 MathExp = (mx.XDbl + mx.YDbl) / 2,
                 Dispersion = (dispersion.XDbl + dispersion.YDbl) / 2,
                 Deviation = (deviation.XDbl + dispersion.YDbl) / 2,
-                Score = Score
+                Score = Score,
             };
 
             _sessionResultRepository.Add(sres);
@@ -251,10 +251,11 @@ public class PaintViewModel : ObserverViewModel
         base.Dispose();
         GC.SuppressFinalize(this);
 
-        if (_sessionRepository.Exists(CurrentSession))
+        // ???
+/*        if (_sessionRepository.Exists(CurrentSession))
         {
             _sessionRepository.Delete(CurrentSession);
-        }
+        }*/
         IsGame = false;
         if (DiskNetworkThread.IsAlive)
         {

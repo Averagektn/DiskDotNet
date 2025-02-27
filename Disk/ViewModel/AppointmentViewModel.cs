@@ -15,9 +15,18 @@ public class AppointmentViewModel(ModalNavigationStore modalNavigationStore, ISe
     IExcelFiller excelFiller, NavigationStore navigationStore) : ObserverViewModel
 {
     public required Patient Patient { get; set; }
-    public required Appointment Appointment { get; set; }
+    private Appointment _appointment = null!;
+    public required Appointment Appointment 
+    {
+        get => _appointment;
+        set
+        {
+            SetProperty(ref _appointment, value);
+            Sessions = [.. sessionRepository.GetSessionsWithResultsByAppointment(value.Id)];
+        }
+    }
     public Session? SelectedSession { get; set; } = null;
-    
+
     private ObservableCollection<Session> _sessions = [];
     public ObservableCollection<Session> Sessions 
     {
