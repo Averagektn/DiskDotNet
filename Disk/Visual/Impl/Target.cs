@@ -29,7 +29,7 @@ public class Target(Point2D<int> center, int radius, Canvas parent, Size iniSize
     /// <summary>
     ///     Gets the maximum radius of the target
     /// </summary>
-    public int MaxRadius => Radius * 5;
+    public virtual int MaxRadius => Radius * 5;
 
     /// <summary>
     ///     Gets the X-coordinate of the right edge of the circle

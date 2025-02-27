@@ -1,4 +1,5 @@
 ﻿using Disk.Calculations.Impl.Converters;
+using Disk.Service.Implementation;
 using Disk.ViewModel;
 using Disk.Visual.Impl;
 using Disk.Visual.Interface;
@@ -32,7 +33,8 @@ namespace Disk.View.PaintWindow
         {
             get => ViewModel.CurrentPos is null
                 ? User.Center
-                : Converter.ToWndCoord(new Point2DF(ViewModel.CurrentPos.X - Settings.XAngleShift, ViewModel.CurrentPos.Y - Settings.YAngleShift));
+                : Converter.ToWndCoord(
+                    new Point2DF(ViewModel.CurrentPos.X - Settings.XAngleShift, ViewModel.CurrentPos.Y - Settings.YAngleShift));
         }
 
         private Size PaintPanelSize => PaintRect.RenderSize;
@@ -110,10 +112,17 @@ namespace Disk.View.PaintWindow
 
         private void OnLoaded(object sender, RoutedEventArgs e)
         {
-            User = ViewModel.GetUser();
-            Target = ViewModel.GetProgressTarget();
+            User = DrawableFabric.GetIniUser(ViewModel.ImagePath, PaintArea);
+            User.OnShot += (p) => ViewModel.FullPath.Add(Converter.ToAngle_FromWnd(p));
 
-            Scalables.Add(Target); Scalables.Add(User); //Scalables.Add(Converter);
+            var center = ViewModel.NextTargetCenter ?? new(0, 0);
+            var converter = DrawableFabric.GetIniConverter();
+            var wndCenter = converter.ToWndCoord(center);
+            Target = DrawableFabric.GetIniProgressTarget(wndCenter, PaintArea);
+            Target.OnReceiveShot += shot => ViewModel.Score += shot;
+            
+            Scalables.Add(Target); Scalables.Add(User);
+            Converter.Scale(PaintArea.RenderSize);
             Scalables.ForEach(elem => elem?.Scale());
 
             if (ViewModel.IsGame)
@@ -121,8 +130,7 @@ namespace Disk.View.PaintWindow
                 ViewModel.StartReceiving();
 
                 Drawables.Add(Target); Drawables.Add(User);
-
-                //Drawables.ForEach(elem => elem?.Draw(PaintArea));
+                Drawables.ForEach(elem => elem?.Draw());
 
                 MoveTimer.Start();
                 ShotTimer.Start();
@@ -131,8 +139,8 @@ namespace Disk.View.PaintWindow
 
         private void StopGame()
         {
-            //Target.Remove(PaintArea.Children);
-            //User.Remove(PaintArea.Children);
+            Target.Remove();
+            User.Remove();
 
             _ = Drawables.Remove(Target);
             _ = Scalables.Remove(Target);
@@ -153,6 +161,7 @@ namespace Disk.View.PaintWindow
             AllowedArea.Center = new(PaintPanelCenterX, PaintPanelCenterY);
 
             Scalables.ForEach(elem => elem?.Scale());
+            Converter.Scale(PaintArea.RenderSize);
         }
 
         private void OnStopClick(object sender, RoutedEventArgs e)

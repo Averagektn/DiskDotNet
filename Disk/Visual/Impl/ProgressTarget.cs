@@ -116,6 +116,8 @@ public class ProgressTarget : Target
 
         _border.Width = MaxRadius * 2;
         _border.Height = MaxRadius * 2;
+        //Canvas.SetLeft(_border, Left);
+        //Canvas.SetTop(_border, Top);
         _border.Margin = new(Left, Top, 0, 0);
     }
 
@@ -128,7 +130,8 @@ public class ProgressTarget : Target
     public override void Move(Point2D<int> center)
     {
         base.Move(center);
-        Center = center;
+        //Canvas.SetLeft(_border, Left);
+        //Canvas.SetTop(_border, Top);
         _border.Margin = new(Left, Top, 0, 0);
     }
 }

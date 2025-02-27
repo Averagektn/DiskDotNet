@@ -16,7 +16,7 @@ public class Circle : IDynamicFigure
     ///     Gets or sets the center point of the circle
     /// </summary>
     private Point2D<int> _center = new();
-    public Point2D<int> Center
+    public virtual Point2D<int> Center
     {
         get => _center;
         protected set

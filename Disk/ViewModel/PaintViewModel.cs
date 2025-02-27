@@ -107,29 +107,6 @@ public class PaintViewModel : ObserverViewModel
         PathToTargetStopwatch = Stopwatch.StartNew();
     }
 
-    public ProgressTarget GetProgressTarget()
-    {
-        var center = NextTargetCenter ?? new(0.5f, 0.5f);
-        var wndCenter = Converter.ToWnd_FromRelative(center);
-
-        //var target = DrawableFabric.GetIniProgressTarget(wndCenter);
-        //target.OnReceiveShot += shot => Score += shot;
-
-        //return target;
-        return null!;
-    }
-
-    public User GetUser()
-    {
-        //var user = DrawableFabric.GetIniUser(ImagePath);
-
-        //user.OnShot += (p) => FullPath.Add(Converter.ToAngle_FromWnd(p));
-
-        //return user;
-
-        throw new NotImplementedException();
-    }
-
     private void ReceiveUserPos()
     {
         try
@@ -259,7 +236,7 @@ public class PaintViewModel : ObserverViewModel
 
         if (newCenter is not null)
         {
-            var wndCenter = Converter.ToWnd_FromRelative(newCenter);
+            var wndCenter = Converter.ToWndCoord(newCenter);
             target.Move(wndCenter);
 
             PathToTargetStopwatch!.Restart();
