@@ -27,8 +27,8 @@ namespace Disk.View
 
         private List<IScalable> Scalables { get; set; } = [];
 
-        private readonly User _user = null!; //DrawableFabric.GetIniUser(string.Empty);
-        private readonly Target _target = null!;// DrawableFabric.GetIniProgressTarget(new(0, 0));
+        private User _user = null!;
+        private Target _target = null!;
         private Converter? Converter => ViewModel?.Converter;
 
         private bool _isReply;
@@ -59,9 +59,13 @@ namespace Disk.View
             Converter?.Scale(PaintPanelSize);
             Scalables.ForEach(s => s.Scale());
         }
-
+        
         private void OnLoaded(object sender, RoutedEventArgs e)
         {
+            _user ??= DrawableFabric.GetIniUser(string.Empty, PaintArea);
+            // set 0
+            _target ??= DrawableFabric.GetIniProgressTarget(new(-100, -100), PaintArea);
+            
             Scalables.AddRange([_user, _target]);
 
             OnSizeChanged(sender, null!);
@@ -74,6 +78,9 @@ namespace Disk.View
             {
                 return;
             }
+
+            _user ??= DrawableFabric.GetIniUser(string.Empty, PaintArea);
+            _target ??= DrawableFabric.GetIniProgressTarget(new(-100, -100), PaintArea);
 
             if (!IsReply)
             {
@@ -90,7 +97,7 @@ namespace Disk.View
             {
                 Scalables.Add(figure);
 
-                //figure.Draw(PaintArea);
+                figure.Draw();
                 figure.Scale();
             }
         }
@@ -125,7 +132,7 @@ namespace Disk.View
 
                     if (enumerator.Current.IsNewTarget && ++selectedIndex < ViewModel.TargetCenters.Count)
                     {
-                        _target.Move(ViewModel.Converter.ToWnd_FromRelative(ViewModel.TargetCenters[selectedIndex]));
+                        _target.Move(ViewModel.Converter.ToWndCoord(ViewModel.TargetCenters[selectedIndex]));
                         ViewModel.SelectedIndex = selectedIndex;
                     }
                 }

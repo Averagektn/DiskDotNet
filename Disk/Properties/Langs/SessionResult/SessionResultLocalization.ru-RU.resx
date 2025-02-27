@@ -133,7 +133,7 @@
     <value>Л</value>
   </data>
   <data name="MathExp" xml:space="preserve">
-    <value>Среднее смещение от центра</value>
+    <value>Матожидание</value>
   </data>
   <data name="NoContentForDiagramError" xml:space="preserve">
     <value>Нет данных для построения диаграммы</value>
@@ -160,7 +160,7 @@
     <value>П</value>
   </data>
   <data name="StandartDeviation" xml:space="preserve">
-    <value>Среднее отклонение от центра</value>
+    <value>Среднеквадр. отклонение</value>
   </data>
   <data name="Stop" xml:space="preserve">
     <value>Остановить</value>

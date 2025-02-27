@@ -65,10 +65,9 @@ public class ExcelFiller(IMapRepository mapRepository) : IExcelFiller
             var sres = session.SessionResult;
             if (sres is not null)
             {
-                SetFloatCell(worksheet, 5, 1, (float)sres.Dispersion);
-                SetFloatCell(worksheet, 5, 2, (float)sres.Deviation);
-                SetFloatCell(worksheet, 5, 3, (float)sres.MathExp);
-                worksheet.Cell(5, 4).Value = sres.Score;
+                SetFloatCell(worksheet, 5, 1, (float)sres.Deviation);
+                SetFloatCell(worksheet, 5, 2, (float)sres.MathExp);
+                worksheet.Cell(5, 3).Value = sres.Score;
             }
 
             worksheet.Cell(7, 1).Value = Localization.TargetNum;
@@ -110,10 +109,9 @@ public class ExcelFiller(IMapRepository mapRepository) : IExcelFiller
         foreach (var ptt in ptts)
         {
             worksheet.Cell(pttRow, 1).Value = ptt.TargetNum + 1;
-            SetFloatCell(worksheet, pttRow, 2, (float)ptt.AngleDistance);
-            SetFloatCell(worksheet, pttRow, 3, (float)ptt.Time);
-            SetFloatCell(worksheet, pttRow, 4, (float)ptt.AngleSpeed);
-            SetFloatCell(worksheet, pttRow++, 5, (float)ptt.ApproachSpeed);
+            SetFloatCell(worksheet, pttRow, 2, (float)ptt.Time);
+            SetFloatCell(worksheet, pttRow, 3, (float)ptt.ApproachSpeed);
+            pttRow++;
 
             var pathList = JsonConvert.DeserializeObject<List<Point2D<float>>>(ptt.CoordinatesJson)!;
 

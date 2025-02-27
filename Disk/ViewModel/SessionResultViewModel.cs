@@ -42,7 +42,7 @@ public class SessionResultViewModel(NavigationStore navigationStore) : ObserverV
     }
 
     public Point2D<int> UserCenter => Converter.ToWndCoord(PathsToTargets[SelectedIndex][0]);
-    public Point2D<int> TargetCenter => Converter.ToWnd_FromRelative(TargetCenters[SelectedIndex]);
+    public Point2D<int> TargetCenter => Converter.ToWndCoord(TargetCenters[SelectedIndex]);
     public ObservableCollection<string> Indices { get; set; } = [];
     public Converter Converter { get; set; } = DrawableFabric.GetIniConverter();
     public IEnumerable<(bool IsNewTarget, Point2D<float> Point)> FullPath
@@ -169,12 +169,12 @@ public class SessionResultViewModel(NavigationStore navigationStore) : ObserverV
         }
 
         var target = DrawableFabric.GetIniProgressTarget(new(0, 0), canvas);
-        target.Draw();
+        //target.Draw();
         target.Scale();
 
         var angRadius = (Converter.ToAngleX_FromWnd(target.Radius) + Converter.ToAngleY_FromWnd(target.Radius)) / 2;
 
-        var angCenter = Converter.ToAngle_FromWnd(Converter.ToWnd_FromRelative(TargetCenters[SelectedIndex]));
+        var angCenter = Converter.ToAngle_FromWnd(Converter.ToWndCoord(TargetCenters[SelectedIndex]));
         var dataset =
             PathsInTargets[SelectedIndex]
             .Select(p => new PolarPoint<float>(p.X - angCenter.X, p.Y - angCenter.Y))
