@@ -1,4 +1,5 @@
 ﻿using Disk.Calculations.Impl.Converters;
+using Disk.Data.Impl;
 using Disk.Service.Implementation;
 using Disk.ViewModel;
 using Disk.Visual.Impl;
@@ -107,6 +108,23 @@ namespace Disk.View.PaintWindow
             if (ShiftedWndPos is not null && AllowedArea.FillContains(ShiftedWndPos.ToPoint()))
             {
                 User.Move(ShiftedWndPos!);
+            }
+            else if (ShiftedWndPos is not null)
+            {
+                var center = new Point2D<int>((int)AllowedArea.Bounds.Width / 2, (int)AllowedArea.Bounds.Height / 2);
+                var radiusX = AllowedArea.Bounds.Width / 2;
+                var radiusY = AllowedArea.Bounds.Height / 2;
+
+                double normalizedX = (ShiftedWndPos.X - center.X) / radiusX;
+                double normalizedY = (ShiftedWndPos.Y - center.Y) / radiusY;
+
+                double length = Math.Sqrt((normalizedX * normalizedX) + (normalizedY * normalizedY));
+
+                double scale = 1 / length;
+                int nearestX = (int)(center.X + (normalizedX * radiusX * scale));
+                int nearestY = (int)(center.Y + (normalizedY * radiusY * scale));
+
+                User.Move(new(nearestX, nearestY));
             }
         }
 
