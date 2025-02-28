@@ -4,113 +4,135 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 
-namespace DiskEmulator
+namespace DiskEmulator;
+
+public partial class MainWindow : Window
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
-    public partial class MainWindow : Window
+    private const int Radius = 15;
+    private const byte HandshakeValue = 23;
+    private const float MaxYAngle = 20.0f;
+    private const float MaxXAngle = 20.0f;
+
+    private bool _finish = false;
+
+    private Point Center => new(
+        (double)Target.GetValue(Canvas.LeftProperty) + Radius,
+        (double)Target.GetValue(Canvas.TopProperty) + Radius);
+
+    private Socket _socket = new(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+
+    public MainWindow()
     {
-        private const int Radius = 15;
-        private const byte HandshakeValue = 23;
-        private const float MaxYAngle = 20.0f;
-        private const float MaxXAngle = 20.0f;
+        InitializeComponent();
 
-        private Point Center => new((double)Target.GetValue(Canvas.LeftProperty) + Radius, (double)Target.GetValue(Canvas.TopProperty) + Radius);
-        private readonly Socket Socket;
-
-        public MainWindow()
+        Loaded += (_, _) =>
         {
-            InitializeComponent();
+            Target.SetValue(Canvas.LeftProperty, (DrawArea.ActualWidth / 2) - Radius);
+            Target.SetValue(Canvas.TopProperty, (DrawArea.ActualHeight / 2) - Radius);
+        };
 
-            Loaded += (_, _) =>
+        MouseMove += (_, e) =>
+        {
+            var pos = e.GetPosition(DrawArea);
+
+            if (e.LeftButton == MouseButtonState.Pressed)
             {
-                Target.SetValue(Canvas.LeftProperty, (DrawArea.ActualWidth / 2) - Radius);
-                Target.SetValue(Canvas.TopProperty, (DrawArea.ActualHeight / 2) - Radius);
-            };
+                Target.SetValue(Canvas.LeftProperty, pos.X - Radius);
+                Target.SetValue(Canvas.TopProperty, pos.Y - Radius);
+            }
+        };
 
-            MouseMove += (_, e) =>
-            {
-                var pos = e.GetPosition(DrawArea);
+        var networkThread = new Thread(EnableConnection);
+        networkThread.Start();
 
-                if (e.LeftButton == MouseButtonState.Pressed)
-                {
-                    Target.SetValue(Canvas.LeftProperty, pos.X - Radius);
-                    Target.SetValue(Canvas.TopProperty, pos.Y - Radius);
-                }
-            };
+        Closing += (_, _) =>
+        {
+            _socket.Close();
+            _finish = true;
+            networkThread.Join();
+        };
+    }
 
-            Socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-            var networkThread = new Thread(EnableConnection);
-            networkThread.Start();
-
-            Closing += (_, _) =>
-            {
-                Socket.Close();
-                networkThread.Join();
-            };
-        }
-
-        private void EnableConnection()
+    private void EnableConnection()
+    {
+        while (!_finish)
         {
             try
             {
-                Socket.Bind(new IPEndPoint(IPAddress.Any, 9998));
-                Socket.Listen(10);
+                _socket.Bind(new IPEndPoint(IPAddress.Any, 9998));
+                _socket.Listen(10);
 
                 while (true)
                 {
-                    var handler = Socket.Accept();
+                    var handler = _socket.Accept();
                     new Thread(() =>
                     {
-                        byte[] handshakeData = [HandshakeValue];
-                        _ = handler.Send(handshakeData);
-                        int bytesRead = handler.Receive(handshakeData);
-
-                        if (handshakeData[0] != HandshakeValue)
+                        try
                         {
-                            handler.Close();
-                            throw new SocketException();
+                            byte[] handshakeData = [HandshakeValue];
+                            _ = handler.Send(handshakeData);
+                            int bytesRead = handler.Receive(handshakeData);
+
+                            if (handshakeData[0] != HandshakeValue)
+                            {
+                                handler.Close();
+                                throw new SocketException();
+                            }
+
+                            while (handler.Connected)
+                            {
+                                Point pos = default;
+                                Size size = default;
+                                Dispatcher.Invoke(() =>
+                                {
+                                    pos = Center;
+                                    size = new Size(DrawArea.RenderSize.Width / 2, DrawArea.RenderSize.Height / 2);
+                                });
+
+                                var x = (float)((size.Width - (float)pos.X) / size.Width * MaxXAngle * Math.PI / 180.0f);
+                                var xBytes = BitConverter.GetBytes(x);
+                                if (handler.Connected)
+                                {
+                                    _ = handler.Send(xBytes);
+                                }
+
+                                var y = (float)((size.Height - (float)pos.Y) / size.Height * MaxYAngle * Math.PI / 180.0f);
+                                var yBytes = BitConverter.GetBytes(y);
+                                if (handler.Connected)
+                                {
+                                    _ = handler.Send(yBytes);
+                                }
+
+                                var z = 0.0f;
+                                var zBytes = BitConverter.GetBytes(z);
+                                if (handler.Connected)
+                                {
+                                    _ = handler.Send(zBytes);
+                                }
+                            }
                         }
-
-                        while (handler.Connected)
+                        catch (Exception ex)
                         {
-                            Point pos;
-                            Size size;
-                            _ = Dispatcher.Invoke(() => pos = Center);
-                            _ = Dispatcher.Invoke(() => size = new(DrawArea.RenderSize.Width / 2, DrawArea.RenderSize.Height / 2));
-
-                            var x = (float)((size.Width - (float)pos.X) / size.Width * MaxXAngle * Math.PI / 180.0f);
-                            var xBytes = BitConverter.GetBytes(x);
-                            if (handler.Connected)
-                            {
-                                _ = handler.Send(xBytes);
-                            }
-
-                            var y = (float)((size.Height - (float)pos.Y) / size.Height * MaxYAngle * Math.PI / 180.0f);
-                            var yBytes = BitConverter.GetBytes(y);
-                            if (handler.Connected)
-                            {
-                                _ = handler.Send(yBytes);
-                            }
-
-                            var z = 0.0f;
-                            var zBytes = BitConverter.GetBytes(z);
-                            if (handler.Connected)
-                            {
-                                _ = handler.Send(zBytes);
-                            }
+                            Console.WriteLine($"Ошибка в потоке: {ex.Message}");
+                            handler.Close();
                         }
                     }).Start();
                 }
             }
             catch (Exception e)
             {
-                Console.WriteLine(e.ToString());
+                Console.WriteLine($"Ошибка подключения: {e.Message}");
+                try
+                {
+                    _socket.Close();
+                    _socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+                }
+                catch (Exception innerEx)
+                {
+                    Console.WriteLine($"Не удалось перезапустить сокет: {innerEx.Message}");
+                    Thread.Sleep(1000);
+                }
             }
         }
-
-        private bool TargetContains(Point p)
-            => Math.Pow(p.X - Center.X, 2) + Math.Pow(p.Y - Center.Y, 2) <= Radius * Radius;
     }
 }
