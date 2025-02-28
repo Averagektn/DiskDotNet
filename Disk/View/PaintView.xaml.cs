@@ -64,10 +64,35 @@ namespace Disk.View.PaintWindow
             SizeChanged += OnSizeChanged;
         }
 
-        private void ShotTimerElapsed(object? sender, EventArgs e)
+        private List<Point2DI> GetMultipleShots()
         {
             var shot = User.Shot();
-            var shotScore = Target.ReceiveShot(shot);
+            var x = shot.X;
+            var y = shot.Y;
+
+            var halfRadius = User.Radius / 2;
+            var sqrt2 = Math.Sqrt(2);
+            return [new(x - halfRadius, y), new(x + halfRadius, y), new(x, y - halfRadius), new(x, y + halfRadius),
+                new((int)(x - halfRadius / sqrt2), (int)(y - halfRadius / sqrt2)),
+                new((int)(x + halfRadius / sqrt2), (int)(y - halfRadius / sqrt2)),
+                new((int)(x - halfRadius / sqrt2), (int)(y + halfRadius / sqrt2)),
+                new((int)(x + halfRadius / sqrt2), (int)(y + halfRadius / sqrt2))];
+        }
+
+        private void ShotTimerElapsed(object? sender, EventArgs e)
+        {
+            //var shot = User.Shot();
+            var shots = GetMultipleShots();
+
+            var shot = shots[0];
+            int shotScore = 0;
+            for (int i = 1; i < shots.Count && shotScore == 0; i++)
+            {
+                shotScore = Target.ReceiveShot(shot);
+                shot = shots[i];
+            }
+
+            //var shotScore = Target.ReceiveShot(shot);
             var angleShot = Converter.ToAngle_FromWnd(shot);
 
             // pit

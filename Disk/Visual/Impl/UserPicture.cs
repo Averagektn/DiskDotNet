@@ -32,7 +32,7 @@ internal class UserPicture : User
     private readonly Size IniImageSize;
 
     public UserPicture(string filePath, Point2D<int> center, int speed, Size imageSize, Canvas parent, Size iniSize)
-        : base(center, 0, speed, new SolidColorBrush(Colors.Transparent), parent, iniSize)
+        : base(center, radius: (int)Math.Min(imageSize.Width / 2, imageSize.Height / 2), speed, Brushes.Transparent, parent, iniSize)
     {
         IniImageSize = imageSize;
         _image = new()
