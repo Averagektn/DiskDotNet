@@ -1,30 +1,24 @@
 ﻿using Disk.ViewModel;
-using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Input;
 
-namespace Disk.View
+namespace Disk.View;
+
+public partial class StartSessionView : UserControl
 {
-    /// <summary>
-    /// Interaction logic for StartSessionVIew.xaml
-    /// </summary>
-    public partial class StartSessionView : UserControl
+    private StartSessionViewModel? ViewModel => (StartSessionViewModel)DataContext;
+
+    public StartSessionView()
     {
-        private StartSessionViewModel? ViewModel => (StartSessionViewModel)DataContext;
+        InitializeComponent();
+    }
 
-        public StartSessionView()
+    private void ComboBox_TextChanged(object sender, TextChangedEventArgs e)
+    {
+        if (sender is ComboBox comboBox)
         {
-            InitializeComponent();
-        }
-
-        private void ComboBox_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            if (sender is ComboBox comboBox)
-            {
-                ViewModel?.FilterMapNames(comboBox.Text);
-                comboBox.IsDropDownOpen = true;
-                e.Handled = true;
-            }
+            ViewModel?.FilterMapNames(comboBox.Text);
+            comboBox.IsDropDownOpen = true;
+            e.Handled = true;
         }
     }
 }

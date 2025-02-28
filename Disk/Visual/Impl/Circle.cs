@@ -145,7 +145,7 @@ public class Circle : IDynamicFigure
     /// <returns>
     ///     true if the circle contains the point, otherwise false
     /// </returns>
-    public bool Contains(Point2D<int> p)
+    public virtual bool Contains(Point2D<int> p)
         => Math.Sqrt(Math.Pow((p.X - Center.X) / Radius, 2) + Math.Pow((p.Y - Center.Y) / Radius, 2)) <= 0;
 
     /// <summary>

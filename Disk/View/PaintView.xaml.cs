@@ -10,212 +10,208 @@ using Point2DF = Disk.Data.Impl.Point2D<float>;
 using Point2DI = Disk.Data.Impl.Point2D<int>;
 using Settings = Disk.Properties.Config.Config;
 
-namespace Disk.View.PaintWindow
+namespace Disk.View.PaintWindow;
+
+public partial class PaintView : UserControl
 {
-    /// <summary>
-    /// Interaction logic for PaintWindowView.xaml
-    /// </summary>
-    public partial class PaintView : UserControl
+    private User User = null!;
+    private ProgressTarget Target = null!;
+    private Converter Converter => ViewModel.Converter;
+
+    private PaintViewModel ViewModel => (PaintViewModel)DataContext;
+
+    private readonly DispatcherTimer ShotTimer;
+    private readonly DispatcherTimer MoveTimer;
+
+    private readonly List<IScalable?> Scalables = [];
+    private readonly List<IDrawable?> Drawables = [];
+
+    private Point2DI? ShiftedWndPos
     {
-        private User User = null!;
-        private ProgressTarget Target = null!;
-        private Converter Converter => ViewModel.Converter;
+        get => ViewModel.CurrentPos is null
+            ? User.Center
+            : Converter.ToWndCoord(
+                new Point2DF(ViewModel.CurrentPos.X - Settings.XAngleShift, ViewModel.CurrentPos.Y - Settings.YAngleShift));
+    }
 
-        private PaintViewModel ViewModel => (PaintViewModel)DataContext;
+    private Size PaintPanelSize => PaintRect.RenderSize;
+    private int PaintPanelCenterX => (int)PaintPanelSize.Width / 2;
+    private int PaintPanelCenterY => (int)PaintPanelSize.Height / 2;
 
-        private readonly DispatcherTimer ShotTimer;
-        private readonly DispatcherTimer MoveTimer;
+    private static Settings Settings => Settings.Default;
 
-        private readonly List<IScalable?> Scalables = [];
-        private readonly List<IDrawable?> Drawables = [];
+    public PaintView()
+    {
+        InitializeComponent();
 
-        private Point2DI? ShiftedWndPos
+        MoveTimer = new(DispatcherPriority.Normal)
         {
-            get => ViewModel.CurrentPos is null
-                ? User.Center
-                : Converter.ToWndCoord(
-                    new Point2DF(ViewModel.CurrentPos.X - Settings.XAngleShift, ViewModel.CurrentPos.Y - Settings.YAngleShift));
-        }
+            Interval = TimeSpan.FromMilliseconds(Settings.MoveTime)
+        };
+        MoveTimer.Tick += MoveTimerElapsed;
 
-        private Size PaintPanelSize => PaintRect.RenderSize;
-        private int PaintPanelCenterX => (int)PaintPanelSize.Width / 2;
-        private int PaintPanelCenterY => (int)PaintPanelSize.Height / 2;
-
-        private static Settings Settings => Settings.Default;
-
-        public PaintView()
+        ShotTimer = new(DispatcherPriority.Normal)
         {
-            InitializeComponent();
+            Interval = TimeSpan.FromMilliseconds(Settings.ShotTime)
+        };
+        ShotTimer.Tick += ShotTimerElapsed;
 
-            MoveTimer = new(DispatcherPriority.Normal)
-            {
-                Interval = TimeSpan.FromMilliseconds(Settings.MoveTime)
-            };
-            MoveTimer.Tick += MoveTimerElapsed;
+        Unloaded += (_, _) => StopGame();
+        Loaded += OnLoaded;
+        SizeChanged += OnSizeChanged;
+    }
 
-            ShotTimer = new(DispatcherPriority.Normal)
-            {
-                Interval = TimeSpan.FromMilliseconds(Settings.ShotTime)
-            };
-            ShotTimer.Tick += ShotTimerElapsed;
+    private List<Point2DI> GetMultipleShots()
+    {
+        var shot = User.Shot();
+        var x = shot.X;
+        var y = shot.Y;
 
-            Unloaded += (_, _) => StopGame();
-            Loaded += OnLoaded;
-            SizeChanged += OnSizeChanged;
-        }
-
-        private List<Point2DI> GetMultipleShots()
-        {
-            var shot = User.Shot();
-            var x = shot.X;
-            var y = shot.Y;
-
-            var halfRadius = User.Radius / 2;
-            var sqrt2 = Math.Sqrt(2);
-            return [new(x - halfRadius, y), new(x + halfRadius, y), new(x, y - halfRadius), new(x, y + halfRadius),
+        var halfRadius = User.Radius / 2;
+        var sqrt2 = Math.Sqrt(2);
+        return [new(x - halfRadius, y), new(x + halfRadius, y), new(x, y - halfRadius), new(x, y + halfRadius),
                 new((int)(x - halfRadius / sqrt2), (int)(y - halfRadius / sqrt2)),
                 new((int)(x + halfRadius / sqrt2), (int)(y - halfRadius / sqrt2)),
                 new((int)(x - halfRadius / sqrt2), (int)(y + halfRadius / sqrt2)),
                 new((int)(x + halfRadius / sqrt2), (int)(y + halfRadius / sqrt2))];
+    }
+
+    private void ShotTimerElapsed(object? sender, EventArgs e)
+    {
+        //var shot = User.Shot();
+        var shots = GetMultipleShots();
+
+        var shot = shots[0];
+        int shotScore = 0;
+        for (int i = 1; i < shots.Count && shotScore == 0; i++)
+        {
+            shotScore = Target.ReceiveShot(shot);
+            shot = shots[i];
         }
 
-        private void ShotTimerElapsed(object? sender, EventArgs e)
+        //var shotScore = Target.ReceiveShot(shot);
+        var angleShot = Converter.ToAngle_FromWnd(shot);
+
+        // pit
+        bool isPathInTargetStarts = shotScore != 0 && ViewModel.IsPathToTarget;
+        if (isPathInTargetStarts)
         {
-            //var shot = User.Shot();
-            var shots = GetMultipleShots();
+            ViewModel.SwitchToPathInTarget(shot);
+        }
 
-            var shot = shots[0];
-            int shotScore = 0;
-            for (int i = 1; i < shots.Count && shotScore == 0; i++)
+        bool isValidShot = angleShot.X != 0 && angleShot.Y != 0;
+        bool isPathInTarget = !ViewModel.IsPathToTarget;
+        if (isValidShot)
+        {
+            if (isPathInTarget)
             {
-                shotScore = Target.ReceiveShot(shot);
-                shot = shots[i];
+                ViewModel.PathsInTargets[ViewModel.TargetId - 1].Add(angleShot);
             }
-
-            //var shotScore = Target.ReceiveShot(shot);
-            var angleShot = Converter.ToAngle_FromWnd(shot);
-
-            // pit
-            bool isPathInTargetStarts = shotScore != 0 && ViewModel.IsPathToTarget;
-            if (isPathInTargetStarts)
+            else
             {
-                ViewModel.SwitchToPathInTarget(shot);
-            }
-
-            bool isValidShot = angleShot.X != 0 && angleShot.Y != 0;
-            bool isPathInTarget = !ViewModel.IsPathToTarget;
-            if (isValidShot)
-            {
-                if (isPathInTarget)
-                {
-                    ViewModel.PathsInTargets[ViewModel.TargetId - 1].Add(angleShot);
-                }
-                else
-                {
-                    ViewModel.PathsToTargets[ViewModel.TargetId - 1].Add(angleShot);
-                }
-            }
-
-            // ptt
-            bool isPathToTargetStarts = Target.IsFull;
-            if (isPathToTargetStarts)
-            {
-                if (!ViewModel.SwitchToPathToTarget(Target))
-                {
-                    OnStopClick(this, new());
-                }
+                ViewModel.PathsToTargets[ViewModel.TargetId - 1].Add(angleShot);
             }
         }
 
-        private void MoveTimerElapsed(object? sender, EventArgs e)
+        // ptt
+        bool isPathToTargetStarts = Target.IsFull;
+        if (isPathToTargetStarts)
         {
-            if (ShiftedWndPos is not null)
+            if (!ViewModel.SwitchToPathToTarget(Target))
             {
-                if (AllowedArea.FillContains(ShiftedWndPos.ToPoint()))
-                {
-                    User.Move(ShiftedWndPos);
-                }
-                else
-                {
-                    var center = new Point2DI((int)AllowedArea.Bounds.Width / 2, (int)AllowedArea.Bounds.Height / 2);
-                    var radiusX = AllowedArea.Bounds.Width / 2;
-                    var radiusY = AllowedArea.Bounds.Height / 2;
-
-                    double normalizedX = (ShiftedWndPos.X - center.X) / radiusX;
-                    double normalizedY = (ShiftedWndPos.Y - center.Y) / radiusY;
-
-                    double length = Math.Sqrt((normalizedX * normalizedX) + (normalizedY * normalizedY));
-
-                    double scale = 1 / length;
-                    int nearestX = (int)(center.X + (normalizedX * radiusX * scale));
-                    int nearestY = (int)(center.Y + (normalizedY * radiusY * scale));
-
-                    User.Move(new(nearestX, nearestY));
-                }
+                OnStopClick(this, new());
             }
         }
+    }
 
-        private void OnLoaded(object sender, RoutedEventArgs e)
+    private void MoveTimerElapsed(object? sender, EventArgs e)
+    {
+        if (ShiftedWndPos is not null)
         {
-            User = DrawableFabric.GetIniUser(ViewModel.ImagePath, PaintArea);
-            User.OnShot += (p) => ViewModel.FullPath.Add(Converter.ToAngle_FromWnd(p));
-
-            var center = ViewModel.NextTargetCenter ?? new(0, 0);
-            var converter = DrawableFabric.GetIniConverter();
-            var wndCenter = converter.ToWndCoord(center);
-            Target = DrawableFabric.GetIniProgressTarget(wndCenter, PaintArea);
-            Target.OnReceiveShot += shot => ViewModel.Score += shot;
-
-            Scalables.Add(Target);
-            Scalables.Add(User);
-            Converter.Scale(PaintArea.RenderSize);
-            Scalables.ForEach(elem => elem?.Scale());
-
-            if (ViewModel.IsGame)
+            if (AllowedArea.FillContains(ShiftedWndPos.ToPoint()))
             {
-                ViewModel.StartReceiving();
+                User.Move(ShiftedWndPos);
+            }
+            else
+            {
+                var center = new Point2DI((int)AllowedArea.Bounds.Width / 2, (int)AllowedArea.Bounds.Height / 2);
+                var radiusX = AllowedArea.Bounds.Width / 2;
+                var radiusY = AllowedArea.Bounds.Height / 2;
 
-                Drawables.Add(Target);
-                Drawables.Add(User);
-                Drawables.ForEach(elem => elem?.Draw());
+                double normalizedX = (ShiftedWndPos.X - center.X) / radiusX;
+                double normalizedY = (ShiftedWndPos.Y - center.Y) / radiusY;
 
-                MoveTimer.Start();
-                ShotTimer.Start();
+                double length = Math.Sqrt((normalizedX * normalizedX) + (normalizedY * normalizedY));
+
+                double scale = 1 / length;
+                int nearestX = (int)(center.X + (normalizedX * radiusX * scale));
+                int nearestY = (int)(center.Y + (normalizedY * radiusY * scale));
+
+                User.Move(new(nearestX, nearestY));
             }
         }
+    }
 
-        private void StopGame()
+    private void OnLoaded(object sender, RoutedEventArgs e)
+    {
+        User = DrawableFabric.GetIniUser(ViewModel.ImagePath, PaintArea);
+        User.OnShot += (p) => ViewModel.FullPath.Add(Converter.ToAngle_FromWnd(p));
+
+        var center = ViewModel.NextTargetCenter ?? new(0, 0);
+        var converter = DrawableFabric.GetIniConverter();
+        var wndCenter = converter.ToWndCoord(center);
+        Target = DrawableFabric.GetIniProgressTarget(wndCenter, PaintArea);
+        Target.OnReceiveShot += shot => ViewModel.Score += shot;
+
+        Scalables.Add(Target);
+        Scalables.Add(User);
+        Converter.Scale(PaintArea.RenderSize);
+        Scalables.ForEach(elem => elem?.Scale());
+
+        if (ViewModel.IsGame)
         {
-            Target.Remove();
-            User.Remove();
+            ViewModel.StartReceiving();
 
-            _ = Drawables.Remove(Target);
-            _ = Scalables.Remove(Target);
+            Drawables.Add(Target);
+            Drawables.Add(User);
+            Drawables.ForEach(elem => elem?.Draw());
 
-            _ = Drawables.Remove(User);
-            _ = Scalables.Remove(User);
-
-            User.ClearOnShot();
-
-            MoveTimer.Stop();
-            ShotTimer.Stop();
+            MoveTimer.Start();
+            ShotTimer.Start();
         }
+    }
 
-        private void OnSizeChanged(object sender, RoutedEventArgs e)
-        {
-            AllowedArea.RadiusX = PaintPanelCenterX;
-            AllowedArea.RadiusY = PaintPanelCenterY;
-            AllowedArea.Center = new(PaintPanelCenterX, PaintPanelCenterY);
+    private void StopGame()
+    {
+        Target.Remove();
+        User.Remove();
 
-            Scalables.ForEach(elem => elem?.Scale());
-            Converter.Scale(PaintArea.RenderSize);
-        }
+        _ = Drawables.Remove(Target);
+        _ = Scalables.Remove(Target);
 
-        private void OnStopClick(object sender, RoutedEventArgs e)
-        {
-            StopGame();
-            // navigate to result
-            ViewModel.SaveSessionResult();
-        }
+        _ = Drawables.Remove(User);
+        _ = Scalables.Remove(User);
+
+        User.ClearOnShot();
+
+        MoveTimer.Stop();
+        ShotTimer.Stop();
+    }
+
+    private void OnSizeChanged(object sender, RoutedEventArgs e)
+    {
+        AllowedArea.RadiusX = PaintPanelCenterX;
+        AllowedArea.RadiusY = PaintPanelCenterY;
+        AllowedArea.Center = new(PaintPanelCenterX, PaintPanelCenterY);
+
+        Scalables.ForEach(elem => elem?.Scale());
+        Converter.Scale(PaintArea.RenderSize);
+    }
+
+    private void OnStopClick(object sender, RoutedEventArgs e)
+    {
+        StopGame();
+        // navigate to result
+        ViewModel.SaveSessionResult();
     }
 }

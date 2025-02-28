@@ -17,7 +17,7 @@ namespace Disk.Visual.Impl;
 /// <param name="iniSize">
 ///     The initial size of the target
 /// </param>
-public class Target(Point2D<int> center, int radius, Canvas parent, Size iniSize) :
+public class Target(Point2D<int> center, int radius, Canvas parent, Size iniSize) : 
     User(center, radius, 0, Brushes.White, parent, iniSize)
 {
     /// <summary>
@@ -147,7 +147,7 @@ public class Target(Point2D<int> center, int radius, Canvas parent, Size iniSize
     /// <returns>
     ///     True if the target contains the point, false otherwise
     /// </returns>
-    public new bool Contains(Point2D<int> shot)
+    public override bool Contains(Point2D<int> shot)
     {
         bool contains = false;
 

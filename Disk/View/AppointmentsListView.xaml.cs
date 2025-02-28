@@ -1,15 +1,11 @@
 ﻿using System.Windows.Controls;
 
-namespace Disk.View
+namespace Disk.View;
+
+public partial class AppointmentsListView : UserControl
 {
-    /// <summary>
-    /// Interaction logic for AppointmentsView.xaml
-    /// </summary>
-    public partial class AppointmentsListView : UserControl
+    public AppointmentsListView()
     {
-        public AppointmentsListView()
-        {
-            InitializeComponent();
-        }
+        InitializeComponent();
     }
 }

@@ -1,15 +1,11 @@
 ﻿using System.Windows.Controls;
 
-namespace Disk.View
+namespace Disk.View;
+
+public partial class MapNamePickerView : UserControl
 {
-    /// <summary>
-    /// Interaction logic for MapNamePickerView.xaml
-    /// </summary>
-    public partial class MapNamePickerView : UserControl
+    public MapNamePickerView()
     {
-        public MapNamePickerView()
-        {
-            InitializeComponent();
-        }
+        InitializeComponent();
     }
 }

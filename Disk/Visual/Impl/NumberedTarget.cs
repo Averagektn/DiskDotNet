@@ -8,6 +8,16 @@ namespace Disk.Visual.Impl;
 
 public class NumberedTarget : Target
 {
+    private readonly TextBlock _numberText;
+    private readonly TextBox _coordY;
+    private readonly TextBox _coordX;
+    private readonly Converter _converter;
+
+    private float _y;
+    private float _x;
+
+    public Point2D<float> Angles => new(_x, _y);
+
     public override Point2D<int> Center
     {
         get => base.Center;
@@ -32,16 +42,6 @@ public class NumberedTarget : Target
             }
         }
     }
-
-    private readonly TextBlock _numberText;
-    private readonly TextBox _coordY;
-    private readonly TextBox _coordX;
-    private readonly Converter _converter;
-
-    private float _y;
-    private float _x;
-
-    public Point2D<float> Angles => new(_x, _y);
 
     public NumberedTarget(Point2D<int> center, int radius, Canvas parent, int number, Size iniSize, Converter converter)
         : base(center, radius, parent, iniSize)

@@ -6,7 +6,7 @@ using System.Windows.Media.Imaging;
 
 namespace Disk.Visual.Impl;
 
-internal class UserPicture : User
+public class UserPicture : User
 {
     public override Point2D<int> Center
     {
@@ -32,7 +32,8 @@ internal class UserPicture : User
     private readonly Size IniImageSize;
 
     public UserPicture(string filePath, Point2D<int> center, int speed, Size imageSize, Canvas parent, Size iniSize)
-        : base(center, radius: (int)Math.Min(imageSize.Width / 2, imageSize.Height / 2), speed, Brushes.Transparent, parent, iniSize)
+        : base(center, radius: (int)Math.Min(imageSize.Width / 2, imageSize.Height / 2), speed, Brushes.Transparent,
+            parent, iniSize)
     {
         IniImageSize = imageSize;
         _image = new()
@@ -60,7 +61,6 @@ internal class UserPicture : User
 
         _image.Width = (int)Math.Round(IniImageSize.Width * (coeffX + coeffY) / 2);
         _image.Height = (int)Math.Round(IniImageSize.Height * (coeffX + coeffY) / 2);
-
 
         base.Scale();
     }

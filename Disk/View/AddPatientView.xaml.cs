@@ -1,15 +1,11 @@
 ﻿using System.Windows.Controls;
 
-namespace Disk.View
+namespace Disk.View;
+
+public partial class AddPatientView : UserControl
 {
-    /// <summary>
-    /// Interaction logic for AddPatientView.xaml
-    /// </summary>
-    public partial class AddPatientView : UserControl
+    public AddPatientView()
     {
-        public AddPatientView()
-        {
-            InitializeComponent();
-        }
+        InitializeComponent();
     }
 }
