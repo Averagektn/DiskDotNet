@@ -1,7 +1,6 @@
 ﻿using Disk.Data.Impl;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Markup;
 using System.Windows.Media;
 using XamlRadialProgressBar;
 
@@ -13,39 +12,53 @@ public class ProgressTarget : Target
 
     public bool IsFull => (int)_border.Value >= (int)_border.Maximum;
 
+    public override Point2D<int> Center
+    {
+        get => base.Center;
+        protected set
+        {
+            base.Center = value;
+
+            if (_border is not null)
+            {
+                Canvas.SetLeft(_border, Left);
+                Canvas.SetTop(_border, Top);
+            }
+        }
+    }
+
     /// <summary>
     ///     Gets the maximum radius of the target
     /// </summary>
-    public new int MaxRadius => Radius * 6;
+    public override int MaxRadius => Radius * 6;
 
     /// <summary>
     ///     Gets the X-coordinate of the right edge of the circle
     /// </summary>
-    public new int Right => Center.X + MaxRadius;
+    public override int Right => Center.X + MaxRadius;
 
     /// <summary>
     ///     Gets the Y-coordinate of the top edge of the circle
     /// </summary>
-    public new int Top => Center.Y - MaxRadius;
+    public override int Top => Center.Y - MaxRadius;
 
     /// <summary>
     ///     Gets the Y-coordinate of the bottom edge of the circle
     /// </summary>
-    public new int Bottom => Center.Y + MaxRadius;
+    public override int Bottom => Center.Y + MaxRadius;
 
     /// <summary>
     ///     Gets the X-coordinate of the left edge of the circle
     /// </summary>
-    public new int Left => Center.X - MaxRadius;
+    public override int Left => Center.X - MaxRadius;
 
     private readonly RadialProgressBar _border;
 
-    public ProgressTarget(Point2D<int> center, int radius, Canvas parent, int hp, Size iniSize) 
+    public ProgressTarget(Point2D<int> center, int radius, Canvas parent, int hp, Size iniSize)
         : base(center, radius, parent, iniSize)
     {
         _border = new()
         {
-            Margin = new(Left, Top, 0, 0),
             Maximum = hp,
             Foreground = Brushes.Blue,
             Width = radius * 6 * 2,
@@ -84,30 +97,8 @@ public class ProgressTarget : Target
     /// </param>
     public override void Draw()
     {
-        Parent.Children.Add(_border);
+        _ = Parent.Children.Add(_border);
         base.Draw();
-    }
-
-    /// <summary>
-    ///     Moves the target in the specified directions
-    /// </summary>
-    /// <param name="moveTop">
-    ///     Whether to move the target upwards
-    /// </param>
-    /// <param name="moveRight">
-    ///     Whether to move the target to the right
-    /// </param>
-    /// <param name="moveBottom">
-    ///     Whether to move the target downwards
-    /// </param>
-    /// <param name="moveLeft">
-    ///     Whether to move the target to the left
-    /// </param>
-    public override void Move(bool moveTop, bool moveRight, bool moveBottom, bool moveLeft)
-    {
-        base.Move(moveTop, moveRight, moveBottom, moveLeft);
-
-        _border.Margin = new(Left, Top, 0, 0);
     }
 
     public override void Scale()
@@ -116,22 +107,5 @@ public class ProgressTarget : Target
 
         _border.Width = MaxRadius * 2;
         _border.Height = MaxRadius * 2;
-        //Canvas.SetLeft(_border, Left);
-        //Canvas.SetTop(_border, Top);
-        _border.Margin = new(Left, Top, 0, 0);
-    }
-
-    /// <summary>
-    ///     Moves the target to the specified center point
-    /// </summary>
-    /// <param name="center">
-    ///     The new center point of the target
-    /// </param>
-    public override void Move(Point2D<int> center)
-    {
-        base.Move(center);
-        //Canvas.SetLeft(_border, Left);
-        //Canvas.SetTop(_border, Top);
-        _border.Margin = new(Left, Top, 0, 0);
     }
 }

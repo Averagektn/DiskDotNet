@@ -23,7 +23,7 @@ namespace Disk.Visual.Impl;
 /// <param name="iniSize">
 ///     The initial size of the user
 /// </param>
-public class User(Point2D<int> center, int radius, int speed, Brush color, Canvas canvas, Size iniSize) : 
+public class User(Point2D<int> center, int radius, int speed, Brush color, Canvas canvas, Size iniSize) :
     Circle(center, radius, speed, color, canvas, iniSize)
 {
     /// <summary>

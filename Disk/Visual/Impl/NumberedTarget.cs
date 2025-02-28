@@ -8,6 +8,31 @@ namespace Disk.Visual.Impl;
 
 public class NumberedTarget : Target
 {
+    public override Point2D<int> Center
+    {
+        get => base.Center;
+        protected set
+        {
+            base.Center = value;
+
+            if (_numberText is not null)
+            {
+                Canvas.SetLeft(_numberText, Left + MaxRadius - (_numberText.ActualWidth / 2));
+                Canvas.SetTop(_numberText, Top + MaxRadius - (_numberText.ActualHeight / 2));
+            }
+            if (_coordY is not null)
+            {
+                Canvas.SetLeft(_coordY, Left + MaxRadius - (_coordY.ActualWidth / 2));
+                Canvas.SetTop(_coordY, Top - 2 - _coordY.ActualHeight);
+            }
+            if (_coordX is not null)
+            {
+                Canvas.SetLeft(_coordX, Right + 2);
+                Canvas.SetTop(_coordX, Top + MaxRadius - (_coordX.ActualHeight / 2));
+            }
+        }
+    }
+
     private readonly TextBlock _numberText;
     private readonly TextBox _coordY;
     private readonly TextBox _coordX;
@@ -47,10 +72,7 @@ public class NumberedTarget : Target
             FontSize = 25,
             MinWidth = MaxRadius,
         };
-        _coordY.LostFocus += (_, _) =>
-        {
-            OnLostKeyboardFocus(_coordY, ref _y);
-        };
+        _coordY.LostFocus += (_, _) => OnLostKeyboardFocus(_coordY, ref _y);
 
         _coordX = new TextBox()
         {
@@ -59,10 +81,7 @@ public class NumberedTarget : Target
             FontSize = 25,
             MinWidth = MaxRadius,
         };
-        _coordX.LostFocus += (_, _) =>
-        {
-            OnLostKeyboardFocus(_coordX, ref _x);
-        };
+        _coordX.LostFocus += (_, _) => OnLostKeyboardFocus(_coordX, ref _x);
 
         _numberText = new TextBlock()
         {
@@ -73,12 +92,6 @@ public class NumberedTarget : Target
         {
             Canvas.SetLeft(_numberText, Left + MaxRadius - (s.NewSize.Width / 2));
             Canvas.SetTop(_numberText, Top + MaxRadius - (s.NewSize.Height / 2));
-
-            Canvas.SetLeft(_coordY, Left + MaxRadius - (_coordY.ActualWidth / 2));
-            Canvas.SetTop(_coordY, Top - 2 - _coordY.ActualHeight);
-
-            Canvas.SetLeft(_coordX, Right + 2);
-            Canvas.SetTop(_coordX, Top + MaxRadius - (_coordY.ActualHeight / 2));
         };
 
         for (int i = 1; i < Circles.Count; i++)
@@ -102,7 +115,6 @@ public class NumberedTarget : Target
     public void UpdateNumber(int number)
     {
         _numberText.Text = number.ToString();
-
         UpdateNumSize();
     }
 
@@ -113,8 +125,6 @@ public class NumberedTarget : Target
         _ = Parent.Children.Add(_numberText);
         _ = Parent.Children.Add(_coordY);
         _ = Parent.Children.Add(_coordX);
-
-        ChangePosition();
     }
 
     public override void Scale()
@@ -132,8 +142,6 @@ public class NumberedTarget : Target
         _coordX.Text = $"{point.X:f1}";
         _coordY.Text = $"{point.Y:f1}";
 
-        ChangePosition();
-
         CheckOutOfBounds();
     }
 
@@ -144,31 +152,26 @@ public class NumberedTarget : Target
         {
             Canvas.SetLeft(_coordX, Left - 2 - _coordX.ActualWidth);
         }
-
         // X coord bottom
         if (Center.Y + (_coordX.ActualHeight / 2) > Parent.ActualHeight)
         {
             Canvas.SetTop(_coordX, Parent.ActualHeight - 2 - _coordX.ActualHeight);
         }
-
         // X coord top
         if (Center.Y - (_coordX.ActualHeight / 2) < 0)
         {
             Canvas.SetTop(_coordX, 2);
         }
-
         // Y coord left
         if (Center.X - (_coordY.ActualWidth / 2) < 0)
         {
             Canvas.SetLeft(_coordY, 2);
         }
-
         // Y coord right
         if (Center.X + (_coordY.ActualWidth / 2) > Parent.ActualWidth)
         {
             Canvas.SetLeft(_coordY, Parent.ActualWidth - 2 - _coordY.ActualWidth);
         }
-
         // Y coord top
         if (Top - _coordY.ActualWidth < 0)
         {
@@ -180,20 +183,7 @@ public class NumberedTarget : Target
     {
         var numSize = _numberText.Text.Length;
         var fontSize = (double)((MaxRadius * 2) - (Radius * 2)) / numSize;
-
         _numberText.FontSize = fontSize;
-    }
-
-    private void ChangePosition()
-    {
-        Canvas.SetLeft(_numberText, Left + MaxRadius - (_numberText.ActualWidth / 2));
-        Canvas.SetTop(_numberText, Top + MaxRadius - (_numberText.ActualHeight / 2));
-
-        Canvas.SetLeft(_coordY, Left + MaxRadius - (_coordY.ActualWidth / 2));
-        Canvas.SetTop(_coordY, Top - 2 - _coordY.ActualHeight);
-
-        Canvas.SetLeft(_coordX, Right + 2);
-        Canvas.SetTop(_coordX, Top + MaxRadius - (_coordX.ActualHeight / 2));
     }
 
     public override void Remove()

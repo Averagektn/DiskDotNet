@@ -2,10 +2,8 @@
 using Disk.Data.Impl;
 using Disk.Visual.Interface;
 using System.Windows.Controls;
-using System.Windows.Markup;
 using System.Windows.Media;
 using System.Windows.Shapes;
-using Size = System.Windows.Size;
 
 namespace Disk.Visual.Impl;
 
@@ -34,6 +32,8 @@ public class Graph : IStaticFigure
     /// </summary>
     private int Radius;
 
+    private readonly Panel _parent;
+
     /// <summary>
     ///     Initializes a new instance of the <see cref="Graph"/> class
     /// </summary>
@@ -49,8 +49,7 @@ public class Graph : IStaticFigure
     /// <param name="segmentsNum">
     ///     The number of segments in the graph. Default is 4
     /// </param>
-    private readonly Panel _parent;
-    public Graph(IEnumerable<PolarPoint<float>> points, Size currSize, Brush color, Panel parent, int segmentsNum = 4)
+    public Graph(IEnumerable<PolarPoint<float>> points, Brush color, Panel parent, int segmentsNum = 4)
     {
         _parent = parent;
         SegmentsNum = segmentsNum;
@@ -74,7 +73,7 @@ public class Graph : IStaticFigure
     {
         FillPolygon();
 
-        _parent.Children.Add(Polygon);
+        _ = _parent.Children.Add(Polygon);
     }
 
     /// <summary>
@@ -87,8 +86,6 @@ public class Graph : IStaticFigure
     {
         Radius = (int)(Math.Min(_parent.ActualWidth, _parent.ActualHeight) * 0.9) / 2;
 
-        Polygon.Points.Clear();
-
         FillPolygon();
     }
 
@@ -97,6 +94,8 @@ public class Graph : IStaticFigure
     /// </summary>
     private void FillPolygon()
     {
+        Polygon.Points.Clear();
+
         var angleStep = 360.0 / SegmentsNum;
         var maxFrequency = Frequency.Max();
 

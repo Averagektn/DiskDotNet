@@ -1,7 +1,6 @@
 ﻿using Disk.Data.Impl;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Markup;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
@@ -9,12 +8,25 @@ namespace Disk.Visual.Impl;
 
 internal class UserPicture : User
 {
-    public new int Right => (int)(Center.X + (_image.Width / 2));
-    public new int Top => (int)(Center.Y - (_image.Height / 2));
-    public new int Bottom => (int)(Center.Y + (_image.Height / 2));
-    public new int Left => (int)(Center.X - (_image.Width / 2));
+    public override Point2D<int> Center
+    {
+        get => base.Center;
+        protected set
+        {
+            base.Center = value;
 
-    protected const double DIAGONAL_CORRECTION = 1.41;
+            if (_image is not null)
+            {
+                Canvas.SetLeft(_image, Left);
+                Canvas.SetTop(_image, Top);
+            }
+        }
+    }
+
+    public override int Right => (int)(Center.X + (_image?.Width ?? 0 / 2));
+    public override int Top => (int)(Center.Y - (_image?.Height ?? 0 / 2));
+    public override int Bottom => (int)(Center.Y + (_image?.Height ?? 0 / 2));
+    public override int Left => (int)(Center.X - (_image?.Width ?? 0 / 2));
 
     private readonly Image _image;
     private readonly Size IniImageSize;
@@ -28,74 +40,13 @@ internal class UserPicture : User
             Source = new BitmapImage(new Uri(filePath, UriKind.RelativeOrAbsolute)),
             Width = imageSize.Width,
             Height = imageSize.Height,
-            HorizontalAlignment = HorizontalAlignment.Left,
-            VerticalAlignment = VerticalAlignment.Top,
+            Stretch = Stretch.UniformToFill,
         };
     }
 
     public override void Draw()
     {
-        Parent.Children.Add(_image);
-    }
-
-    public override void Move(bool moveTop, bool moveRight, bool moveBottom, bool moveLeft)
-    {
-        int xSpeed = 0;
-        int ySpeed = 0;
-        int speed = Speed;
-
-        if ((moveTop || moveBottom) && (moveRight || moveLeft))
-        {
-            speed = (int)Math.Round(speed / DIAGONAL_CORRECTION);
-        }
-
-        if (moveTop)
-        {
-            ySpeed -= speed;
-        }
-        if (moveBottom)
-        {
-            ySpeed += speed;
-        }
-        if (moveLeft)
-        {
-            xSpeed -= speed;
-        }
-        if (moveRight)
-        {
-            xSpeed += speed;
-        }
-
-        if (Left <= 0 && xSpeed < 0)
-        {
-            xSpeed = 0;
-        }
-        if (Right >= Parent.RenderSize.Width && xSpeed > 0)
-        {
-            xSpeed = 0;
-        }
-        if (Top <= 0 && ySpeed < 0)
-        {
-            ySpeed = 0;
-        }
-        if (Bottom >= Parent.RenderSize.Height && ySpeed > 0)
-        {
-            ySpeed = 0;
-        }
-
-        Center = new(Center.X + xSpeed, Center.Y + ySpeed);
-
-        _image.Margin = new(Left, Top, 0, 0);
-    }
-
-    public override void Move(Point2D<int> center)
-    {
-        if (center.X <= Parent.RenderSize.Width && center.Y <= Parent.RenderSize.Height && center.X > 0 && center.Y > 0)
-        {
-            Center = center;
-
-            _image.Margin = new(Left, Top, 0, 0);
-        }
+        _ = Parent.Children.Add(_image);
     }
 
     public override void Remove()
@@ -110,12 +61,9 @@ internal class UserPicture : User
 
         Center = new(
                 (int)Math.Round(Center.X * coeffX),
-                (int)Math.Round(Center.Y * coeffY)
-            );
+                (int)Math.Round(Center.Y * coeffY));
 
-        _image.Width = IniImageSize.Width * coeffX;
-        _image.Height = IniImageSize.Height * coeffY;
-
-        _image.Margin = new(Left, Top, 0, 0);
+        _image.Width = IniImageSize.Width * (coeffX + coeffY) / 2;
+        _image.Height = IniImageSize.Height * (coeffX + coeffY) / 2;
     }
 }

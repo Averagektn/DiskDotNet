@@ -2,10 +2,8 @@
 using Disk.Data.Impl;
 using Disk.Visual.Interface;
 using System.Windows.Controls;
-using System.Windows.Markup;
 using System.Windows.Media;
 using System.Windows.Shapes;
-using Size = System.Windows.Size;
 
 namespace Disk.Visual.Impl;
 
@@ -29,6 +27,8 @@ public class Path : IStaticFigure
     /// </summary>
     private readonly Converter Converter;
 
+    private readonly Panel _parent;
+
     /// <summary>
     ///     Initializes a new instance of the <see cref="Path"/> class
     /// </summary>
@@ -44,7 +44,6 @@ public class Path : IStaticFigure
     /// <param name="color">
     ///     The color of the path
     /// </param>
-    private readonly Panel _parent;
     public Path(IEnumerable<Point2D<float>> points, Converter converter, Brush color, Panel parent)
     {
         Converter = converter;
@@ -69,9 +68,9 @@ public class Path : IStaticFigure
     /// <param name="addChild">
     ///     The child element to add the path to
     /// </param>
-    public void Draw()
+    public virtual void Draw()
     {
-        _parent.Children.Add(Polyline);
+        _ = _parent.Children.Add(Polyline);
     }
 
     /// <summary>
@@ -80,7 +79,7 @@ public class Path : IStaticFigure
     /// <param name="collection">
     ///     The UI element collection
     /// </param>
-    public void Remove()
+    public virtual void Remove()
     {
         _parent.Children.Remove(Polyline);
     }
@@ -91,7 +90,7 @@ public class Path : IStaticFigure
     /// <param name="newSize">
     ///     The new size of the path
     /// </param>
-    public void Scale()
+    public virtual void Scale()
     {
         Polyline.Points.Clear();
 

@@ -1,7 +1,6 @@
 ﻿using Disk.Data.Impl;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Markup;
 using System.Windows.Media;
 
 namespace Disk.Visual.Impl;
@@ -18,7 +17,7 @@ namespace Disk.Visual.Impl;
 /// <param name="iniSize">
 ///     The initial size of the target
 /// </param>
-public class Target(Point2D<int> center, int radius, Canvas parent, Size iniSize) : 
+public class Target(Point2D<int> center, int radius, Canvas parent, Size iniSize) :
     User(center, radius, 0, Brushes.White, parent, iniSize)
 {
     /// <summary>
@@ -91,6 +90,7 @@ public class Target(Point2D<int> center, int radius, Canvas parent, Size iniSize
     /// </param>
     public override void Move(bool moveTop, bool moveRight, bool moveBottom, bool moveLeft)
     {
+        base.Move(moveTop, moveRight, moveBottom, moveLeft);
         Circles.ForEach(circle => circle.Move(moveTop, moveRight, moveBottom, moveLeft));
     }
 
@@ -103,7 +103,6 @@ public class Target(Point2D<int> center, int radius, Canvas parent, Size iniSize
     public override void Scale()
     {
         base.Scale();
-
         Circles.ForEach(circle => circle.Scale());
     }
 
@@ -116,7 +115,6 @@ public class Target(Point2D<int> center, int radius, Canvas parent, Size iniSize
     public override void Move(Point2D<int> center)
     {
         base.Move(center);
-     
         Circles.ForEach(circle => circle.Move(Center));
     }
 

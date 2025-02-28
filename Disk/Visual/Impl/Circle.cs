@@ -70,7 +70,7 @@ public class Circle : IDynamicFigure
     /// <summary>
     ///     Correction multiplier for diagonal movement
     /// </summary>
-    private const float DIAGONAL_CORRECTION = 1.41f;
+    protected const float DIAGONAL_CORRECTION = 1.41f;
 
     /// <summary>
     ///     Figure to be drawn
@@ -129,8 +129,8 @@ public class Circle : IDynamicFigure
         };
 
         Speed = speed;
-        Center = center;
         Radius = radius;
+        Center = center;
 
         IniSize = iniSize;
         CurrSize = iniSize;
@@ -214,7 +214,7 @@ public class Circle : IDynamicFigure
         {
             xSpeed = 0;
         }
-        if (Right >= Parent.RenderSize.Width && xSpeed > 0)
+        if (Right >= Parent.ActualWidth && xSpeed > 0)
         {
             xSpeed = 0;
         }
@@ -222,7 +222,7 @@ public class Circle : IDynamicFigure
         {
             ySpeed = 0;
         }
-        if (Bottom >= Parent.RenderSize.Height && ySpeed > 0)
+        if (Bottom >= Parent.ActualHeight && ySpeed > 0)
         {
             ySpeed = 0;
         }
@@ -239,7 +239,7 @@ public class Circle : IDynamicFigure
         Radius = (int)Math.Round(IniRadius * (coeffX + coeffY) / 2);
 
         Center = new(
-            (int)Math.Round(Center.X * (Parent.ActualWidth / CurrSize.Width)), 
+            (int)Math.Round(Center.X * (Parent.ActualWidth / CurrSize.Width)),
             (int)Math.Round(Center.Y * (Parent.ActualHeight / CurrSize.Height)));
 
         CurrSize = Parent.RenderSize;
@@ -253,7 +253,7 @@ public class Circle : IDynamicFigure
     /// </param>
     public virtual void Move(Point2D<int> center)
     {
-        if (center.X <= Parent.RenderSize.Width && center.Y <= Parent.RenderSize.Height && center.X > 0 && center.Y > 0)
+        if (center.X <= Parent.ActualWidth && center.Y <= Parent.ActualHeight && center.X > 0 && center.Y > 0)
         {
             Center = center;
         }

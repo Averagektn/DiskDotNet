@@ -165,7 +165,7 @@ public class SessionResultViewModel(NavigationStore navigationStore) : ObserverV
         if (PathsInTargets.Count <= SelectedIndex || PathsInTargets[SelectedIndex].Count == 0)
         {
             _ = MessageBox.Show(Localization.NoContentForDiagramError);
-            return new Graph([], paintAreaSize, Brushes.LightGreen, canvas, 8);
+            return new Graph([], Brushes.LightGreen, canvas, 8);
         }
 
         var target = DrawableFabric.GetIniProgressTarget(new(0, 0), canvas);
@@ -182,7 +182,7 @@ public class SessionResultViewModel(NavigationStore navigationStore) : ObserverV
             //.Where(p => Math.Abs(p.X) > angRadius && Math.Abs(p.Y) > angRadius)
             .ToList();
 
-        return new Graph(dataset, paintAreaSize, Brushes.LightGreen, canvas, 8);
+        return new Graph(dataset, Brushes.LightGreen, canvas, 8);
     }
 
     public override void Dispose()
