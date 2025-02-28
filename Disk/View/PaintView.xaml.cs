@@ -1,5 +1,4 @@
 ﻿using Disk.Calculations.Impl.Converters;
-using Disk.Data.Impl;
 using Disk.Service.Implementation;
 using Disk.ViewModel;
 using Disk.Visual.Impl;
@@ -141,8 +140,9 @@ namespace Disk.View.PaintWindow
             var wndCenter = converter.ToWndCoord(center);
             Target = DrawableFabric.GetIniProgressTarget(wndCenter, PaintArea);
             Target.OnReceiveShot += shot => ViewModel.Score += shot;
-            
-            Scalables.Add(Target); Scalables.Add(User);
+
+            Scalables.Add(Target);
+            Scalables.Add(User);
             Converter.Scale(PaintArea.RenderSize);
             Scalables.ForEach(elem => elem?.Scale());
 
@@ -150,7 +150,8 @@ namespace Disk.View.PaintWindow
             {
                 ViewModel.StartReceiving();
 
-                Drawables.Add(Target); Drawables.Add(User);
+                Drawables.Add(Target);
+                Drawables.Add(User);
                 Drawables.ForEach(elem => elem?.Draw());
 
                 MoveTimer.Start();
@@ -190,8 +191,6 @@ namespace Disk.View.PaintWindow
             StopGame();
             // navigate to result
             ViewModel.SaveSessionResult();
-            // navigate to result
-            //CbTargets_SelectionChanged(sender, null!);
         }
     }
 }

@@ -23,10 +23,10 @@ internal class UserPicture : User
         }
     }
 
-    public override int Right => (int)(Center.X + (_image?.Width ?? 0 / 2));
-    public override int Top => (int)(Center.Y - (_image?.Height ?? 0 / 2));
-    public override int Bottom => (int)(Center.Y + (_image?.Height ?? 0 / 2));
-    public override int Left => (int)(Center.X - (_image?.Width ?? 0 / 2));
+    public override int Right => (int)(Center.X + ((_image?.Width ?? 0) / 2));
+    public override int Top => (int)(Center.Y - ((_image?.Height ?? 0) / 2));
+    public override int Bottom => (int)(Center.Y + ((_image?.Height ?? 0) / 2));
+    public override int Left => (int)(Center.X - ((_image?.Width ?? 0) / 2));
 
     private readonly Image _image;
     private readonly Size IniImageSize;
@@ -40,7 +40,6 @@ internal class UserPicture : User
             Source = new BitmapImage(new Uri(filePath, UriKind.RelativeOrAbsolute)),
             Width = imageSize.Width,
             Height = imageSize.Height,
-            Stretch = Stretch.UniformToFill,
         };
     }
 
@@ -59,11 +58,10 @@ internal class UserPicture : User
         double coeffX = (double)Parent.RenderSize.Width / IniSize.Width;
         double coeffY = (double)Parent.RenderSize.Height / IniSize.Height;
 
-        Center = new(
-                (int)Math.Round(Center.X * coeffX),
-                (int)Math.Round(Center.Y * coeffY));
+        _image.Width = (int)Math.Round(IniImageSize.Width * (coeffX + coeffY) / 2);
+        _image.Height = (int)Math.Round(IniImageSize.Height * (coeffX + coeffY) / 2);
 
-        _image.Width = IniImageSize.Width * (coeffX + coeffY) / 2;
-        _image.Height = IniImageSize.Height * (coeffX + coeffY) / 2;
+
+        base.Scale();
     }
 }
