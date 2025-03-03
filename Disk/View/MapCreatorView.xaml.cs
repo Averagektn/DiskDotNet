@@ -78,16 +78,16 @@ public partial class MapCreatorView : UserControl
             var mousePos = e.GetPosition(sender as UIElement);
             var x = (int)mousePos.X;
             var y = (int)mousePos.Y;
-            if (AllowedArea.FillContains(mousePos))
+            if (FullRadiusEllipse.FillContains(mousePos))
             {
                 var clickPoint = new Point2D<int>(x, y);
                 _selectedTarget?.Move(clickPoint);
             }
             else
             {
-                var center = new Point2D<int>((int)AllowedArea.Bounds.Width / 2, (int)AllowedArea.Bounds.Height / 2);
-                var radiusX = AllowedArea.Bounds.Width / 2;
-                var radiusY = AllowedArea.Bounds.Height / 2;
+                var center = new Point2D<int>((int)FullRadiusEllipse.Bounds.Width / 2, (int)FullRadiusEllipse.Bounds.Height / 2);
+                var radiusX = FullRadiusEllipse.Bounds.Width / 2;
+                var radiusY = FullRadiusEllipse.Bounds.Height / 2;
 
                 double normalizedX = (x - center.X) / radiusX;
                 double normalizedY = (y - center.Y) / radiusY;
@@ -124,9 +124,17 @@ public partial class MapCreatorView : UserControl
 
     private void OnSizeChanged(object sender, SizeChangedEventArgs e)
     {
-        AllowedArea.RadiusX = ActualWidth / 2;
-        AllowedArea.RadiusY = ActualHeight / 2;
-        AllowedArea.Center = new(ActualWidth / 2, ActualHeight / 2);
+        OneThirdRadiusEllipse.RadiusX = ActualWidth / 6;
+        OneThirdRadiusEllipse.RadiusY = ActualHeight / 6;
+        OneThirdRadiusEllipse.Center = new(ActualWidth / 2, ActualHeight / 2);
+
+        TwoThirdRadiusEllipse.RadiusX = ActualWidth / 3;
+        TwoThirdRadiusEllipse.RadiusY = ActualHeight / 3;
+        TwoThirdRadiusEllipse.Center = new(ActualWidth / 2, ActualHeight / 2);
+
+        FullRadiusEllipse.RadiusX = ActualWidth / 2;
+        FullRadiusEllipse.RadiusY = ActualHeight / 2;
+        FullRadiusEllipse.Center = new(ActualWidth / 2, ActualHeight / 2);
 
         _converter?.Scale(new(ActualWidth, ActualHeight));
         _targets.ForEach(target => target.Scale());
@@ -141,10 +149,9 @@ public partial class MapCreatorView : UserControl
     private void OnMouseDoubleClick(object sender, MouseButtonEventArgs e)
     {
         var mousePos = e.GetPosition(sender as UIElement);
-        var x = (int)mousePos.X;
-        var y = (int)mousePos.Y;
+        var fillContains = FullRadiusEllipse.FillContains(mousePos);
 
-        if (e.ChangedButton == MouseButton.Left && AllowedArea.FillContains(new Point(x, y)))
+        if (e.ChangedButton == MouseButton.Left && fillContains)
         {
             var target = GetIniCoordTarget(mousePos.X, mousePos.Y);
             target.Scale();

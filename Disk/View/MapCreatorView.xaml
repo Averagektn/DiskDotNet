@@ -10,7 +10,8 @@
              d:DataContext="{d:DesignInstance Type=viewmodel:MapCreatorViewModel}"
              mc:Ignorable="d" 
              d:DesignHeight="800" 
-             d:DesignWidth="800">
+             d:DesignWidth="800"
+             Background="Transparent">
 
     <Grid>
         <Menu 
@@ -43,13 +44,17 @@
             Stroke="Black" 
             StrokeThickness="2" 
             VerticalAlignment="Center" />
-        
+
         <Canvas x:Name="PaintArea">
             <TextBlock FontSize="25" Name="MaxX" />
             <TextBlock FontSize="25" Name="MaxY" />
-            <Path Fill="Transparent" Stretch="Fill" Stroke="Black" StrokeThickness="2">
+            <Path Stretch="Fill" Fill="Transparent" Stroke="Black" StrokeThickness="2">
                 <Path.Data>
-                    <EllipseGeometry x:Name="AllowedArea"/>
+                    <GeometryGroup x:Name="AllowedArea" >
+                        <EllipseGeometry x:Name="OneThirdRadiusEllipse" />
+                        <EllipseGeometry x:Name="TwoThirdRadiusEllipse" />
+                        <EllipseGeometry x:Name="FullRadiusEllipse" />
+                    </GeometryGroup>
                 </Path.Data>
             </Path>
             <Button Visibility="Collapsed" Name="FocusButton"/>
