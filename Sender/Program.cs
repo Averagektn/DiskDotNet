@@ -3,7 +3,7 @@ using System.Net.Sockets;
 
 TcpListener? server = null;
 string fileName = "connection.log";
-string ip = "192.168.150.2";
+string ip = "192.168.0.105";
 int port = 9998;
 byte handshake = 23;
 
@@ -28,7 +28,6 @@ try
     Console.WriteLine($"Sent: {data[0]}");
 
     using var reader = new StreamReader(fileName);
-    string? line;
 
     while (true)
     {
@@ -37,8 +36,6 @@ try
         _ = float.TryParse(receivedData, out float value);
         Console.WriteLine(value);
     }
-
-    while (true) { }
 }
 catch (Exception e)
 {
