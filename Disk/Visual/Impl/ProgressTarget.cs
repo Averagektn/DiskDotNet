@@ -6,12 +6,22 @@ using XamlRadialProgressBar;
 
 namespace Disk.Visual.Impl;
 
+/// <summary>
+///     Target with progress bar
+/// </summary>
 public class ProgressTarget : Target
 {
-    public double Progress => _border.Value / _border.Maximum;
+    /// <summary>
+    ///     Current <see cref="RadialProgressBar"/> value
+    /// </summary>
+    public double Progress => Border.Value / Border.Maximum;
 
-    public bool IsFull => (int)_border.Value >= (int)_border.Maximum;
+    /// <summary>
+    ///     Checks if <see cref="RadialProgressBar"/> is full
+    /// </summary>
+    public bool IsFull => (int)Border.Value >= (int)Border.Maximum;
 
+    /// <inheritdoc/>
     public override Point2D<int> Center
     {
         get => base.Center;
@@ -19,45 +29,41 @@ public class ProgressTarget : Target
         {
             base.Center = value;
 
-            if (_border is not null)
-            {
-                Canvas.SetLeft(_border, Left);
-                Canvas.SetTop(_border, Top);
-            }
+            Canvas.SetLeft(Border, Left);
+            Canvas.SetTop(Border, Top);
         }
     }
 
-    /// <summary>
-    ///     Gets the maximum radius of the target
-    /// </summary>
+    /// <inheritdoc/>
     public override int MaxRadius => Radius * 6;
 
     /// <summary>
-    ///     Gets the X-coordinate of the right edge of the circle
+    ///     Progress
     /// </summary>
-    public override int Right => Center.X + MaxRadius;
+    protected readonly RadialProgressBar Border;
 
     /// <summary>
-    ///     Gets the Y-coordinate of the top edge of the circle
+    ///     Target with progress bar
     /// </summary>
-    public override int Top => Center.Y - MaxRadius;
-
-    /// <summary>
-    ///     Gets the Y-coordinate of the bottom edge of the circle
-    /// </summary>
-    public override int Bottom => Center.Y + MaxRadius;
-
-    /// <summary>
-    ///     Gets the X-coordinate of the left edge of the circle
-    /// </summary>
-    public override int Left => Center.X - MaxRadius;
-
-    private readonly RadialProgressBar _border;
-
+    /// <param name="center">
+    ///     The center point of the target
+    /// </param>
+    /// <param name="radius">
+    ///     The radius of the target
+    /// </param>
+    /// <param name="parent">
+    ///     Canvas, containing all figures
+    /// </param>
+    /// <param name="hp">
+    ///     <see cref="RadialProgressBar"/> maximum value
+    /// </param>
+    /// <param name="iniSize">
+    ///     The initial size of the target
+    /// </param>
     public ProgressTarget(Point2D<int> center, int radius, Canvas parent, int hp, Size iniSize)
         : base(center, radius, parent, iniSize)
     {
-        _border = new()
+        Border = new()
         {
             Maximum = hp,
             Foreground = Brushes.Blue,
@@ -66,46 +72,48 @@ public class ProgressTarget : Target
         };
     }
 
+    /// <summary>
+    ///     Set <see cref="RadialProgressBar"/> value to 0
+    /// </summary>
     public void Reset()
     {
-        _border.Value = 0;
+        Border.Value = 0;
     }
 
+    /// <inheritdoc/>
     public override int ReceiveShot(Point2D<int> shot)
     {
         var res = base.ReceiveShot(shot);
-        _border.Value += res;
+        Border.Value += res;
 
         return res;
     }
 
+    /// <inheritdoc/>
     public override void Remove()
     {
         base.Remove();
 
-        if (Parent.Children.Contains(_border))
+        if (Parent.Children.Contains(Border))
         {
-            Parent.Children.Remove(_border);
+            Parent.Children.Remove(Border);
         }
     }
 
-    /// <summary>
-    ///     Draws the target by adding each circle to the specified UI element collection
-    /// </summary>
-    /// <param name="addChild">
-    ///     The UI element collection to add the circles to
-    /// </param>
+    /// <inheritdoc/>
     public override void Draw()
     {
-        _ = Parent.Children.Add(_border);
+        _ = Parent.Children.Add(Border);
+
         base.Draw();
     }
 
+    /// <inheritdoc/>
     public override void Scale()
     {
         base.Scale();
 
-        _border.Width = MaxRadius * 2;
-        _border.Height = MaxRadius * 2;
+        Border.Width = MaxRadius * 2;
+        Border.Height = MaxRadius * 2;
     }
 }

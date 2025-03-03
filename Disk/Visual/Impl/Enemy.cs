@@ -20,6 +20,9 @@ namespace Disk.Visual.Impl;
 /// <param name="color">
 ///     The color of the enemy
 /// </param>
+/// <param name="parent">
+///     Canvas, containing all figures
+/// </param>
 /// <param name="iniSize">
 ///     The initial size of the enemy
 /// </param>

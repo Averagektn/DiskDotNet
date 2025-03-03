@@ -3,6 +3,7 @@ using Disk.Service.Implementation;
 using Disk.ViewModel;
 using Disk.Visual.Impl;
 using Disk.Visual.Interface;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Threading;
@@ -212,6 +213,6 @@ public partial class PaintView : UserControl
     {
         StopGame();
         // navigate to result
-        ViewModel.SaveSessionResult();
+        _ = Application.Current.Dispatcher.BeginInvoke(async () => await ViewModel.SaveSessionResult());
     }
 }

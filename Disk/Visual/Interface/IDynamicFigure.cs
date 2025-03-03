@@ -7,6 +7,9 @@ namespace Disk.Visual.Interface;
 /// </summary>
 public interface IDynamicFigure : IStaticFigure, IMovable
 {
+    /// <summary>
+    ///     Center of the figure
+    /// </summary>
     Point2D<int> Center { get; }
 
     /// <summary>

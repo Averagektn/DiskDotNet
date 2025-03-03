@@ -27,7 +27,10 @@ public class Path : IStaticFigure
     /// </summary>
     private readonly Converter Converter;
 
-    private readonly Panel _parent;
+    /// <summary>
+    ///     Required for correct positioning
+    /// </summary>
+    protected readonly Panel Parent;
 
     /// <summary>
     ///     Initializes a new instance of the <see cref="Path"/> class
@@ -47,7 +50,7 @@ public class Path : IStaticFigure
     public Path(IEnumerable<Point2D<float>> points, Converter converter, Brush color, Panel parent)
     {
         Converter = converter;
-        _parent = parent;
+        Parent = parent;
 
         Polyline = new Polyline()
         {
@@ -62,41 +65,22 @@ public class Path : IStaticFigure
         }
     }
 
-    /// <summary>
-    ///     Draws the path
-    /// </summary>
-    /// <param name="addChild">
-    ///     The child element to add the path to
-    /// </param>
+    /// <inheritdoc/>
     public virtual void Draw()
     {
-        _ = _parent.Children.Add(Polyline);
+        _ = Parent.Children.Add(Polyline);
     }
 
-    /// <summary>
-    ///     Removes the path from a UI element collection
-    /// </summary>
-    /// <param name="collection">
-    ///     The UI element collection
-    /// </param>
+    /// <inheritdoc/>
     public virtual void Remove()
     {
-        _parent.Children.Remove(Polyline);
+        Parent.Children.Remove(Polyline);
     }
 
-    /// <summary>
-    ///     Scales the path to the specified size
-    /// </summary>
-    /// <param name="newSize">
-    ///     The new size of the path
-    /// </param>
+    /// <inheritdoc/>
     public virtual void Scale()
     {
         Polyline.Points.Clear();
-
-        foreach (var point in Points)
-        {
-            Polyline.Points.Add(Converter.ToWndCoord(point).ToPoint());
-        }
+        Points.ForEach(point => Polyline.Points.Add(Converter.ToWndCoord(point).ToPoint()));
     }
 }

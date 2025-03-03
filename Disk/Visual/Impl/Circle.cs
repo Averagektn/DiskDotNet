@@ -12,46 +12,51 @@ namespace Disk.Visual.Impl;
 /// </summary>
 public class Circle : IDynamicFigure
 {
-    /// <summary>
-    ///     Gets or sets the center point of the circle
-    /// </summary>
     private Point2D<int> _center = new();
+    /// <summary>
+    ///     <inheritdoc/>
+    ///     Center change will force positioning change with
+    ///     <see cref="Canvas.SetLeft(System.Windows.UIElement, double)"/> and
+    ///     <see cref="Canvas.SetTop(System.Windows.UIElement, double)"/> of all figures
+    /// </summary>
     public virtual Point2D<int> Center
     {
         get => _center;
         protected set
         {
             _center = value;
+
             Canvas.SetLeft(Figure, Left);
             Canvas.SetTop(Figure, Top);
         }
     }
 
     /// <summary>
-    ///     Gets the X-coordinate of the right edge of the circle
+    ///     <inheritdoc/>
     /// </summary>
     public virtual int Right => Center.X + Radius;
 
     /// <summary>
-    ///     Gets the Y-coordinate of the top edge of the circle
+    ///     <inheritdoc/>
     /// </summary>
     public virtual int Top => Center.Y - Radius;
 
     /// <summary>
-    ///     Gets the Y-coordinate of the bottom edge of the circle
+    ///     <inheritdoc/>
     /// </summary>
     public virtual int Bottom => Center.Y + Radius;
 
     /// <summary>
-    ///     Gets the X-coordinate of the left edge of the circle
+    ///     <inheritdoc/>
     /// </summary>
     public virtual int Left => Center.X - Radius;
 
-    /// <summary>
-    ///     Gets or sets the radius of the circle
-    /// </summary>
     private int _radius = 0;
-    public int Radius
+    /// <summary>
+    ///     Gets or sets the radius of the circle. 
+    ///     Change will force resize
+    /// </summary>
+    public virtual int Radius
     {
         get => _radius;
         protected set
@@ -70,7 +75,7 @@ public class Circle : IDynamicFigure
     /// <summary>
     ///     Correction multiplier for diagonal movement
     /// </summary>
-    protected const float DIAGONAL_CORRECTION = 1.41f;
+    protected const float DiagonalCorrection = 1.41f;
 
     /// <summary>
     ///     Figure to be drawn
@@ -78,9 +83,13 @@ public class Circle : IDynamicFigure
     private readonly Ellipse Figure;
 
     /// <summary>
-    ///     Initial ize for scaling
+    ///     Initial size for scaling
     /// </summary>
     protected readonly Size IniSize;
+
+    /// <summary>
+    ///     Size before parent size is changed
+    /// </summary>
     protected Size CurrSize;
 
     /// <summary>
@@ -93,11 +102,14 @@ public class Circle : IDynamicFigure
     /// </summary>
     private readonly int IniRadius;
 
+    /// <summary>
+    ///     Required for correct positioning
+    /// </summary>
     protected readonly Canvas Parent;
 
     /// <summary>
-    ///     Initializes a new instance of the Circle class with the specified center, radius, speed, color, and initial 
-    ///     size
+    ///     Initializes a new instance of the Circle class with the specified center, radius, speed, color 
+    ///     and initial size
     /// </summary>
     /// <param name="center">
     ///     The center point of the circle
@@ -129,8 +141,8 @@ public class Circle : IDynamicFigure
         };
 
         Speed = speed;
-        Radius = radius;
-        Center = center;
+        _radius = radius;
+        _center = center;
 
         IniSize = iniSize;
         CurrSize = iniSize;
@@ -146,42 +158,23 @@ public class Circle : IDynamicFigure
     ///     true if the circle contains the point, otherwise false
     /// </returns>
     public virtual bool Contains(Point2D<int> p)
-        => Math.Sqrt(Math.Pow((p.X - Center.X) / Radius, 2) + Math.Pow((p.Y - Center.Y) / Radius, 2)) <= 0;
+    {
+        return Math.Sqrt(Math.Pow((p.X - Center.X) / Radius, 2) + Math.Pow((p.Y - Center.Y) / Radius, 2)) <= 0;
+    }
 
-    /// <summary>
-    ///     Draws the circle on the specified container
-    /// </summary>
-    /// <param name="addChild">
-    ///     The container to draw the circle on
-    /// </param>
+    /// <inheritdoc/>
     public virtual void Draw()
     {
         _ = Parent.Children.Add(Figure);
     }
 
-    /// <summary>
-    ///     Removes the circle from the specified collection
-    /// </summary>
-    /// <param name="collection">
-    ///     The collection to remove the circle from
-    /// </param>
-    public virtual void Remove() => Parent.Children.Remove(Figure);
+    /// <inheritdoc/>
+    public virtual void Remove()
+    {
+        Parent.Children.Remove(Figure);
+    }
 
-    /// <summary>
-    ///     Moves the circle in the specified directions
-    /// </summary>
-    /// <param name="moveTop">
-    ///     Specifies whether to move the circle up
-    /// </param>
-    /// <param name="moveRight">
-    ///     Specifies whether to move the circle to the right
-    /// </param>
-    /// <param name="moveBottom">
-    ///     Specifies whether to move the circle down
-    /// </param>
-    /// <param name="moveLeft">
-    ///     Specifies whether to move the circle to the left
-    /// </param>
+    /// <inheritdoc/>
     public virtual void Move(bool moveTop, bool moveRight, bool moveBottom, bool moveLeft)
     {
         int xSpeed = 0;
@@ -190,7 +183,7 @@ public class Circle : IDynamicFigure
 
         if ((moveTop || moveBottom) && (moveRight || moveLeft))
         {
-            speed = (int)Math.Round(speed / DIAGONAL_CORRECTION);
+            speed = (int)Math.Round(speed / DiagonalCorrection);
         }
 
         if (moveTop)
@@ -230,6 +223,7 @@ public class Circle : IDynamicFigure
         Center = new(Center.X + xSpeed, Center.Y + ySpeed);
     }
 
+    /// <inheritdoc/>
     public virtual void Scale()
     {
         double coeffX = Parent.ActualWidth / IniSize.Width;
@@ -245,12 +239,7 @@ public class Circle : IDynamicFigure
         CurrSize = Parent.RenderSize;
     }
 
-    /// <summary>
-    ///     Moves the circle to the specified center point
-    /// </summary>
-    /// <param name="center">
-    ///     The new center point
-    /// </param>
+    /// <inheritdoc/>
     public virtual void Move(Point2D<int> center)
     {
         if (center.X <= Parent.ActualWidth && center.Y <= Parent.ActualHeight && center.X > 0 && center.Y > 0)

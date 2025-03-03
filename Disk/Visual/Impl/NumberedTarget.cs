@@ -6,6 +6,9 @@ using System.Windows.Media;
 
 namespace Disk.Visual.Impl;
 
+/// <summary>
+///     Used for maps contruction. Contains a number in the center
+/// </summary>
 public class NumberedTarget : Target
 {
     private readonly TextBlock _numberText;
@@ -16,8 +19,12 @@ public class NumberedTarget : Target
     private float _y;
     private float _x;
 
+    /// <summary>
+    ///     Returns x and y coordinates in angles
+    /// </summary>
     public Point2D<float> Angles => new(_x, _y);
 
+    /// <inheritdoc/>
     public override Point2D<int> Center
     {
         get => base.Center;
@@ -25,24 +32,38 @@ public class NumberedTarget : Target
         {
             base.Center = value;
 
-            if (_numberText is not null)
-            {
-                Canvas.SetLeft(_numberText, Left + MaxRadius - (_numberText.ActualWidth / 2));
-                Canvas.SetTop(_numberText, Top + MaxRadius - (_numberText.ActualHeight / 2));
-            }
-            if (_coordY is not null)
-            {
-                Canvas.SetLeft(_coordY, Left + MaxRadius - (_coordY.ActualWidth / 2));
-                Canvas.SetTop(_coordY, Top - 2 - _coordY.ActualHeight);
-            }
-            if (_coordX is not null)
-            {
-                Canvas.SetLeft(_coordX, Right + 2);
-                Canvas.SetTop(_coordX, Top + MaxRadius - (_coordX.ActualHeight / 2));
-            }
+            Canvas.SetLeft(_numberText, Left + MaxRadius - (_numberText.ActualWidth / 2));
+            Canvas.SetTop(_numberText, Top + MaxRadius - (_numberText.ActualHeight / 2));
+
+            Canvas.SetLeft(_coordY, Left + MaxRadius - (_coordY.ActualWidth / 2));
+            Canvas.SetTop(_coordY, Top - 2 - _coordY.ActualHeight);
+
+            Canvas.SetLeft(_coordX, Right + 2);
+            Canvas.SetTop(_coordX, Top + MaxRadius - (_coordX.ActualHeight / 2));
         }
     }
 
+    /// <summary>
+    ///     Represents a target with a center point, radius, and initial size. Uses numbers to show order
+    /// </summary>
+    /// <param name="center">
+    ///     The center point of the target
+    /// </param>
+    /// <param name="radius">
+    ///     The radius of the target
+    /// </param>
+    /// <param name="parent">
+    ///     Canvas, containing all figures
+    /// </param>
+    /// <param name="number">
+    ///     Initial number to be drawn
+    /// </param>
+    /// <param name="iniSize">
+    ///     The initial size of the target
+    /// </param>
+    /// <param name="converter">
+    ///     Conversion between window and angle coordinates
+    /// </param>
     public NumberedTarget(Point2D<int> center, int radius, Canvas parent, int number, Size iniSize, Converter converter)
         : base(center, radius, parent, iniSize)
     {
@@ -100,24 +121,37 @@ public class NumberedTarget : Target
         }
     }
 
+    /// <summary>
+    ///     Hides text boxes with angles
+    /// </summary>
     public void HideAngles()
     {
         _coordY.Visibility = Visibility.Hidden;
         _coordX.Visibility = Visibility.Hidden;
     }
 
+    /// <summary>
+    ///     Shows text boxes with angles
+    /// </summary>
     public void ShowAngles()
     {
         _coordY.Visibility = Visibility.Visible;
         _coordX.Visibility = Visibility.Visible;
     }
 
+    /// <summary>
+    ///     Set new number
+    /// </summary>
+    /// <param name="number">
+    ///     New number
+    /// </param>
     public void UpdateNumber(int number)
     {
         _numberText.Text = number.ToString();
         UpdateNumSize();
     }
 
+    /// <inheritdoc/>
     public override void Draw()
     {
         base.Draw();
@@ -127,6 +161,7 @@ public class NumberedTarget : Target
         _ = Parent.Children.Add(_coordX);
     }
 
+    /// <inheritdoc/>
     public override void Scale()
     {
         base.Scale();
@@ -134,6 +169,7 @@ public class NumberedTarget : Target
         UpdateNumSize();
     }
 
+    /// <inheritdoc/>
     public override void Move(Point2D<int> center)
     {
         base.Move(center);
@@ -145,6 +181,9 @@ public class NumberedTarget : Target
         CheckOutOfBounds();
     }
 
+    /// <summary>
+    ///     If <see cref="_coordX"/> or <see cref="_coordY"/> are out of bounds, it will be moved 
+    /// </summary>
     private void CheckOutOfBounds()
     {
         // X coord right
@@ -179,6 +218,9 @@ public class NumberedTarget : Target
         }
     }
 
+    /// <summary>
+    ///     Resize font size
+    /// </summary>
     private void UpdateNumSize()
     {
         var numSize = _numberText.Text.Length;
@@ -186,6 +228,7 @@ public class NumberedTarget : Target
         _numberText.FontSize = fontSize;
     }
 
+    /// <inheritdoc/>
     public override void Remove()
     {
         base.Remove();

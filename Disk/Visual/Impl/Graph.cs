@@ -30,9 +30,12 @@ public class Graph : IStaticFigure
     /// <summary>
     ///     The radius of the graph
     /// </summary>
-    private int Radius;
+    protected int Radius;
 
-    private readonly Panel _parent;
+    /// <summary>
+    ///     Required for correct positioning
+    /// </summary>
+    protected readonly Panel Parent;
 
     /// <summary>
     ///     Initializes a new instance of the <see cref="Graph"/> class
@@ -40,20 +43,20 @@ public class Graph : IStaticFigure
     /// <param name="points">
     ///     The data points in polar coordinates
     /// </param>
-    /// <param name="currSize">
-    ///     The current size of the graph
-    /// </param>
     /// <param name="color">
     ///     The color of the graph
+    /// </param>
+    /// <param name="parent">
+    ///     Element to draw on
     /// </param>
     /// <param name="segmentsNum">
     ///     The number of segments in the graph. Default is 4
     /// </param>
     public Graph(IEnumerable<PolarPoint<float>> points, Brush color, Panel parent, int segmentsNum = 4)
     {
-        _parent = parent;
+        Parent = parent;
         SegmentsNum = segmentsNum;
-        Radius = (int)(Math.Min(_parent.RenderSize.Width, _parent.RenderSize.Height) * 0.9) / 2;
+        Radius = (int)(Math.Min(Parent.RenderSize.Width, Parent.RenderSize.Height) * 0.9) / 2;
 
         Frequency = GetFrequency(Classifier<float>.Classify(points.ToList(), segmentsNum));
 
@@ -63,28 +66,18 @@ public class Graph : IStaticFigure
         };
     }
 
-    /// <summary>
-    ///     Draws the graph
-    /// </summary>
-    /// <param name="addChild">
-    ///     The child element to add the graph to
-    /// </param>
+    /// <inheritdoc/>
     public void Draw()
     {
         FillPolygon();
 
-        _ = _parent.Children.Add(Polygon);
+        _ = Parent.Children.Add(Polygon);
     }
 
-    /// <summary>
-    ///     Scales the graph to the specified size
-    /// </summary>
-    /// <param name="newSize">
-    ///     The new size of the graph
-    /// </param>
+    /// <inheritdoc/>
     public void Scale()
     {
-        Radius = (int)(Math.Min(_parent.ActualWidth, _parent.ActualHeight) * 0.9) / 2;
+        Radius = (int)(Math.Min(Parent.ActualWidth, Parent.ActualHeight) * 0.9) / 2;
 
         FillPolygon();
     }
@@ -106,7 +99,7 @@ public class Graph : IStaticFigure
             var radius = Radius * Frequency.ElementAt(i) / (double)maxFrequency;
             var point = new PolarPoint<float>(radius, Math.PI * angle / 180);
 
-            Polygon.Points.Add(new((_parent.RenderSize.Width / 2) + point.X, (_parent.RenderSize.Height / 2) - point.Y));
+            Polygon.Points.Add(new((Parent.RenderSize.Width / 2) + point.X, (Parent.RenderSize.Height / 2) - point.Y));
         }
     }
 
@@ -131,15 +124,9 @@ public class Graph : IStaticFigure
         return res;
     }
 
-    /// <summary>
-    ///     
-    /// s the graph from a UI element collection
-    /// </summary>
-    /// <param name="collection">
-    ///     The UI element collection
-    /// </param>
+    /// <inheritdoc/>
     public void Remove()
     {
-        _parent.Children.Remove(Polygon);
+        Parent.Children.Remove(Polygon);
     }
 }

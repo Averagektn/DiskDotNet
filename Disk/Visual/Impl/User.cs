@@ -1,4 +1,5 @@
 ﻿using Disk.Data.Impl;
+using Disk.Visual.Interface;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -20,43 +21,29 @@ namespace Disk.Visual.Impl;
 /// <param name="color">
 ///     The color of the user
 /// </param>
+/// <param name="parent">
+///     Canvas, containing all figures
+/// </param>
 /// <param name="iniSize">
 ///     The initial size of the user
 /// </param>
-public class User(Point2D<int> center, int radius, int speed, Brush color, Canvas canvas, Size iniSize) :
-    Circle(center, radius, speed, color, canvas, iniSize)
+public class User(Point2D<int> center, int radius, int speed, Brush color, Canvas parent, Size iniSize) :
+    Circle(center, radius, speed, color, parent, iniSize), IUser
 {
-    /// <summary>
-    ///     Event that is triggered when the user shoots
-    /// </summary>
+    /// <inheritdoc/>
     public event Action<Point2D<int>>? OnShot;
 
+    /// <inheritdoc/>
     public void ClearOnShot()
     {
         OnShot = null;
     }
 
-    /// <summary>
-    ///     Performs a shooting action and invokes the OnShot event
-    /// </summary>
-    /// <returns>
-    ///     The center point of the user
-    /// </returns>
+    /// <inheritdoc/>
     public Point2D<int> Shot()
     {
         OnShot?.Invoke(Center);
 
         return Center;
     }
-
-    /// <summary>
-    ///     Receives a shot and determines the score based on whether the shot is contained within the user
-    /// </summary>
-    /// <param name="shot">
-    ///     The point of the shot
-    /// </param>
-    /// <returns>
-    ///     The score. 5 if the shot is contained within the user, 0 otherwise
-    /// </returns>
-    public virtual int ReceiveShot(Point2D<int> shot) => Contains(shot) ? 5 : 0;
 }
