@@ -74,29 +74,34 @@ public class ExcelFiller(IMapRepository mapRepository) : IExcelFiller
             worksheet.Cell(7, 2).Value = Localization.Time;
             worksheet.Cell(7, 3).Value = Localization.ApproachSpeed;
 
-            const int pathCol = 7;
+            const int pathCol = 5;
 
             FillPtts(worksheet, session, pathCol);
             FillPits(worksheet, session, pathCol + ColsPerPath);
 
             new List<IXLRange>()
                 {
-                    worksheet.Range(1, 1, 1, 2),
-                    worksheet.Range(4, 1, 4, 4),
-                    worksheet.Range(7, 1, 7, 5),
-                    worksheet.Range(1, pathCol, 2, (ColsPerPath * (session.PathToTargets.Count + session.PathInTargets.Count + 1)) - 2),
+                    worksheet.Range(firstCellRow: 1, firstCellColumn: 1, lastCellRow: 1, lastCellColumn: 2),
+                    worksheet.Range(firstCellRow: 4, firstCellColumn: 1, lastCellRow: 4, lastCellColumn: 3),
+                    worksheet.Range(firstCellRow: 7, firstCellColumn: 1, lastCellRow: 7, lastCellColumn: 3),
+                    worksheet.Range(firstCellRow: 1, firstCellColumn: pathCol, lastCellRow: 2,
+                        lastCellColumn: (ColsPerPath * (session.PathToTargets.Count + session.PathInTargets.Count + 1)) - 2),
                 }
             .ForEach(header =>
             {
                 header.Style.Font.Bold = true;
                 header.Style.Fill.BackgroundColor = XLColor.LightGray;
             });
-            worksheet.Range(3, pathCol, 3, (ColsPerPath * (session.PathToTargets.Count + session.PathInTargets.Count + 1)) - 2).Style.Fill
-                .BackgroundColor = XLColor.LightSlateGray;
-            worksheet.Range(3, pathCol, 3, (ColsPerPath * (session.PathToTargets.Count + session.PathInTargets.Count + 1)) - 2).Style.Font
-                .Bold = true;
+            worksheet.Range(firstCellRow: 3, firstCellColumn: pathCol, lastCellRow: 2,
+                lastCellColumn: (ColsPerPath * (session.PathToTargets.Count + session.PathInTargets.Count + 1)) - 2)
+                .Style.Fill.BackgroundColor = XLColor.LightSlateGray;
+            worksheet.Range(firstCellRow: 3, firstCellColumn: pathCol, lastCellRow: 2,
+                lastCellColumn: (ColsPerPath * (session.PathToTargets.Count + session.PathInTargets.Count + 1)) - 2)
+                .Style.Font.Bold = true;
 
-            _ = worksheet.Columns().AdjustToContents().Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
+            _ = worksheet
+                .Columns()
+                .AdjustToContents().Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
         }
     }
 
@@ -116,7 +121,7 @@ public class ExcelFiller(IMapRepository mapRepository) : IExcelFiller
             var pathList = JsonConvert.DeserializeObject<List<Point2D<float>>>(ptt.CoordinatesJson)!;
 
             worksheet.Cell(1, pathCol++).Value = $"{Localization.PathToTarget}";
-            FillPath(worksheet, session, pathCol, mapCenters, pathList, ptt.TargetNum);
+            FillPath(worksheet, pathCol, mapCenters, pathList, ptt.TargetNum);
 
             pathCol += (ColsPerPath * 2) - 1;
         }
@@ -135,13 +140,13 @@ public class ExcelFiller(IMapRepository mapRepository) : IExcelFiller
             worksheet.Cell(4, pathCol).Value = Localization.Precision;
             worksheet.Cell(5, pathCol).Style.NumberFormat.Format = "0.00";
             worksheet.Cell(5, pathCol++).Value = float.Round(pit.Precision, 3);
-            FillPath(worksheet, session, pathCol, mapCenters, pathList, pit.TargetId);
+            FillPath(worksheet, pathCol, mapCenters, pathList, pit.TargetId);
 
             pathCol += (ColsPerPath * 2) - 1;
         }
     }
 
-    private static void FillPath(IXLWorksheet worksheet, Session session, int pathCol, List<Point2D<float>> mapCenters,
+    private static void FillPath(IXLWorksheet worksheet, int pathCol, List<Point2D<float>> mapCenters,
         List<Point2D<float>> path, long targetId)
     {
         int pathRow = 1;
@@ -151,19 +156,19 @@ public class ExcelFiller(IMapRepository mapRepository) : IExcelFiller
         worksheet.Cell(pathRow + 1, pathCol - 1).Value = Localization.TargetCenter;
 
         worksheet.Cell(pathRow, pathCol).Value = "X";
-        SetFloatCell(worksheet, pathRow + 1, pathCol, (mapCenters[(int)targetId].X - 0.5f) * session.MaxXAngle * 2);
+        SetFloatCell(worksheet, pathRow + 1, pathCol, mapCenters[(int)targetId].X);
 
         worksheet.Cell(pathRow, pathCol + 1).Value = "Y";
-        SetFloatCell(worksheet, pathRow + 1, pathCol + 1, (mapCenters[(int)targetId].Y - 0.5f) * session.MaxYAngle * 2);
+        SetFloatCell(worksheet, pathRow + 1, pathCol + 1, mapCenters[(int)targetId].Y);
 
         worksheet.Cell(pathRow - 1, pathCol + 2).Value = Localization.ProfileProjection;
-        SetFloatCell(worksheet, pathRow + 1, pathCol + 2, 90.0f + ((mapCenters[(int)targetId].Y - 0.5f) * session.MaxYAngle * 2));
+        SetFloatCell(worksheet, pathRow + 1, pathCol + 2, 90.0f + mapCenters[(int)targetId].Y);
 
         worksheet.Cell(pathRow - 1, pathCol + 3).Value = Localization.FrontLeftFoot;
-        SetFloatCell(worksheet, pathRow + 1, pathCol + 3, 90.0f + ((mapCenters[(int)targetId].X - 0.5f) * session.MaxXAngle * 2));
+        SetFloatCell(worksheet, pathRow + 1, pathCol + 3, 90.0f + mapCenters[(int)targetId].X);
 
         worksheet.Cell(pathRow - 1, pathCol + 4).Value = Localization.FrontRightFoot;
-        SetFloatCell(worksheet, pathRow + 1, pathCol + 4, 90.0f - ((mapCenters[(int)targetId].X - 0.5f) * session.MaxXAngle * 2));
+        SetFloatCell(worksheet, pathRow + 1, pathCol + 4, 90.0f - mapCenters[(int)targetId].X);
 
         pathRow += 2;
 
