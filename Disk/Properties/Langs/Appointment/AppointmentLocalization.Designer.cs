@@ -106,6 +106,15 @@ namespace Disk.Properties.Langs.Appointment {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Error.
+        /// </summary>
+        public static string ErrorCaption {
+            get {
+                return ResourceManager.GetString("ErrorCaption", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Export to excel.
         /// </summary>
         public static string ExportToExcel {
@@ -156,6 +165,15 @@ namespace Disk.Properties.Langs.Appointment {
         public static string MathExp {
             get {
                 return ResourceManager.GetString("MathExp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Dataset contains errors or empty.
+        /// </summary>
+        public static string NoContentError {
+            get {
+                return ResourceManager.GetString("NoContentError", resourceCulture);
             }
         }
         

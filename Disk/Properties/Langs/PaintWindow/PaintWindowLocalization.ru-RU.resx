@@ -126,11 +126,17 @@
   <data name="EmptyMap" xml:space="preserve">
     <value>Карта пуста</value>
   </data>
+  <data name="ErrorCaption" xml:space="preserve">
+    <value>Ошибка</value>
+  </data>
   <data name="LeftFoot" xml:space="preserve">
     <value>Л</value>
   </data>
   <data name="RightFoot" xml:space="preserve">
     <value>П</value>
+  </data>
+  <data name="SaveError" xml:space="preserve">
+    <value>При сохранении данных возникла ошибка</value>
   </data>
   <data name="Score" xml:space="preserve">
     <value>Счет</value>

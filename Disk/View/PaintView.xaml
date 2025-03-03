@@ -7,7 +7,7 @@
              xmlns:local="clr-namespace:Disk.View.PaintWindow" 
              xmlns:viewmodel="clr-namespace:Disk.ViewModel" 
              d:DataContext="{d:DesignInstance Type=viewmodel:PaintViewModel}"
-             xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+             xmlns:i="http://schemas.microsoft.com/xaml/behaviors" xmlns:styles="clr-namespace:Disk.Style"
              mc:Ignorable="d" 
              d:DesignHeight="800" 
              d:DesignWidth="800">
@@ -65,6 +65,13 @@
                 </Path.Data>
             </Path>
         </Canvas>
+
+        <styles:Popup 
+            Grid.Row="2"
+            Grid.ColumnSpan="2"
+            PopupMessage="{Binding PopupMessage}" 
+            IsPopupOpen="{Binding IsShowPopup}" 
+            PopupHeader="{Binding PopupHeader}"/>
 
         <Rectangle 
             Grid.Row="1" 

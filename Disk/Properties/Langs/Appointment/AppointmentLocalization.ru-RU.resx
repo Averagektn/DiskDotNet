@@ -180,4 +180,10 @@
   <data name="Time" xml:space="preserve">
     <value>Время</value>
   </data>
+  <data name="NoContentError" xml:space="preserve">
+    <value>Данные содержат ошибку или пусты</value>
+  </data>
+  <data name="ErrorCaption" xml:space="preserve">
+    <value>Ошибка</value>
+  </data>
 </root>

@@ -3,20 +3,24 @@ using Disk.Navigators;
 using Disk.Repository.Interface;
 using Disk.Service.Interface;
 using Disk.Stores;
+using Disk.ViewModel.Common.Commands.Async;
 using Disk.ViewModel.Common.Commands.Sync;
 using Disk.ViewModel.Common.ViewModels;
 using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Input;
+using Localization = Disk.Properties.Langs.Appointment.AppointmentLocalization;
 
 namespace Disk.ViewModel;
 
 public class AppointmentViewModel(ModalNavigationStore modalNavigationStore, ISessionRepository sessionRepository, 
-    IExcelFiller excelFiller, NavigationStore navigationStore) : ObserverViewModel
+    IExcelFiller excelFiller, NavigationStore navigationStore) : PopupViewModel
 {
     public required Patient Patient { get; set; }
+    public Session? SelectedSession { get; set; } = null;
+
     private Appointment _appointment = null!;
-    public required Appointment Appointment 
+    public required Appointment Appointment
     {
         get => _appointment;
         set
@@ -25,7 +29,6 @@ public class AppointmentViewModel(ModalNavigationStore modalNavigationStore, ISe
             Sessions = [.. sessionRepository.GetSessionsWithResultsByAppointment(value.Id)];
         }
     }
-    public Session? SelectedSession { get; set; } = null;
 
     private ObservableCollection<Session> _sessions = [];
     public ObservableCollection<Session> Sessions 
@@ -43,9 +46,29 @@ public class AppointmentViewModel(ModalNavigationStore modalNavigationStore, ISe
 
     public ICommand StartSessionCommand => 
         new Command(_ => StartSessionNavigator.Navigate(modalNavigationStore, Update, Appointment, Patient));
+    
     public ICommand SessionSelectedCommand => new Command(SessionSelected);
+    
     public ICommand ExportToExcelCommand => new Command(_ => excelFiller.ExportToExcel(Sessions, Patient));
-    public ICommand ShowSessionCommand => new Command(ShowSession);
+
+    public ICommand ShowSessionCommand => new AsyncCommand(async _ =>
+    {
+        if (SelectedSession is null)
+        {
+            return;
+        }
+
+        try
+        {
+            SessionResultNavigator.Navigate(navigationStore, SelectedSession);
+            Application.Current.MainWindow.WindowState = WindowState.Maximized;
+        }
+        catch
+        {
+            await ShowPopup(header: Localization.ErrorCaption, message: Localization.NoContentError);
+        }
+    });
+
     public ICommand DeleteSessionCommand => new Command(_ =>
     {
         sessionRepository.Delete(SelectedSession!);
@@ -55,17 +78,6 @@ public class AppointmentViewModel(ModalNavigationStore modalNavigationStore, ISe
 
         SelectedSession = null;
     });
-
-    private void ShowSession(object? obj)
-    {
-        if (SelectedSession is null)
-        {
-            return;
-        }
-
-        SessionResultNavigator.Navigate(navigationStore, SelectedSession);
-        Application.Current.MainWindow.WindowState = WindowState.Maximized;
-    }
 
     private void SessionSelected(object? obj)
     {

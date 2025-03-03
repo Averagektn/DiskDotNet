@@ -126,11 +126,17 @@
   <data name="EmptyMap" xml:space="preserve">
     <value>Map is empty</value>
   </data>
+  <data name="ErrorCaption" xml:space="preserve">
+    <value>Error</value>
+  </data>
   <data name="LeftFoot" xml:space="preserve">
     <value>L</value>
   </data>
   <data name="RightFoot" xml:space="preserve">
     <value>R</value>
+  </data>
+  <data name="SaveError" xml:space="preserve">
+    <value>Save error</value>
   </data>
   <data name="Score" xml:space="preserve">
     <value>Score</value>

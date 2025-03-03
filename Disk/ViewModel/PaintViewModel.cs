@@ -11,6 +11,7 @@ using Disk.Visual.Impl;
 using Newtonsoft.Json;
 using System.Diagnostics;
 using System.Net;
+using System.Threading.Tasks;
 using System.Windows;
 using FilePath = System.IO.Path;
 using Localization = Disk.Properties.Langs.PaintWindow.PaintWindowLocalization;
@@ -18,7 +19,7 @@ using Settings = Disk.Properties.Config.Config;
 
 namespace Disk.ViewModel;
 
-public class PaintViewModel : ObserverViewModel
+public class PaintViewModel : PopupViewModel
 {
     // Can set on creation
     public event Action? OnSessionOver;
@@ -123,11 +124,11 @@ public class PaintViewModel : ObserverViewModel
             connectionFailed = true;
 
             _ = MessageBox.Show(Localization.ConnectionLost);
-            _ = Application.Current.Dispatcher.BeginInvoke(new Action(SaveSessionResult));
+            _ = Application.Current.Dispatcher.BeginInvoke(new Action(async () => await SaveSessionResult()));
         }
     }
 
-    public void SaveSessionResult()
+    public async Task SaveSessionResult()
     {
         if (PathsInTargets.Count != 0)
         {
@@ -172,7 +173,14 @@ public class PaintViewModel : ObserverViewModel
         }
         else
         {
-            SessionResultNavigator.NavigateAndClose(_navigationStore, CurrentSession);
+            try
+            {
+                SessionResultNavigator.NavigateAndClose(_navigationStore, CurrentSession);
+            }
+            catch
+            {
+                await ShowPopup(header: Localization.ErrorCaption, message: Localization.SaveError);
+            }
         }
     }
 
@@ -262,7 +270,7 @@ public class PaintViewModel : ObserverViewModel
             DiskNetworkThread.Join();
         }
 
-        Application.Current.MainWindow.WindowState = WindowState.Normal;
+        //Application.Current.MainWindow.WindowState = WindowState.Normal;
     }
 
     public void SavePathToTarget(PathToTarget pathToTarget) => _pathToTargetRepository.Add(pathToTarget);

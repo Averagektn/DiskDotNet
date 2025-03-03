@@ -6,7 +6,7 @@
              xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
              xmlns:lang="clr-namespace:Disk.Properties.Langs.Appointment" 
              xmlns:local="clr-namespace:Disk.View" 
-             xmlns:viewmodel="clr-namespace:Disk.ViewModel" 
+             xmlns:viewmodel="clr-namespace:Disk.ViewModel" xmlns:styles="clr-namespace:Disk.Style"
              d:DataContext="{d:DesignInstance Type=viewmodel:AppointmentViewModel}"
              mc:Ignorable="d" 
              d:DesignHeight="800" 
@@ -23,6 +23,13 @@
             <ColumnDefinition/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
+
+        <styles:Popup 
+            Grid.Row="2"
+            Grid.ColumnSpan="2"
+            PopupMessage="{Binding PopupMessage}" 
+            IsPopupOpen="{Binding IsShowPopup}" 
+            PopupHeader="{Binding PopupHeader}"/>
 
         <TextBlock 
             Grid.Row="0" 
@@ -41,9 +48,9 @@
             IsReadOnly="True"
             AutoGenerateColumns="False"
             SelectedItem="{Binding SelectedSession}">
-            
-        <DataGrid.Columns>
-            <DataGridTextColumn 
+
+            <DataGrid.Columns>
+                <DataGridTextColumn 
                 Width="1*" 
                 Header="{x:Static lang:AppointmentLocalization.DateTime}" 
                 Binding="{Binding DateTime}" />

@@ -180,4 +180,10 @@
   <data name="Time" xml:space="preserve">
     <value>Time</value>
   </data>
+  <data name="NoContentError" xml:space="preserve">
+    <value>Dataset contains errors or empty</value>
+  </data>
+  <data name="ErrorCaption" xml:space="preserve">
+    <value>Error</value>
+  </data>
 </root>

@@ -88,6 +88,15 @@ namespace Disk.Properties.Langs.PaintWindow {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Error.
+        /// </summary>
+        public static string ErrorCaption {
+            get {
+                return ResourceManager.GetString("ErrorCaption", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to L.
         /// </summary>
         public static string LeftFoot {
@@ -102,6 +111,15 @@ namespace Disk.Properties.Langs.PaintWindow {
         public static string RightFoot {
             get {
                 return ResourceManager.GetString("RightFoot", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Save error.
+        /// </summary>
+        public static string SaveError {
+            get {
+                return ResourceManager.GetString("SaveError", resourceCulture);
             }
         }
         
