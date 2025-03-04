@@ -32,7 +32,7 @@ public partial class StartSessionView : UserControl
 
     private void OnPaintAreaSizeChanged(object sender, SizeChangedEventArgs e)
     {
-        _targets.ForEach(target => target.Scale());
+        //_targets.ForEach(target => target.Scale());
 
         FullRadiusEllipse.RadiusX = e.NewSize.Width / 2;
         FullRadiusEllipse.RadiusY = e.NewSize.Height / 2;
@@ -61,7 +61,7 @@ public partial class StartSessionView : UserControl
         {
             var wnd = _converter.ToWndCoord(point);
             var target = GetIniCoordTarget(wnd.X, wnd.Y);
-            target.Scale();
+            //target.Scale();
             target.Draw();
             target.HideAngles();
             _targets.Add(target);

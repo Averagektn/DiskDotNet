@@ -165,13 +165,26 @@ public class Circle : IDynamicFigure
     /// <inheritdoc/>
     public virtual void Draw()
     {
+        Scale();
         _ = Parent.Children.Add(Figure);
+        Parent.SizeChanged += Parent_SizeChanged;
+    }
+
+    /// <summary>
+    ///     Used for subscription and unsubscription on <see cref="Parent"/> SizeChanged event
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
+    protected virtual void Parent_SizeChanged(object sender, System.Windows.SizeChangedEventArgs e)
+    {
+        Scale();
     }
 
     /// <inheritdoc/>
     public virtual void Remove()
     {
         Parent.Children.Remove(Figure);
+        Parent.SizeChanged -= Parent_SizeChanged;
     }
 
     /// <inheritdoc/>

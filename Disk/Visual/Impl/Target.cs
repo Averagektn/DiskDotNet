@@ -62,6 +62,8 @@ public class Target(Point2D<int> center, int radius, Canvas parent, Size iniSize
     public override void Draw()
     {
         Circles.ForEach(circle => circle.Draw());
+        Scale();
+        Parent.SizeChanged += Parent_SizeChanged;
     }
 
     /// <inheritdoc/>
@@ -70,14 +72,6 @@ public class Target(Point2D<int> center, int radius, Canvas parent, Size iniSize
         base.Move(moveTop, moveRight, moveBottom, moveLeft);
 
         Circles.ForEach(circle => circle.Move(moveTop, moveRight, moveBottom, moveLeft));
-    }
-
-    /// <inheritdoc/>
-    public override void Scale()
-    {
-        base.Scale();
-
-        Circles.ForEach(circle => circle.Scale());
     }
 
     /// <inheritdoc/>
@@ -116,5 +110,6 @@ public class Target(Point2D<int> center, int radius, Canvas parent, Size iniSize
     public override void Remove()
     {
         Circles.ForEach(circle => circle.Remove());
+        Parent.SizeChanged -= Parent_SizeChanged;
     }
 }
