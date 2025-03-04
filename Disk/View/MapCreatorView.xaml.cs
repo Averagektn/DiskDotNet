@@ -33,7 +33,15 @@ public partial class MapCreatorView : UserControl
         MouseMove += OnMouseMove;
         SizeChanged += OnSizeChanged;
         Loaded += OnLoaded;
+        PaintArea.Loaded += PaintAreaLoaded;
         LayoutUpdated += OnLayoutUpdated;
+    }
+
+    private void PaintAreaLoaded(object sender, RoutedEventArgs e)
+    {
+        _converter = new Converter((int)PaintArea.ActualWidth, (int)PaintArea.ActualHeight, AngleWidth, AngleHeight);
+        IniWidth = (int)PaintArea.ActualWidth;
+        IniHeight = (int)PaintArea.ActualHeight;
     }
 
     private void OnLayoutUpdated(object? sender, EventArgs e)
@@ -43,10 +51,6 @@ public partial class MapCreatorView : UserControl
 
     private void OnLoaded(object sender, RoutedEventArgs e)
     {
-        _converter = new Converter((int)PaintArea.ActualWidth, (int)PaintArea.ActualHeight, AngleWidth, AngleHeight);
-        IniWidth = (int)PaintArea.ActualWidth;
-        IniHeight = (int)PaintArea.ActualHeight;
-
         MaxX.Text = $"X:{Settings.Default.XMaxAngle:f1}";
         MaxY.Text = $"Y: {Settings.Default.YMaxAngle:f1}";
     }

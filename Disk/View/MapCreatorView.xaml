@@ -57,7 +57,6 @@
                     </GeometryGroup>
                 </Path.Data>
             </Path>
-            <Button Visibility="Collapsed" Name="FocusButton"/>
         </Canvas>
     </Grid>
 </UserControl>

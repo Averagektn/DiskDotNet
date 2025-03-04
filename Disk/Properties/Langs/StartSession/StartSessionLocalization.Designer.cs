@@ -70,6 +70,15 @@ namespace Disk.Properties.Langs.StartSession {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Delete.
+        /// </summary>
+        public static string Delete {
+            get {
+                return ResourceManager.GetString("Delete", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Map.
         /// </summary>
         public static string Map {
@@ -84,6 +93,15 @@ namespace Disk.Properties.Langs.StartSession {
         public static string PickAFile {
             get {
                 return ResourceManager.GetString("PickAFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Selected map.
+        /// </summary>
+        public static string SelectedMap {
+            get {
+                return ResourceManager.GetString("SelectedMap", resourceCulture);
             }
         }
         

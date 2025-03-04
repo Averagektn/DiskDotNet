@@ -13,8 +13,8 @@ using Localization = Disk.Properties.Langs.Appointment.AppointmentLocalization;
 
 namespace Disk.ViewModel;
 
-public class AppointmentViewModel(ModalNavigationStore modalNavigationStore, ISessionRepository sessionRepository, 
-    IExcelFiller excelFiller, NavigationStore navigationStore) : PopupViewModel
+public class AppointmentViewModel(ISessionRepository sessionRepository, IExcelFiller excelFiller, NavigationStore navigationStore) : 
+    PopupViewModel
 {
     public required Patient Patient { get; set; }
     public Session? SelectedSession { get; set; } = null;
@@ -45,7 +45,7 @@ public class AppointmentViewModel(ModalNavigationStore modalNavigationStore, ISe
     }
 
     public ICommand StartSessionCommand => 
-        new Command(_ => StartSessionNavigator.Navigate(modalNavigationStore, Update, Appointment, Patient));
+        new Command(_ => StartSessionNavigator.NavigateWithBar(navigationStore, Update, Appointment, Patient));
     
     public ICommand SessionSelectedCommand => new Command(SessionSelected);
     

@@ -69,8 +69,12 @@
                 <Button 
                     Width="40" 
                     Height="30" 
-                    Background="Transparent" 
-                    ToolTip="{x:Static lang:SettingsLocalization.HzTip}">
+                    Background="Transparent">
+                    <Button.ToolTip>
+                        <ToolTip FontSize="20" Foreground="DarkBlue">
+                            <TextBlock Text="{x:Static lang:SettingsLocalization.HzTip}"/>
+                        </ToolTip>
+                    </Button.ToolTip>
                     <Button.Content>
                         <Grid>
                             <Ellipse Width="20" Height="20" Fill="LightGray"/>
@@ -103,8 +107,12 @@
                 <Button 
                     Width="40" 
                     Height="30" 
-                    Background="Transparent" 
-                    ToolTip="{x:Static lang:SettingsLocalization.HzTip}">
+                    Background="Transparent">
+                    <Button.ToolTip>
+                        <ToolTip FontSize="20" Foreground="DarkBlue">
+                            <TextBlock Text="{x:Static lang:SettingsLocalization.HzTip}"/>
+                        </ToolTip>
+                    </Button.ToolTip>
                     <Button.Content>
                         <Grid>
                             <Ellipse Width="20" Height="20" Fill="LightGray"/>
@@ -180,7 +188,12 @@
                     Width="40" 
                     Height="30" 
                     Background="Transparent" 
-                    ToolTip="{x:Static lang:SettingsLocalization.HzTip}">
+                    FontSize="25">
+                    <Button.ToolTip>
+                        <ToolTip FontSize="20" Foreground="DarkBlue">
+                            <TextBlock Text="{x:Static lang:SettingsLocalization.CursorImagePathTip}"/>
+                        </ToolTip>
+                    </Button.ToolTip>
                     <Button.Content>
                         <Grid>
                             <Ellipse Width="20" Height="20" Fill="LightGray"/>
@@ -218,7 +231,11 @@
                     FontSize="25" 
                     TextAlignment="Center" 
                     Margin="10"
-                    BorderThickness="0"/>
+                    BorderThickness="0">
+                    <TextBox.ToolTip>
+                        <Image Source="{Binding CursorFilePath}" MaxWidth="400" MaxHeight="400"/>
+                    </TextBox.ToolTip>
+                </TextBox>
 
                 <Button 
                     MaxWidth="40"

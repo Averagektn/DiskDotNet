@@ -120,11 +120,17 @@
   <data name="Cancel" xml:space="preserve">
     <value>Отмена</value>
   </data>
+  <data name="Delete" xml:space="preserve">
+    <value>Удалить</value>
+  </data>
   <data name="Map" xml:space="preserve">
     <value>Карта</value>
   </data>
   <data name="PickAFile" xml:space="preserve">
     <value>Выберите файл</value>
+  </data>
+  <data name="SelectedMap" xml:space="preserve">
+    <value>Выбранная карта</value>
   </data>
   <data name="Start" xml:space="preserve">
     <value>Начать</value>
