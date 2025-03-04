@@ -66,9 +66,10 @@ public partial class App : Application
 
         _ = services.AddSingleton<MainWindow>(provider =>
         {
-            provider
-            .GetRequiredService<NavigationStore>()
-            .SetViewModel<NavigationBarLayoutViewModel>(vm => vm.CurrentViewModel = provider.GetRequiredService<PatientsViewModel>());
+            var store = provider.GetRequiredService<NavigationStore>();
+
+            store.SetViewModel<NavigationBarLayoutViewModel>(vm => 
+                vm.CurrentViewModel = provider.GetRequiredService<PatientsViewModel>());
 
             return new()
             {

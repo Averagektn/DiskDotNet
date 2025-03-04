@@ -28,17 +28,27 @@ public class SessionResultNavigator : INavigator
 
     public static void NavigateWithBar(INavigationStore navigationStore, Session session)
     {
-        navigationStore.SetViewModel<NavigationBarLayoutViewModel>(
-            vm =>
+        if (navigationStore.CurrentViewModel is NavigationBarLayoutViewModel bar)
+        {
+            bar.CurrentViewModel = navigationStore.GetViewModel<SessionResultViewModel>(vm =>
             {
                 vm.IniNavigationStore = navigationStore;
-                vm.CurrentViewModel = navigationStore.GetViewModel<SessionResultViewModel>(
-                    vm =>
+                vm.CurrentSession = session;
+            });
+        }
+        else
+        {
+            navigationStore.SetViewModel<NavigationBarLayoutViewModel>(
+                vm =>
+                {
+                    vm.IniNavigationStore = navigationStore;
+                    vm.CurrentViewModel = navigationStore.GetViewModel<SessionResultViewModel>(vm =>
                     {
                         vm.IniNavigationStore = navigationStore;
                         vm.CurrentSession = session;
                     });
-            });
+                });
+        }
     }
 
     public static void NavigateWithBarAndClose(INavigationStore navigationStore, Session session)

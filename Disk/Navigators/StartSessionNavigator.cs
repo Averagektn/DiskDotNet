@@ -30,19 +30,31 @@ public class StartSessionNavigator : INavigator
 
     public static void NavigateWithBar(INavigationStore navigationStore, Action? onSessionOver, Appointment appointment, Patient patient)
     {
-        navigationStore.SetViewModel<NavigationBarLayoutViewModel>(
-            vm =>
+        if (navigationStore.CurrentViewModel is NavigationBarLayoutViewModel bar)
+        {
+            bar.CurrentViewModel = navigationStore.GetViewModel<StartSessionViewModel>(vm =>
             {
                 vm.IniNavigationStore = navigationStore;
-                vm.CurrentViewModel = navigationStore.GetViewModel<StartSessionViewModel>(
-                    vm =>
+                vm.OnSessionOver += onSessionOver;
+                vm.Appointment = appointment;
+                vm.Patient = patient;
+            });
+        }
+        else
+        {
+            navigationStore.SetViewModel<NavigationBarLayoutViewModel>(
+                vm =>
+                {
+                    vm.IniNavigationStore = navigationStore;
+                    vm.CurrentViewModel = navigationStore.GetViewModel<StartSessionViewModel>(vm =>
                     {
                         vm.IniNavigationStore = navigationStore;
                         vm.OnSessionOver += onSessionOver;
                         vm.Appointment = appointment;
                         vm.Patient = patient;
                     });
-            });
+                });
+        }
     }
 
     public static void NavigateWithBarAndClose(INavigationStore navigationStore, Action? onSessionOver, Appointment appointment, 

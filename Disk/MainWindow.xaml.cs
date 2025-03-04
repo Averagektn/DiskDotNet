@@ -37,7 +37,6 @@ public partial class MainWindow : Window
         if (e.Key == Key.Back)
         {
             ViewModel.Close();
-            e.Handled = true;
         }
     }
 }

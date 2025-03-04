@@ -33,19 +33,31 @@ public class EditPatientNavigator : INavigator
 
     public static void NavigateWithBar(INavigationStore navigationStore, Action? afterUpdateEvent, Patient patient)
     {
-        navigationStore.SetViewModel<NavigationBarLayoutViewModel>(
-            vm =>
+        if (navigationStore.CurrentViewModel is NavigationBarLayoutViewModel bar)
+        {
+            bar.CurrentViewModel = navigationStore.GetViewModel<EditPatientViewModel>(vm =>
             {
                 vm.IniNavigationStore = navigationStore;
-                vm.CurrentViewModel = navigationStore.GetViewModel<EditPatientViewModel>(
-                    vm =>
+                vm.Patient = JsonConvert.DeserializeObject<Patient>(JsonConvert.SerializeObject(patient))!;
+                vm.AttachedPatient = patient;
+                vm.AfterUpdateEvent += afterUpdateEvent;
+            });
+        }
+        else
+        {
+            navigationStore.SetViewModel<NavigationBarLayoutViewModel>(
+                vm =>
+                {
+                    vm.IniNavigationStore = navigationStore;
+                    vm.CurrentViewModel = navigationStore.GetViewModel<EditPatientViewModel>(vm =>
                     {
                         vm.IniNavigationStore = navigationStore;
                         vm.Patient = JsonConvert.DeserializeObject<Patient>(JsonConvert.SerializeObject(patient))!;
                         vm.AttachedPatient = patient;
                         vm.AfterUpdateEvent += afterUpdateEvent;
                     });
-            });
+                });
+        }
     }
 
     public static void NavigateWithBarAndClose(INavigationStore navigationStore, Action? afterUpdateEvent, Patient patient)
