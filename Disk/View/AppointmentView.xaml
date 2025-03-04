@@ -39,6 +39,7 @@
             Text="{Binding Patient}"/>
 
         <DataGrid 
+            x:Name="AppointmentsDataGrid"
             FontSize="25"
             Grid.Row="1" 
             SelectionMode="Single"
@@ -48,7 +49,9 @@
             IsReadOnly="True"
             AutoGenerateColumns="False"
             SelectedItem="{Binding SelectedSession}">
-
+            <DataGrid.InputBindings>
+                <KeyBinding Key="Enter" Command="{Binding ShowSessionCommand}"/>
+            </DataGrid.InputBindings>
             <DataGrid.Columns>
                 <DataGridTextColumn 
                 Width="1*" 

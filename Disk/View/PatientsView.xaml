@@ -11,7 +11,6 @@
              mc:Ignorable="d" 
              d:DesignHeight="800" 
              d:DesignWidth="800">
-
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
@@ -48,6 +47,7 @@
         </DockPanel>
 
         <DataGrid 
+            x:Name="PatientsDataGrid"
             Grid.Row="1"
             FontSize="25"
             ItemsSource="{Binding SortedPatients}" 
@@ -55,6 +55,9 @@
             SelectionMode="Single"
             SelectedItem="{Binding SelectedPatient}" 
             IsReadOnly="True">
+            <DataGrid.InputBindings>
+                <KeyBinding Key="Enter" Command="{Binding SelectPatientCommand}"/>
+            </DataGrid.InputBindings>
             <DataGrid.Columns>
                 <DataGridTextColumn 
                     Width="1*" 

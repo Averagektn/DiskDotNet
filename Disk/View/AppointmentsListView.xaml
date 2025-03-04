@@ -129,7 +129,8 @@
                 </DatePicker>
             </DockPanel>
 
-            <DataGrid 
+            <DataGrid
+                x:Name="AppointmentsDataGrid"
                 FontSize="25"
                 Grid.Row="2"
                 Grid.ColumnSpan="2"
@@ -139,7 +140,9 @@
                 AutoGenerateColumns="False" 
                 SelectedItem="{Binding SelectedAppointment}" 
                 IsReadOnly="True">
-                
+                <DataGrid.InputBindings>
+                    <KeyBinding Key="Enter" Command="{Binding ToAppointmentCommand}"/>
+                </DataGrid.InputBindings>
                 <DataGrid.Columns>
                     <DataGridTextColumn 
                         Width="1*" 

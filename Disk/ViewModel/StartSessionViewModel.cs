@@ -4,7 +4,6 @@ using Disk.Repository.Interface;
 using Disk.Stores;
 using Disk.ViewModel.Common.Commands.Sync;
 using Disk.ViewModel.Common.ViewModels;
-using Serilog;
 using System.Collections.ObjectModel;
 using System.Globalization;
 using System.IO;
@@ -18,16 +17,19 @@ public class StartSessionViewModel : ObserverViewModel
 {
     public required Patient Patient { get; set; }
     public required Appointment Appointment { get; set; }
+
     public event Action? OnSessionOver;
+    
+    // Binding
     public Map? SelectedMap { get; set; }
     public Visibility MapVisibility => SelectedMap is null ? Visibility.Hidden : Visibility.Visible;
-    public string MaxXAngle => $"{Settings.XMaxAngle:f2}";
-    public string MaxYAngle => $"{Settings.YMaxAngle:f2}";
-    public string Ip => Settings.IP;
-    public string CursorImageName => Path.GetFileName(Settings.CursorFilePath);
-    public string CursorImagePath => Settings.CursorFilePath;
-    public int ShotFrequency => 1000 / Settings.ShotTime;
-    public int TargetLifespan => 1000 * Settings.TargetHp / ShotFrequency;
+    public static string MaxXAngle => $"{Settings.XMaxAngle:f2}";
+    public static string MaxYAngle => $"{Settings.YMaxAngle:f2}";
+    public static string Ip => Settings.IP;
+    public static string CursorImageName => Path.GetFileName(Settings.CursorFilePath);
+    public static string CursorImagePath => Settings.CursorFilePath;
+    public static int ShotFrequency => 1000 / Settings.ShotTime;
+    public static int TargetLifespan => 1000 * Settings.TargetHp / ShotFrequency;
     private static Settings Settings => Settings.Default;
 
     private ObservableCollection<Map> _maps = [];

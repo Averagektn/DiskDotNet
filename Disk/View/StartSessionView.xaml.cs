@@ -2,7 +2,6 @@
 using Disk.Data.Impl;
 using Disk.ViewModel;
 using Disk.Visual.Impl;
-using DocumentFormat.OpenXml.Wordprocessing;
 using Newtonsoft.Json;
 using System.Windows;
 using System.Windows.Controls;
@@ -32,8 +31,6 @@ public partial class StartSessionView : UserControl
 
     private void OnPaintAreaSizeChanged(object sender, SizeChangedEventArgs e)
     {
-        //_targets.ForEach(target => target.Scale());
-
         FullRadiusEllipse.RadiusX = e.NewSize.Width / 2;
         FullRadiusEllipse.RadiusY = e.NewSize.Height / 2;
         FullRadiusEllipse.Center = new(e.NewSize.Width / 2, e.NewSize.Height / 2);
@@ -61,7 +58,6 @@ public partial class StartSessionView : UserControl
         {
             var wnd = _converter.ToWndCoord(point);
             var target = GetIniCoordTarget(wnd.X, wnd.Y);
-            //target.Scale();
             target.Draw();
             target.HideAngles();
             _targets.Add(target);
