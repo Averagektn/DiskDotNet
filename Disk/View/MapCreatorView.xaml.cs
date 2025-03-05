@@ -11,15 +11,15 @@ namespace Disk.View;
 
 public partial class MapCreatorView : UserControl
 {
-    private MapCreatorViewModel? ViewModel => DataContext as MapCreatorViewModel;
-    private NumberedTarget? _selectedTarget = null;
-    private static int IniWidth = Settings.Default.IniScreenWidth;
-    private static int IniHeight = Settings.Default.IniScreenHeight;
+    private static readonly Converter IniConverter = new(IniWidth, IniHeight, AngleWidth, AngleHeight);
+    private static int IniWidth => Settings.Default.IniScreenWidth;
+    private static int IniHeight => Settings.Default.IniScreenHeight;
     private static float AngleWidth => Settings.Default.XMaxAngle * 2;
     private static float AngleHeight => Settings.Default.YMaxAngle * 2;
 
+    private MapCreatorViewModel? ViewModel => DataContext as MapCreatorViewModel;
+    private NumberedTarget? _selectedTarget = null;
     private readonly List<NumberedTarget> _targets = [];
-
     private Converter? _converter = null;
 
     public MapCreatorView()
@@ -31,17 +31,37 @@ public partial class MapCreatorView : UserControl
         MouseRightButtonDown += OnMouseRightButtonDown;
         MouseDoubleClick += OnMouseDoubleClick;
         MouseMove += OnMouseMove;
-        SizeChanged += OnSizeChanged;
         Loaded += OnLoaded;
-        PaintArea.Loaded += PaintAreaLoaded;
         LayoutUpdated += OnLayoutUpdated;
+
+        PaintArea.SizeChanged += PaintAreaSizeChanged;
     }
 
-    private void PaintAreaLoaded(object sender, RoutedEventArgs e)
+    private void PaintAreaSizeChanged(object sender, SizeChangedEventArgs e)
     {
-        _converter = new Converter((int)PaintArea.ActualWidth, (int)PaintArea.ActualHeight, AngleWidth, AngleHeight);
-        IniWidth = (int)PaintArea.ActualWidth;
-        IniHeight = (int)PaintArea.ActualHeight;
+        int newWidth = (int)e.NewSize.Width;
+        int newHeight = (int)e.NewSize.Height;
+
+        OneThirdRadiusEllipse.RadiusX = newWidth / 6;
+        OneThirdRadiusEllipse.RadiusY = newHeight / 6;
+        OneThirdRadiusEllipse.Center = new(newWidth / 2, newHeight / 2);
+
+        TwoThirdRadiusEllipse.RadiusX = newWidth / 3;
+        TwoThirdRadiusEllipse.RadiusY = newHeight / 3;
+        TwoThirdRadiusEllipse.Center = new(newWidth / 2, newHeight / 2);
+
+        FullRadiusEllipse.RadiusX = newWidth / 2;
+        FullRadiusEllipse.RadiusY = newHeight / 2;
+        FullRadiusEllipse.Center = new(newWidth / 2, newHeight / 2);
+
+        _converter ??= new Converter(newWidth, newHeight, AngleWidth, AngleHeight);
+        _converter?.Scale(new(newWidth, newHeight));
+
+        Canvas.SetLeft(MaxX, newWidth - 2 - MaxX.ActualWidth);
+        Canvas.SetTop(MaxX, (newHeight / 2) + 2);
+
+        Canvas.SetLeft(MaxY, (newWidth / 2) + 2);
+        Canvas.SetTop(MaxY, 2);
     }
 
     private void OnLayoutUpdated(object? sender, EventArgs e)
@@ -126,30 +146,6 @@ public partial class MapCreatorView : UserControl
         }
     }
 
-    private void OnSizeChanged(object sender, SizeChangedEventArgs e)
-    {
-        OneThirdRadiusEllipse.RadiusX = ActualWidth / 6;
-        OneThirdRadiusEllipse.RadiusY = ActualHeight / 6;
-        OneThirdRadiusEllipse.Center = new(ActualWidth / 2, ActualHeight / 2);
-
-        TwoThirdRadiusEllipse.RadiusX = ActualWidth / 3;
-        TwoThirdRadiusEllipse.RadiusY = ActualHeight / 3;
-        TwoThirdRadiusEllipse.Center = new(ActualWidth / 2, ActualHeight / 2);
-
-        FullRadiusEllipse.RadiusX = ActualWidth / 2;
-        FullRadiusEllipse.RadiusY = ActualHeight / 2;
-        FullRadiusEllipse.Center = new(ActualWidth / 2, ActualHeight / 2);
-
-        _converter?.Scale(new(ActualWidth, ActualHeight));
-        _targets.ForEach(target => target.Scale());
-
-        Canvas.SetLeft(MaxX, PaintArea.ActualWidth - 2 - MaxX.ActualWidth);
-        Canvas.SetTop(MaxX, (PaintArea.ActualHeight / 2) + 2);
-
-        Canvas.SetLeft(MaxY, (PaintArea.ActualWidth / 2) + 2);
-        Canvas.SetTop(MaxY, 2);
-    }
-
     private void OnMouseDoubleClick(object sender, MouseButtonEventArgs e)
     {
         var mousePos = e.GetPosition(sender as UIElement);
@@ -158,7 +154,6 @@ public partial class MapCreatorView : UserControl
         if (e.ChangedButton == MouseButton.Left && fillContains)
         {
             var target = GetIniCoordTarget(mousePos.X, mousePos.Y);
-            target.Scale();
             target.Draw();
             _targets.Add(target);
         }
@@ -166,6 +161,7 @@ public partial class MapCreatorView : UserControl
 
     private NumberedTarget GetIniCoordTarget(double actualX, double actualY)
     {
+        _converter ??= new Converter((int)PaintArea.ActualWidth, (int)PaintArea.ActualHeight, AngleWidth, AngleHeight);
         return new(
             center: new Point2D<int>
             (
@@ -176,7 +172,7 @@ public partial class MapCreatorView : UserControl
             parent: PaintArea,
             number: _targets.Count + 1,
             iniSize: new(IniWidth, IniHeight),
-            converter: _converter!
+            converter: _converter
         );
     }
 
