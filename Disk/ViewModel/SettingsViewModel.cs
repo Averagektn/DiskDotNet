@@ -135,7 +135,10 @@ public class SettingsViewModel : ObserverViewModel
     private string _cursorFilePath = Settings.CursorFilePath;
     public string CursorFilePath { get => _cursorFilePath; set => SetProperty(ref _cursorFilePath, value); }
 
-    public ICommand PickImageCommand => new Command(_ =>
+    private string _targetFilePath = Settings.TargetFilePath;
+    public string TargetFilePath { get => _targetFilePath; set => SetProperty(ref _targetFilePath, value); }
+
+    public ICommand PickCursorImageCommand => new Command(_ =>
     {
         var filePicker = new OpenFileDialog
         {
@@ -148,9 +151,27 @@ public class SettingsViewModel : ObserverViewModel
         }
     });
 
-    public ICommand ClearImageCommand => new Command(_ =>
+    public ICommand ClearCursorImageCommand => new Command(_ =>
     {
         CursorFilePath = string.Empty;
+    });
+
+    public ICommand PickTargetImageCommand => new Command(_ =>
+    {
+        var filePicker = new OpenFileDialog
+        {
+            Filter = "Images|*.png"
+        };
+
+        if (filePicker.ShowDialog() == true)
+        {
+            TargetFilePath = filePicker.FileName;
+        }
+    });
+
+    public ICommand ClearTargetImageCommand => new Command(_ =>
+    {
+        TargetFilePath = string.Empty;
     });
 
     private void ChangeLanguage(object? parameter)

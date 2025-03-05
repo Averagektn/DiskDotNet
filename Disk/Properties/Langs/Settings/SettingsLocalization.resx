@@ -171,4 +171,10 @@
   <data name="CursorImagePathTip" xml:space="preserve">
     <value>Clearing the field will cause the default cursor to be used</value>
   </data>
+  <data name="TargetImagePath" xml:space="preserve">
+    <value>Target image path</value>
+  </data>
+  <data name="TargetImagePathTip" xml:space="preserve">
+    <value>Clearing the field will cause the default target to be used</value>
+  </data>
 </root>

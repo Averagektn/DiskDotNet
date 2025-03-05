@@ -205,6 +205,24 @@ namespace Disk.Properties.Langs.Settings {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Target image path.
+        /// </summary>
+        public static string TargetImagePath {
+            get {
+                return ResourceManager.GetString("TargetImagePath", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Clearing the field will cause the default target to be used.
+        /// </summary>
+        public static string TargetImagePathTip {
+            get {
+                return ResourceManager.GetString("TargetImagePathTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Target radius.
         /// </summary>
         public static string TargetRadius {

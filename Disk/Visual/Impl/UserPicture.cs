@@ -83,12 +83,16 @@ public class UserPicture : User
     /// <inheritdoc/>
     public override void Draw()
     {
+        base.Draw();
+
         _ = Parent.Children.Add(_image);
     }
 
     /// <inheritdoc/>
     public override void Remove()
     {
+        base.Remove();
+
         Parent.Children.Remove(_image);
     }
 

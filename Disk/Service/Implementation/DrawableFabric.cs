@@ -23,7 +23,7 @@ public static class DrawableFabric
 
     public static User GetIniUser(string userImagePath, Canvas parent) =>
         File.Exists(userImagePath)
-            ? new UserPicture(userImagePath, new(ScreenIniCenterX, ScreenIniCenterY), 0, new(50, 50), parent, ScreenIniSize)
+            ? new UserPicture(userImagePath, new(ScreenIniCenterX, ScreenIniCenterY), 0, new(Settings.IniUserRadius * 10, Settings.IniUserRadius * 10), parent, ScreenIniSize)
             : new User(new(ScreenIniCenterX, ScreenIniCenterY), Settings.IniUserRadius, 0, UserBrush, parent, ScreenIniSize);
 
     public static ProgressTarget GetIniProgressTarget(Point2D<int> center, Canvas parent) => new(center, Settings.IniTargetRadius, 

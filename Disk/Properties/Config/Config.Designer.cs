@@ -223,5 +223,17 @@ namespace Disk.Properties.Config {
                 this["CursorFilePath"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string TargetFilePath {
+            get {
+                return ((string)(this["TargetFilePath"]));
+            }
+            set {
+                this["TargetFilePath"] = value;
+            }
+        }
     }
 }
