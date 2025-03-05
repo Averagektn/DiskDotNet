@@ -93,4 +93,11 @@ public class AppointmentViewModel(ISessionRepository sessionRepository, IExcelFi
     {
         Sessions = [.. sessionRepository.GetSessionsWithResultsByAppointment(Appointment.Id)];
     }
+
+    public override void Refresh()
+    {
+        base.Refresh();
+
+        Update();
+    }
 }

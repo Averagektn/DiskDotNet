@@ -99,4 +99,11 @@ public class StartSessionViewModel : ObserverViewModel
     });
 
     public ICommand MapSelectedCommand => new Command(_ => OnPropertyChanged(nameof(MapVisibility)));
+
+    public override void Refresh()
+    {
+        base.Refresh();
+
+        Maps = [.. _mapRepository.GetAll()];
+    }
 }

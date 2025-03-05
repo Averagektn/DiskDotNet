@@ -5,7 +5,7 @@ namespace Disk.Stores;
 
 public class NavigationStore(Func<Type, ObserverViewModel> getViewModel) : INavigationStore
 {
-    public readonly Stack<ObserverViewModel> ViewModels = [];
+    public static readonly Stack<ObserverViewModel> ViewModels = [];
     public event Action? CurrentViewModelChanged;
 
     public ObserverViewModel GetViewModel(Type vmType) => getViewModel.Invoke(vmType);
@@ -24,13 +24,16 @@ public class NavigationStore(Func<Type, ObserverViewModel> getViewModel) : INavi
     {
         var viewModel = getViewModel.Invoke(typeof(TViewModel));
         parametrizeViewModel((viewModel as TViewModel)!);
+        viewModel.Refresh();
         ViewModels.Push(viewModel);
         OnCurrentViewModelChanged();
     }
 
     public void SetViewModel<TViewModel>()
     {
-        ViewModels.Push(getViewModel.Invoke(typeof(TViewModel)));
+        var vm = getViewModel.Invoke(typeof(TViewModel));
+        ViewModels.Push(vm);
+        vm.Refresh();
         OnCurrentViewModelChanged();
     }
 

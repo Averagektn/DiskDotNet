@@ -22,4 +22,19 @@ public class NavigationBarLayoutViewModel(NavigationStore navigationStore) : Obs
 
     private ObserverViewModel? _currentViewModel;
     public ObserverViewModel? CurrentViewModel { get => _currentViewModel; set => SetProperty(ref _currentViewModel, value); }
+
+    public override void Refresh()
+    {
+        base.Refresh();
+
+        CurrentViewModel?.Refresh();
+    }
+
+    public override void Dispose()
+    {
+        base.Dispose();
+        GC.SuppressFinalize(this);
+
+        CurrentViewModel?.Dispose();
+    }
 }

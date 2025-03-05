@@ -147,4 +147,10 @@ public class AppointmentsListViewModel(NavigationStore navigationStore, IAppoint
         var sessions = sessionRepository.GetSessionsWithResultsByAppointment(appointment.Id).ToList();
         AppointmentNavigator.NavigateWithBar(navigationStore, sessions, Patient, appointment);
     }
+
+    public override void Refresh()
+    {
+        base.Refresh();
+        UpdateAppointments();
+    }
 }

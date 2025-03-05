@@ -154,4 +154,11 @@ public class PatientsViewModel : ObserverViewModel
     {
         SortedPatients = [.. _patientRepository.GetPatientsPage(PageNum - 1, PatientsPerPage)];
     }
+
+    public override void Refresh()
+    {
+        base.Refresh();
+
+        GetPagedPatients();
+    }
 }

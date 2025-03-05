@@ -46,7 +46,7 @@ public class CalibrationViewModel : ObserverViewModel
 
     // Non-binded
     private static Settings Settings => Settings.Default;
-    private readonly Thread DataThread;
+    private Thread? DataThread;
     private readonly DispatcherTimer TextBoxUpdateTimer;
 
     private float XAngleRes => XAngle - XShift;
@@ -64,8 +64,6 @@ public class CalibrationViewModel : ObserverViewModel
     {
         _xCoord = $"{XAngle:F2}";
         _yCoord = $"{YAngle:F2}";
-
-        DataThread = new(ReceiveFromDisk);
 
         TextBoxUpdateTimer = new(DispatcherPriority.Normal)
         {
@@ -106,7 +104,6 @@ public class CalibrationViewModel : ObserverViewModel
         catch
         {
             _ = MessageBox.Show(CalibrationLocalization.ConnectionLost);
-            IniNavigationStore.Close();
         }
     }
 
@@ -118,6 +115,7 @@ public class CalibrationViewModel : ObserverViewModel
         CalibrateXEnabled = true;
         CalibrateYEnabled = true;
 
+        DataThread = new(ReceiveFromDisk);
         DataThread.Start();
         TextBoxUpdateTimer.Start();
     }
@@ -128,7 +126,7 @@ public class CalibrationViewModel : ObserverViewModel
 
         TextBoxUpdateTimer.Stop();
 
-        if (DataThread.IsAlive)
+        if (DataThread is not null && DataThread.IsAlive)
         {
             DataThread.Join();
         }
@@ -141,5 +139,27 @@ public class CalibrationViewModel : ObserverViewModel
 
         Settings.Save();
         IniNavigationStore.Close();
+    }
+
+    public override void Dispose()
+    {
+        base.Dispose();
+        GC.SuppressFinalize(this);
+
+        IsRunningThread = false;
+
+        TextBoxUpdateTimer.Stop();
+
+        if (DataThread is not null && DataThread.IsAlive)
+        {
+            DataThread.Join();
+        }
+    }
+
+    public override void Refresh()
+    {
+        base.Refresh();
+
+        StartCalibrationEnabled = true;
     }
 }

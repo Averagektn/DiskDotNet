@@ -8,7 +8,7 @@ public class ModalNavigationStore(Func<Type, ObserverViewModel> getViewModel) : 
     public bool IsOpen => CurrentViewModel != null;
     public bool CanClose => ViewModels.Count > 0;
 
-    public readonly Stack<ObserverViewModel> ViewModels = [];
+    public static readonly Stack<ObserverViewModel> ViewModels = [];
     public event Action? CurrentViewModelChanged;
 
     public ObserverViewModel GetViewModel(Type vmType) => getViewModel.Invoke(vmType);
@@ -26,7 +26,11 @@ public class ModalNavigationStore(Func<Type, ObserverViewModel> getViewModel) : 
         if (CanClose)
         {
             ViewModels.Pop().Dispose();
-            if (ViewModels.TryPeek(out var vm))
+            if (ViewModels.TryPeek(out var modalVm))
+            {
+                modalVm.Refresh();
+            }
+            else if (NavigationStore.ViewModels.TryPeek(out var vm))
             {
                 vm.Refresh();
             }
@@ -43,7 +47,9 @@ public class ModalNavigationStore(Func<Type, ObserverViewModel> getViewModel) : 
 
     public void SetViewModel<TViewModel>()
     {
-        ViewModels.Push(getViewModel.Invoke(typeof(TViewModel)));
+        var vm = getViewModel.Invoke(typeof(TViewModel));
+        vm.Refresh();
+        ViewModels.Push(vm);
         OnCurrentViewModelChanged();
     }
 
@@ -51,6 +57,7 @@ public class ModalNavigationStore(Func<Type, ObserverViewModel> getViewModel) : 
     {
         var viewModel = getViewModel.Invoke(typeof(TViewModel));
         parametrizeViewModel((viewModel as TViewModel)!);
+        viewModel.Refresh();
         ViewModels.Push(viewModel);
         OnCurrentViewModelChanged();
     }

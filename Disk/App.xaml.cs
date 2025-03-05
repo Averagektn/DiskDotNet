@@ -53,18 +53,19 @@ public partial class App : Application
         _ = services.AddSingleton<MainViewModel>();
         _ = services.AddSingleton<MapCreatorViewModel>();
         _ = services.AddSingleton<PatientsViewModel>();
-        _ = services.AddSingleton<CalibrationViewModel>();
         _ = services.AddSingleton<SettingsViewModel>();
         _ = services.AddSingleton<AppointmentsListViewModel>();
         _ = services.AddSingleton<AppointmentViewModel>();
         _ = services.AddSingleton<StartSessionViewModel>();
         _ = services.AddSingleton<SessionResultViewModel>();
+        _ = services.AddSingleton<CalibrationViewModel>();
 
         // New state
         _ = services.AddTransient<MapNamePickerViewModel>();
         _ = services.AddTransient<AddPatientViewModel>();
         _ = services.AddTransient<PaintViewModel>();
         _ = services.AddTransient<EditPatientViewModel>();
+        
         // Rework
         _ = services.AddTransient<NavigationBarLayoutViewModel>();
 
