@@ -91,6 +91,7 @@ public class StartSessionViewModel : ObserverViewModel
             try
             {
                 _mapRepository.Delete(m);
+                Maps.Remove(m);
             }
             catch (InvalidOperationException)
             {
