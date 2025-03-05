@@ -126,6 +126,9 @@
   <data name="Map" xml:space="preserve">
     <value>Карта</value>
   </data>
+  <data name="MapIsInUseError" xml:space="preserve">
+    <value>Данная карта уже используется в других исследованиях</value>
+  </data>
   <data name="PickAFile" xml:space="preserve">
     <value>Выберите файл</value>
   </data>

@@ -88,6 +88,15 @@ namespace Disk.Properties.Langs.StartSession {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to This map is already user in other researches.
+        /// </summary>
+        public static string MapIsInUseError {
+            get {
+                return ResourceManager.GetString("MapIsInUseError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Pick a file.
         /// </summary>
         public static string PickAFile {

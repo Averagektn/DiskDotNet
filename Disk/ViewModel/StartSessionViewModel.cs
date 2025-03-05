@@ -10,6 +10,7 @@ using System.IO;
 using System.Windows;
 using System.Windows.Input;
 using Settings = Disk.Properties.Config.Config;
+using Localization = Disk.Properties.Langs.StartSession.StartSessionLocalization;
 
 namespace Disk.ViewModel;
 
@@ -93,7 +94,7 @@ public class StartSessionViewModel : ObserverViewModel
             }
             catch (InvalidOperationException)
             {
-                MessageBox.Show("Map is already in use");
+                MessageBox.Show(Localization.MapIsInUseError);
             }
         }
     });

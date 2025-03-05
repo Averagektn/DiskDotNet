@@ -126,6 +126,9 @@
   <data name="Map" xml:space="preserve">
     <value>Map</value>
   </data>
+  <data name="MapIsInUseError" xml:space="preserve">
+    <value>This map is already user in other researches</value>
+  </data>
   <data name="PickAFile" xml:space="preserve">
     <value>Pick a file</value>
   </data>

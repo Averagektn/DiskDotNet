@@ -21,7 +21,15 @@ public class NavigationBarLayoutViewModel(NavigationStore navigationStore) : Obs
     public bool CanNavigateToMapCreator => CurrentViewModel is not MapCreatorViewModel;
 
     private ObserverViewModel? _currentViewModel;
-    public ObserverViewModel? CurrentViewModel { get => _currentViewModel; set => SetProperty(ref _currentViewModel, value); }
+    public ObserverViewModel? CurrentViewModel 
+    { 
+        get => _currentViewModel;
+        set
+        {
+            value?.Refresh();
+            SetProperty(ref _currentViewModel, value);
+        }
+    }
 
     public override void Refresh()
     {
