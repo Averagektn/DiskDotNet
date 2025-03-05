@@ -18,13 +18,7 @@ public class NavigationStore(Func<Type, ObserverViewModel> getViewModel) : INavi
         return viewModel;
     }
 
-
-    public ObserverViewModel CurrentViewModel
-    {
-        // uncomment for creating new viewModel on back button click
-        //get => getViewModel.Invoke(ViewModels.Peek().GetType());
-        get => ViewModels.Peek();
-    }
+    public ObserverViewModel CurrentViewModel => ViewModels.Peek();
 
     public void SetViewModel<TViewModel>(Action<TViewModel> parametrizeViewModel) where TViewModel : class
     {
@@ -47,6 +41,10 @@ public class NavigationStore(Func<Type, ObserverViewModel> getViewModel) : INavi
         if (ViewModels.Count != 0)
         {
             ViewModels.Pop().Dispose();
+            if (ViewModels.TryPeek(out var vm))
+            {
+                vm.Refresh();
+            }
             OnCurrentViewModelChanged();
         }
     }

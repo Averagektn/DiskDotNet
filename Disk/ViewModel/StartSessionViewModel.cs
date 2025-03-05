@@ -87,7 +87,14 @@ public class StartSessionViewModel : ObserverViewModel
     {
         if (map is Map m)
         {
-            _mapRepository.Delete(m);
+            try
+            {
+                _mapRepository.Delete(m);
+            }
+            catch (InvalidOperationException)
+            {
+                MessageBox.Show("Map is already in use");
+            }
         }
     });
 

@@ -23,8 +23,15 @@ public class ModalNavigationStore(Func<Type, ObserverViewModel> getViewModel) : 
 
     public void Close()
     {
-        ViewModels.Pop().Dispose();
-        OnCurrentViewModelChanged();
+        if (CanClose)
+        {
+            ViewModels.Pop().Dispose();
+            if (ViewModels.TryPeek(out var vm))
+            {
+                vm.Refresh();
+            }
+            OnCurrentViewModelChanged();
+        }
     }
 
     private void OnCurrentViewModelChanged()
@@ -32,12 +39,7 @@ public class ModalNavigationStore(Func<Type, ObserverViewModel> getViewModel) : 
         CurrentViewModelChanged?.Invoke();
     }
 
-    public ObserverViewModel? CurrentViewModel
-    {
-        // uncomment for creating new viewModel on back button click
-        //get => getViewModel.Invoke(ViewModels.Peek().GetType());
-        get => ViewModels.Count == 0 ? null : ViewModels.Peek();
-    }
+    public ObserverViewModel? CurrentViewModel => ViewModels.Count == 0 ? null : ViewModels.Peek();
 
     public void SetViewModel<TViewModel>()
     {

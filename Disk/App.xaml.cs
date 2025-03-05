@@ -49,20 +49,24 @@ public partial class App : Application
         _ = services.AddSingleton<IPatientService, PatientService>();
         _ = services.AddSingleton<IExcelFiller, ExcelFiller>();
 
-        _ = services.AddTransient<MainViewModel>();
-        _ = services.AddTransient<MapCreatorViewModel>();
+        // Common state
+        _ = services.AddSingleton<MainViewModel>();
+        _ = services.AddSingleton<MapCreatorViewModel>();
+        _ = services.AddSingleton<PatientsViewModel>();
+        _ = services.AddSingleton<CalibrationViewModel>();
+        _ = services.AddSingleton<SettingsViewModel>();
+        _ = services.AddSingleton<AppointmentsListViewModel>();
+        _ = services.AddSingleton<AppointmentViewModel>();
+        _ = services.AddSingleton<StartSessionViewModel>();
+        _ = services.AddSingleton<SessionResultViewModel>();
+
+        // New state
         _ = services.AddTransient<MapNamePickerViewModel>();
-        _ = services.AddTransient<CalibrationViewModel>();
-        _ = services.AddTransient<SettingsViewModel>();
-        _ = services.AddTransient<PatientsViewModel>();
         _ = services.AddTransient<AddPatientViewModel>();
-        _ = services.AddTransient<AppointmentsListViewModel>();
-        _ = services.AddTransient<AppointmentViewModel>();
-        _ = services.AddTransient<StartSessionViewModel>();
         _ = services.AddTransient<PaintViewModel>();
-        _ = services.AddTransient<NavigationBarLayoutViewModel>();
         _ = services.AddTransient<EditPatientViewModel>();
-        _ = services.AddTransient<SessionResultViewModel>();
+        // Rework
+        _ = services.AddTransient<NavigationBarLayoutViewModel>();
 
         _ = services.AddSingleton<MainWindow>(provider =>
         {

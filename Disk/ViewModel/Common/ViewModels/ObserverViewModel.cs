@@ -30,4 +30,6 @@ public class ObserverViewModel : INotifyPropertyChanged, IDisposable
     {
         GC.SuppressFinalize(this);
     }
+
+    public virtual void Refresh() { }
 }

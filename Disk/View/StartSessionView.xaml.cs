@@ -13,19 +13,19 @@ public partial class StartSessionView : UserControl
 {
     private StartSessionViewModel? ViewModel => (StartSessionViewModel)DataContext;
 
-    private static int IniWidth = Settings.Default.IniScreenWidth;
-    private static int IniHeight = Settings.Default.IniScreenHeight;
+    private static readonly Converter IniConverter = new(IniWidth, IniHeight, AngleWidth, AngleHeight);
+    private static int IniWidth => Settings.Default.IniScreenWidth;
+    private static int IniHeight => Settings.Default.IniScreenHeight;
     private static float AngleWidth => Settings.Default.XMaxAngle * 2;
     private static float AngleHeight => Settings.Default.YMaxAngle * 2;
 
-    private Converter _converter = null!;
+    private Converter? _converter;
     private readonly List<NumberedTarget> _targets = [];
 
     public StartSessionView()
     {
         InitializeComponent();
 
-        PaintArea.Loaded += OnPaintAreaLoaded;
         PaintArea.SizeChanged += OnPaintAreaSizeChanged;
     }
 
@@ -34,13 +34,9 @@ public partial class StartSessionView : UserControl
         FullRadiusEllipse.RadiusX = e.NewSize.Width / 2;
         FullRadiusEllipse.RadiusY = e.NewSize.Height / 2;
         FullRadiusEllipse.Center = new(e.NewSize.Width / 2, e.NewSize.Height / 2);
-    }
 
-    private void OnPaintAreaLoaded(object sender, RoutedEventArgs e)
-    {
-        _converter = new Converter((int)PaintArea.ActualWidth, (int)PaintArea.ActualHeight, AngleWidth, AngleHeight);
-        IniWidth = (int)PaintArea.ActualWidth;
-        IniHeight = (int)PaintArea.ActualHeight;
+        _converter ??= new Converter((int)e.NewSize.Width, (int)e.NewSize.Height, AngleWidth, AngleHeight);
+        _converter.Scale(e.NewSize);
     }
 
     private void DataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -56,7 +52,7 @@ public partial class StartSessionView : UserControl
         var coords = JsonConvert.DeserializeObject<List<Point2D<float>>>(map.CoordinatesJson) ?? [];
         coords.ForEach(point =>
         {
-            var wnd = _converter.ToWndCoord(point);
+            var wnd = IniConverter.ToWndCoord(point);
             var target = GetIniCoordTarget(wnd.X, wnd.Y);
             target.Draw();
             target.HideAngles();
@@ -66,6 +62,7 @@ public partial class StartSessionView : UserControl
 
     private NumberedTarget GetIniCoordTarget(int actualX, int actualY)
     {
+        _converter ??= new Converter((int)PaintArea.ActualWidth, (int)PaintArea.ActualHeight, AngleWidth, AngleHeight);
         return new(
             center: new Point2D<int>
             (
@@ -76,7 +73,7 @@ public partial class StartSessionView : UserControl
             parent: PaintArea,
             number: _targets.Count + 1,
             iniSize: new(IniWidth, IniHeight),
-            converter: _converter!
+            converter: _converter
         );
     }
 }

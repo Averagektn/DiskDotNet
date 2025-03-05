@@ -22,7 +22,7 @@ public class NumberedTarget : Target
     /// <summary>
     ///     Returns x and y coordinates in angles
     /// </summary>
-    public Point2D<float> Angles => new(_x, _y);
+    public Point2D<float> Angles => _converter.ToAngle_FromWnd(Center);
 
     /// <inheritdoc/>
     public override Point2D<int> Center
@@ -166,6 +166,7 @@ public class NumberedTarget : Target
     {
         base.Scale();
 
+        _converter.Scale(Parent.RenderSize);
         UpdateNumSize();
     }
 
