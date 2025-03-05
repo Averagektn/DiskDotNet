@@ -32,7 +32,7 @@ public class SettingsViewModel : ObserverViewModel
     }
 
     // Convert ms to hz
-    private int _moveTime = 1000 / Settings.MoveTime;
+    private int _moveTime = RoundToNearest(value: 1000 / Settings.MoveTime, nearest: 5);
     public string MoveTime
     {
         get => _moveTime.ToString();
@@ -51,7 +51,7 @@ public class SettingsViewModel : ObserverViewModel
     }
 
     // Convert ms to hz
-    private int _shotTime = 1000 / Settings.ShotTime;
+    private int _shotTime = RoundToNearest(value: 1000 / Settings.ShotTime, nearest: 5);
     public string ShotTime
     {
         get => _shotTime.ToString();
@@ -106,7 +106,7 @@ public class SettingsViewModel : ObserverViewModel
     }
 
     // convert int hp to ms
-    private int _targetTtl = 1000 * Settings.TargetHp / (1000 / Settings.ShotTime);
+    private int _targetTtl = RoundToNearest(value: 1000 * Settings.TargetHp / (1000 / Settings.ShotTime), nearest: 100);
     public string TargetTtl
     {
         get => _targetTtl.ToString();
@@ -128,22 +128,7 @@ public class SettingsViewModel : ObserverViewModel
     public ICommand ChangeLanguageCommand => new Command(ChangeLanguage);
     public ICommand SaveCommand => new Command(_ =>
     {
-        Settings.IP = _ip;
-
-        // Convert hz to ms
-        Settings.MoveTime = 1000 / _moveTime;
-        Settings.ShotTime = 1000 / _shotTime;
-
-        Settings.IniUserRadius = _userRadius;
-        Settings.IniTargetRadius = _targetRadius;
-
-        // convert ms to int hp
-        Settings.TargetHp = _targetTtl * _shotTime / 1000;
-
-        Settings.CursorFilePath = CursorFilePath;
-
-        Settings.Save();
-
+        SaveSettings();
         IniNavigationStore.Close();
     });
 
@@ -200,6 +185,30 @@ public class SettingsViewModel : ObserverViewModel
     {
         base.Refresh();
 
-        SaveCommand.Execute(null);
+        SaveSettings();
+    }
+
+    private void SaveSettings()
+    {
+        Settings.IP = _ip;
+
+        // Convert hz to ms
+        Settings.MoveTime = 1000 / _moveTime;
+        Settings.ShotTime = 1000 / _shotTime;
+
+        Settings.IniUserRadius = _userRadius;
+        Settings.IniTargetRadius = _targetRadius;
+
+        // convert ms to int hp
+        Settings.TargetHp = _targetTtl * _shotTime / 1000;
+
+        Settings.CursorFilePath = CursorFilePath;
+
+        Settings.Save();
+    }
+
+    private static int RoundToNearest(int value, int nearest)
+    {
+        return (int)(Math.Round((double)value / nearest) * nearest);
     }
 }

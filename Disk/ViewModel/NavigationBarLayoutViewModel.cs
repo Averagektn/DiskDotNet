@@ -28,6 +28,12 @@ public class NavigationBarLayoutViewModel(NavigationStore navigationStore) : Obs
         {
             value?.Refresh();
             SetProperty(ref _currentViewModel, value);
+
+            OnPropertyChanged(nameof(CanNavigateBack));
+            OnPropertyChanged(nameof(CanNavigateToPatients));
+            OnPropertyChanged(nameof(CanNavigateToSettings));
+            OnPropertyChanged(nameof(CanNavigateToCalibration));
+            OnPropertyChanged(nameof(CanNavigateToMapCreator));
         }
     }
 

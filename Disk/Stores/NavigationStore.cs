@@ -19,6 +19,7 @@ public class NavigationStore(Func<Type, ObserverViewModel> getViewModel) : INavi
     }
 
     public ObserverViewModel CurrentViewModel => ViewModels.Peek();
+    //public ObserverViewModel? CurrentViewModel => ViewModels.Count == 0 ? null : ViewModels.Peek();
 
     public void SetViewModel<TViewModel>(Action<TViewModel> parametrizeViewModel) where TViewModel : class
     {
