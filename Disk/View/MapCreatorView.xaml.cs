@@ -11,7 +11,6 @@ namespace Disk.View;
 
 public partial class MapCreatorView : UserControl
 {
-    private static readonly Converter IniConverter = new(IniWidth, IniHeight, AngleWidth, AngleHeight);
     private static int IniWidth => Settings.Default.IniScreenWidth;
     private static int IniHeight => Settings.Default.IniScreenHeight;
     private static float AngleWidth => Settings.Default.XMaxAngle * 2;

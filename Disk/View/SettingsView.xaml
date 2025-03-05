@@ -89,13 +89,21 @@
                 </Button>
             </StackPanel>
 
-            <TextBox 
-                HorizontalAlignment="Stretch"
-                Text="{Binding MoveTime}" 
+            <Slider 
+                Minimum="30" 
+                Maximum="100" 
+                Value="{Binding MoveTime}"
+                TickFrequency="5" 
+                IsSnapToTickEnabled="True" 
                 FontSize="25" 
-                TextAlignment="Center" 
-                Margin="200 10"
-                BorderThickness="0 0 0 1"/>
+                HorizontalContentAlignment="Center" 
+                Margin="200 10 200 0"
+                AutoToolTipPlacement="TopLeft" AutoToolTipPrecision="0" />
+            <TextBlock
+                Text="{Binding MoveTime}"
+                FontSize="15" 
+                HorizontalAlignment="Center" 
+                Margin="200 0"/>
         </StackPanel>
 
         <StackPanel Grid.Row="2" HorizontalAlignment="Stretch" VerticalAlignment="Center">
@@ -127,12 +135,21 @@
                 </Button>
             </StackPanel>
 
-            <TextBox 
-                Text="{Binding ShotTime}" 
+            <Slider 
+                Minimum="30" 
+                Maximum="100" 
+                Value="{Binding ShotTime}"
+                TickFrequency="5" 
+                IsSnapToTickEnabled="True" 
                 FontSize="25" 
-                TextAlignment="Center" 
-                Margin="200 10"
-                BorderThickness="0 0 0 1"/>
+                HorizontalContentAlignment="Center" 
+                Margin="200 10 200 0"
+                AutoToolTipPlacement="TopLeft" AutoToolTipPrecision="0" />
+            <TextBlock
+                Text="{Binding ShotTime}"
+                FontSize="15" 
+                HorizontalAlignment="Center" 
+                Margin="200 0"/>
         </StackPanel>
 
         <StackPanel Grid.Row="3" HorizontalAlignment="Stretch" VerticalAlignment="Center">
@@ -169,12 +186,21 @@
                 FontSize="25" 
                 Text="{x:Static lang:SettingsLocalization.TargetHp}"/>
 
-            <TextBox 
-                Text="{Binding TargetTtl}" 
+            <Slider 
+                Minimum="500" 
+                Maximum="5000" 
+                Value="{Binding TargetTtl}"
+                TickFrequency="100" 
+                IsSnapToTickEnabled="True" 
                 FontSize="25" 
-                TextAlignment="Center" 
-                Margin="200 10"
-                BorderThickness="0 0 0 1"/>
+                HorizontalContentAlignment="Center" 
+                Margin="200 10 200 0"
+                AutoToolTipPlacement="TopLeft" AutoToolTipPrecision="0" />
+            <TextBlock
+                Text="{Binding TargetTtl}"
+                FontSize="15" 
+                HorizontalAlignment="Center" 
+                Margin="200 0"/>
         </StackPanel>
 
         <StackPanel Grid.Row="6">

@@ -25,7 +25,7 @@ public class SettingsViewModel : ObserverViewModel
             }
             else
             {
-                _ = MessageBox.Show(Localization.InvalidIpError, "", MessageBoxButton.OK, MessageBoxImage.Error);
+                _ = MessageBox.Show(Localization.InvalidIpError, Localization.InvalidIpError, MessageBoxButton.OK, MessageBoxImage.Error);
                 _ = SetProperty(ref _ip, Settings.IP);
             }
         }
@@ -38,7 +38,7 @@ public class SettingsViewModel : ObserverViewModel
         get => _moveTime.ToString();
         set
         {
-            if (int.TryParse(value, out var res) || _moveTime > 1000 || _moveTime < 10)
+            if (int.TryParse(value, out var res) || _moveTime >= 1000 || _moveTime <= 1)
             {
                 _ = SetProperty(ref _moveTime, res);
             }
@@ -57,7 +57,7 @@ public class SettingsViewModel : ObserverViewModel
         get => _shotTime.ToString();
         set
         {
-            if (int.TryParse(value, out var res) || _shotTime > 1000 || _shotTime < 1)
+            if (int.TryParse(value, out var res) || _shotTime >= 1000 || _shotTime < 1)
             {
                 _ = SetProperty(ref _shotTime, res);
             }
@@ -194,5 +194,12 @@ public class SettingsViewModel : ObserverViewModel
         }
 
         Application.Current.Shutdown();
+    }
+
+    public override void Refresh()
+    {
+        base.Refresh();
+
+        SaveCommand.Execute(null);
     }
 }
