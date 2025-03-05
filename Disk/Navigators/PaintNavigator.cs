@@ -2,7 +2,6 @@
 using Disk.Navigators.Interface;
 using Disk.Stores.Interface;
 using Disk.ViewModel;
-using DocumentFormat.OpenXml.Spreadsheet;
 
 namespace Disk.Navigators;
 
@@ -35,24 +34,12 @@ public class PaintNavigator : INavigator
     public static void NavigateWithBar(INavigationStore navigationStore, string imageFilePath, string logPath, Action? onSessionOver,
         Session session)
     {
-        if (navigationStore.CurrentViewModel is NavigationBarLayoutViewModel bar)
-        {
-            bar.CurrentViewModel = navigationStore.GetViewModel<PaintViewModel>(vm =>
+        navigationStore.SetViewModel<NavigationBarLayoutViewModel>(
+            vm =>
             {
                 vm.IniNavigationStore = navigationStore;
-                vm.ImagePath = imageFilePath;
-                vm.CurrentPath = logPath;
-                vm.OnSessionOver += onSessionOver;
-                vm.CurrentSession = session;
-            });
-        }
-        else
-        {
-            navigationStore.SetViewModel<NavigationBarLayoutViewModel>(
-                vm =>
-                {
-                    vm.IniNavigationStore = navigationStore;
-                    vm.CurrentViewModel = navigationStore.GetViewModel<PaintViewModel>(vm =>
+                vm.CurrentViewModel = navigationStore.GetViewModel<PaintViewModel>(
+                    vm =>
                     {
                         vm.IniNavigationStore = navigationStore;
                         vm.ImagePath = imageFilePath;
@@ -60,8 +47,7 @@ public class PaintNavigator : INavigator
                         vm.OnSessionOver += onSessionOver;
                         vm.CurrentSession = session;
                     });
-                });
-        }
+            });
     }
 
     public static void NavigateWithBarAndClose(INavigationStore navigationStore, string imageFilePath, string logPath, 

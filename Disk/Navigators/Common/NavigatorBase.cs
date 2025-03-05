@@ -23,19 +23,12 @@ public abstract class NavigatorBase<TViewModel> : INavigator where TViewModel : 
 
     public static void NavigateWithBar(INavigationStore navigationStore)
     {
-        if (navigationStore.CurrentViewModel is NavigationBarLayoutViewModel bar)
-        {
-            bar.CurrentViewModel = navigationStore.GetViewModel<TViewModel>(vm => vm.IniNavigationStore = navigationStore);
-        }
-        else
-        {
-            navigationStore.SetViewModel<NavigationBarLayoutViewModel>(
-                vm =>
-                {
-                    vm.IniNavigationStore = navigationStore;
-                    vm.CurrentViewModel = navigationStore.GetViewModel<TViewModel>(vm => vm.IniNavigationStore = navigationStore);
-                });
-        }
+        navigationStore.SetViewModel<NavigationBarLayoutViewModel>(
+            vm =>
+            {
+                vm.IniNavigationStore = navigationStore;
+                vm.CurrentViewModel = navigationStore.GetViewModel<TViewModel>(vm => vm.IniNavigationStore = navigationStore);
+            });
     }
 
     public static void NavigateWithBarAndClose(INavigationStore navigationStore)

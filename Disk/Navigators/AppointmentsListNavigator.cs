@@ -28,27 +28,17 @@ public class AppointmentsListNavigator : INavigator
 
     public static void NavigateWithBar(INavigationStore navigationStore, Patient patient)
     {
-        if (navigationStore.CurrentViewModel is NavigationBarLayoutViewModel bar)
-        {
-            bar.CurrentViewModel = navigationStore.GetViewModel<AppointmentsListViewModel>(vm =>
+        navigationStore.SetViewModel<NavigationBarLayoutViewModel>(
+            vm =>
             {
                 vm.IniNavigationStore = navigationStore;
-                vm.Patient = patient;
-            });
-        }
-        else
-        {
-            navigationStore.SetViewModel<NavigationBarLayoutViewModel>(
-                vm =>
-                {
-                    vm.IniNavigationStore = navigationStore;
-                    vm.CurrentViewModel = navigationStore.GetViewModel<AppointmentsListViewModel>(vm =>
+                vm.CurrentViewModel = navigationStore.GetViewModel<AppointmentsListViewModel>(
+                    vm =>
                     {
                         vm.IniNavigationStore = navigationStore;
                         vm.Patient = patient;
                     });
-                });
-        }
+            });
     }
 
     public static void NavigateWithBarAndClose(INavigationStore navigationStore, Patient patient)

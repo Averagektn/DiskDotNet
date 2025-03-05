@@ -15,7 +15,7 @@ public class AppointmentNavigator : INavigator
                 vm.IniNavigationStore = navigationStore;
                 vm.Appointment = appointment;
                 vm.Patient = patient;
-                vm.Sessions = [.. sessions];
+                vm.Sessions = new(sessions);
             });
     }
 
@@ -32,29 +32,18 @@ public class AppointmentNavigator : INavigator
     public static void NavigateWithBar(INavigationStore navigationStore, List<Session> sessions, Patient patient, 
         Appointment appointment)
     {
-        if (navigationStore.CurrentViewModel is NavigationBarLayoutViewModel bar)
-        {
-            bar.CurrentViewModel = navigationStore.GetViewModel<AppointmentViewModel>(vm =>
+        navigationStore.SetViewModel<NavigationBarLayoutViewModel>(
+            vm =>
             {
-                vm.Appointment = appointment;
-                vm.Patient = patient;
-                vm.Sessions = [.. sessions];
-            });
-        }
-        else
-        {
-            navigationStore.SetViewModel<NavigationBarLayoutViewModel>(
-                vm =>
+                vm.IniNavigationStore = navigationStore;
+                vm.CurrentViewModel = navigationStore.GetViewModel<AppointmentViewModel>(vm =>
                 {
-                    vm.IniNavigationStore = navigationStore;
-                    vm.CurrentViewModel = navigationStore.GetViewModel<AppointmentViewModel>(vm =>
-                    {
-                        vm.Appointment = appointment;
-                        vm.Patient = patient;
-                        vm.Sessions = [.. sessions];
-                    });
+                    vm.Appointment = appointment;
+                    vm.Patient = patient;
+                    vm.Sessions = [.. sessions];
                 });
-        }
+            }
+        );
     }
 
     public static void NavigateWithBarAndClose(INavigationStore navigationStore, List<Session> sessions, Patient patient, 
