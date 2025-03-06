@@ -55,7 +55,7 @@ public partial class SettingsView : UserControl
         }
         else
         {
-            _target = new Target(new(0, 0), TargetRadius, PaintArea, screenIniSize);
+            _target = new Target(new(0, 0), TargetRadius * 5, PaintArea, screenIniSize);
         }
 
         _target.Draw();

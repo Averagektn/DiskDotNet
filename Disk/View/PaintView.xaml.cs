@@ -1,9 +1,7 @@
 ﻿using Disk.Calculations.Impl.Converters;
 using Disk.Service.Implementation;
 using Disk.ViewModel;
-using Disk.Visual.Impl;
 using Disk.Visual.Interface;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Threading;
@@ -15,17 +13,22 @@ namespace Disk.View.PaintWindow;
 
 public partial class PaintView : UserControl
 {
-    private IUser User = null!;
-    private IProgressTarget Target = null!;
-    private Converter Converter => ViewModel.Converter;
-
-    private PaintViewModel ViewModel => (PaintViewModel)DataContext;
 
     private readonly DispatcherTimer ShotTimer;
     private readonly DispatcherTimer MoveTimer;
 
-    private readonly List<IScalable?> Scalables = [];
-    private readonly List<IDrawable?> Drawables = [];
+    private Size PaintPanelSize => PaintRect.RenderSize;
+
+    private IUser User = null!;
+    private IProgressTarget Target = null!;
+
+    private Converter Converter => ViewModel.Converter;
+    private PaintViewModel ViewModel => (PaintViewModel)DataContext;
+
+    private int PaintPanelCenterX => (int)PaintPanelSize.Width / 2;
+    private int PaintPanelCenterY => (int)PaintPanelSize.Height / 2;
+
+    private static Settings Settings => Settings.Default;
 
     private Point2DI? ShiftedWndPos
     {
@@ -34,12 +37,6 @@ public partial class PaintView : UserControl
             : Converter.ToWndCoord(
                 new Point2DF(ViewModel.CurrentPos.X - Settings.XAngleShift, ViewModel.CurrentPos.Y - Settings.YAngleShift));
     }
-
-    private Size PaintPanelSize => PaintRect.RenderSize;
-    private int PaintPanelCenterX => (int)PaintPanelSize.Width / 2;
-    private int PaintPanelCenterY => (int)PaintPanelSize.Height / 2;
-
-    private static Settings Settings => Settings.Default;
 
     public PaintView()
     {
@@ -70,16 +67,16 @@ public partial class PaintView : UserControl
 
         var halfRadius = User.Radius / 2;
         var sqrt2 = Math.Sqrt(2);
+
         return [new(x - halfRadius, y), new(x + halfRadius, y), new(x, y - halfRadius), new(x, y + halfRadius),
-                new((int)(x - halfRadius / sqrt2), (int)(y - halfRadius / sqrt2)),
-                new((int)(x + halfRadius / sqrt2), (int)(y - halfRadius / sqrt2)),
-                new((int)(x - halfRadius / sqrt2), (int)(y + halfRadius / sqrt2)),
-                new((int)(x + halfRadius / sqrt2), (int)(y + halfRadius / sqrt2))];
+                new((int)(x - (halfRadius / sqrt2)), (int)(y - (halfRadius / sqrt2))),
+                new((int)(x + (halfRadius / sqrt2)), (int)(y - (halfRadius / sqrt2))),
+                new((int)(x - (halfRadius / sqrt2)), (int)(y + (halfRadius / sqrt2))),
+                new((int)(x + (halfRadius / sqrt2)), (int)(y + (halfRadius / sqrt2)))];
     }
 
     private void ShotTimerElapsed(object? sender, EventArgs e)
     {
-        //var shot = User.Shot();
         var shots = GetMultipleShots();
 
         var shot = shots[0];
@@ -90,7 +87,6 @@ public partial class PaintView : UserControl
             shot = shots[i];
         }
 
-        //var shotScore = Target.ReceiveShot(shot);
         var angleShot = Converter.ToAngle_FromWnd(shot);
 
         // pit
@@ -155,27 +151,23 @@ public partial class PaintView : UserControl
 
     private void OnLoaded(object sender, RoutedEventArgs e)
     {
-        User = DrawableFabric.GetIniUser(ViewModel.ImagePath, PaintArea);
+        User = DrawableFabric.GetIniUser(Settings.CursorFilePath, PaintArea);
         User.OnShot += (p) => ViewModel.FullPath.Add(Converter.ToAngle_FromWnd(p));
 
         var center = ViewModel.NextTargetCenter ?? new(0, 0);
         var converter = DrawableFabric.GetIniConverter();
         var wndCenter = converter.ToWndCoord(center);
-        Target = DrawableFabric.GetIniProgressTarget("", wndCenter, PaintArea);
+        Target = DrawableFabric.GetIniProgressTarget(Settings.TargetFilePath, wndCenter, PaintArea);
         Target.OnReceiveShot += shot => ViewModel.Score += shot;
 
-        Scalables.Add(Target);
-        Scalables.Add(User);
         Converter.Scale(PaintArea.RenderSize);
-        Scalables.ForEach(elem => elem?.Scale());
 
         if (ViewModel.IsGame)
         {
             ViewModel.StartReceiving();
 
-            Drawables.Add(Target);
-            Drawables.Add(User);
-            Drawables.ForEach(elem => elem?.Draw());
+            Target.Draw();
+            User.Draw();
 
             MoveTimer.Start();
             ShotTimer.Start();
@@ -186,12 +178,6 @@ public partial class PaintView : UserControl
     {
         Target.Remove();
         User.Remove();
-
-        _ = Drawables.Remove(Target);
-        _ = Scalables.Remove(Target);
-
-        _ = Drawables.Remove(User);
-        _ = Scalables.Remove(User);
 
         User.ClearOnShot();
 
@@ -205,14 +191,13 @@ public partial class PaintView : UserControl
         AllowedArea.RadiusY = PaintPanelCenterY;
         AllowedArea.Center = new(PaintPanelCenterX, PaintPanelCenterY);
 
-        Scalables.ForEach(elem => elem?.Scale());
         Converter.Scale(PaintArea.RenderSize);
     }
 
     private void OnStopClick(object sender, RoutedEventArgs e)
     {
         StopGame();
-        // navigate to result
+
         _ = Application.Current.Dispatcher.BeginInvoke(async () => await ViewModel.SaveSessionResult());
     }
 }

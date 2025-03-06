@@ -39,7 +39,7 @@ public static class DrawableFabric
         return new User
         (
             center: new(ScreenIniCenterX, ScreenIniCenterY),
-            radius: Settings.IniUserRadius, 
+            radius: Settings.IniUserRadius * 5, 
             speed: 0, 
             color: UserBrush, 
             parent, 
@@ -61,7 +61,7 @@ public static class DrawableFabric
                 hp: Settings.TargetHp
             );
         }
-        return new ProgressTarget(center, radius: Settings.IniTargetRadius, parent, TargetHp, iniSize: ScreenIniSize);
+        return new ProgressTarget(center, radius: Settings.IniTargetRadius * 6, parent, TargetHp, iniSize: ScreenIniSize);
     }
 
     public static Converter GetIniConverter()

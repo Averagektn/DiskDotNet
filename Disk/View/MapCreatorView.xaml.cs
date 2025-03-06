@@ -169,7 +169,7 @@ public partial class MapCreatorView : UserControl
                 (int)(actualX / PaintArea.ActualWidth * IniWidth),
                 (int)(actualY / PaintArea.ActualHeight * IniHeight)
             ),
-            radius: Settings.Default.IniTargetRadius,
+            radius: Settings.Default.IniTargetRadius * 5,
             parent: PaintArea,
             number: _targets.Count + 1,
             iniSize: new(IniWidth, IniHeight),

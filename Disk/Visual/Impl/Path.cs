@@ -69,12 +69,19 @@ public class Path : IStaticFigure
     public virtual void Draw()
     {
         _ = Parent.Children.Add(Polyline);
+        Parent.SizeChanged += Parent_SizeChanged;
+    }
+
+    private void Parent_SizeChanged(object sender, System.Windows.SizeChangedEventArgs e)
+    {
+        Scale();
     }
 
     /// <inheritdoc/>
     public virtual void Remove()
     {
         Parent.Children.Remove(Polyline);
+        Parent.SizeChanged -= Parent_SizeChanged;
     }
 
     /// <inheritdoc/>

@@ -14,12 +14,12 @@ public partial class SessionResultView : UserControl
 {
     private DispatcherTimer MoveTimer = new(DispatcherPriority.Normal)
     {
-        Interval = TimeSpan.FromMilliseconds(Settings.MoveTime)
+        Interval = TimeSpan.FromMilliseconds(Settings.ShotTime)
     };
     private IUser _user = null!;
     private ITarget _target = null!;
 
-    private List<IScalable> Scalables { get; set; } = [];
+    //private List<IScalable> Scalables { get; set; } = [];
     private static Settings Settings => Settings.Default;
     private SessionResultViewModel? ViewModel => DataContext as SessionResultViewModel;
     private Size PaintPanelSize => PaintArea.RenderSize;
@@ -52,20 +52,15 @@ public partial class SessionResultView : UserControl
     private void OnSizeChanged(object sender, SizeChangedEventArgs e)
     {
         Converter?.Scale(PaintPanelSize);
-        Scalables.ForEach(s => s.Scale());
     }
 
     private void OnLoaded(object sender, RoutedEventArgs e)
     {
-        _user ??= DrawableFabric.GetIniUser(string.Empty, PaintArea);
-        // set 0
-        _target ??= DrawableFabric.GetIniProgressTarget("", new(-100, -100), PaintArea);
-
-        Scalables.AddRange([_user, _target]);
-
         OnSizeChanged(sender, null!);
         SelectionChanged(sender, null!);
     }
+
+    private List<IStaticFigure> _pathAndRose = [];
 
     private void SelectionChanged(object sender, SelectionChangedEventArgs e)
     {
@@ -74,26 +69,22 @@ public partial class SessionResultView : UserControl
             return;
         }
 
+        _target?.Remove();
+        _user?.Remove();
+
         _user ??= DrawableFabric.GetIniUser(string.Empty, PaintArea);
-        _target ??= DrawableFabric.GetIniProgressTarget("", new(-100, -100), PaintArea);
+        _target ??= DrawableFabric.GetIniProgressTarget("", new(0, 0), PaintArea);
+
+        _target.Draw();
+        _pathAndRose.ForEach(p => p.Remove());
+        _pathAndRose = ViewModel.GetPathAndRose(PaintArea);
+        _pathAndRose.ForEach(p => p.Draw());
+        _user.Draw();
 
         if (!IsReply)
         {
             _user.Move(ViewModel.UserCenter);
             _target.Move(ViewModel.TargetCenter);
-        }
-
-        PaintArea.Children.Clear();
-        _target.Draw();
-        _user.Draw();
-
-        var figures = ViewModel.GetPathAndRose(PaintArea);
-        foreach (var figure in figures)
-        {
-            Scalables.Add(figure);
-
-            figure.Draw();
-            figure.Scale();
         }
     }
 
@@ -110,8 +101,6 @@ public partial class SessionResultView : UserControl
         }
 
         IsReply = true;
-
-        Scalables.ForEach(item => item.Scale());
 
         var selectedIndex = ViewModel.SelectedIndex;
         var enumerator = ViewModel.FullPath.GetEnumerator();

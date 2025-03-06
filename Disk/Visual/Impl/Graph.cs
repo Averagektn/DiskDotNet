@@ -71,7 +71,13 @@ public class Graph : IStaticFigure
     {
         FillPolygon();
 
+        Parent.SizeChanged += Parent_SizeChanged;
         _ = Parent.Children.Add(Polygon);
+    }
+
+    private void Parent_SizeChanged(object sender, System.Windows.SizeChangedEventArgs e)
+    {
+        Scale();
     }
 
     /// <inheritdoc/>
@@ -128,6 +134,7 @@ public class Graph : IStaticFigure
     public void Remove()
     {
         Parent.Children.Remove(Polygon);
+        Parent.SizeChanged -= Parent_SizeChanged;
     }
 
     public bool Contains(Point2D<int> p)

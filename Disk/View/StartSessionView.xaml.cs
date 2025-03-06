@@ -62,14 +62,14 @@ public partial class StartSessionView : UserControl
     private NumberedTarget GetIniCoordTarget(int actualX, int actualY)
     {
         _converter ??= new Converter((int)PaintArea.ActualWidth, (int)PaintArea.ActualHeight, AngleWidth, AngleHeight);
-
+        
         return new(
             center: new Point2D<int>
             (
                 actualX,
                 actualY
             ),
-            radius: Settings.Default.IniTargetRadius,
+            radius: Settings.Default.IniTargetRadius * 5,
             parent: PaintArea,
             number: _targets.Count + 1,
             iniSize: new(IniWidth, IniHeight),
