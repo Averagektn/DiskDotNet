@@ -9,12 +9,11 @@ public class SessionResultNavigator : INavigator
 {
     public static void Navigate(INavigationStore navigationStore, Session session)
     {
-        navigationStore.SetViewModel<SessionResultViewModel>(
-            vm =>
-            {
-                vm.IniNavigationStore = navigationStore;
-                vm.CurrentSession = session;
-            });
+        navigationStore.SetViewModel<SessionResultViewModel>(vm =>
+        {
+            vm.IniNavigationStore = navigationStore;
+            vm.CurrentSession = session;
+        });
     }
 
     public static void NavigateAndClose(INavigationStore navigationStore, Session session)
@@ -28,17 +27,15 @@ public class SessionResultNavigator : INavigator
 
     public static void NavigateWithBar(INavigationStore navigationStore, Session session)
     {
-        navigationStore.SetViewModel<NavigationBarLayoutViewModel>(
-            vm =>
+        navigationStore.SetViewModel<NavigationBarLayoutViewModel>(vm =>
+        {
+            vm.IniNavigationStore = navigationStore;
+            vm.CurrentViewModel = navigationStore.GetViewModel<SessionResultViewModel>(vm =>
             {
                 vm.IniNavigationStore = navigationStore;
-                vm.CurrentViewModel = navigationStore.GetViewModel<SessionResultViewModel>(
-                    vm =>
-                    {
-                        vm.IniNavigationStore = navigationStore;
-                        vm.CurrentSession = session;
-                    });
+                vm.CurrentSession = session;
             });
+        });
     }
 
     public static void NavigateWithBarAndClose(INavigationStore navigationStore, Session session)

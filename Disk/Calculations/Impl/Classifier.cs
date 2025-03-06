@@ -24,16 +24,15 @@ public static class Classifier<CoordType> where CoordType : IConvertible, new()
     /// <returns>
     ///     Classes wih points
     /// </returns>
-    public static IEnumerable<IEnumerable<Point2D<CoordType>>> Classify(IEnumerable<Point2D<CoordType>> dataset,
-        int classesCount)
+    public static IEnumerable<IEnumerable<Point2D<CoordType>>> Classify(IEnumerable<Point2D<CoordType>> dataset, int classesCount)
     {
         var res = new List<List<Point2D<CoordType>>>(classesCount);
-        var centers = GetInitialCenters(dataset.ToList(), res, classesCount);
+        var centers = GetInitialCenters([.. dataset], classesCount);
         bool isCounting = true;
 
         while (isCounting)
         {
-            Separate(dataset.ToList(), centers, res);
+            Separate([.. dataset], centers, res);
 
             isCounting = GenerateNewCenters2D(centers, res);
         }
@@ -53,12 +52,11 @@ public static class Classifier<CoordType> where CoordType : IConvertible, new()
     /// <returns>
     ///     Classes wih points
     /// </returns>
-    public static IEnumerable<IEnumerable<Point3D<CoordType>>> Classify(IEnumerable<Point3D<CoordType>> dataset,
-        int classesCount)
+    public static IEnumerable<IEnumerable<Point3D<CoordType>>> Classify(IEnumerable<Point3D<CoordType>> dataset, int classesCount)
     {
         var dataList = dataset.ToList();
         var res = new List<List<Point3D<CoordType>>>(classesCount);
-        var centers = GetInitialCenters(dataList, res, classesCount);
+        var centers = GetInitialCenters(dataList, classesCount);
         bool isCounting = true;
 
         while (isCounting)
@@ -83,8 +81,7 @@ public static class Classifier<CoordType> where CoordType : IConvertible, new()
     /// <returns>
     ///     Classes wih points
     /// </returns>
-    public static IEnumerable<IEnumerable<PolarPoint<CoordType>>> Classify(IList<PolarPoint<CoordType>> dataset,
-        int classesCount)
+    public static IEnumerable<IEnumerable<PolarPoint<CoordType>>> Classify(IList<PolarPoint<CoordType>> dataset, int classesCount)
     {
         double fullAngle = 360.0;
         var res = new List<List<PolarPoint<CoordType>>>(classesCount);
@@ -121,8 +118,7 @@ public static class Classifier<CoordType> where CoordType : IConvertible, new()
     /// <returns>
     ///     A list of initial centers for clustering
     /// </returns>
-    private static List<T> GetInitialCenters<T>(IList<T> dataset, IEnumerable<IEnumerable<T>> classification,
-        int classesCount)
+    private static List<T> GetInitialCenters<T>(List<T> dataset, int classesCount)
     {
         var res = new List<List<T>>(classesCount);
         var centers = new List<T>(classesCount);
@@ -251,8 +247,8 @@ public static class Classifier<CoordType> where CoordType : IConvertible, new()
     /// <param name="classification">
     ///     The classification of the dataset into clusters
     /// </param>
-    private static void Separate<T>(IList<T> dataset, IList<T> centers,
-        IEnumerable<IEnumerable<T>> classification) where T : Point2D<CoordType>
+    private static void Separate<T>(IList<T> dataset, IList<T> centers, IEnumerable<IEnumerable<T>> classification)
+        where T : Point2D<CoordType>
     {
         var _classification = classification.ToList();
 

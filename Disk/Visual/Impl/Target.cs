@@ -22,7 +22,7 @@ namespace Disk.Visual.Impl;
 ///     The initial size of the target
 /// </param>
 public class Target(Point2D<int> center, int radius, Canvas parent, Size iniSize) : 
-    User(center, radius, 0, Brushes.White, parent, iniSize), ITarget
+    User(center, radius, 0, Brushes.Transparent, parent, iniSize), ITarget
 {
     /// <summary>
     ///     Invoked on <see cref="ReceiveShot(Point2D{int})"/> method call

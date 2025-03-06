@@ -15,13 +15,12 @@ namespace Disk.ViewModel;
 
 public class MapNamePickerViewModel(IMapRepository mapRepository) : PopupViewModel
 {
-    public ICommand SaveMapCommand => new AsyncCommand(SaveMap);
-    public ICommand CancelCommand => new Command(_ => IniNavigationStore.Close());
-
     public required List<Point2D<float>> Map { get; set; }
     public string MapName { get; set; } = string.Empty;
 
-    private async Task SaveMap(object? arg)
+    public ICommand CancelCommand => new Command(_ => IniNavigationStore.Close());
+
+    public ICommand SaveMapCommand => new AsyncCommand(async _ =>
     {
         if (MapName.Trim().Length == 0)
         {
@@ -46,5 +45,5 @@ public class MapNamePickerViewModel(IMapRepository mapRepository) : PopupViewMod
             Log.Error(ex.Message);
             await ShowPopup(MapNamePickerLocalization.SavingError, MapNamePickerLocalization.NameDuplication);
         }
-    }
+    });
 }

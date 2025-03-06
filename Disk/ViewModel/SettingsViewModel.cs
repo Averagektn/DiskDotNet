@@ -125,7 +125,23 @@ public class SettingsViewModel : ObserverViewModel
     }
 
     public ICommand CancelCommand => new Command(_ => IniNavigationStore.Close());
-    public ICommand ChangeLanguageCommand => new Command(ChangeLanguage);
+
+    public static ICommand ChangeLanguageCommand => new Command(parameter =>
+    {
+        if (parameter is not null)
+        {
+            var selectedLanguage = parameter.ToString();
+
+            if (Settings.Language != selectedLanguage)
+            {
+                Settings.Language = selectedLanguage;
+                Settings.Save();
+
+                RestartApplication();
+            }
+        }
+    });
+
     public ICommand SaveCommand => new Command(_ =>
     {
         SaveSettings();
@@ -173,22 +189,6 @@ public class SettingsViewModel : ObserverViewModel
     {
         TargetFilePath = string.Empty;
     });
-
-    private void ChangeLanguage(object? parameter)
-    {
-        if (parameter is not null)
-        {
-            var selectedLanguage = parameter.ToString();
-
-            if (Settings.Language != selectedLanguage)
-            {
-                Settings.Language = selectedLanguage;
-                Settings.Save();
-
-                RestartApplication();
-            }
-        }
-    }
 
     private static void RestartApplication()
     {

@@ -17,12 +17,12 @@ namespace Disk.Style
         }
 
         public static readonly DependencyProperty PopupHeaderProperty =
-            DependencyProperty.Register("PopupHeader", typeof(string), typeof(Popup), new PropertyMetadata(string.Empty, OnPopupHeaderChanged));
+            DependencyProperty
+                .Register("PopupHeader", typeof(string), typeof(Popup), new PropertyMetadata(string.Empty, OnPopupHeaderChanged));
 
         private static void OnPopupHeaderChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            var control = d as Popup;
-            if (control != null)
+            if (d is Popup control)
             {
                 control.PART_Header.Text = e.NewValue as string;
             }
@@ -30,17 +30,17 @@ namespace Disk.Style
 
         public string PopupMessage
         {
-            get { return (string)GetValue(PopupMessageProperty); }
-            set { SetValue(PopupMessageProperty, value); }
+            get => (string)GetValue(PopupMessageProperty); 
+            set => SetValue(PopupMessageProperty, value); 
         }
 
         public static readonly DependencyProperty PopupMessageProperty =
-            DependencyProperty.Register("PopupMessage", typeof(string), typeof(Popup), new PropertyMetadata(string.Empty, OnPopupMessageChanged));
+            DependencyProperty
+                .Register("PopupMessage", typeof(string), typeof(Popup), new PropertyMetadata(string.Empty, OnPopupMessageChanged));
 
         private static void OnPopupMessageChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            var control = d as Popup;
-            if (control != null)
+            if (d is Popup control)
             {
                 control.PART_Message.Text = e.NewValue as string;
             }
@@ -48,17 +48,17 @@ namespace Disk.Style
 
         public bool IsPopupOpen
         {
-            get { return (bool)GetValue(IsPopupOpenProperty); }
-            set { SetValue(IsPopupOpenProperty, value); }
+            get => (bool)GetValue(IsPopupOpenProperty); 
+            set => SetValue(IsPopupOpenProperty, value); 
         }
 
         public static readonly DependencyProperty IsPopupOpenProperty =
-            DependencyProperty.Register("IsPopupOpen", typeof(bool), typeof(Popup), new PropertyMetadata(false, OnIsPopupOpenChanged));
+            DependencyProperty
+                .Register("IsPopupOpen", typeof(bool), typeof(Popup), new PropertyMetadata(false, OnIsPopupOpenChanged));
 
         private static void OnIsPopupOpenChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            var control = d as Popup;
-            if (control != null)
+            if (d is Popup control)
             {
                 control.PART_Popup.IsOpen = (bool)e.NewValue;
             }

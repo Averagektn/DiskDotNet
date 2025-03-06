@@ -1,4 +1,5 @@
 ﻿using Disk.ViewModel.Common.ViewModels;
+using Serilog;
 using System.ComponentModel;
 using System.Windows;
 using System.Windows.Input;
@@ -18,6 +19,8 @@ public partial class MainWindow : Window
 
     private void OnClosing(object? obj, CancelEventArgs args)
     {
+        Log.Information("App closing");
+
         if (ViewModel is not null)
         {
             if (ViewModel.IsModalOpen)

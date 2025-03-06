@@ -9,12 +9,11 @@ public class AppointmentsListNavigator : INavigator
 {
     public static void Navigate(INavigationStore navigationStore, Patient patient)
     {
-        navigationStore.SetViewModel<AppointmentsListViewModel>(
-            vm =>
-            {
-                vm.IniNavigationStore = navigationStore;
-                vm.Patient = patient;
-            });
+        navigationStore.SetViewModel<AppointmentsListViewModel>(vm =>
+        {
+            vm.IniNavigationStore = navigationStore;
+            vm.Patient = patient;
+        });
     }
 
     public static void NavigateAndClose(INavigationStore navigationStore, Patient patient)
@@ -28,17 +27,15 @@ public class AppointmentsListNavigator : INavigator
 
     public static void NavigateWithBar(INavigationStore navigationStore, Patient patient)
     {
-        navigationStore.SetViewModel<NavigationBarLayoutViewModel>(
-            vm =>
+        navigationStore.SetViewModel<NavigationBarLayoutViewModel>(vm =>
+        {
+            vm.IniNavigationStore = navigationStore;
+            vm.CurrentViewModel = navigationStore.GetViewModel<AppointmentsListViewModel>(vm =>
             {
                 vm.IniNavigationStore = navigationStore;
-                vm.CurrentViewModel = navigationStore.GetViewModel<AppointmentsListViewModel>(
-                    vm =>
-                    {
-                        vm.IniNavigationStore = navigationStore;
-                        vm.Patient = patient;
-                    });
+                vm.Patient = patient;
             });
+        });
     }
 
     public static void NavigateWithBarAndClose(INavigationStore navigationStore, Patient patient)

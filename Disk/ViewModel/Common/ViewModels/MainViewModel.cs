@@ -1,15 +1,15 @@
 ﻿using Disk.Stores;
+using Serilog;
 
 namespace Disk.ViewModel.Common.ViewModels;
 
 public class MainViewModel : ObserverViewModel
 {
-    public ObserverViewModel CurrentViewModel => _navigationStore.CurrentViewModel;
-    public ObserverViewModel? CurrentModalViewModel => _modalNavigationStore.CurrentViewModel;
-
     private readonly NavigationStore _navigationStore;
     private readonly ModalNavigationStore _modalNavigationStore;
 
+    public ObserverViewModel CurrentViewModel => _navigationStore.CurrentViewModel;
+    public ObserverViewModel? CurrentModalViewModel => _modalNavigationStore.CurrentViewModel;
     public bool IsModalOpen => _modalNavigationStore.IsOpen;
 
     public MainViewModel(NavigationStore navigationStore, ModalNavigationStore modalNavigationStore)
@@ -55,8 +55,14 @@ public class MainViewModel : ObserverViewModel
     public void Close()
     {
         if (_modalNavigationStore.CanClose)
+        {
+            Log.Information("Closing modal");
             _modalNavigationStore.Close();
+        }
         else if (_navigationStore.CanClose)
+        {
+            Log.Information("Closing");
             _navigationStore.Close();
+        }
     }
 }

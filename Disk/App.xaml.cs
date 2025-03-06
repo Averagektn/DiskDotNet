@@ -33,7 +33,12 @@ public partial class App : Application
         _ = services.AddDbContext<DiskContext>();
 
         _ = services.AddSingleton<Func<Type, ObserverViewModel>>(provider =>
-            type => (ObserverViewModel)provider.GetRequiredService(type)
+            type =>
+            {
+                var vm = (ObserverViewModel)provider.GetRequiredService(type);
+                Log.Information($"Provider returns {vm.GetType()}");
+                return vm;
+            }
         );
         _ = services.AddSingleton<NavigationStore>();
         _ = services.AddSingleton<ModalNavigationStore>();
@@ -72,8 +77,9 @@ public partial class App : Application
         _ = services.AddSingleton<MainWindow>(provider =>
         {
             provider
-            .GetRequiredService<NavigationStore>()
-            .SetViewModel<NavigationBarLayoutViewModel>(vm => vm.CurrentViewModel = provider.GetRequiredService<PatientsViewModel>());
+                .GetRequiredService<NavigationStore>()
+                .SetViewModel<NavigationBarLayoutViewModel>(vm => 
+                    vm.CurrentViewModel = provider.GetRequiredService<PatientsViewModel>());
 
             return new()
             {
@@ -89,6 +95,8 @@ public partial class App : Application
 
     protected override void OnStartup(StartupEventArgs e)
     {
+        Log.Information("App start");
+
         MainWindow = _serviceProvider.GetRequiredService<MainWindow>();
         MainWindow.Show();
 

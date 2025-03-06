@@ -16,12 +16,14 @@ public static class Calculator2D
     /// <returns>
     ///     Mathematical expectation
     /// </returns>
-    public static Point2D<float> MathExp(IList<Point2D<float>> dataset) =>
-        new
+    public static Point2D<float> MathExp(IList<Point2D<float>> dataset)
+    {
+        return new
         (
             Calculator.MathExp([.. dataset.Select(p => p.X)]),
             Calculator.MathExp([.. dataset.Select(p => p.Y)])
         );
+    }
 
     /// <summary>
     ///     Calculates standart deviation
@@ -32,12 +34,14 @@ public static class Calculator2D
     /// <returns>
     ///     Standart deviation
     /// </returns>
-    public static Point2D<float> StandartDeviation(IList<Point2D<float>> dataset) =>
-        new
+    public static Point2D<float> StandartDeviation(IList<Point2D<float>> dataset)
+    {
+        return new
         (
             Calculator.StandartDeviation([.. dataset.Select(p => p.X)]),
             Calculator.StandartDeviation([.. dataset.Select(p => p.Y)])
         );
+    }
 
     /// <summary>
     ///     Calculates dispersion
@@ -48,10 +52,12 @@ public static class Calculator2D
     /// <returns>
     ///     Dispesion
     /// </returns>
-    public static Point2D<float> Dispersion(IList<Point2D<float>> dataset) =>
-        new
+    public static Point2D<float> Dispersion(IList<Point2D<float>> dataset)
+    {
+        return new
         (
             Calculator.Dispersion([.. dataset.Select(p => p.X)]),
             Calculator.Dispersion([.. dataset.Select(p => p.Y)])
         );
+    }
 }

@@ -9,17 +9,16 @@ public class AppointmentNavigator : INavigator
 {
     public static void Navigate(INavigationStore navigationStore, List<Session> sessions, Patient patient, Appointment appointment)
     {
-        navigationStore.SetViewModel<AppointmentViewModel>(
-            vm =>
-            {
-                vm.IniNavigationStore = navigationStore;
-                vm.Appointment = appointment;
-                vm.Patient = patient;
-                vm.Sessions = new(sessions);
-            });
+        navigationStore.SetViewModel<AppointmentViewModel>(vm =>
+        {
+            vm.IniNavigationStore = navigationStore;
+            vm.Appointment = appointment;
+            vm.Patient = patient;
+            vm.Sessions = [.. sessions];
+        });
     }
 
-    public static void NavigateAndClose(INavigationStore navigationStore, List<Session> sessions, Patient patient, 
+    public static void NavigateAndClose(INavigationStore navigationStore, List<Session> sessions, Patient patient,  
         Appointment appointment)
     {
         if (navigationStore.CanClose)
@@ -29,21 +28,19 @@ public class AppointmentNavigator : INavigator
         }
     }
 
-    public static void NavigateWithBar(INavigationStore navigationStore, List<Session> sessions, Patient patient, 
+    public static void NavigateWithBar(INavigationStore navigationStore, List<Session> sessions, Patient patient,
         Appointment appointment)
     {
-        navigationStore.SetViewModel<NavigationBarLayoutViewModel>(
-            vm =>
+        navigationStore.SetViewModel<NavigationBarLayoutViewModel>(vm =>
+        {
+            vm.IniNavigationStore = navigationStore;
+            vm.CurrentViewModel = navigationStore.GetViewModel<AppointmentViewModel>(vm =>
             {
-                vm.IniNavigationStore = navigationStore;
-                vm.CurrentViewModel = navigationStore.GetViewModel<AppointmentViewModel>(vm =>
-                {
-                    vm.Appointment = appointment;
-                    vm.Patient = patient;
-                    vm.Sessions = [.. sessions];
-                });
-            }
-        );
+                vm.Appointment = appointment;
+                vm.Patient = patient;
+                vm.Sessions = [.. sessions];
+            });
+        });
     }
 
     public static void NavigateWithBarAndClose(INavigationStore navigationStore, List<Session> sessions, Patient patient, 

@@ -13,7 +13,10 @@ public class Command(Action<object?> execute, Predicate<object>? canExecute = nu
         remove => CommandManager.RequerySuggested -= value;
     }
 
-    public bool CanExecute(object? parameter) => _canExecute is null || (parameter is not null && _canExecute(parameter));
+    public bool CanExecute(object? parameter)
+    {
+        return _canExecute is null || (parameter is not null && _canExecute(parameter));
+    }
 
     public void Execute(object? parameter)
     {

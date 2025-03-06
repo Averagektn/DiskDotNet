@@ -19,7 +19,18 @@ namespace Disk.ViewModel;
 
 public class SessionResultViewModel(NavigationStore navigationStore) : ObserverViewModel
 {
+    private List<List<Point2D<float>>> PathsToTargets { get; set; } = [];
+    private List<List<Point2D<float>>> PathsInTargets { get; set; } = [];
+    public Point2D<int> UserCenter => Converter.ToWndCoord(PathsToTargets[SelectedIndex][0]);
+    public Point2D<int> TargetCenter => Converter.ToWndCoord(TargetCenters[SelectedIndex]);
+    public ObservableCollection<string> Indices { get; set; } = [];
+    public Converter Converter { get; set; } = DrawableFabric.GetIniConverter();
+
     private Session _currentSession = null!;
+
+    public bool ShowPathInTarget { get; set; }
+    public bool ShowPathToTarget { get; set; }
+
     public required Session CurrentSession
     {
         get => _currentSession;
@@ -40,11 +51,6 @@ public class SessionResultViewModel(NavigationStore navigationStore) : ObserverV
             NewItemSelectedCommand.Execute(null);
         }
     }
-
-    public Point2D<int> UserCenter => Converter.ToWndCoord(PathsToTargets[SelectedIndex][0]);
-    public Point2D<int> TargetCenter => Converter.ToWndCoord(TargetCenters[SelectedIndex]);
-    public ObservableCollection<string> Indices { get; set; } = [];
-    public Converter Converter { get; set; } = DrawableFabric.GetIniConverter();
     public IEnumerable<(bool IsNewTarget, Point2D<float> Point)> FullPath
     {
         get
@@ -81,8 +87,6 @@ public class SessionResultViewModel(NavigationStore navigationStore) : ObserverV
             FillTargetsComboBox();
         }
     }
-    private List<List<Point2D<float>>> PathsToTargets { get; set; } = [];
-    private List<List<Point2D<float>>> PathsInTargets { get; set; } = [];
 
     private string _message = string.Empty;
     public string Message { get => _message; set => SetProperty(ref _message, value); }
@@ -98,9 +102,6 @@ public class SessionResultViewModel(NavigationStore navigationStore) : ObserverV
 
     private bool _isStopEnabled;
     public bool IsStopEnabled { get => _isStopEnabled; set => SetProperty(ref _isStopEnabled, value); }
-
-    public bool ShowPathInTarget { get; set; }
-    public bool ShowPathToTarget { get; set; }
 
     public ICommand NavigateBackCommand => new Command(_ => navigationStore.Close());
     public ICommand NewItemSelectedCommand => new Command(_ =>
@@ -122,7 +123,7 @@ public class SessionResultViewModel(NavigationStore navigationStore) : ObserverV
         }
     }
 
-    public List<IStaticFigure> GetPathAndRose(Size paintAreaSize, Canvas canvas)
+    public List<IStaticFigure> GetPathAndRose(Canvas canvas)
     {
         if (SelectedIndex == -1)
         {
@@ -131,7 +132,7 @@ public class SessionResultViewModel(NavigationStore navigationStore) : ObserverV
 
         if (IsDiagramChecked)
         {
-            return [GetGraph(paintAreaSize, canvas)];
+            return [GetGraph(canvas)];
         }
         else if (IsPathChecked)
         {
@@ -160,7 +161,7 @@ public class SessionResultViewModel(NavigationStore navigationStore) : ObserverV
         return [];
     }
 
-    private Graph GetGraph(Size paintAreaSize, Canvas canvas)
+    private Graph GetGraph(Canvas canvas)
     {
         if (PathsInTargets.Count <= SelectedIndex || PathsInTargets[SelectedIndex].Count == 0)
         {
@@ -168,9 +169,8 @@ public class SessionResultViewModel(NavigationStore navigationStore) : ObserverV
             return new Graph([], Brushes.LightGreen, canvas, 8);
         }
 
-        var target = DrawableFabric.GetIniProgressTarget(new(0, 0), canvas);
-        //target.Draw();
-        target.Scale();
+        var target = DrawableFabric.GetIniTarget("", new(0, 0), canvas);
+        target.Draw();
 
         var angRadius = (Converter.ToAngleX_FromWnd(target.Radius) + Converter.ToAngleY_FromWnd(target.Radius)) / 2;
 

@@ -61,12 +61,14 @@ public class Point3D<CoordType> : Point2D<CoordType>, IEquatable<Point3D<CoordTy
     ///     The Euclidean distance between this point and the specified point
     /// </returns>
     public double GetDistance(Point3D<CoordType> p)
-        => Math.Sqrt
+    {
+        return Math.Sqrt
         (
             Math.Pow(XDbl - p.XDbl, 2) +
             Math.Pow(YDbl - p.YDbl, 2) +
             Math.Pow(ZDbl - p.ZDbl, 2)
         );
+    }
 
     /// <summary>
     ///     Calculates the Euclidean distance between two points
@@ -81,12 +83,14 @@ public class Point3D<CoordType> : Point2D<CoordType>, IEquatable<Point3D<CoordTy
     ///     The Euclidean distance between the two points
     /// </returns>
     public static double GetDistance(Point3D<CoordType> p1, Point3D<CoordType> p2)
-        => Math.Sqrt
+    {
+        return Math.Sqrt
         (
             Math.Pow(p1.XDbl - p2.XDbl, 2) +
             Math.Pow(p1.YDbl - p2.YDbl, 2) +
             Math.Pow(p1.ZDbl - p2.ZDbl, 2)
         );
+    }
 
     /// <summary>
     ///     Returns a string representation of the point in the format "X;Y;Z"
@@ -94,7 +98,10 @@ public class Point3D<CoordType> : Point2D<CoordType>, IEquatable<Point3D<CoordTy
     /// <returns>
     ///     A string representation of the point
     /// </returns>
-    public override string ToString() => $"{X};{Y};{Z}";
+    public override string ToString()
+    {
+        return $"{X};{Y};{Z}";
+    }
 
     /// <summary>
     ///     Converts the point to a two-dimensional point (<see cref="Point2D{CoordType}"/>) by discarding the Z 
@@ -103,7 +110,10 @@ public class Point3D<CoordType> : Point2D<CoordType>, IEquatable<Point3D<CoordTy
     /// <returns>
     ///     A <see cref="Point2D{CoordType}"/> object representing the point without the Z coordinate
     /// </returns>
-    public Point2D<CoordType> To2D() => new(X, Y);
+    public Point2D<CoordType> To2D()
+    {
+        return new(X, Y);
+    }
 
     /// <summary>
     ///     Determines whether this point is equal to the specified point
@@ -115,7 +125,10 @@ public class Point3D<CoordType> : Point2D<CoordType>, IEquatable<Point3D<CoordTy
     ///     <c>true</c> if this point is equal to the specified point; otherwise, <c>false</c>
     /// </returns>
     public bool Equals(Point3D<CoordType>? other)
-        => other is not null && XDbl.Equals(other.XDbl) && YDbl.Equals(other.YDbl) && ZDbl.Equals(other.ZDbl);
+    {
+        return other is not null && XDbl.Equals(other.XDbl) && YDbl.Equals(other.YDbl) && ZDbl.Equals(other.ZDbl);
+    }
+        
 
     /// <summary>
     ///     Determines whether this point is equal to the specified object
@@ -126,7 +139,10 @@ public class Point3D<CoordType> : Point2D<CoordType>, IEquatable<Point3D<CoordTy
     /// <returns>
     ///     <c>true</c> if this point is equal to the specified object; otherwise, <c>false</c>
     /// </returns>
-    public override bool Equals(object? obj) => Equals(obj as Point3D<CoordType>);
+    public override bool Equals(object? obj)
+    {
+        return Equals(obj as Point3D<CoordType>);
+    }
 
     /// <summary>
     ///     Returns the hash code for this point
@@ -134,7 +150,10 @@ public class Point3D<CoordType> : Point2D<CoordType>, IEquatable<Point3D<CoordTy
     /// <returns>
     ///     The hash code for this point
     /// </returns>
-    public override int GetHashCode() => (int)(Math.Pow(XDbl, YDbl) * ZDbl);
+    public override int GetHashCode()
+    {
+        return (int)(Math.Pow(XDbl, YDbl) * ZDbl);
+    }
 
     /// <summary>
     ///     Converts the point to a three-dimensional point (<see cref="Point3D"/>) by converting the coordinates to 
@@ -143,5 +162,8 @@ public class Point3D<CoordType> : Point2D<CoordType>, IEquatable<Point3D<CoordTy
     /// <returns>
     ///     A <see cref="Point3D"/> object representing the point with coordinates as double values
     /// </returns>
-    public Point3D ToPoint3D() => new(XDbl, YDbl, ZDbl);
+    public Point3D ToPoint3D()
+    {
+        return new(XDbl, YDbl, ZDbl);
+    }
 }

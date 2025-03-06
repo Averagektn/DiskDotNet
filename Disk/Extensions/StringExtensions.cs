@@ -2,5 +2,8 @@
 
 public static class StringExtensions
 {
-    public static string CapitalizeFirstLetter(this string str) => string.IsNullOrEmpty(str) ? str : char.ToUpper(str[0]) + str[1..];
+    public static string CapitalizeFirstLetter(this string str)
+    {
+        return string.IsNullOrEmpty(str) ? str : char.ToUpper(str[0]) + str[1..];
+    }
 }

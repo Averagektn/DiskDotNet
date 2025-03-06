@@ -12,13 +12,13 @@ namespace Disk.View;
 
 public partial class SettingsView : UserControl
 {
+    private IUser? _user;
+    private ITarget? _target;
+
     private string TargetFilePathText => TargetFilePath.Text;
     private int TargetRadius => (int)TargetRadiusSlider.Value;
     private string UserFilePathText => UserFilePath.Text;
     private int UserRadius => (int)UserRadiusSlider.Value;
-
-    private IUser? _user;
-    private ITarget? _target;
 
     public SettingsView()
     {

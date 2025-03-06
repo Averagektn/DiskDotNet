@@ -14,9 +14,10 @@ public class EditPatientViewModel(IPatientService patientService) : AddPatientVi
 {
     public event Action? AfterUpdateEvent;
     public required Patient AttachedPatient;
-
     private readonly IPatientService _patientService = patientService;
+
     public override ICommand AddPatientCommand => new AsyncCommand(UpdatePatient);
+
     public override ICommand CancelCommand => new Command(_ =>
     {
         AfterUpdateEvent?.Invoke();

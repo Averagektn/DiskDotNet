@@ -48,7 +48,10 @@ public partial class Converter
     /// <returns>
     ///     The converted X coordinate in window space
     /// </returns>
-    public int ToWndCoordX(int logCoord) => (int)(logCoord + MaxLogCoord.Width);
+    public int ToWndCoordX(int logCoord)
+    {
+        return (int)(logCoord + MaxLogCoord.Width);
+    }
 
     /// <summary>
     ///     Converts the Y coordinate from logical space to window space
@@ -59,7 +62,10 @@ public partial class Converter
     /// <returns>
     ///     The converted Y coordinate in window space
     /// </returns>
-    public int ToWndCoordY(int logCoord) => (int)(MaxLogCoord.Height - logCoord);
+    public int ToWndCoordY(int logCoord)
+    {
+        return (int)(MaxLogCoord.Height - logCoord);
+    }
 
     /// <summary>
     ///     Converts the coordinate from string representation to window space
@@ -109,7 +115,9 @@ public partial class Converter
     ///     The converted coordinate in window space
     /// </returns>
     public Point2D<int> ToWndCoord(Point2D<float> anglePoint)
-        => new(ToWndCoordX(anglePoint.X), ToWndCoordY(anglePoint.Y));
+    {
+        return new(ToWndCoordX(anglePoint.X), ToWndCoordY(anglePoint.Y));
+    }
 
     /// <summary>
     ///     Converts the 2D logical space to window space
@@ -120,5 +128,8 @@ public partial class Converter
     /// <returns>
     ///     The converted coordinate in window space
     /// </returns>
-    public Point2D<int> ToWndCoord(Point2D<int> logPoint) => new(ToWndCoordX(logPoint.X), ToWndCoordY(logPoint.Y));
+    public Point2D<int> ToWndCoord(Point2D<int> logPoint)
+    {
+        return new(ToWndCoordX(logPoint.X), ToWndCoordY(logPoint.Y));
+    }
 }

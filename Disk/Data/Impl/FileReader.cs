@@ -80,8 +80,7 @@ public class FileReader<CoordType> : IDataSource<CoordType>, IDisposable where C
     }
 
     /// <summary>
-    ///     Disposes of the file reader, closing the underlying StreamReader and removing it from 
-    ///     the active file readers list
+    ///     Disposes of the file reader, closing the underlying StreamReader and removing it from the active file readers list
     /// </summary>
     public void Dispose()
     {
@@ -98,12 +97,7 @@ public class FileReader<CoordType> : IDataSource<CoordType>, IDisposable where C
     /// </returns>
     public string? ReadLn() => Reader.ReadLine();
 
-    /// <summary>
-    ///     Gets the next XYZ point from the file
-    /// </summary>
-    /// <returns>
-    ///     The XYZ point as a Point3D instance
-    /// </returns>
+    /// <inheritdoc/>
     public Point3D<CoordType>? GetXYZ()
     {
         var str = Reader.ReadLine();
@@ -125,12 +119,7 @@ public class FileReader<CoordType> : IDataSource<CoordType>, IDisposable where C
         return res;
     }
 
-    /// <summary>
-    ///     Gets the next XY point from the file
-    /// </summary>
-    /// <returns>
-    ///     The XY point as a Point2D instance
-    /// </returns>
+    /// <inheritdoc/>
     public Point2D<CoordType>? GetXY()
     {
         var str = Reader.ReadLine();
@@ -151,12 +140,7 @@ public class FileReader<CoordType> : IDataSource<CoordType>, IDisposable where C
         return res;
     }
 
-    /// <summary>
-    ///     Gets the next YZ point from the file  
-    /// </summary>
-    /// <returns>
-    ///     The YZ point as a Point2D instance
-    /// </returns>
+    /// <inheritdoc/>
     public Point2D<CoordType>? GetYZ()
     {
         var point3D = GetXYZ();
@@ -171,12 +155,7 @@ public class FileReader<CoordType> : IDataSource<CoordType>, IDisposable where C
         return res;
     }
 
-    /// <summary>
-    ///     Retrieves a 2D point in the XZ plane
-    /// </summary>
-    /// <returns>
-    ///     The 2D point in the XZ plane, or null if the 3D point is null
-    /// </returns>
+    /// <inheritdoc/>
     public Point2D<CoordType>? GetXZ()
     {
         var point3D = GetXYZ();
@@ -191,12 +170,7 @@ public class FileReader<CoordType> : IDataSource<CoordType>, IDisposable where C
         return res;
     }
 
-    /// <summary>
-    ///     Retrieves a 2D point in the YX plane
-    /// </summary>
-    /// <returns>
-    ///     The 2D point in the YX plane, or null if the 2D point is null
-    /// </returns>
+    /// <inheritdoc/>
     public Point2D<CoordType>? GetYX()
     {
         var point2D = GetXY();
@@ -204,12 +178,7 @@ public class FileReader<CoordType> : IDataSource<CoordType>, IDisposable where C
         return point2D is null ? point2D : new Point2D<CoordType>(point2D.Y, point2D.X);
     }
 
-    /// <summary>
-    ///     Retrieves a 2D point in the ZY plane
-    /// </summary>
-    /// <returns>
-    ///     The 2D point in the ZY plane, or null if the 3D point is null
-    /// </returns>
+    /// <inheritdoc/>
     public Point2D<CoordType>? GetZY()
     {
         var point3D = GetXYZ();
@@ -224,12 +193,7 @@ public class FileReader<CoordType> : IDataSource<CoordType>, IDisposable where C
         return res;
     }
 
-    /// <summary>
-    ///     Retrieves a 2D point in the ZX plane
-    /// </summary>
-    /// <returns>
-    ///     The 2D point in the ZX plane, or null if the 3D point is null
-    /// </returns>
+    /// <inheritdoc/>
     public Point2D<CoordType>? GetZX()
     {
         var point3D = GetXYZ();

@@ -1,18 +1,28 @@
 ﻿using Disk.Stores.Interface;
 using Disk.ViewModel.Common.ViewModels;
+using Serilog;
 
 namespace Disk.Stores;
 
 public class ModalNavigationStore(Func<Type, ObserverViewModel> getViewModel) : INavigationStore
 {
-    public bool IsOpen => CurrentViewModel != null;
-    public bool CanClose => ViewModels.Count > 0;
-
     public static readonly Stack<ObserverViewModel> ViewModels = [];
     public event Action? CurrentViewModelChanged;
 
-    public ObserverViewModel GetViewModel(Type vmType) => getViewModel.Invoke(vmType);
-    public ObserverViewModel GetViewModel<TViewModel>() where TViewModel : class => getViewModel.Invoke(typeof(TViewModel));
+    public bool IsOpen => CurrentViewModel != null;
+    public bool CanClose => ViewModels.Count > 0;
+    public ObserverViewModel? CurrentViewModel => ViewModels.Count == 0 ? null : ViewModels.Peek();
+
+    public ObserverViewModel GetViewModel(Type vmType)
+    {
+        return getViewModel.Invoke(vmType);
+    }
+
+    public ObserverViewModel GetViewModel<TViewModel>() where TViewModel : class
+    {
+        return getViewModel.Invoke(typeof(TViewModel));
+    }
+
     public ObserverViewModel GetViewModel<TViewModel>(Action<TViewModel> parametrizeViewModel) where TViewModel : class
     {
         var viewModel = getViewModel.Invoke(typeof(TViewModel));
@@ -25,6 +35,8 @@ public class ModalNavigationStore(Func<Type, ObserverViewModel> getViewModel) : 
     {
         if (CanClose)
         {
+            Log.Information($"Closing {ViewModels.Peek().GetType()}");
+
             ViewModels.Pop().Dispose();
             if (ViewModels.TryPeek(out var modalVm))
             {
@@ -38,18 +50,14 @@ public class ModalNavigationStore(Func<Type, ObserverViewModel> getViewModel) : 
         }
     }
 
-    private void OnCurrentViewModelChanged()
-    {
-        CurrentViewModelChanged?.Invoke();
-    }
-
-    public ObserverViewModel? CurrentViewModel => ViewModels.Count == 0 ? null : ViewModels.Peek();
-
     public void SetViewModel<TViewModel>()
     {
-        var vm = getViewModel.Invoke(typeof(TViewModel));
-        vm.Refresh();
-        ViewModels.Push(vm);
+        var viewModel = getViewModel.Invoke(typeof(TViewModel));
+        viewModel.Refresh();
+        ViewModels.Push(viewModel);
+
+        Log.Information($"Created modal ViewModel {viewModel.GetType()}");
+
         OnCurrentViewModelChanged();
     }
 
@@ -59,6 +67,14 @@ public class ModalNavigationStore(Func<Type, ObserverViewModel> getViewModel) : 
         parametrizeViewModel((viewModel as TViewModel)!);
         viewModel.Refresh();
         ViewModels.Push(viewModel);
+
+        Log.Information($"Created modal ViewModel {viewModel.GetType()}");
+
         OnCurrentViewModelChanged();
+    }
+
+    private void OnCurrentViewModelChanged()
+    {
+        CurrentViewModelChanged?.Invoke();
     }
 }

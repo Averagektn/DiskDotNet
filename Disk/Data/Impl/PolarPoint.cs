@@ -92,13 +92,14 @@ public class PolarPoint<CoordType> : Point2D<CoordType> where CoordType : IConve
     /// <returns>
     ///     The Euclidean distance between the two polar points
     /// </returns>
-    public static double GetDistance(PolarPoint<CoordType> p1, PolarPoint<CoordType> p2,
-        IFormatProvider? formatProvider = null)
-        => Math.Sqrt
+    public static double GetDistance(PolarPoint<CoordType> p1, PolarPoint<CoordType> p2, IFormatProvider? formatProvider = null)
+    {
+        return Math.Sqrt
         (
             Math.Pow(p1.X.ToDouble(formatProvider) - p2.X.ToDouble(formatProvider), 2) +
             Math.Pow(p1.X.ToDouble(formatProvider) - p2.Y.ToDouble(formatProvider), 2)
         );
+    }
 
     /// <summary>
     ///     Calculates the Euclidean distance between this polar point and the specified polar point
@@ -109,7 +110,10 @@ public class PolarPoint<CoordType> : Point2D<CoordType> where CoordType : IConve
     /// <returns>
     ///     The Euclidean distance between this polar point and the specified polar point
     /// </returns>
-    public double GetDistance(PolarPoint<CoordType> p) => GetDistance(new Point2D<CoordType>(p.X, p.Y));
+    public double GetDistance(PolarPoint<CoordType> p)
+    {
+        return GetDistance(new Point2D<CoordType>(p.X, p.Y));
+    }
 
     /// <summary>
     ///     Returns a string representation of the polar point in the format "Radius;Angle"
@@ -117,7 +121,10 @@ public class PolarPoint<CoordType> : Point2D<CoordType> where CoordType : IConve
     /// <returns>
     ///     A string representation of the polar point
     /// </returns>
-    public override string ToString() => $"{Radius};{Angle}";
+    public override string ToString()
+    {
+        return $"{Radius};{Angle}";
+    }
 
     /// <summary>
     ///     Converts the polar point to a two-dimensional point (<see cref="Point2D{CoordType}"/>)
@@ -125,5 +132,8 @@ public class PolarPoint<CoordType> : Point2D<CoordType> where CoordType : IConve
     /// <returns>
     ///     A two-dimensional point representing the same coordinates as the polar point
     /// </returns>
-    public Point2D<CoordType> To2D() => new(X, Y);
+    public Point2D<CoordType> To2D()
+    {
+        return new(X, Y);
+    }
 }

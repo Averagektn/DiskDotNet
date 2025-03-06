@@ -16,17 +16,15 @@ public partial class SessionResultView : UserControl
     {
         Interval = TimeSpan.FromMilliseconds(Settings.MoveTime)
     };
-
-    private static Settings Settings => Settings.Default;
-    private SessionResultViewModel? ViewModel => DataContext as SessionResultViewModel;
-
-    private Size PaintPanelSize => PaintArea.RenderSize;
+    private IUser _user = null!;
+    private ITarget _target = null!;
 
     private List<IScalable> Scalables { get; set; } = [];
-
-    private User _user = null!;
-    private Target _target = null!;
+    private static Settings Settings => Settings.Default;
+    private SessionResultViewModel? ViewModel => DataContext as SessionResultViewModel;
+    private Size PaintPanelSize => PaintArea.RenderSize;
     private Converter? Converter => ViewModel?.Converter;
+    
 
     private bool _isReply;
     private bool IsReply
@@ -61,7 +59,7 @@ public partial class SessionResultView : UserControl
     {
         _user ??= DrawableFabric.GetIniUser(string.Empty, PaintArea);
         // set 0
-        _target ??= DrawableFabric.GetIniProgressTarget(new(-100, -100), PaintArea);
+        _target ??= DrawableFabric.GetIniTarget("", new(-100, -100), PaintArea);
 
         Scalables.AddRange([_user, _target]);
 
@@ -77,7 +75,7 @@ public partial class SessionResultView : UserControl
         }
 
         _user ??= DrawableFabric.GetIniUser(string.Empty, PaintArea);
-        _target ??= DrawableFabric.GetIniProgressTarget(new(-100, -100), PaintArea);
+        _target ??= DrawableFabric.GetIniTarget("", new(-100, -100), PaintArea);
 
         if (!IsReply)
         {
@@ -89,7 +87,7 @@ public partial class SessionResultView : UserControl
         _target.Draw();
         _user.Draw();
 
-        var figures = ViewModel.GetPathAndRose(PaintPanelSize, PaintArea);
+        var figures = ViewModel.GetPathAndRose(PaintArea);
         foreach (var figure in figures)
         {
             Scalables.Add(figure);

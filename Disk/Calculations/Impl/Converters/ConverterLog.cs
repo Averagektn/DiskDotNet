@@ -16,7 +16,10 @@ public partial class Converter
     /// <returns>
     ///     The converted X coordinate in logical space
     /// </returns>
-    public int ToLogCoordX(int coord) => (int)(coord - MaxLogCoord.Width);
+    public int ToLogCoordX(int coord)
+    {
+        return (int)(coord - MaxLogCoord.Width);
+    }
 
     /// <summary>
     ///     Converts the Y coordinate from window space to logical space
@@ -27,7 +30,10 @@ public partial class Converter
     /// <returns>
     ///     The converted Y coordinate in logical space
     /// </returns>
-    public int ToLogCoordY(int coord) => (int)(MaxLogCoord.Height - coord);
+    public int ToLogCoordY(int coord)
+    {
+        return (int)(MaxLogCoord.Height - coord);
+    }
 
     /// <summary>
     ///     Converts the X coordinate from angle space to logical space
@@ -38,7 +44,10 @@ public partial class Converter
     /// <returns>
     ///     The converted X coordinate in logical space
     /// </returns>
-    public int ToLogCoordX(float angle) => ToLogCoordX(ToWndCoordX(angle));
+    public int ToLogCoordX(float angle)
+    {
+        return ToLogCoordX(ToWndCoordX(angle));
+    }
 
     /// <summary>
     ///     Converts the Y coordinate from angle space to logical space
@@ -49,7 +58,10 @@ public partial class Converter
     /// <returns>
     ///     The converted Y coordinate in logical space
     /// </returns>
-    public int ToLogCoordY(float angle) => ToLogCoordY(ToWndCoordY(angle));
+    public int ToLogCoordY(float angle)
+    {
+        return ToLogCoordY(ToWndCoordY(angle));
+    }
 
     /// <summary>
     ///     Converts the 2D angle coordinate to logical space
@@ -60,7 +72,10 @@ public partial class Converter
     /// <returns>
     ///     The converted coordinate in logical space
     /// </returns>
-    public Point2D<int> ToLogCoord(Point2D<float> point) => new(ToLogCoordX(point.X), ToLogCoordY(point.Y));
+    public Point2D<int> ToLogCoord(Point2D<float> point)
+    {
+        return new(ToLogCoordX(point.X), ToLogCoordY(point.Y));
+    }
 
     /// <summary>
     ///     Converts the 2D logarithmic coordinate to logical space.
@@ -71,7 +86,10 @@ public partial class Converter
     /// <returns>
     ///     The converted coordinate in logical space
     /// </returns>
-    public Point2D<int> ToLogCoord(Point2D<int> point) => new(ToLogCoordX(point.X), ToLogCoordY(point.Y));
+    public Point2D<int> ToLogCoord(Point2D<int> point)
+    {
+        return new(ToLogCoordX(point.X), ToLogCoordY(point.Y));
+    }
 
     /// <summary>
     ///     Converts the coordinate from string representation to logical space

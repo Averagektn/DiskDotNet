@@ -19,27 +19,27 @@ public class UserPicture : User
         {
             base.Center = value;
 
-            Canvas.SetLeft(_image, Left);
-            Canvas.SetTop(_image, Top);
+            Canvas.SetLeft(Image, Left);
+            Canvas.SetTop(Image, Top);
         }
     }
 
     /// <inheritdoc/>
-    public override int Right => (int)(Center.X + (_image.Width / 2));
+    public override int Right => (int)(Center.X + (Image.Width / 2));
 
     /// <inheritdoc/>
-    public override int Top => (int)(Center.Y - (_image.Height / 2));
+    public override int Top => (int)(Center.Y - (Image.Height / 2));
     
     /// <inheritdoc/>
-    public override int Bottom => (int)(Center.Y + (_image.Height / 2));
+    public override int Bottom => (int)(Center.Y + (Image.Height / 2));
     
     /// <inheritdoc/>
-    public override int Left => (int)(Center.X - (_image.Width / 2));
+    public override int Left => (int)(Center.X - (Image.Width / 2));
 
     /// <summary>
     ///     Image to be drawn
     /// </summary>
-    protected readonly Image _image;
+    protected readonly Image Image;
 
     /// <summary>
     ///     Initial size of the image
@@ -72,7 +72,7 @@ public class UserPicture : User
             parent, iniSize)
     {
         IniImageSize = imageSize;
-        _image = new()
+        Image = new()
         {
             Source = new BitmapImage(new Uri(filePath, UriKind.RelativeOrAbsolute)),
             Width = imageSize.Width,
@@ -85,7 +85,7 @@ public class UserPicture : User
     {
         base.Draw();
 
-        _ = Parent.Children.Add(_image);
+        _ = Parent.Children.Add(Image);
     }
 
     /// <inheritdoc/>
@@ -93,7 +93,7 @@ public class UserPicture : User
     {
         base.Remove();
 
-        Parent.Children.Remove(_image);
+        Parent.Children.Remove(Image);
     }
 
     /// <inheritdoc/>
@@ -102,8 +102,8 @@ public class UserPicture : User
         double coeffX = (double)Parent.RenderSize.Width / IniSize.Width;
         double coeffY = (double)Parent.RenderSize.Height / IniSize.Height;
 
-        _image.Width = (int)Math.Round(IniImageSize.Width * (coeffX + coeffY) / 2);
-        _image.Height = (int)Math.Round(IniImageSize.Height * (coeffX + coeffY) / 2);
+        Image.Width = (int)Math.Round(IniImageSize.Width * (coeffX + coeffY) / 2);
+        Image.Height = (int)Math.Round(IniImageSize.Height * (coeffX + coeffY) / 2);
 
         base.Scale();
     }

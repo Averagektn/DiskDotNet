@@ -31,6 +31,11 @@ public class Connection : IDataSource<float>, IDisposable
     private readonly Socket Socket;
 
     /// <summary>
+    ///     Lock object
+    /// </summary>
+    private static readonly object _lockObj = new();
+
+    /// <summary>
     ///     Initializes a new instance of the Connection class with the specified IP address, port, and receive timeout
     /// </summary>
     /// <param name="ip">
@@ -42,7 +47,7 @@ public class Connection : IDataSource<float>, IDisposable
     /// <param name="receiveTimeout">
     ///     The receive timeout in milliseconds
     /// </param>
-    private Connection(IPAddress ip, int port, int receiveTimeout)
+    private Connection(IPAddress ip, int port, int receiveTimeout = 2000)
     {
         IP = ip;
         Port = port;
@@ -97,22 +102,20 @@ public class Connection : IDataSource<float>, IDisposable
     {
         var conn = Connections.FirstOrDefault(c => c.IP.Equals(ip) && c.Port == port);
 
-        if (conn is null)
+        lock (_lockObj)
         {
-            conn = new Connection(ip, port, receiveTimeout);
+            if (conn is null)
+            {
+                conn = new Connection(ip, port, receiveTimeout);
 
-            Connections.Add(conn);
+                Connections.Add(conn);
+            }
         }
 
         return conn;
     }
 
-    /// <summary>
-    ///     Retrieves XYZ coordinates from the connection
-    /// </summary>
-    /// <returns>
-    ///     The Point3D object representing XYZ coordinates
-    /// </returns>
+    /// <inheritdoc/>
     public Point3D<float>? GetXYZ()
     {
         var coordX = new byte[4];
@@ -132,12 +135,7 @@ public class Connection : IDataSource<float>, IDisposable
         return Converter.ToAngle_FromRadian(p);
     }
 
-    /// <summary>
-    ///     Retrieves XY coordinates from the connection
-    /// </summary>
-    /// <returns>
-    ///     The Point2D object representing XY coordinates
-    /// </returns>
+    /// <inheritdoc/>
     public Point2D<float>? GetXY()
     {
         var data = GetXYZ();
@@ -145,12 +143,7 @@ public class Connection : IDataSource<float>, IDisposable
         return data is null ? null : new Point2D<float>((float)data.X, (float)data.Y);
     }
 
-    /// <summary>
-    ///     Retrieves XZ coordinates from the connection
-    /// </summary>
-    /// <returns>
-    ///     The Point2D object representing XZ coordinates
-    /// </returns>
+    /// <inheritdoc/>
     public Point2D<float>? GetXZ()
     {
         var data = GetXYZ();
@@ -158,12 +151,7 @@ public class Connection : IDataSource<float>, IDisposable
         return data is null ? null : new Point2D<float>((float)data.X, (float)data.Z);
     }
 
-    /// <summary>
-    ///     Retrieves YX coordinates from the connection
-    /// </summary>
-    /// <returns>
-    ///     The Point2D object representing YX coordinates
-    /// </returns>
+    /// <inheritdoc/>
     public Point2D<float>? GetYX()
     {
         var data = GetXYZ();
@@ -171,12 +159,7 @@ public class Connection : IDataSource<float>, IDisposable
         return data is null ? null : new Point2D<float>((float)data.Y, (float)data.X);
     }
 
-    /// <summary>
-    ///     Retrieves YZ coordinates from the connection
-    /// </summary>
-    /// <returns>
-    ///     The Point2D object representing YZ coordinates
-    /// </returns>
+    /// <inheritdoc/>
     public Point2D<float>? GetYZ()
     {
         var data = GetXYZ();
@@ -184,12 +167,7 @@ public class Connection : IDataSource<float>, IDisposable
         return data is null ? null : new Point2D<float>((float)data.Y, (float)data.Z);
     }
 
-    /// <summary>
-    ///     Retrieves ZX coordinates from the connection
-    /// </summary>
-    /// <returns>
-    ///     The Point2D object representing ZX coordinates
-    /// </returns>
+    /// <inheritdoc/>
     public Point2D<float>? GetZX()
     {
         var data = GetXYZ();
@@ -197,12 +175,7 @@ public class Connection : IDataSource<float>, IDisposable
         return data is null ? null : new Point2D<float>((float)data.Z, (float)data.X);
     }
 
-    /// <summary>
-    ///     Retrieves ZY coordinates from the connection
-    /// </summary>
-    /// <returns>
-    ///     The Point2D object representing ZY coordinates
-    /// </returns>
+    /// <inheritdoc/>
     public Point2D<float>? GetZY()
     {
         var data = GetXYZ();

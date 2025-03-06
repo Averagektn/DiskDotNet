@@ -9,6 +9,7 @@ public class ObserverViewModel : INotifyPropertyChanged, IDisposable
     public required INavigationStore IniNavigationStore;
 
     public event PropertyChangedEventHandler? PropertyChanged;
+
     protected bool SetProperty<T>(ref T field, T newValue, [CallerMemberName] string? propertyName = null)
     {
         if (!Equals(field, newValue))

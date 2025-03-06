@@ -1,5 +1,6 @@
 ﻿using Disk.Stores.Interface;
 using Disk.ViewModel.Common.ViewModels;
+using Serilog;
 
 namespace Disk.Stores;
 
@@ -8,8 +9,19 @@ public class NavigationStore(Func<Type, ObserverViewModel> getViewModel) : INavi
     public static readonly Stack<ObserverViewModel> ViewModels = [];
     public event Action? CurrentViewModelChanged;
 
-    public ObserverViewModel GetViewModel(Type vmType) => getViewModel.Invoke(vmType);
-    public ObserverViewModel GetViewModel<TViewModel>() where TViewModel : class => getViewModel.Invoke(typeof(TViewModel));
+    public ObserverViewModel CurrentViewModel => ViewModels.Peek();
+    public bool CanClose => ViewModels.Count > 1;
+
+    public ObserverViewModel GetViewModel(Type vmType)
+    {
+        return getViewModel.Invoke(vmType);
+    }
+
+    public ObserverViewModel GetViewModel<TViewModel>() where TViewModel : class
+    {
+        return getViewModel.Invoke(typeof(TViewModel));
+    }
+
     public ObserverViewModel GetViewModel<TViewModel>(Action<TViewModel> parametrizeViewModel) where TViewModel : class
     {
         var viewModel = getViewModel.Invoke(typeof(TViewModel));
@@ -18,37 +30,40 @@ public class NavigationStore(Func<Type, ObserverViewModel> getViewModel) : INavi
         return viewModel;
     }
 
-    public ObserverViewModel CurrentViewModel => ViewModels.Peek();
-    //public ObserverViewModel? CurrentViewModel => ViewModels.Count == 0 ? null : ViewModels.Peek();
-
     public void SetViewModel<TViewModel>(Action<TViewModel> parametrizeViewModel) where TViewModel : class
     {
         var viewModel = getViewModel.Invoke(typeof(TViewModel));
         parametrizeViewModel((viewModel as TViewModel)!);
         viewModel.Refresh();
         ViewModels.Push(viewModel);
+
+        Log.Information($"Created ViewModel {viewModel.GetType()}");
+
         OnCurrentViewModelChanged();
     }
 
     public void SetViewModel<TViewModel>()
     {
-        var vm = getViewModel.Invoke(typeof(TViewModel));
-        ViewModels.Push(vm);
-        vm.Refresh();
+        var viewModel = getViewModel.Invoke(typeof(TViewModel));
+        viewModel.Refresh();
+        ViewModels.Push(viewModel);
+        Log.Information($"Created ViewModel {viewModel.GetType()}");
+
         OnCurrentViewModelChanged();
     }
-
-    public bool CanClose => ViewModels.Count > 1;
 
     public void Close()
     {
         if (ViewModels.Count != 0)
         {
+            Log.Information($"Closing {ViewModels.Peek().GetType()}");
+
             ViewModels.Pop().Dispose();
             if (ViewModels.TryPeek(out var vm))
             {
                 vm.Refresh();
             }
+
             OnCurrentViewModelChanged();
         }
     }

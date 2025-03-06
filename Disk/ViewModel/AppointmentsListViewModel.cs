@@ -14,6 +14,9 @@ namespace Disk.ViewModel;
 public class AppointmentsListViewModel(NavigationStore navigationStore, IAppointmentRepository appointmentRepository,
     ISessionRepository sessionRepository) : ObserverViewModel
 {
+    private const int AppointmentsPerPage = 15;
+    public Appointment? SelectedAppointment { get; set; }
+
     private Patient _patient = null!;
     public required Patient Patient
     {
@@ -35,8 +38,6 @@ public class AppointmentsListViewModel(NavigationStore navigationStore, IAppoint
         set => SetProperty(ref _appointments, value);
     }
 
-    public Appointment? SelectedAppointment { get; set; }
-
     private DateTime? _selectedDate;
     public DateTime? SelectedDate { get => _selectedDate; set => SetProperty(ref _selectedDate, value); }
 
@@ -48,8 +49,6 @@ public class AppointmentsListViewModel(NavigationStore navigationStore, IAppoint
 
     private int currPage;
     private int PagesCount => (int)float.Ceiling((float)appointmentRepository.GetAppointmentsCount(Patient.Id) / AppointmentsPerPage);
-
-    private const int AppointmentsPerPage = 15;
 
     public ICommand StartAppointmentCommand => new AsyncCommand(StartAppointmentAsync);
     public ICommand CancelDateCommand => new Command(_ =>
@@ -151,6 +150,7 @@ public class AppointmentsListViewModel(NavigationStore navigationStore, IAppoint
     public override void Refresh()
     {
         base.Refresh();
+
         UpdateAppointments();
     }
 }

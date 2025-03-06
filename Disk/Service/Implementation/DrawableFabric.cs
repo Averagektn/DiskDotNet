@@ -1,6 +1,7 @@
 ﻿using Disk.Calculations.Impl.Converters;
 using Disk.Data.Impl;
 using Disk.Visual.Impl;
+using Disk.Visual.Interface;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
@@ -12,22 +13,58 @@ namespace Disk.Service.Implementation;
 public static class DrawableFabric
 {
     private static Settings Settings => Settings.Default;
-    private static readonly Size ScreenIniSize = new(Settings.IniScreenWidth, Settings.IniScreenHeight);
-    private static readonly int ScreenIniCenterX = (int)ScreenIniSize.Width / 2;
-    private static readonly int ScreenIniCenterY = (int)ScreenIniSize.Height / 2;
-    private static readonly Brush UserBrush = 
+    private static Size ScreenIniSize => new(Settings.IniScreenWidth, Settings.IniScreenHeight);
+    private static int ScreenIniCenterX => (int)ScreenIniSize.Width / 2;
+    private static int ScreenIniCenterY => (int)ScreenIniSize.Height / 2;
+    private static Brush UserBrush =>
         new SolidColorBrush(Color.FromRgb(Settings.UserColor.R, Settings.UserColor.G, Settings.UserColor.B));
-    private static readonly float XAngleSize = Settings.XMaxAngle * 2;
-    private static readonly float YAngleSize = Settings.YMaxAngle * 2;
-    private static readonly int TargetHp = Settings.TargetHp;
+    private static float XAngleSize => Settings.XMaxAngle * 2;
+    private static float YAngleSize => Settings.YMaxAngle * 2;
+    private static int TargetHp => Settings.TargetHp;
 
-    public static User GetIniUser(string userImagePath, Canvas parent) =>
-        File.Exists(userImagePath)
-            ? new UserPicture(userImagePath, new(ScreenIniCenterX, ScreenIniCenterY), 0, new(Settings.IniUserRadius * 10, Settings.IniUserRadius * 10), parent, ScreenIniSize)
-            : new User(new(ScreenIniCenterX, ScreenIniCenterY), Settings.IniUserRadius, 0, UserBrush, parent, ScreenIniSize);
+    public static User GetIniUser(string userImagePath, Canvas parent)
+    {
+        if (File.Exists(userImagePath))
+        {
+            return new UserPicture
+            (
+                filePath: userImagePath, 
+                center: new(ScreenIniCenterX, ScreenIniCenterY), 
+                speed: 0, 
+                imageSize: new(Settings.IniUserRadius * 10, Settings.IniUserRadius * 10),
+                parent, 
+                iniSize: ScreenIniSize
+            );
+        }
+        return new User
+        (
+            center: new(ScreenIniCenterX, ScreenIniCenterY),
+            radius: Settings.IniUserRadius, 
+            speed: 0, 
+            color: UserBrush, 
+            parent, 
+            iniSize: ScreenIniSize
+        );
+    }
 
-    public static ProgressTarget GetIniProgressTarget(Point2D<int> center, Canvas parent) => new(center, Settings.IniTargetRadius, 
-        parent, TargetHp, ScreenIniSize);
+    public static ITarget GetIniTarget(string targetImagePath, Point2D<int> center, Canvas parent)
+    {
+        if (File.Exists(targetImagePath))
+        {
+            return new TargetPicture
+            (
+                imageFilePath: targetImagePath,
+                center,
+                imageSize: new(Settings.IniTargetRadius * 10, Settings.IniTargetRadius * 10),
+                parent,
+                iniSize: ScreenIniSize
+            );
+        }
+        return new ProgressTarget(center, radius: Settings.IniTargetRadius, parent, TargetHp, iniSize: ScreenIniSize);
+    }
 
-    public static Converter GetIniConverter() => new(ScreenIniSize, new(XAngleSize, YAngleSize));
+    public static Converter GetIniConverter()
+    {
+        return new(screenSize: ScreenIniSize, angleSize: new(XAngleSize, YAngleSize));
+    }
 }

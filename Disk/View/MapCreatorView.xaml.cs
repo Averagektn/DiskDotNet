@@ -11,15 +11,16 @@ namespace Disk.View;
 
 public partial class MapCreatorView : UserControl
 {
+    private NumberedTarget? _selectedTarget = null;
+    private readonly List<NumberedTarget> _targets = [];
+    private Converter? _converter = null;
+
     private static int IniWidth => Settings.Default.IniScreenWidth;
     private static int IniHeight => Settings.Default.IniScreenHeight;
     private static float AngleWidth => Settings.Default.XMaxAngle * 2;
     private static float AngleHeight => Settings.Default.YMaxAngle * 2;
 
     private MapCreatorViewModel? ViewModel => DataContext as MapCreatorViewModel;
-    private NumberedTarget? _selectedTarget = null;
-    private readonly List<NumberedTarget> _targets = [];
-    private Converter? _converter = null;
 
     public MapCreatorView()
     {
@@ -161,6 +162,7 @@ public partial class MapCreatorView : UserControl
     private NumberedTarget GetIniCoordTarget(double actualX, double actualY)
     {
         _converter ??= new Converter((int)PaintArea.ActualWidth, (int)PaintArea.ActualHeight, AngleWidth, AngleHeight);
+
         return new(
             center: new Point2D<int>
             (

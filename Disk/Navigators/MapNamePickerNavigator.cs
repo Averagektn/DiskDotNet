@@ -9,12 +9,11 @@ public class MapNamePickerNavigator : INavigator
 {
     public static void Navigate(INavigationStore navigationStore, List<Point2D<float>> map)
     {
-        navigationStore.SetViewModel<MapNamePickerViewModel>(
-            vm =>
-            {
-                vm.IniNavigationStore = navigationStore;
-                vm.Map = map;
-            });
+        navigationStore.SetViewModel<MapNamePickerViewModel>(vm =>
+        {
+            vm.IniNavigationStore = navigationStore;
+            vm.Map = map;
+        });
     }
 
     public static void NavigateAndClose(INavigationStore navigationStore, List<Point2D<float>> map)
@@ -28,17 +27,15 @@ public class MapNamePickerNavigator : INavigator
 
     public static void NavigateWithBar(INavigationStore navigationStore, List<Point2D<float>> map)
     {
-        navigationStore.SetViewModel<NavigationBarLayoutViewModel>(
-            vm =>
+        navigationStore.SetViewModel<NavigationBarLayoutViewModel>(vm =>
+        {
+            vm.IniNavigationStore = navigationStore;
+            vm.CurrentViewModel = navigationStore.GetViewModel<MapNamePickerViewModel>(vm =>
             {
                 vm.IniNavigationStore = navigationStore;
-                vm.CurrentViewModel = navigationStore.GetViewModel<MapNamePickerViewModel>(
-                    vm =>
-                    {
-                        vm.IniNavigationStore = navigationStore;
-                        vm.Map = map;
-                    });
+                vm.Map = map;
             });
+        });
     }
 
     public static void NavigateWithBarAndClose(INavigationStore navigationStore, List<Point2D<float>> map)

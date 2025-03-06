@@ -13,7 +13,7 @@ public class PatientRepository(DiskContext diskContext) : CrudRepository<Patient
 {
     public new void Add(Patient entity)
     {
-        var patientExists = table
+        var patientExists = Table
             .Any(p =>
                 p.Name == entity.Name &&
                 p.Surname == entity.Surname &&
@@ -30,7 +30,7 @@ public class PatientRepository(DiskContext diskContext) : CrudRepository<Patient
 
     public new async Task AddAsync(Patient entity)
     {
-        var patientExists = await table
+        var patientExists = await Table
             .AnyAsync(
                 p =>
                 p.Name == entity.Name &&
@@ -52,7 +52,7 @@ public class PatientRepository(DiskContext diskContext) : CrudRepository<Patient
         surname = surname.CapitalizeFirstLetter();
         patronymic = patronymic.CapitalizeFirstLetter();
 
-        return [.. table
+        return [.. Table
             .Where(
                 p =>
                 p.Name.Contains(name) &&
@@ -61,11 +61,14 @@ public class PatientRepository(DiskContext diskContext) : CrudRepository<Patient
             )];
     }
 
-    public long GetPatientsCount() => table.Count();
+    public long GetPatientsCount()
+    {
+        return Table.Count();
+    }
 
     public ICollection<Patient> GetPatientsPage(int pageNum, int patientsPerPage)
     {
-        return [.. table
+        return [.. Table
             .OrderBy(p => p.Surname)
             .Skip(pageNum * patientsPerPage)
             .Take(patientsPerPage)];

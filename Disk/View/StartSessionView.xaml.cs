@@ -11,16 +11,15 @@ namespace Disk.View;
 
 public partial class StartSessionView : UserControl
 {
-    private StartSessionViewModel? ViewModel => (StartSessionViewModel)DataContext;
-
+    private Converter? _converter;
+    private readonly List<NumberedTarget> _targets = [];
     private static readonly Converter IniConverter = new(IniWidth, IniHeight, AngleWidth, AngleHeight);
+
+    private StartSessionViewModel? ViewModel => (StartSessionViewModel)DataContext;
     private static int IniWidth => Settings.Default.IniScreenWidth;
     private static int IniHeight => Settings.Default.IniScreenHeight;
     private static float AngleWidth => Settings.Default.XMaxAngle * 2;
     private static float AngleHeight => Settings.Default.YMaxAngle * 2;
-
-    private Converter? _converter;
-    private readonly List<NumberedTarget> _targets = [];
 
     public StartSessionView()
     {
@@ -63,6 +62,7 @@ public partial class StartSessionView : UserControl
     private NumberedTarget GetIniCoordTarget(int actualX, int actualY)
     {
         _converter ??= new Converter((int)PaintArea.ActualWidth, (int)PaintArea.ActualHeight, AngleWidth, AngleHeight);
+
         return new(
             center: new Point2D<int>
             (

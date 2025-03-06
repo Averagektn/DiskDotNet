@@ -27,17 +27,15 @@ public class AddPatientNavigator : INavigator
 
     public static void NavigateWithBar(INavigationStore navigationStore, Action<Patient>? onAddEvents = null)
     {
-        navigationStore.SetViewModel<NavigationBarLayoutViewModel>(
-            vm =>
+        navigationStore.SetViewModel<NavigationBarLayoutViewModel>(vm =>
+        {
+            vm.IniNavigationStore = navigationStore;
+            vm.CurrentViewModel = navigationStore.GetViewModel<AddPatientViewModel>(vm =>
             {
+                vm.OnAddEvent += onAddEvents;
                 vm.IniNavigationStore = navigationStore;
-                vm.CurrentViewModel = navigationStore.GetViewModel<AddPatientViewModel>(
-                    vm =>
-                    {
-                        vm.OnAddEvent += onAddEvents;
-                        vm.IniNavigationStore = navigationStore;
-                    });
             });
+        });
     }
 
     public static void NavigateWithBarAndClose(INavigationStore navigationStore, Action<Patient>? onAddEvents = null)

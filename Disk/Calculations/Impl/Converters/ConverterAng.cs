@@ -16,7 +16,10 @@ public partial class Converter
     /// <returns>
     ///     The converted X coordinate in angle space
     /// </returns>
-    public float ToAngleX_FromWnd(int wndCoord) => (float)(ToLogCoordX(wndCoord) * AngleSize.Width / ScreenSize.Width);
+    public float ToAngleX_FromWnd(int wndCoord)
+    {
+        return (float)(ToLogCoordX(wndCoord) * AngleSize.Width / ScreenSize.Width);
+    }
 
     /// <summary>
     ///     Converts the Y coordinate from window space to angle space
@@ -27,7 +30,10 @@ public partial class Converter
     /// <returns>
     ///     The converted Y coordinate in angle space
     /// </returns>
-    public float ToAngleY_FromWnd(int wndCoord) => (float)(ToLogCoordY(wndCoord) * AngleSize.Height / ScreenSize.Height);
+    public float ToAngleY_FromWnd(int wndCoord)
+    {
+        return (float)(ToLogCoordY(wndCoord) * AngleSize.Height / ScreenSize.Height);
+    }
 
     /// <summary>
     ///     Converts the X coordinate from logical space to angle space
@@ -38,7 +44,10 @@ public partial class Converter
     /// <returns>
     ///     The converted X coordinate in angle space
     /// </returns>
-    public float ToAngleX_FromLog(int logCoord) => ToAngleX_FromWnd(ToWndCoordX(logCoord));
+    public float ToAngleX_FromLog(int logCoord)
+    {
+        return ToAngleX_FromWnd(ToWndCoordX(logCoord));
+    }
 
     /// <summary>
     ///     Converts the Y coordinate from logical space to angle space
@@ -49,7 +58,10 @@ public partial class Converter
     /// <returns>
     ///     The converted Y coordinate in angle space
     /// </returns>
-    public float ToAngleY_FromLog(int logCoord) => ToAngleY_FromWnd(ToWndCoordY(logCoord));
+    public float ToAngleY_FromLog(int logCoord)
+    {
+        return ToAngleY_FromWnd(ToWndCoordY(logCoord));
+    }
 
     /// <summary>
     ///     Converts the coordinate from string representation to angle space
@@ -99,7 +111,9 @@ public partial class Converter
     ///     The converted coordinate in angle space
     /// </returns>
     public Point2D<float> ToAngle_FromWnd(Point2D<int> point)
-        => new(ToAngleX_FromWnd(point.X), ToAngleY_FromWnd(point.Y));
+    {
+        return new(ToAngleX_FromWnd(point.X), ToAngleY_FromWnd(point.Y));
+    }
 
     /// <summary>
     ///     Converts the 2D coordinate from logical space to angle space
@@ -111,7 +125,9 @@ public partial class Converter
     ///     The converted coordinate in angle space
     /// </returns>
     public Point2D<float> ToAngle_FromLog(Point2D<int> logPoint)
-        => new(ToAngleX_FromLog(logPoint.X), ToAngleY_FromLog(logPoint.Y));
+    {
+        return new(ToAngleX_FromLog(logPoint.X), ToAngleY_FromLog(logPoint.Y));
+    }
 
     /// <summary>
     ///     Converts the angle from radian to degrees
@@ -122,7 +138,10 @@ public partial class Converter
     /// <returns>
     ///     The converted angle in degrees
     /// </returns>
-    public static float ToAngle_FromRadian(float radian) => (float)(radian * 180 / Math.PI);
+    public static float ToAngle_FromRadian(float radian)
+    {
+        return (float)(radian * 180 / Math.PI);
+    }
 
     /// <summary>
     ///     Converts the 2D angle coordinate from radian to degrees
@@ -134,7 +153,9 @@ public partial class Converter
     ///     The converted 2D angle coordinate in degrees
     /// </returns>
     public static Point2D<float> ToAngle_FromRadian(Point2D<float> radian)
-        => new(ToAngle_FromRadian(radian.X), ToAngle_FromRadian(radian.Y));
+    {
+        return new(ToAngle_FromRadian(radian.X), ToAngle_FromRadian(radian.Y));
+    }
 
     /// <summary>
     ///     Converts the 3D angle coordinate from radian to degrees
@@ -146,5 +167,7 @@ public partial class Converter
     ///     The converted 3D angle coordinate in degrees
     /// </returns>
     public static Point3D<float> ToAngle_FromRadian(Point3D<float> radian)
-        => new(ToAngle_FromRadian(radian.X), ToAngle_FromRadian(radian.Y), ToAngle_FromRadian(radian.Z));
+    {
+        return new(ToAngle_FromRadian(radian.X), ToAngle_FromRadian(radian.Y), ToAngle_FromRadian(radian.Z));
+    }
 }

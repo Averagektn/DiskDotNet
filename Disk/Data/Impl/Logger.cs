@@ -63,41 +63,15 @@ public class Logger : ILogger, IDisposable
         Writer.Close();
     }
 
-    /// <summary>
-    ///     Logs the specified data to the file
-    /// </summary>
-    /// <param name="data">
-    ///     The data to be logged
-    /// </param>
+    /// <inheritdoc/>
     public void Log(object? data) => Writer.Write(data?.ToString());
 
-    /// <summary>
-    ///     Asynchronously logs the specified data to the file
-    /// </summary>
-    /// <param name="data">
-    ///     The data to be logged
-    /// </param>
-    /// <returns>
-    ///     A task representing the asynchronous logging operation
-    /// </returns>
+    /// <inheritdoc/>
     public async Task LogAsync(object? data) => await Writer.WriteAsync(data?.ToString());
 
-    /// <summary>
-    ///     Logs the specified data to the file and appends a new line
-    /// </summary>
-    /// <param name="data">
-    ///     The data to be logged
-    /// </param>
+    /// <inheritdoc/>
     public void LogLn(object? data) => Writer.WriteLine(data?.ToString());
 
-    /// <summary>
-    ///     Asynchronously logs the specified data to the file and appends a new line
-    /// </summary>
-    /// <param name="data">
-    ///     The data to be logged
-    /// </param>
-    /// <returns>
-    ///     A task representing the asynchronous logging operation
-    /// </returns>
+    /// <inheritdoc/>
     public async Task LogLnAsync(object? data) => await Writer.WriteLineAsync(data?.ToString());
 }

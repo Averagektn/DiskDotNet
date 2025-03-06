@@ -9,14 +9,13 @@ public class StartSessionNavigator : INavigator
 {
     public static void Navigate(INavigationStore navigationStore, Action? onSessionOver, Appointment appointment, Patient patient)
     {
-        navigationStore.SetViewModel<StartSessionViewModel>(
-            vm =>
-            {
-                vm.IniNavigationStore = navigationStore;
-                vm.OnSessionOver += onSessionOver;
-                vm.Appointment = appointment;
-                vm.Patient = patient;
-            });
+        navigationStore.SetViewModel<StartSessionViewModel>(vm =>
+        {
+            vm.IniNavigationStore = navigationStore;
+            vm.OnSessionOver += onSessionOver;
+            vm.Appointment = appointment;
+            vm.Patient = patient;
+        });
     }
 
     public static void NavigateAndClose(INavigationStore navigationStore, Action? onSessionOver, Appointment appointment, Patient patient)
@@ -30,19 +29,17 @@ public class StartSessionNavigator : INavigator
 
     public static void NavigateWithBar(INavigationStore navigationStore, Action? onSessionOver, Appointment appointment, Patient patient)
     {
-        navigationStore.SetViewModel<NavigationBarLayoutViewModel>(
-            vm =>
+        navigationStore.SetViewModel<NavigationBarLayoutViewModel>(vm =>
+        {
+            vm.IniNavigationStore = navigationStore;
+            vm.CurrentViewModel = navigationStore.GetViewModel<StartSessionViewModel>(vm =>
             {
                 vm.IniNavigationStore = navigationStore;
-                vm.CurrentViewModel = navigationStore.GetViewModel<StartSessionViewModel>(
-                    vm =>
-                    {
-                        vm.IniNavigationStore = navigationStore;
-                        vm.OnSessionOver += onSessionOver;
-                        vm.Appointment = appointment;
-                        vm.Patient = patient;
-                    });
+                vm.OnSessionOver += onSessionOver;
+                vm.Appointment = appointment;
+                vm.Patient = patient;
             });
+        });
     }
 
     public static void NavigateWithBarAndClose(INavigationStore navigationStore, Action? onSessionOver, Appointment appointment, 

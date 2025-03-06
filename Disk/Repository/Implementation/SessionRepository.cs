@@ -10,12 +10,12 @@ public class SessionRepository(DiskContext diskContext) : CrudRepository<Session
 {
     public bool Exists(Session session)
     {
-        return table.Any(s => s.Id == session.Id);
+        return Table.Any(s => s.Id == session.Id);
     }
 
     public ICollection<Session> GetSessionsWithResultsByAppointment(long appointmentId)
     {
-        return [.. table.Where(s => s.Appointment == appointmentId)
+        return [.. Table.Where(s => s.Appointment == appointmentId)
                 .Include(s => s.PathInTargets)
                 .Include(s => s.PathToTargets)
                 .Include(s => s.SessionResult)

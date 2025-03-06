@@ -161,7 +161,8 @@ public partial class PaintView : UserControl
         var center = ViewModel.NextTargetCenter ?? new(0, 0);
         var converter = DrawableFabric.GetIniConverter();
         var wndCenter = converter.ToWndCoord(center);
-        Target = DrawableFabric.GetIniProgressTarget(wndCenter, PaintArea);
+        Target = new ProgressTarget(wndCenter, Settings.IniTargetRadius, PaintArea, Settings.TargetHp, new(Settings.IniScreenWidth, Settings.IniScreenHeight));
+        //Target = DrawableFabric.GetIniTarget("", wndCenter, PaintArea);
         Target.OnReceiveShot += shot => ViewModel.Score += shot;
 
         Scalables.Add(Target);

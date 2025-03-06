@@ -7,5 +7,8 @@ namespace Disk.Repository.Implementation;
 
 public class PathToTargetRepository(DiskContext diskContext) : CrudRepository<PathToTarget>(diskContext), IPathToTargetRepository
 {
-    public ICollection<PathToTarget> GetPathsToTargetsBySession(long sessionId) => [.. table.Where(p => p.Session == sessionId)];
+    public ICollection<PathToTarget> GetPathsToTargetsBySession(long sessionId)
+    {
+        return [.. Table.Where(p => p.Session == sessionId)];
+    }
 }

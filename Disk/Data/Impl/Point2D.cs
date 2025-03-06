@@ -77,11 +77,13 @@ public class Point2D<CoordType> : IEquatable<Point2D<CoordType>> where CoordType
     ///     The Euclidean distance between this point and the specified point
     /// </returns>
     public double GetDistance(Point2D<CoordType> p)
-        => Math.Sqrt
+    {
+        return Math.Sqrt
         (
             Math.Pow(XDbl - p.XDbl, 2) +
             Math.Pow(YDbl - p.YDbl, 2)
         );
+    }
 
     /// <summary>
     ///     Calculates the Euclidean distance between two points
@@ -96,11 +98,13 @@ public class Point2D<CoordType> : IEquatable<Point2D<CoordType>> where CoordType
     ///     The Euclidean distance between the two points
     /// </returns>
     public static double GetDistance(Point2D<CoordType> p1, Point2D<CoordType> p2)
-        => Math.Sqrt
+    {
+        return Math.Sqrt
         (
             Math.Pow(p1.XDbl - p2.XDbl, 2) +
             Math.Pow(p1.YDbl - p2.YDbl, 2)
         );
+    }
 
     /// <summary>
     ///     Returns a string representation of the point in the format "X;Y"
@@ -108,7 +112,10 @@ public class Point2D<CoordType> : IEquatable<Point2D<CoordType>> where CoordType
     /// <returns>
     ///     A string representation of the point
     /// </returns>
-    public override string ToString() => $"{X};{Y}";
+    public override string ToString()
+    {
+        return $"{X};{Y}";
+    }
 
     /// <summary>
     ///     Determines whether this point is equal to the specified point
@@ -120,7 +127,9 @@ public class Point2D<CoordType> : IEquatable<Point2D<CoordType>> where CoordType
     ///     <c>true</c> if this point is equal to the specified point; otherwise, <c>false</c>
     /// </returns>
     public bool Equals(Point2D<CoordType>? other)
-        => other is not null && XDbl.Equals(other.XDbl) && YDbl.Equals(other.YDbl);
+    {
+        return other is not null && XDbl.Equals(other.XDbl) && YDbl.Equals(other.YDbl);
+    }
 
     /// <summary>
     ///     Determines whether this point is equal to the specified object
@@ -131,7 +140,10 @@ public class Point2D<CoordType> : IEquatable<Point2D<CoordType>> where CoordType
     /// <returns>
     ///     <c>true</c> if this point is equal to the specified object; otherwise, <c>false</c>
     /// </returns>
-    public override bool Equals(object? obj) => Equals(obj as Point2D<CoordType>);
+    public override bool Equals(object? obj)
+    {
+        return Equals(obj as Point2D<CoordType>);
+    }
 
     /// <summary>
     ///     Returns the hash code for this point
@@ -139,7 +151,10 @@ public class Point2D<CoordType> : IEquatable<Point2D<CoordType>> where CoordType
     /// <returns>
     ///     The hash code for this point
     /// </returns>
-    public override int GetHashCode() => (int)Math.Pow(XDbl, YDbl);
+    public override int GetHashCode()
+    {
+        return (int)Math.Pow(XDbl, YDbl);
+    }
 
     /// <summary>
     ///     Converts the point to a <see cref="System.Drawing.Point"/> object
@@ -147,7 +162,10 @@ public class Point2D<CoordType> : IEquatable<Point2D<CoordType>> where CoordType
     /// <returns>
     ///     A <see cref="System.Drawing.Point"/> object representing the point
     /// </returns>
-    public Point ToPoint() => new((int)XDbl, (int)YDbl);
+    public Point ToPoint()
+    {
+        return new((int)XDbl, (int)YDbl);
+    }
 
     /// <summary>
     ///     Converts the point to a <see cref="System.Drawing.PointF"/> object
@@ -155,5 +173,8 @@ public class Point2D<CoordType> : IEquatable<Point2D<CoordType>> where CoordType
     /// <returns>
     ///     A <see cref="System.Drawing.PointF"/> object representing the point
     /// </returns>
-    public PointF ToPointF() => new((float)XDbl, (float)YDbl);
+    public PointF ToPointF()
+    {
+        return new((float)XDbl, (float)YDbl);
+    }
 }
