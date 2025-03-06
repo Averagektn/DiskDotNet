@@ -5,7 +5,7 @@ namespace Disk.Visual.Interface;
 /// <summary>
 ///     Shot receivable object
 /// </summary>
-public interface ITarget
+public interface ITarget : IDynamicFigure
 {
     /// <summary>
     ///     Actions when shot is received

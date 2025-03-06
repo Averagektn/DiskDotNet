@@ -5,7 +5,7 @@ namespace Disk.Visual.Interface;
 /// <summary>
 ///     User or cursor
 /// </summary>
-public interface IUser
+public interface IUser : IDynamicFigure
 {
     /// <summary>
     ///     After shot actions

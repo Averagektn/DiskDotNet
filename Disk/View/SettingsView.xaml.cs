@@ -1,6 +1,7 @@
 ﻿using Disk.Data.Impl;
 using Disk.Service.Implementation;
 using Disk.Visual.Impl;
+using Disk.Visual.Interface;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
@@ -16,8 +17,8 @@ public partial class SettingsView : UserControl
     private string UserFilePathText => UserFilePath.Text;
     private int UserRadius => (int)UserRadiusSlider.Value;
 
-    private User? _user;
-    private Target? _target;
+    private IUser? _user;
+    private ITarget? _target;
 
     public SettingsView()
     {
@@ -27,14 +28,7 @@ public partial class SettingsView : UserControl
         UserFilePath.TextChanged += (_, _) => DrawUser();
 
         TargetRadiusSlider.ValueChanged += (_, _) => DrawTarget();
-
-
-        PaintArea.Loaded += PaintArea_Loaded;
-    }
-
-    private void PaintArea_Loaded(object sender, RoutedEventArgs e)
-    {
-
+        TargetFilePath.TextChanged += (_, _) => DrawTarget();
     }
 
     private void DrawTarget()
@@ -49,8 +43,7 @@ public partial class SettingsView : UserControl
         _target?.Remove();
         if (File.Exists(TargetFilePathText))
         {
-            // To be replaced with target image
-            _target = new Target(new(0, 0), TargetRadius, PaintArea, screenIniSize);
+            _target = new TargetPicture(TargetFilePathText, new(0, 0), new(TargetRadius * 10, TargetRadius * 10), PaintArea, screenIniSize);
         }
         else
         {
