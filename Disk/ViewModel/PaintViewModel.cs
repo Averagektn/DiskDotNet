@@ -8,6 +8,7 @@ using Disk.Service.Implementation;
 using Disk.Stores;
 using Disk.ViewModel.Common.ViewModels;
 using Disk.Visual.Impl;
+using Disk.Visual.Interface;
 using Newtonsoft.Json;
 using System.Diagnostics;
 using System.Net;
@@ -220,7 +221,7 @@ public class PaintViewModel : PopupViewModel
         SavePathToTarget(ptt);
     }
 
-    public bool SwitchToPathToTarget(ProgressTarget target)
+    public bool SwitchToPathToTarget(IProgressTarget target)
     {
         var pathInTarget = PathsInTargets[TargetId - 1];
         PathsToTargets.Add([]);

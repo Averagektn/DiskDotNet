@@ -24,9 +24,7 @@ namespace Disk.Visual.Impl;
 public class Target(Point2D<int> center, int radius, Canvas parent, Size iniSize) : 
     User(center, radius, 0, Brushes.Transparent, parent, iniSize), ITarget
 {
-    /// <summary>
-    ///     Invoked on <see cref="ReceiveShot(Point2D{int})"/> method call
-    /// </summary>
+    /// <inheritdoc/>
     public event Action<int>? OnReceiveShot;
 
     /// <summary>

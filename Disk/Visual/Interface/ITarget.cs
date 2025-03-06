@@ -17,4 +17,9 @@ public interface ITarget : IDynamicFigure, IRoundedFigure
     ///     Can be represented by number of points, received after shot. 0 should be interpreted as a miss
     /// </returns>
     int ReceiveShot(Point2D<int> shot);
+
+    /// <summary>
+    ///     Invoked on <see cref="ReceiveShot(Point2D{int})"/> method call
+    /// </summary>
+    event Action<int>? OnReceiveShot;
 }

@@ -129,4 +129,9 @@ public class Graph : IStaticFigure
     {
         Parent.Children.Remove(Polygon);
     }
+
+    public bool Contains(Point2D<int> p)
+    {
+        return false;
+    }
 }

@@ -83,4 +83,9 @@ public class Path : IStaticFigure
         Polyline.Points.Clear();
         Points.ForEach(point => Polyline.Points.Add(Converter.ToWndCoord(point).ToPoint()));
     }
+
+    public bool Contains(Point2D<int> p)
+    {
+        return false;
+    }
 }

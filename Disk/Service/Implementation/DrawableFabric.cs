@@ -47,7 +47,7 @@ public static class DrawableFabric
         );
     }
 
-    public static ITarget GetIniTarget(string targetImagePath, Point2D<int> center, Canvas parent)
+    public static IProgressTarget GetIniProgressTarget(string targetImagePath, Point2D<int> center, Canvas parent)
     {
         if (File.Exists(targetImagePath))
         {
@@ -57,7 +57,8 @@ public static class DrawableFabric
                 center,
                 imageSize: new(Settings.IniTargetRadius * 10, Settings.IniTargetRadius * 10),
                 parent,
-                iniSize: ScreenIniSize
+                iniSize: ScreenIniSize,
+                hp: Settings.TargetHp
             );
         }
         return new ProgressTarget(center, radius: Settings.IniTargetRadius, parent, TargetHp, iniSize: ScreenIniSize);

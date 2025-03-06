@@ -1,4 +1,5 @@
 ﻿using Disk.Data.Impl;
+using Disk.Visual.Interface;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -9,16 +10,12 @@ namespace Disk.Visual.Impl;
 /// <summary>
 ///     Target with progress bar
 /// </summary>
-public class ProgressTarget : Target
+public class ProgressTarget : Target, IProgressTarget
 {
-    /// <summary>
-    ///     Current <see cref="RadialProgressBar"/> value
-    /// </summary>
+    /// <inheritdoc/>
     public double Progress => Border.Value / Border.Maximum;
 
-    /// <summary>
-    ///     Checks if <see cref="RadialProgressBar"/> is full
-    /// </summary>
+    /// <inheritdoc/>
     public bool IsFull => (int)Border.Value >= (int)Border.Maximum;
 
     /// <inheritdoc/>
@@ -72,9 +69,7 @@ public class ProgressTarget : Target
         };
     }
 
-    /// <summary>
-    ///     Set <see cref="RadialProgressBar"/> value to 0
-    /// </summary>
+    /// <inheritdoc/>
     public void Reset()
     {
         Border.Value = 0;

@@ -43,7 +43,15 @@ public partial class SettingsView : UserControl
         _target?.Remove();
         if (File.Exists(TargetFilePathText))
         {
-            _target = new TargetPicture(TargetFilePathText, new(0, 0), new(TargetRadius * 10, TargetRadius * 10), PaintArea, screenIniSize);
+            _target = new TargetPicture
+            (
+                TargetFilePathText,
+                center: new(0, 0),
+                imageSize: new(TargetRadius * 10, TargetRadius * 10),
+                parent: PaintArea,
+                iniSize: screenIniSize, 
+                hp: 0
+            );
         }
         else
         {

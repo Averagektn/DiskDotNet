@@ -169,7 +169,7 @@ public class SessionResultViewModel(NavigationStore navigationStore) : ObserverV
             return new Graph([], Brushes.LightGreen, canvas, 8);
         }
 
-        var target = DrawableFabric.GetIniTarget("", new(0, 0), canvas);
+        var target = DrawableFabric.GetIniProgressTarget("", new(0, 0), canvas);
         target.Draw();
 
         var angRadius = (Converter.ToAngleX_FromWnd(target.Radius) + Converter.ToAngleY_FromWnd(target.Radius)) / 2;

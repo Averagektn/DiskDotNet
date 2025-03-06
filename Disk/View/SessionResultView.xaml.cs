@@ -59,7 +59,7 @@ public partial class SessionResultView : UserControl
     {
         _user ??= DrawableFabric.GetIniUser(string.Empty, PaintArea);
         // set 0
-        _target ??= DrawableFabric.GetIniTarget("", new(-100, -100), PaintArea);
+        _target ??= DrawableFabric.GetIniProgressTarget("", new(-100, -100), PaintArea);
 
         Scalables.AddRange([_user, _target]);
 
@@ -75,7 +75,7 @@ public partial class SessionResultView : UserControl
         }
 
         _user ??= DrawableFabric.GetIniUser(string.Empty, PaintArea);
-        _target ??= DrawableFabric.GetIniTarget("", new(-100, -100), PaintArea);
+        _target ??= DrawableFabric.GetIniProgressTarget("", new(-100, -100), PaintArea);
 
         if (!IsReply)
         {

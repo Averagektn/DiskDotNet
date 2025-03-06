@@ -148,15 +148,7 @@ public class Circle : IDynamicFigure
         CurrSize = iniSize;
     }
 
-    /// <summary>
-    ///     Determines whether the circle contains the specified point
-    /// </summary>
-    /// <param name="p">
-    ///     The point to check
-    /// </param>
-    /// <returns>
-    ///     true if the circle contains the point, otherwise false
-    /// </returns>
+    /// <inheritdoc/>
     public virtual bool Contains(Point2D<int> p)
     {
         return Math.Sqrt(Math.Pow((p.X - Center.X) / Radius, 2) + Math.Pow((p.Y - Center.Y) / Radius, 2)) <= 0;
