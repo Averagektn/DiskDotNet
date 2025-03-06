@@ -32,7 +32,7 @@ public class ProgressTarget : Target, IProgressTarget
     }
 
     /// <inheritdoc/>
-    public override int MaxRadius => Radius * 6;
+    protected override int SingleRadius => (int)Math.Round((double)Radius / 6);
 
     /// <summary>
     ///     Progress
@@ -64,8 +64,8 @@ public class ProgressTarget : Target, IProgressTarget
         {
             Maximum = hp,
             Foreground = Brushes.Blue,
-            Width = radius * 6 * 2,
-            Height = radius * 6 * 2,
+            Width = radius * 2,
+            Height = radius * 2,
         };
     }
 
@@ -108,7 +108,7 @@ public class ProgressTarget : Target, IProgressTarget
     {
         base.Scale();
 
-        Border.Width = MaxRadius * 2;
-        Border.Height = MaxRadius * 2;
+        Border.Width = Radius * 2;
+        Border.Height = Radius * 2;
     }
 }

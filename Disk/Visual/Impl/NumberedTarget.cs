@@ -32,14 +32,14 @@ public class NumberedTarget : Target
         {
             base.Center = value;
 
-            Canvas.SetLeft(_numberText, Left + MaxRadius - (_numberText.ActualWidth / 2));
-            Canvas.SetTop(_numberText, Top + MaxRadius - (_numberText.ActualHeight / 2));
+            Canvas.SetLeft(_numberText, Left + Radius - (_numberText.ActualWidth / 2));
+            Canvas.SetTop(_numberText, Top + Radius - (_numberText.ActualHeight / 2));
 
-            Canvas.SetLeft(_coordY, Left + MaxRadius - (_coordY.ActualWidth / 2));
+            Canvas.SetLeft(_coordY, Left + Radius - (_coordY.ActualWidth / 2));
             Canvas.SetTop(_coordY, Top - 2 - _coordY.ActualHeight);
 
             Canvas.SetLeft(_coordX, Right + 2);
-            Canvas.SetTop(_coordX, Top + MaxRadius - (_coordX.ActualHeight / 2));
+            Canvas.SetTop(_coordX, Top + Radius - (_coordX.ActualHeight / 2));
         }
     }
 
@@ -91,7 +91,7 @@ public class NumberedTarget : Target
             Text = $"{_y:f1}",
             MaxLength = 5,
             FontSize = 25,
-            MinWidth = MaxRadius,
+            MinWidth = Radius,
         };
         _coordY.LostFocus += (_, _) => OnLostKeyboardFocus(_coordY, ref _y);
 
@@ -100,7 +100,7 @@ public class NumberedTarget : Target
             Text = $"{_x:f1}",
             MaxLength = 5,
             FontSize = 25,
-            MinWidth = MaxRadius,
+            MinWidth = Radius,
         };
         _coordX.LostFocus += (_, _) => OnLostKeyboardFocus(_coordX, ref _x);
 
@@ -111,13 +111,13 @@ public class NumberedTarget : Target
         };
         _numberText.SizeChanged += (_, s) =>
         {
-            Canvas.SetLeft(_numberText, Left + MaxRadius - (s.NewSize.Width / 2));
-            Canvas.SetTop(_numberText, Top + MaxRadius - (s.NewSize.Height / 2));
+            Canvas.SetLeft(_numberText, Left + Radius - (s.NewSize.Width / 2));
+            Canvas.SetTop(_numberText, Top + Radius - (s.NewSize.Height / 2));
         };
 
         for (int i = 1; i < Circles.Count; i++)
         {
-            Circles[i] = new Circle(center, radius * (Circles.Count - i), 0, Brushes.White, parent, iniSize);
+            Circles[i] = new Circle(center, SingleRadius * (Circles.Count - i), 0, Brushes.White, parent, iniSize);
         }
     }
 
@@ -225,7 +225,7 @@ public class NumberedTarget : Target
     private void UpdateNumSize()
     {
         var numSize = _numberText.Text.Length;
-        var fontSize = (double)((MaxRadius * 2) - (Radius * 2)) / numSize;
+        var fontSize = (double)((Radius * 2) - (SingleRadius * 2)) / numSize;
         _numberText.FontSize = fontSize;
     }
 

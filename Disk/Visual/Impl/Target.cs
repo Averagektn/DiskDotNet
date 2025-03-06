@@ -1,4 +1,5 @@
 ﻿using Disk.Data.Impl;
+using Disk.Entities;
 using Disk.Visual.Interface;
 using System.Windows;
 using System.Windows.Controls;
@@ -9,52 +10,59 @@ namespace Disk.Visual.Impl;
 /// <summary>
 ///     Represents a target with a center point, radius, and initial size
 /// </summary>
-/// <param name="center">
-///     The center point of the target
-/// </param>
-/// <param name="radius">
-///     The radius of the target
-/// </param>
-/// <param name="parent">
-///     Canvas, containing all figures
-/// </param>
-/// <param name="iniSize">
-///     The initial size of the target
-/// </param>
-public class Target(Point2D<int> center, int radius, Canvas parent, Size iniSize) : 
-    User(center, radius, 0, Brushes.Transparent, parent, iniSize), ITarget
+public class Target : User, ITarget
 {
     /// <inheritdoc/>
     public event Action<int>? OnReceiveShot;
 
     /// <summary>
-    ///     Gets the maximum radius of the target
+    ///     Gets the radius of smallest target
     /// </summary>
-    public virtual int MaxRadius => Radius * 5;
+    protected virtual int SingleRadius => (int)Math.Round((double)Radius / 5);
 
     /// <inheritdoc/>
-    public override int Right => Center.X + MaxRadius;
+    public override int Right => Center.X + Radius;
 
     /// <inheritdoc/>
-    public override int Top => Center.Y - MaxRadius;
+    public override int Top => Center.Y - Radius;
 
     /// <inheritdoc/>
-    public override int Bottom => Center.Y + MaxRadius;
+    public override int Bottom => Center.Y + Radius;
 
     /// <inheritdoc/>
-    public override int Left => Center.X - MaxRadius;
+    public override int Left => Center.X - Radius;
 
     /// <summary>
     ///     List of circles representing the concentric rings of the target
     /// </summary>
-    protected readonly List<Circle> Circles =
-        [
-            new(center, radius * 5, 0, Brushes.Red, parent, iniSize),
-            new(center, radius * 4, 0, Brushes.White, parent, iniSize),
-            new(center, radius * 3, 0, Brushes.Red, parent, iniSize),
-            new(center, radius * 2, 0, Brushes.White, parent, iniSize),
-            new(center, radius * 1, 0, Brushes.Red, parent, iniSize)
+    protected readonly List<Circle> Circles;
+
+    /// <summary>
+    ///     <inheritdoc/>
+    /// </summary>
+    /// <param name="center">
+    ///     The center point of the target
+    /// </param>
+    /// <param name="radius">
+    ///     The radius of the target
+    /// </param>
+    /// <param name="parent">
+    ///     Canvas, containing all figures
+    /// </param>
+    /// <param name="iniSize">
+    ///     The initial size of the target
+    /// </param>
+    public Target(Point2D<int> center, int radius, Canvas parent, Size iniSize) :
+        base(center, radius, 0, Brushes.Transparent, parent, iniSize)
+    {
+        Circles = [
+            new(center, SingleRadius * 5, 0, Brushes.Red, parent, iniSize),
+            new(center, SingleRadius * 4, 0, Brushes.White, parent, iniSize),
+            new(center, SingleRadius * 3, 0, Brushes.Red, parent, iniSize),
+            new(center, SingleRadius * 2, 0, Brushes.White, parent, iniSize),
+            new(center, SingleRadius * 1, 0, Brushes.Red, parent, iniSize)
         ];
+    }
 
     /// <inheritdoc/>
     public override void Draw()
