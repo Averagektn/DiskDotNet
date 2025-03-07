@@ -2,6 +2,7 @@
 using Disk.Db.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -9,9 +10,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Disk.Migrations
 {
     [DbContext(typeof(DiskContext))]
-    partial class DiskContextModelSnapshot : ModelSnapshot
+    [Migration("20250307124734_PathToTargetNamingFix")]
+    partial class PathToTargetNamingFix
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "9.0.2");
@@ -104,22 +107,22 @@ namespace Disk.Migrations
                         .HasColumnType("INTEGER")
                         .HasColumnName("ptt_target_id");
 
+                    b.Property<double>("AngleDistance")
+                        .HasColumnType("REAL")
+                        .HasColumnName("ptt_ange_distance");
+
+                    b.Property<double>("AngleSpeed")
+                        .HasColumnType("REAL")
+                        .HasColumnName("ptt_angle_speed");
+
                     b.Property<double>("ApproachSpeed")
                         .HasColumnType("REAL")
                         .HasColumnName("ptt_approach_speed");
-
-                    b.Property<double>("AverageSpeed")
-                        .HasColumnType("REAL")
-                        .HasColumnName("ptt_average_speed");
 
                     b.Property<string>("CoordinatesJson")
                         .IsRequired()
                         .HasColumnType("TEXT")
                         .HasColumnName("ptt_coordinates_json");
-
-                    b.Property<double>("Distance")
-                        .HasColumnType("REAL")
-                        .HasColumnName("ptt_distance");
 
                     b.Property<double>("Time")
                         .HasColumnType("REAL")
@@ -232,21 +235,17 @@ namespace Disk.Migrations
                         .HasColumnType("INTEGER")
                         .HasColumnName("sres_id");
 
-                    b.Property<double>("DeviationX")
+                    b.Property<double>("Deviation")
                         .HasColumnType("REAL")
-                        .HasColumnName("sres_deviation_x");
+                        .HasColumnName("sres_deviation");
 
-                    b.Property<double>("DeviationY")
+                    b.Property<double>("Dispersion")
                         .HasColumnType("REAL")
-                        .HasColumnName("sres_deviation_y");
+                        .HasColumnName("sres_dispersion");
 
-                    b.Property<double>("MathExpX")
+                    b.Property<double>("MathExp")
                         .HasColumnType("REAL")
-                        .HasColumnName("sres_math_exp_x");
-
-                    b.Property<double>("MathExpY")
-                        .HasColumnType("REAL")
-                        .HasColumnName("sres_math_exp_y");
+                        .HasColumnName("sres_math_exp");
 
                     b.Property<long>("Score")
                         .HasColumnType("INTEGER")

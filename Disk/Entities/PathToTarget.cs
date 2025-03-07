@@ -9,9 +9,9 @@ public partial class PathToTarget
 
     public string CoordinatesJson { get; set; } = null!;
 
-    public double AngleDistance { get; set; }
+    public double Distance { get; set; }
 
-    public double AngleSpeed { get; set; }
+    public double AverageSpeed { get; set; }
 
     public double ApproachSpeed { get; set; }
 

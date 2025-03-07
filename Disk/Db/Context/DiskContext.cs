@@ -98,9 +98,9 @@ public partial class DiskContext : DbContext
             _ = entity.ToTable("path_to_target");
 
             _ = entity.Property(e => e.Session).HasColumnName("ptt_session");
-            _ = entity.Property(e => e.TargetNum).HasColumnName("ptt_target_num");
-            _ = entity.Property(e => e.AngleDistance).HasColumnName("ptt_ange_distance");
-            _ = entity.Property(e => e.AngleSpeed).HasColumnName("ptt_angle_speed");
+            _ = entity.Property(e => e.TargetNum).HasColumnName("ptt_target_id");
+            _ = entity.Property(e => e.Distance).HasColumnName("ptt_distance");
+            _ = entity.Property(e => e.AverageSpeed).HasColumnName("ptt_average_speed");
             _ = entity.Property(e => e.ApproachSpeed).HasColumnName("ptt_approach_speed");
             _ = entity.Property(e => e.CoordinatesJson).HasColumnName("ptt_coordinates_json");
             _ = entity.Property(e => e.Time).HasColumnName("ptt_time");
@@ -170,9 +170,10 @@ public partial class DiskContext : DbContext
             _ = entity.Property(e => e.Id)
                 .ValueGeneratedNever()
                 .HasColumnName("sres_id");
-            _ = entity.Property(e => e.Deviation).HasColumnName("sres_deviation");
-            _ = entity.Property(e => e.Dispersion).HasColumnName("sres_dispersion");
-            _ = entity.Property(e => e.MathExp).HasColumnName("sres_math_exp");
+            _ = entity.Property(e => e.DeviationX).HasColumnName("sres_deviation_x");
+            _ = entity.Property(e => e.DeviationY).HasColumnName("sres_deviation_y");
+            _ = entity.Property(e => e.MathExpX).HasColumnName("sres_math_exp_x");
+            _ = entity.Property(e => e.MathExpY).HasColumnName("sres_math_exp_y");
             _ = entity.Property(e => e.Score).HasColumnName("sres_score");
 
             _ = entity.HasOne(d => d.Sres).WithOne(p => p.SessionResult)

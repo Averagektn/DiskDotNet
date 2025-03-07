@@ -73,7 +73,9 @@ public class StartSessionViewModel : ObserverViewModel
             LogFilePath = logPath,
             Map = SelectedMap!.Id,
             MaxXAngle = Settings.XMaxAngle,
-            MaxYAngle = Settings.YMaxAngle
+            MaxYAngle = Settings.YMaxAngle,
+            CursorRadius = Settings.IniUserRadius,
+            TargetRadius = Settings.IniTargetRadius,
         };
         _sessionRepository.Add(session);
 

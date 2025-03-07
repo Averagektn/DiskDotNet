@@ -58,23 +58,27 @@ public class ExcelFiller(IMapRepository mapRepository) : IExcelFiller
             worksheet.Cell(2, 1).Value = session.DateTime;
             worksheet.Cell(2, 2).Value = mapRepository.GetById(session.Map).Name;
 
-            worksheet.Cell(4, 1).Value = Localization.Deviation;
-            worksheet.Cell(4, 2).Value = Localization.MathExp;
-            worksheet.Cell(4, 3).Value = Localization.Score;
+            worksheet.Cell(4, 1).Value = $"{Localization.Deviation} X";
+            worksheet.Cell(4, 2).Value = $"{Localization.Deviation} Y";
+            worksheet.Cell(4, 3).Value = $"{Localization.MathExp} X";
+            worksheet.Cell(4, 4).Value = $"{Localization.MathExp} Y";
+            worksheet.Cell(4, 5).Value = Localization.Score;
 
             var sres = session.SessionResult;
             if (sres is not null)
             {
-                SetFloatCell(worksheet, 5, 1, (float)sres.Deviation);
-                SetFloatCell(worksheet, 5, 2, (float)sres.MathExp);
-                worksheet.Cell(5, 3).Value = sres.Score;
+                SetFloatCell(worksheet, 5, 1, (float)sres.DeviationX);
+                SetFloatCell(worksheet, 5, 2, (float)sres.DeviationY);
+                SetFloatCell(worksheet, 5, 3, (float)sres.MathExpX);
+                SetFloatCell(worksheet, 5, 4, (float)sres.MathExpY);
+                worksheet.Cell(5, 5).Value = sres.Score;
             }
 
             worksheet.Cell(7, 1).Value = Localization.TargetNum;
             worksheet.Cell(7, 2).Value = Localization.Time;
             worksheet.Cell(7, 3).Value = Localization.ApproachSpeed;
 
-            const int pathCol = 5;
+            const int pathCol = 7;
 
             FillPtts(worksheet, session, pathCol);
             FillPits(worksheet, session, pathCol + ColsPerPath);

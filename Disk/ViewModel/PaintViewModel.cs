@@ -23,7 +23,6 @@ namespace Disk.ViewModel;
 public class PaintViewModel : PopupViewModel
 {
     // Can set on creation
-    public event Action? OnSessionOver;
     private Session _currentSession = null!;
     public required Session CurrentSession
     {
@@ -132,15 +131,15 @@ public class PaintViewModel : PopupViewModel
         if (PathsInTargets.Count != 0)
         {
             var mx = Calculator2D.MathExp(FullPath);
-            var dispersion = Calculator2D.Dispersion(FullPath);
             var deviation = Calculator2D.StandartDeviation(FullPath);
 
             var sres = new SessionResult()
             {
                 Id = CurrentSession.Id,
-                MathExp = (mx.XDbl + mx.YDbl) / 2,
-                Dispersion = (dispersion.XDbl + dispersion.YDbl) / 2,
-                Deviation = (deviation.XDbl + dispersion.YDbl) / 2,
+                MathExpX = mx.XDbl,
+                MathExpY = mx.YDbl,
+                DeviationX = deviation.XDbl,
+                DeviationY = deviation.YDbl,
                 Score = Score,
             };
 
@@ -164,7 +163,7 @@ public class PaintViewModel : PopupViewModel
         IsGame = false;
         DiskNetworkThread.Join();
 
-        OnSessionOver?.Invoke();
+        //OnSessionOver?.Invoke();
 
         if (connectionFailed)
         {
@@ -208,8 +207,8 @@ public class PaintViewModel : PopupViewModel
 
         var ptt = new PathToTarget()
         {
-            AngleDistance = distance,
-            AngleSpeed = avgSpeed,
+            Distance = distance,
+            AverageSpeed = avgSpeed,
             ApproachSpeed = approachSpeed,
             CoordinatesJson = JsonConvert.SerializeObject(PathsToTargets[TargetId - 1]),
             TargetNum = TargetId - 1,

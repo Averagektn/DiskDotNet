@@ -14,6 +14,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using Localization = Disk.Properties.Langs.SessionResult.SessionResultLocalization;
+using Settings = Disk.Properties.Config.Config;
 
 namespace Disk.ViewModel;
 
@@ -25,6 +26,7 @@ public class SessionResultViewModel(NavigationStore navigationStore) : ObserverV
     public Point2D<int> TargetCenter => Converter.ToWndCoord(TargetCenters[SelectedIndex]);
     public ObservableCollection<string> Indices { get; set; } = [];
     public Converter Converter { get; set; } = DrawableFabric.GetIniConverter();
+    public Settings Settings => Settings.Default;
 
     private Session _currentSession = null!;
 
@@ -59,13 +61,15 @@ public class SessionResultViewModel(NavigationStore navigationStore) : ObserverV
 
             for (int i = SelectedIndex; i < TargetCenters.Count; i++)
             {
-                var ptt = JsonConvert.DeserializeObject<List<Point2D<float>>>(CurrentSession.PathToTargets.ElementAt(i).CoordinatesJson)!;
+                var ptt = JsonConvert
+                    .DeserializeObject<List<Point2D<float>>>(CurrentSession.PathToTargets.ElementAt(i).CoordinatesJson)!;
                 foreach (var point in ptt)
                 {
                     yield return (false, point);
                 }
 
-                var pit = JsonConvert.DeserializeObject<List<Point2D<float>>>(CurrentSession.PathInTargets.ElementAt(i).CoordinatesJson)!;
+                var pit = JsonConvert
+                    .DeserializeObject<List<Point2D<float>>>(CurrentSession.PathInTargets.ElementAt(i).CoordinatesJson)!;
                 foreach (var point in pit)
                 {
                     lastPoint = point;
@@ -107,9 +111,11 @@ public class SessionResultViewModel(NavigationStore navigationStore) : ObserverV
     public ICommand NewItemSelectedCommand => new Command(_ =>
         Message =
         $"""
-            {Localization.StandartDeviation}: {CurrentSession.SessionResult?.Deviation:F2}
-            {Localization.MathExp}: {CurrentSession.SessionResult?.MathExp:F2}
-            {Localization.AverageSpeed}: {CurrentSession.PathToTargets.ElementAt(SelectedIndex).AngleSpeed:F2}
+            {Localization.StandartDeviation} X: {CurrentSession.SessionResult?.DeviationX:F2}
+            {Localization.StandartDeviation} Y: {CurrentSession.SessionResult?.DeviationY:F2}
+            {Localization.MathExp} X: {CurrentSession.SessionResult?.MathExpX:F2}
+            {Localization.MathExp} Y: {CurrentSession.SessionResult?.MathExpY:F2}
+            {Localization.AverageSpeed}: {CurrentSession.PathToTargets.ElementAt(SelectedIndex).AverageSpeed:F2}
             {Localization.ApproachSpeed}: {CurrentSession.PathToTargets.ElementAt(SelectedIndex).ApproachSpeed:F2}
             {Localization.Time}: {CurrentSession.PathToTargets.ElementAt(SelectedIndex).Time:F2}
             {Localization.Precision}: {CurrentSession.PathInTargets.ElementAt(SelectedIndex).Precision:F2}  
@@ -169,7 +175,14 @@ public class SessionResultViewModel(NavigationStore navigationStore) : ObserverV
             return new Graph([], Brushes.LightGreen, canvas, 8);
         }
 
-        var target = DrawableFabric.GetIniProgressTarget("", new(0, 0), canvas);
+        var target = new ProgressTarget
+        (
+            center: new(0, 0), 
+            radius: CurrentSession.TargetRadius,
+            parent: canvas,
+            hp: 0,
+            iniSize: new(Settings.IniScreenWidth, Settings.IniScreenHeight)
+        );
         target.Scale();
 
         var angRadius = (Converter.ToAngleX_FromWnd(target.Radius) + Converter.ToAngleY_FromWnd(target.Radius)) / 2;

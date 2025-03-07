@@ -68,11 +68,12 @@ public partial class PaintView : UserControl
         var halfRadius = User.Radius / 2;
         var sqrt2 = Math.Sqrt(2);
 
-        return [new(x - halfRadius, y), new(x + halfRadius, y), new(x, y - halfRadius), new(x, y + halfRadius),
+        return [User.Center];
+/*        return [new(x - halfRadius, y), new(x + halfRadius, y), new(x, y - halfRadius), new(x, y + halfRadius),
                 new((int)(x - (halfRadius / sqrt2)), (int)(y - (halfRadius / sqrt2))),
                 new((int)(x + (halfRadius / sqrt2)), (int)(y - (halfRadius / sqrt2))),
                 new((int)(x - (halfRadius / sqrt2)), (int)(y + (halfRadius / sqrt2))),
-                new((int)(x + (halfRadius / sqrt2)), (int)(y + (halfRadius / sqrt2)))];
+                new((int)(x + (halfRadius / sqrt2)), (int)(y + (halfRadius / sqrt2)))];*/
     }
 
     private void ShotTimerElapsed(object? sender, EventArgs e)

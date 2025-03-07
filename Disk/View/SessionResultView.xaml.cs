@@ -5,6 +5,7 @@ using Disk.Visual.Impl;
 using Disk.Visual.Interface;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
 using System.Windows.Threading;
 using Settings = Disk.Properties.Config.Config;
 
@@ -72,8 +73,12 @@ public partial class SessionResultView : UserControl
         _target?.Remove();
         _user?.Remove();
 
-        _user ??= DrawableFabric.GetIniUser(string.Empty, PaintArea);
-        _target ??= DrawableFabric.GetIniProgressTarget("", new(0, 0), PaintArea);
+        var color = new SolidColorBrush(Color.FromRgb(Settings.UserColor.R, Settings.UserColor.G, Settings.UserColor.B));
+        var iniSize = new Size(Settings.IniScreenWidth, Settings.IniScreenHeight);
+        _user ??= new User(new(0, 0), ViewModel.CurrentSession.CursorRadius * 5, 0, color, PaintArea, iniSize);
+        //_user ??= DrawableFabric.GetIniUser(string.Empty, PaintArea);
+        //_target ??= DrawableFabric.GetIniProgressTarget("", new(0, 0), PaintArea);
+        _target ??= new Target(new(0, 0), ViewModel.CurrentSession.TargetRadius * 5, PaintArea, iniSize);
 
         _target.Draw();
         _pathAndRose.ForEach(p => p.Remove());
