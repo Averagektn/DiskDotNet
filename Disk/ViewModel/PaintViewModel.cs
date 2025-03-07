@@ -24,7 +24,6 @@ public class PaintViewModel : PopupViewModel
 {
     // Can set on creation
     public event Action? OnSessionOver;
-    public required string ImagePath { get; set; }
     private Session _currentSession = null!;
     public required Session CurrentSession
     {
@@ -192,7 +191,7 @@ public class PaintViewModel : PopupViewModel
         {
             PathsToTargets[TargetId - 1].Add(Converter.ToAngle_FromWnd(userShot));
         }
-        PathToTargetStopwatch!.Stop();
+        //PathToTargetStopwatch!.Stop();
         PathsInTargets.Add([]);
 
         double distance = 0;
@@ -237,9 +236,7 @@ public class PaintViewModel : PopupViewModel
 
         SavePathInTarget(pit);
 
-        // TargetId++
         var newCenter = NextTargetCenter;
-
         target.Reset();
 
         if (newCenter is not null)
@@ -259,18 +256,11 @@ public class PaintViewModel : PopupViewModel
         base.Dispose();
         GC.SuppressFinalize(this);
 
-        // ???
-/*        if (_sessionRepository.Exists(CurrentSession))
-        {
-            _sessionRepository.Delete(CurrentSession);
-        }*/
         IsGame = false;
         if (DiskNetworkThread.IsAlive)
         {
             DiskNetworkThread.Join();
         }
-
-        //Application.Current.MainWindow.WindowState = WindowState.Normal;
     }
 
     public void SavePathToTarget(PathToTarget pathToTarget) => _pathToTargetRepository.Add(pathToTarget);

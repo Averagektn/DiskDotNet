@@ -55,8 +55,8 @@ public partial class PaintView : UserControl
         ShotTimer.Tick += ShotTimerElapsed;
 
         Unloaded += (_, _) => StopGame();
-        Loaded += OnLoaded;
-        SizeChanged += OnSizeChanged;
+        PaintArea.Loaded += OnLoaded;
+        PaintArea.SizeChanged += OnSizeChanged;
     }
 
     private List<Point2DI> GetMultipleShots()
@@ -79,12 +79,11 @@ public partial class PaintView : UserControl
     {
         var shots = GetMultipleShots();
 
-        var shot = shots[0];
+        var shot = User.Center;
         int shotScore = 0;
-        for (int i = 1; i < shots.Count && shotScore == 0; i++)
+        for (int i = 0; i < shots.Count && shotScore == 0; i++)
         {
-            shotScore = Target.ReceiveShot(shot);
-            shot = shots[i];
+            shotScore = Target.ReceiveShot(shots[i]);
         }
 
         var angleShot = Converter.ToAngle_FromWnd(shot);
@@ -96,9 +95,9 @@ public partial class PaintView : UserControl
             ViewModel.SwitchToPathInTarget(shot);
         }
 
-        bool isValidShot = angleShot.X != 0 && angleShot.Y != 0;
+        //bool isValidShot = angleShot.X != 0 && angleShot.Y != 0;
         bool isPathInTarget = !ViewModel.IsPathToTarget;
-        if (isValidShot)
+        //if (isValidShot)
         {
             if (isPathInTarget)
             {
@@ -160,8 +159,6 @@ public partial class PaintView : UserControl
         Target = DrawableFabric.GetIniProgressTarget(Settings.TargetFilePath, wndCenter, PaintArea);
         Target.OnReceiveShot += shot => ViewModel.Score += shot;
 
-        Converter.Scale(PaintArea.RenderSize);
-
         if (ViewModel.IsGame)
         {
             ViewModel.StartReceiving();
@@ -191,7 +188,7 @@ public partial class PaintView : UserControl
         AllowedArea.RadiusY = PaintPanelCenterY;
         AllowedArea.Center = new(PaintPanelCenterX, PaintPanelCenterY);
 
-        Converter.Scale(PaintArea.RenderSize);
+        Converter.Scale(new((int)PaintArea.ActualWidth, (int)PaintArea.ActualHeight));
     }
 
     private void OnStopClick(object sender, RoutedEventArgs e)

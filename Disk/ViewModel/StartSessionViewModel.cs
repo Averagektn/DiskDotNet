@@ -18,8 +18,6 @@ public class StartSessionViewModel : ObserverViewModel
 {
     public required Patient Patient { get; set; }
     public required Appointment Appointment { get; set; }
-
-    public event Action? OnSessionOver;
     
     // Binding
     public Map? SelectedMap { get; set; }
@@ -59,10 +57,9 @@ public class StartSessionViewModel : ObserverViewModel
             return;
         }
 
-        var now = DateTime.Now.ToString("dd.MM.yyyy", CultureInfo.InvariantCulture);
         var logPath = $"{Settings.MainDirPath}{Path.DirectorySeparatorChar}" +
                 $"{Patient.Surname} {Patient.Name}{Path.DirectorySeparatorChar}" +
-                $"{now}";
+                $"{DateTime.Now:dd.MM.yyyy HH-mm-ss}";
 
         if (!Directory.Exists(logPath))
         {
@@ -72,7 +69,7 @@ public class StartSessionViewModel : ObserverViewModel
         var session = new Session()
         {
             Appointment = Appointment.Id,
-            DateTime = now,
+            DateTime = DateTime.Now.ToString("dd.MM.yyyy", CultureInfo.InvariantCulture),
             LogFilePath = logPath,
             Map = SelectedMap!.Id,
             MaxXAngle = Settings.XMaxAngle,
@@ -81,7 +78,7 @@ public class StartSessionViewModel : ObserverViewModel
         _sessionRepository.Add(session);
 
         IniNavigationStore.Close();
-        PaintNavigator.Navigate(_navigationStore, Settings.CursorFilePath, OnSessionOver, session);
+        PaintNavigator.Navigate(_navigationStore, session);
         Application.Current.MainWindow.WindowState = WindowState.Maximized;
     });
 

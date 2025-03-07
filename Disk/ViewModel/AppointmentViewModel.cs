@@ -45,7 +45,7 @@ public class AppointmentViewModel(ISessionRepository sessionRepository, IExcelFi
     }
 
     public ICommand StartSessionCommand => 
-        new Command(_ => StartSessionNavigator.NavigateWithBar(navigationStore, Update, Appointment, Patient));
+        new Command(_ => StartSessionNavigator.NavigateWithBar(navigationStore, Appointment, Patient));
     
     public ICommand SessionSelectedCommand => new Command(SessionSelected);
     

@@ -7,29 +7,25 @@ namespace Disk.Navigators;
 
 public class PaintNavigator : INavigator
 {
-    public static void Navigate(INavigationStore navigationStore, string imageFilePath, Action? onSessionOver, 
-        Session session)
+    public static void Navigate(INavigationStore navigationStore, Session session)
     {
         navigationStore.SetViewModel<PaintViewModel>(vm =>
         {
             vm.IniNavigationStore = navigationStore;
-            vm.ImagePath = imageFilePath;
-            vm.OnSessionOver += onSessionOver;
             vm.CurrentSession = session;
         });
     }
 
-    public static void NavigateAndClose(INavigationStore navigationStore, string imageFilePath, Action? onSessionOver,
-        Session session)
+    public static void NavigateAndClose(INavigationStore navigationStore, Session session)
     {
         if (navigationStore.CanClose)
         {
             navigationStore.Close();
-            Navigate(navigationStore, imageFilePath, onSessionOver, session);
+            Navigate(navigationStore, session);
         }
     }
 
-    public static void NavigateWithBar(INavigationStore navigationStore, string imageFilePath, Action? onSessionOver, Session session)
+    public static void NavigateWithBar(INavigationStore navigationStore, Session session)
     {
         navigationStore.SetViewModel<NavigationBarLayoutViewModel>(vm =>
         {
@@ -37,20 +33,17 @@ public class PaintNavigator : INavigator
             vm.CurrentViewModel = navigationStore.GetViewModel<PaintViewModel>(vm =>
             {
                 vm.IniNavigationStore = navigationStore;
-                vm.ImagePath = imageFilePath;
-                vm.OnSessionOver += onSessionOver;
                 vm.CurrentSession = session;
             });
         });
     }
 
-    public static void NavigateWithBarAndClose(INavigationStore navigationStore, string imageFilePath, Action? onSessionOver, 
-        Session session)
+    public static void NavigateWithBarAndClose(INavigationStore navigationStore, Session session)
     {
         if (navigationStore.CanClose)
         {
             navigationStore.Close();
-            NavigateWithBar(navigationStore, imageFilePath, onSessionOver, session);
+            NavigateWithBar(navigationStore, session);
         }
     }
 }
