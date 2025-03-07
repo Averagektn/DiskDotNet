@@ -12,6 +12,14 @@
              d:DesignHeight="800" 
              d:DesignWidth="800">
 
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Style/DataGridCenterdCell.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="1*"/>
@@ -58,18 +66,8 @@
                 <DataGridTextColumn 
                     Width="1*" 
                     Header="{x:Static lang:AppointmentLocalization.DateTime}"  
-                    Binding="{Binding DateTime}" >
-                    <DataGridTextColumn.ElementStyle>
-                        <Style TargetType="TextBlock">
-                            <Setter Property="HorizontalAlignment" Value="Center" />
-                        </Style>
-                    </DataGridTextColumn.ElementStyle>
-                    <DataGridTextColumn.HeaderStyle>
-                        <Style TargetType="DataGridColumnHeader">
-                            <Setter Property="HorizontalContentAlignment"
-                 Value="Center" />
-                        </Style>
-                    </DataGridTextColumn.HeaderStyle>
+                    Binding="{Binding DateTime}"
+                    ElementStyle="{StaticResource CentredCell}">
                 </DataGridTextColumn>
                 <DataGridTemplateColumn Width="1*">
                     <DataGridTemplateColumn.Header>
@@ -77,47 +75,15 @@
                             <TextBlock Text="{x:Static lang:AppointmentLocalization.Deviation}" />
                             <Grid>
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="1*" />
-                                    <ColumnDefinition Width="1*" />
-                                </Grid.ColumnDefinitions>
-                                <TextBlock Text="X" Grid.Column="0"/>
-                                <TextBlock Text="Y" Grid.Column="1"/>
-                            </Grid>
-                        </StackPanel>
-                    </DataGridTemplateColumn.Header>
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="1*" />
-                                    <ColumnDefinition Width="1*" />
-                                </Grid.ColumnDefinitions>
-                                <TextBlock 
-                                    Text="{Binding SessionResult.DeviationX, StringFormat=N1}" 
-                                    Grid.Column="0"/>
-                                <TextBlock 
-                                    Text="{Binding SessionResult.DeviationY, StringFormat=N1}" 
-                                    Grid.Column="1"/>
-                            </Grid>
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
-                <DataGridTemplateColumn Width="1*">
-                    <DataGridTemplateColumn.Header>
-                        <StackPanel HorizontalAlignment="Center">
-                            <TextBlock
-                                TextAlignment="Center"
-                                Text="{x:Static lang:AppointmentLocalization.MathExp}"
-                                HorizontalAlignment="Center"/>
-                            <Grid>
-                                <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="*" />
                                     <ColumnDefinition Width="*" />
                                 </Grid.ColumnDefinitions>
                                 <TextBlock 
+                                    TextAlignment="Center"
                                     Text="X" 
                                     Grid.Column="0"/>
                                 <TextBlock 
+                                    TextAlignment="Center"
                                     Text="Y" 
                                     Grid.Column="1"/>
                             </Grid>
@@ -131,9 +97,52 @@
                                     <ColumnDefinition Width="*" />
                                 </Grid.ColumnDefinitions>
                                 <TextBlock 
+                                    TextAlignment="Center"
+                                    Text="{Binding SessionResult.DeviationX, StringFormat=N1}" 
+                                    Grid.Column="0"/>
+                                <TextBlock 
+                                    TextAlignment="Center"
+                                    Text="{Binding SessionResult.DeviationY, StringFormat=N1}" 
+                                    Grid.Column="1"/>
+                            </Grid>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn Width="1*">
+                    <DataGridTemplateColumn.Header>
+                        <StackPanel>
+                            <TextBlock
+                                Text="{x:Static lang:AppointmentLocalization.MathExp}"
+                                HorizontalAlignment="Center"/>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <TextBlock 
+                                    TextAlignment="Center"
+                                    Text="X" 
+                                    Grid.Column="0"/>
+                                <TextBlock 
+                                    TextAlignment="Center"
+                                    Text="Y" 
+                                    Grid.Column="1"/>
+                            </Grid>
+                        </StackPanel>
+                    </DataGridTemplateColumn.Header>
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <TextBlock 
+                                    TextAlignment="Center"
                                     Text="{Binding SessionResult.MathExpX, StringFormat=N1}" 
                                     Grid.Column="0"/>
                                 <TextBlock 
+                                    TextAlignment="Center"
                                     Text="{Binding SessionResult.MathExpY, StringFormat=N1}" 
                                     Grid.Column="1"/>
                             </Grid>
@@ -143,7 +152,8 @@
                 <DataGridTextColumn 
                     Width="1*" 
                     Header="{x:Static lang:AppointmentLocalization.Score}" 
-                    Binding="{Binding SessionResult.Score}" />
+                    Binding="{Binding SessionResult.Score}" 
+                    ElementStyle="{StaticResource CentredCell}"/>
             </DataGrid.Columns>
             <i:Interaction.Triggers>
                 <i:EventTrigger EventName="SelectionChanged">
