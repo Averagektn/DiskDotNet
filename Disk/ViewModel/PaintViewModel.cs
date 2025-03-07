@@ -25,7 +25,6 @@ public class PaintViewModel : PopupViewModel
     // Can set on creation
     public event Action? OnSessionOver;
     public required string ImagePath { get; set; }
-    public required string CurrentPath { get; set; } = null!;
     private Session _currentSession = null!;
     public required Session CurrentSession
     {
@@ -43,7 +42,7 @@ public class PaintViewModel : PopupViewModel
     // Get only
     public Point2D<float>? NextTargetCenter => TargetCenters.Count <= TargetId ? null : TargetCenters[TargetId++];
     private static Settings Settings => Settings.Default;
-    private string UsrAngLog => $"{CurrentPath}{FilePath.DirectorySeparatorChar}{Settings.UserLogFileName}";
+    private string UsrAngLog => $"{CurrentSession.LogFilePath}{FilePath.DirectorySeparatorChar}{Settings.UserLogFileName}";
     public bool IsPathToTarget => PathToTargetStopwatch?.IsRunning ?? false;
 
     // Disposable
