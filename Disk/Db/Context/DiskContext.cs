@@ -149,6 +149,8 @@ public partial class DiskContext : DbContext
             _ = entity.Property(e => e.Map).HasColumnName("ses_map");
             _ = entity.Property(e => e.MaxXAngle).HasColumnName("ses_max_x_angle");
             _ = entity.Property(e => e.MaxYAngle).HasColumnName("ses_max_y_angle");
+            _ = entity.Property(e => e.TargetRadius).HasColumnName("ses_target_radius");
+            _ = entity.Property(e => e.CursorRadius).HasColumnName("ses_cursor_radius");
 
             _ = entity.HasOne(d => d.AppointmentNavigation).WithMany(p => p.Sessions)
                 .HasForeignKey(d => d.Appointment)

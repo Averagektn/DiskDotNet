@@ -10,6 +10,10 @@ public partial class Session
 
     public float MaxYAngle { get; set; }
 
+    public int CursorRadius { get; set; }
+
+    public int TargetRadius { get; set; }
+
     public string LogFilePath { get; set; } = null!;
 
     public string DateTime { get; set; } = null!;
