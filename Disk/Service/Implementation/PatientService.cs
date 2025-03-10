@@ -1,27 +1,57 @@
-﻿using Disk.Entities;
+﻿using Disk.Db.Context;
+using Disk.Entities;
 using Disk.Properties.Langs.ServiceException;
-using Disk.Repository.Interface;
 using Disk.Service.Exceptions;
 using Disk.Service.Interface;
+using Microsoft.EntityFrameworkCore;
 using System.Globalization;
 
 namespace Disk.Service.Implementation;
 
-public class PatientService(IPatientRepository patientRepository) : IPatientService
+public class PatientService(DiskContext database) : IPatientService
 {
     public void Add(Patient patient)
     {
         if (Validate(patient))
         {
-            patientRepository.Add(patient);
+            _ = database.Add(patient);
         }
     }
 
-    public async Task AddPatientAsync(Patient patient)
+    public async Task AddAsync(Patient patient)
     {
         if (Validate(patient))
         {
-            await patientRepository.AddAsync(patient);
+            var isPossibleDuplicate = await database.Patients.AnyAsync(p =>
+                p.Name == patient.Name &&
+                p.Surname == patient.Surname &&
+                p.Patronymic == patient.Patronymic &&
+                p.DateOfBirth == patient.DateOfBirth);
+            if (isPossibleDuplicate)
+            {
+                throw new PossibleDuplicateEntityException("Same phone number");
+            }
+
+            _ = await database.AddAsync(patient);
+            _ = await database.SaveChangesAsync();
+        }
+    }
+
+    public void Update(Patient patient)
+    {
+        if (Validate(patient))
+        {
+            _ = database.Update(patient);
+            _ = database.SaveChanges();
+        }
+    }
+
+    public async Task UpdateAsync(Patient patient)
+    {
+        if (Validate(patient))
+        {
+            _ = database.Update(patient);
+            _ = await database.SaveChangesAsync();
         }
     }
 
@@ -51,13 +81,5 @@ public class PatientService(IPatientRepository patientRepository) : IPatientServ
         }
 
         return true;
-    }
-
-    public void Update(Patient patient)
-    {
-        if (Validate(patient))
-        {
-            patientRepository.Update(patient);
-        }
     }
 }

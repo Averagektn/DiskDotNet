@@ -58,6 +58,9 @@
             <DataTemplate DataType="{x:Type viewmodels:SessionResultViewModel}">
                 <views:SessionResultView/>
             </DataTemplate>
+            <DataTemplate DataType="{x:Type viewmodels:QuestionViewModel}">
+                <views:QuestionView/>
+            </DataTemplate>
         </Grid.Resources>
 
         <modalcontrol:Modal Panel.ZIndex="2" IsOpen="{Binding IsModalOpen}">

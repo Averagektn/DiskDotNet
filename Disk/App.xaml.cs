@@ -47,7 +47,6 @@ public partial class App : Application
         _ = services.AddSingleton<IMapRepository, MapRepository>();
         _ = services.AddSingleton<IPathInTargetRepository, PathInTargetRepository>();
         _ = services.AddSingleton<IPathToTargetRepository, PathToTargetRepository>();
-        _ = services.AddSingleton<IPatientRepository, PatientRepository>();
         _ = services.AddSingleton<ISessionRepository, SessionRepository>();
         _ = services.AddSingleton<ISessionResultRepository, SessionResultRepository>();
 
@@ -68,6 +67,7 @@ public partial class App : Application
         // New state
         _ = services.AddTransient<MapNamePickerViewModel>();
         _ = services.AddTransient<AddPatientViewModel>();
+        _ = services.AddTransient<QuestionViewModel>();
         _ = services.AddTransient<PaintViewModel>();
         _ = services.AddTransient<EditPatientViewModel>();
         

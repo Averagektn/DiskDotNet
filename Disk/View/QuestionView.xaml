@@ -1,0 +1,41 @@
+﻿<UserControl x:Class="Disk.View.QuestionView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Disk.View"
+             mc:Ignorable="d" 
+             xmlns:lang="clr-namespace:Disk.Properties.Langs.Question"
+             xmlns:viewmodel="clr-namespace:Disk.ViewModel" 
+             d:DataContext="{d:DesignInstance Type=viewmodel:QuestionViewModel}"
+             d:DesignHeight="450" d:DesignWidth="450">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <TextBlock
+            Grid.Column="0"
+            Grid.ColumnSpan="2"
+            FontSize="25"
+            Text="{Binding Message}"
+            Margin="15"
+            HorizontalAlignment="Left"/>
+
+        <Button 
+            Grid.Row="1"
+            Grid.Column="0"
+            Content="{x:Static lang:QuestionLocalization.Confirm}" 
+            Command="{Binding ConfirmCommand}"/>
+
+        <Button 
+            Grid.Row="1"
+            Grid.Column="1"
+            Content="{x:Static lang:QuestionLocalization.Cancel}" 
+            Command="{Binding CancelCommand}"                    />
+    </Grid>
+</UserControl>

@@ -35,6 +35,7 @@ public class MainViewModel : ObserverViewModel
         {
             _navigationStore.Close();
         }
+        _navigationStore.Close();
         while (_modalNavigationStore.CanClose)
         {
             _modalNavigationStore.Close();

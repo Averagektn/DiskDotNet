@@ -60,7 +60,7 @@ public partial class DiskContext : DbContext
                 .HasForeignKey(d => d.Patient)
                 .OnDelete(DeleteBehavior.Cascade);
             _ = entity.HasOne(d => d.MapNavigation).WithMany(p => p.Appointments)
-                .HasForeignKey(d => d.PatientNavigation)
+                .HasForeignKey(d => d.Map)
                 .OnDelete(DeleteBehavior.Restrict);
         });
 
@@ -135,6 +135,8 @@ public partial class DiskContext : DbContext
                 .UseCollation("NOCASE")
                 .HasColumnType("TEXT (30)")
                 .HasColumnName("pat_surname");
+            _ = entity.HasIndex(p => p.PhoneMobile).IsUnique();
+            _ = entity.HasIndex(p => p.PhoneHome).IsUnique();
         });
 
         _ = modelBuilder.Entity<Session>(entity =>

@@ -110,6 +110,11 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>PatientsLocalization.resx</DependentUpon>
     </Compile>
+    <Compile Update="Properties\Langs\Question\QuestionLocalization.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>QuestionLocalization.resx</DependentUpon>
+    </Compile>
     <Compile Update="Properties\Langs\RepositoryException\RepositoryExceptionLocalization.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
@@ -204,6 +209,10 @@
     </EmbeddedResource>
     <EmbeddedResource Update="Properties\Langs\Patients\PatientsLocalization.ru-RU.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Properties\Langs\Question\QuestionLocalization.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>QuestionLocalization.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Update="Properties\Langs\RepositoryException\RepositoryExceptionLocalization.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>

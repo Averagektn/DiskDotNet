@@ -1,9 +1,11 @@
-﻿using Disk.Entities;
+﻿using Disk.Db.Context;
+using Disk.Entities;
 using Disk.Navigators;
-using Disk.Repository.Interface;
 using Disk.Stores;
+using Disk.ViewModel.Common.Commands.Async;
 using Disk.ViewModel.Common.Commands.Sync;
 using Disk.ViewModel.Common.ViewModels;
+using Microsoft.EntityFrameworkCore;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
 
@@ -11,12 +13,21 @@ namespace Disk.ViewModel;
 
 public class PatientsViewModel : ObserverViewModel
 {
-    private const int PatientsPerPage = 15;
+    private const int PatientsPerPage = 3;
+
     public Patient? SelectedPatient { get; set; }
 
-    private int TotalPages => (int)float.Ceiling((float)_patientRepository.GetPatientsCount() / PatientsPerPage);
+    private int TotalPages
+    {
+        get
+        {
+            var patientsCount = _database.Patients.Count();
 
-    private bool _isNextEnabled;
+            return (int)Math.Ceiling((double)patientsCount / PatientsPerPage);
+        }
+    }
+
+    private bool _isNextEnabled = false;
     public bool IsNextEnabled { get => _isNextEnabled; set => SetProperty(ref _isNextEnabled, value); }
 
     private bool _isPrevEnabled = false;
@@ -41,37 +52,34 @@ public class PatientsViewModel : ObserverViewModel
 
     private readonly NavigationStore _navigationStore;
     private readonly ModalNavigationStore _modalNavigationStore;
-    private readonly IPatientRepository _patientRepository;
-    public PatientsViewModel(NavigationStore navigationStore, ModalNavigationStore modalNavigationStore,
-        IPatientRepository patientRepository)
+    private readonly DiskContext _database;
+    public PatientsViewModel(NavigationStore navigationStore, ModalNavigationStore modalNavigationStore, DiskContext database)
     {
         _navigationStore = navigationStore;
         _modalNavigationStore = modalNavigationStore;
-        _patientRepository = patientRepository;
+        _database = database;
 
-        SortedPatients = [.. _patientRepository.GetPatientsPage(PageNum - 1, PatientsPerPage)];
-        IsNextEnabled = (int)float.Ceiling((float)patientRepository.GetPatientsCount() / PatientsPerPage) > 1;
+        GetPagedPatients();
+        IsNextEnabled = TotalPages > 1;
     }
 
-    public ICommand SearchCommand => new Command(_ =>
+    public ICommand SearchCommand => new AsyncCommand(async _ =>
     {
         if (SearchText != string.Empty)
         {
             var nsp = SearchText.Split(" ", StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries);
-            var surname = nsp[0];
-            var name = string.Empty;
-            var patronymic = string.Empty;
 
-            if (nsp.Length > 1)
+            var query = _database.Patients.AsQueryable();
+
+            foreach (var word in nsp)
             {
-                name = nsp[1];
-                if (nsp.Length > 2)
-                {
-                    patronymic = nsp[2];
-                }
+                query = query.Where(p =>
+                    EF.Functions.Like(p.Name.ToLower(), $"%{word.ToLower()}%") ||
+                    EF.Functions.Like(p.Surname.ToLower(), $"%{word.ToLower()}%") ||
+                    (p.Patronymic != null && EF.Functions.Like(p.Patronymic.ToLower(), $"%{word.ToLower()}%")));
             }
-            var patients = _patientRepository.GetPatientsByFullname(name, surname, patronymic);
 
+            var patients = await query.OrderByDescending(p => p.Id).ToListAsync();
             SortedPatients = [.. patients];
         }
         else
@@ -80,25 +88,26 @@ public class PatientsViewModel : ObserverViewModel
         }
     });
 
-    public ICommand SelectPatientCommand => new Command(_ =>
+    public ICommand SelectPatientCommand => new AsyncCommand(async _ =>
     {
         if (SelectedPatient is not null)
         {
+            _ = await _database.SaveChangesAsync();
             AppointmentsListNavigator.NavigateWithBar(_navigationStore, SelectedPatient);
         }
     });
 
-    public ICommand AddPatientCommand => new Command(_ =>
-        AddPatientNavigator.Navigate(_modalNavigationStore, patient => SortedPatients = [.. SortedPatients.Prepend(patient)]));
+    public ICommand AddPatientCommand => new Command(_ => AddPatientNavigator.Navigate(_modalNavigationStore));
 
-    public ICommand DeletePatientCommand => new Command(_ =>
+    public ICommand DeletePatientCommand => new AsyncCommand(async _ =>
     {
         if (SelectedPatient is null)
         {
             return;
         }
 
-        _patientRepository.Delete(SelectedPatient);
+        _ = _database.Patients.Remove(SelectedPatient);
+        _ = await _database.SaveChangesAsync();
         _ = SortedPatients.Remove(SelectedPatient);
 
         if (SortedPatients.Count == 0 && PageNum > 1)
@@ -123,40 +132,49 @@ public class PatientsViewModel : ObserverViewModel
             return;
         }
 
-        EditPatientNavigator.Navigate(_modalNavigationStore, GetPagedPatients, SelectedPatient);
+        EditPatientNavigator.Navigate(_modalNavigationStore, SelectedPatient);
     });
 
     public ICommand NextPageCommand => new Command(_ =>
     {
         SearchText = string.Empty;
-
         PageNum++;
-        IsNextEnabled = PageNum < TotalPages;
-        IsPrevEnabled = true;
-
         GetPagedPatients();
     });
 
     public ICommand PrevPageCommand => new Command(_ =>
     {
         SearchText = string.Empty;
-
         PageNum--;
-        IsPrevEnabled = PageNum > 1;
-        IsNextEnabled = true;
-
         GetPagedPatients();
     });
 
     private void GetPagedPatients()
     {
-        SortedPatients = [.. _patientRepository.GetPatientsPage(PageNum - 1, PatientsPerPage)];
+        SortedPatients =
+        [..
+            _database.Patients
+            .OrderByDescending(p => p.Id)
+            .Skip(PatientsPerPage * (PageNum - 1))
+            .Take(PatientsPerPage)
+        ];
+        IsPrevEnabled = PageNum > 1;
+        IsNextEnabled = PageNum < TotalPages;
     }
 
     public override void Refresh()
     {
         base.Refresh();
 
+        _ = _database.SaveChanges();
         GetPagedPatients();
+    }
+
+    public override void Dispose()
+    {
+        base.Dispose();
+        GC.SuppressFinalize(this);
+
+        _database.SaveChanges();
     }
 }

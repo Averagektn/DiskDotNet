@@ -1,20 +1,32 @@
-﻿using Disk.Entities;
+﻿using Disk.Db.Context;
+using Disk.Entities;
+using Disk.Navigators;
 using Disk.Properties.Langs.AddPatient;
-using Disk.Repository.Exceptions;
 using Disk.Service.Exceptions;
 using Disk.Service.Interface;
+using Disk.Stores;
 using Disk.ViewModel.Common.Commands.Async;
 using Disk.ViewModel.Common.Commands.Sync;
 using Disk.ViewModel.Common.ViewModels;
+using Microsoft.EntityFrameworkCore;
 using Serilog;
 using System.Windows.Input;
 using System.Windows.Media;
 
 namespace Disk.ViewModel;
 
-public class AddPatientViewModel(IPatientService patientService) : PopupViewModel
+public class AddPatientViewModel(IPatientService patientService, ModalNavigationStore modalNavigationStore, DiskContext database) 
+    : PopupViewModel
 {
-    public event Action<Patient>? OnAddEvent;
+    private Patient _patient = new()
+    {
+        DateOfBirth = string.Empty,
+        Name = string.Empty,
+        PhoneHome = string.Empty,
+        PhoneMobile = string.Empty,
+        Surname = string.Empty
+    };
+    public Patient Patient { get => _patient; set => SetProperty(ref _patient, value); }
 
     private DateTime? _dateOfBirth = null;
     public DateTime? DateOfBirth
@@ -31,81 +43,82 @@ public class AddPatientViewModel(IPatientService patientService) : PopupViewMode
         }
     }
 
-    private Brush _bgName = new SolidColorBrush(Colors.White);
+    private Brush _bgName = Brushes.White;
     public Brush BgName { get => _bgName; set => SetProperty(ref _bgName, value); }
 
-    private Brush _bgSurname = new SolidColorBrush(Colors.White);
+    private Brush _bgSurname = Brushes.White;
     public Brush BgSurname { get => _bgSurname; set => SetProperty(ref _bgSurname, value); }
 
-    private Brush _bgDateOfBirth = new SolidColorBrush(Colors.White);
+    private Brush _bgDateOfBirth = Brushes.White;
     public Brush BgDateOfBirth { get => _bgDateOfBirth; set => SetProperty(ref _bgDateOfBirth, value); }
 
-    private Brush _bgMobilePhone = new SolidColorBrush(Colors.White);
+    private Brush _bgMobilePhone = Brushes.White;
     public Brush BgMobilePhone { get => _bgMobilePhone; set => SetProperty(ref _bgMobilePhone, value); }
 
-    private Brush _bgHomePhone = new SolidColorBrush(Colors.White);
+    private Brush _bgHomePhone = Brushes.White;
     public Brush BgHomePhone { get => _bgHomePhone; set => SetProperty(ref _bgHomePhone, value); }
 
-    public ICommand NameFocusCommand => new Command(_ => BgName = new SolidColorBrush(Colors.White));
-    public ICommand SurnameFocusCommand => new Command(_ => BgSurname = new SolidColorBrush(Colors.White));
-    public ICommand DateOfBirthFocusCommand => new Command(_ => BgDateOfBirth = new SolidColorBrush(Colors.White));
-    public ICommand MobilePhoneFocusCommand => new Command(_ => BgMobilePhone = new SolidColorBrush(Colors.White));
-    public ICommand HomePhoneFocusCommand => new Command(_ => BgHomePhone = new SolidColorBrush(Colors.White));
-    public virtual ICommand AddPatientCommand => new AsyncCommand(AddPatient);
+    public ICommand NameFocusCommand => new Command(_ => BgName = Brushes.White);
+
+    public ICommand SurnameFocusCommand => new Command(_ => BgSurname = Brushes.White);
+
+    public ICommand DateOfBirthFocusCommand => new Command(_ => BgDateOfBirth = Brushes.White);
+
+    public ICommand MobilePhoneFocusCommand => new Command(_ => BgMobilePhone = Brushes.White);
+
+    public ICommand HomePhoneFocusCommand => new Command(_ => BgHomePhone = Brushes.White);
+
     public virtual ICommand CancelCommand => new Command(_ => IniNavigationStore.Close());
 
-    private Patient _patient = new()
-    {
-        DateOfBirth = string.Empty,
-        Name = string.Empty,
-        PhoneHome = string.Empty,
-        PhoneMobile = string.Empty,
-        Surname = string.Empty
-    };
-    public Patient Patient { get => _patient; set => SetProperty(ref _patient, value); }
-
-    private async Task AddPatient(object? arg)
+    public virtual ICommand AddPatientCommand => new AsyncCommand(async _ =>
     {
         bool success = false;
 
         try
         {
-            await patientService.AddPatientAsync(Patient);
+            await patientService.AddAsync(Patient);
             success = true;
         }
-        catch (DuplicateEntityException ex)
+        catch (DbUpdateException ex)
         {
             Log.Error(ex.Message);
             await ShowPopup(AddPatientLocalization.ErrorHeader, AddPatientLocalization.Duplication);
         }
+        catch (PossibleDuplicateEntityException ex)
+        {
+            Log.Error(ex.Message);
+            QuestionNavigator.Navigate(modalNavigationStore, message: "Possible duplicate", 
+                onConfirm: () => { database.Add(Patient); IniNavigationStore.Close(); }, 
+                onCancel: null);
+        }
         catch (InvalidNameException ex)
         {
             Log.Error(ex.Message);
-            BgName = new SolidColorBrush(Colors.Red);
+            BgName = Brushes.Red;
             await ShowPopup(AddPatientLocalization.ErrorHeader, ex.Output);
         }
         catch (InvalidSurnameException ex)
         {
             Log.Error(ex.Message);
-            BgSurname = new SolidColorBrush(Colors.Red);
+            BgSurname = Brushes.Red;
             await ShowPopup(AddPatientLocalization.ErrorHeader, ex.Output);
         }
         catch (InvalidDateException ex)
         {
             Log.Error(ex.Message);
-            BgDateOfBirth = new SolidColorBrush(Colors.Red);
+            BgDateOfBirth = Brushes.Red;
             await ShowPopup(AddPatientLocalization.ErrorHeader, ex.Output);
         }
         catch (InvalidPhoneNumberException ex)
         {
             Log.Error(ex.Message);
-            BgMobilePhone = new SolidColorBrush(Colors.Red);
+            BgMobilePhone = Brushes.Red;
             await ShowPopup(AddPatientLocalization.ErrorHeader, ex.Output);
         }
         catch (InvalidHomePhoneException ex)
         {
             Log.Error(ex.Message);
-            BgHomePhone = new SolidColorBrush(Colors.Red);
+            BgHomePhone = Brushes.Red;
             await ShowPopup(AddPatientLocalization.ErrorHeader, ex.Output);
         }
         catch (Exception ex)
@@ -116,8 +129,8 @@ public class AddPatientViewModel(IPatientService patientService) : PopupViewMode
 
         if (success)
         {
-            OnAddEvent?.Invoke(Patient);
+            // add
             IniNavigationStore.Close();
         }
-    }
+    });
 }

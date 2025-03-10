@@ -1,30 +1,26 @@
-﻿using Disk.Entities;
+﻿using Disk.Db.Context;
+using Disk.Entities;
+using Disk.Navigators;
 using Disk.Properties.Langs.AddPatient;
 using Disk.Service.Exceptions;
 using Disk.Service.Interface;
+using Disk.Stores;
 using Disk.ViewModel.Common.Commands.Async;
-using Disk.ViewModel.Common.Commands.Sync;
+using Microsoft.EntityFrameworkCore;
 using Serilog;
 using System.Windows.Input;
 using System.Windows.Media;
 
 namespace Disk.ViewModel;
 
-public class EditPatientViewModel(IPatientService patientService) : AddPatientViewModel(patientService)
+public class EditPatientViewModel(IPatientService patientService, ModalNavigationStore modalNavigationStore, DiskContext database) 
+    : AddPatientViewModel(patientService, modalNavigationStore, database)
 {
-    public event Action? AfterUpdateEvent;
     public required Patient AttachedPatient;
     private readonly IPatientService _patientService = patientService;
-
-    public override ICommand AddPatientCommand => new AsyncCommand(UpdatePatient);
-
-    public override ICommand CancelCommand => new Command(_ =>
-    {
-        AfterUpdateEvent?.Invoke();
-        base.CancelCommand.Execute(null);
-    });
-
-    private async Task UpdatePatient(object? obj)
+    private readonly ModalNavigationStore _modalNavigationStore = modalNavigationStore;
+    private readonly DiskContext _database = database;
+    public override ICommand AddPatientCommand => new AsyncCommand(async _ =>
     {
         bool success = false;
 
@@ -39,6 +35,18 @@ public class EditPatientViewModel(IPatientService patientService) : AddPatientVi
         {
             _patientService.Update(AttachedPatient);
             success = true;
+        }
+        catch (DbUpdateException ex)
+        {
+            Log.Error(ex.Message);
+            await ShowPopup(AddPatientLocalization.ErrorHeader, AddPatientLocalization.Duplication);
+        }
+        catch (PossibleDuplicateEntityException ex)
+        {
+            Log.Information(ex.Message);
+            QuestionNavigator.Navigate(_modalNavigationStore, message: "Possible duplicate",
+                onConfirm: () => { _database.Update(Patient); IniNavigationStore.Close(); },
+                onCancel: null);
         }
         catch (InvalidNameException ex)
         {
@@ -79,7 +87,6 @@ public class EditPatientViewModel(IPatientService patientService) : AddPatientVi
         if (success)
         {
             IniNavigationStore.Close();
-            AfterUpdateEvent?.Invoke();
         }
-    }
+    });
 }
