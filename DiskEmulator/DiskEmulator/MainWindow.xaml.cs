@@ -62,7 +62,7 @@ public partial class MainWindow : Window
                 _socket.Bind(new IPEndPoint(IPAddress.Any, 9998));
                 _socket.Listen(10);
 
-                while (true)
+                while (!_finish)
                 {
                     var handler = _socket.Accept();
                     new Thread(() =>

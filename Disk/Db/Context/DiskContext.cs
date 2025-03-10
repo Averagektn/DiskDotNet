@@ -53,12 +53,15 @@ public partial class DiskContext : DbContext
             _ = entity.ToTable("appointment");
 
             _ = entity.Property(e => e.Id).HasColumnName("app_id");
-            _ = entity.Property(e => e.DateTime).HasColumnName("app_date_time");
+            _ = entity.Property(e => e.Map).HasColumnName("app_map");
             _ = entity.Property(e => e.Patient).HasColumnName("app_patient");
 
             _ = entity.HasOne(d => d.PatientNavigation).WithMany(p => p.Appointments)
                 .HasForeignKey(d => d.Patient)
                 .OnDelete(DeleteBehavior.Cascade);
+            _ = entity.HasOne(d => d.MapNavigation).WithMany(p => p.Appointments)
+                .HasForeignKey(d => d.PatientNavigation)
+                .OnDelete(DeleteBehavior.Restrict);
         });
 
         _ = modelBuilder.Entity<Map>(entity =>
@@ -146,7 +149,6 @@ public partial class DiskContext : DbContext
             _ = entity.Property(e => e.Appointment).HasColumnName("ses_appointment");
             _ = entity.Property(e => e.DateTime).HasColumnName("ses_date_time");
             _ = entity.Property(e => e.LogFilePath).HasColumnName("ses_log_file_path");
-            _ = entity.Property(e => e.Map).HasColumnName("ses_map");
             _ = entity.Property(e => e.MaxXAngle).HasColumnName("ses_max_x_angle");
             _ = entity.Property(e => e.MaxYAngle).HasColumnName("ses_max_y_angle");
             _ = entity.Property(e => e.TargetRadius).HasColumnName("ses_target_radius");
@@ -155,10 +157,6 @@ public partial class DiskContext : DbContext
             _ = entity.HasOne(d => d.AppointmentNavigation).WithMany(p => p.Sessions)
                 .HasForeignKey(d => d.Appointment)
                 .OnDelete(DeleteBehavior.Cascade);
-
-            _ = entity.HasOne(d => d.MapNavigation).WithMany(p => p.Sessions)
-                .HasForeignKey(d => d.Map)
-                .OnDelete(DeleteBehavior.Restrict);
         });
 
         _ = modelBuilder.Entity<SessionResult>(entity =>

@@ -18,7 +18,6 @@ public class SessionRepository(DiskContext diskContext) : CrudRepository<Session
         return [.. Table.Where(s => s.Appointment == appointmentId)
                 .Include(s => s.PathInTargets)
                 .Include(s => s.PathToTargets)
-                .Include(s => s.SessionResult)
-                .Include(s => s.MapNavigation)];
+                .Include(s => s.SessionResult)];
     }
 }

@@ -16,11 +16,11 @@ public class ExcelFiller(IMapRepository mapRepository) : IExcelFiller
 {
     private const int ColsPerPath = 7;
 
-    public void ExportToExcel(IEnumerable<Session> sessions, Patient patient)
+    public void ExportToExcel(Appointment appointment, Patient patient)
     {
         using var workbook = new XLWorkbook();
 
-        FillExcel(workbook, sessions);
+        FillExcel(workbook, appointment);
 
         var saveFileDialog = new SaveFileDialog
         {
@@ -46,9 +46,9 @@ public class ExcelFiller(IMapRepository mapRepository) : IExcelFiller
         }
     }
 
-    private void FillExcel(XLWorkbook workbook, IEnumerable<Session> sessions)
+    private void FillExcel(XLWorkbook workbook, Appointment appointment)
     {
-        foreach (var session in sessions)
+        foreach (var session in appointment.Sessions)
         {
             var worksheet = workbook.Worksheets.Add();
 
@@ -56,7 +56,7 @@ public class ExcelFiller(IMapRepository mapRepository) : IExcelFiller
             worksheet.Cell(1, 2).Value = Localization.Map;
 
             worksheet.Cell(2, 1).Value = session.DateTime;
-            worksheet.Cell(2, 2).Value = mapRepository.GetById(session.Map).Name;
+            worksheet.Cell(2, 2).Value = mapRepository.GetById(appointment.Map).Name;
 
             worksheet.Cell(4, 1).Value = $"{Localization.Deviation} X";
             worksheet.Cell(4, 2).Value = $"{Localization.Deviation} Y";
@@ -112,7 +112,7 @@ public class ExcelFiller(IMapRepository mapRepository) : IExcelFiller
     private static void FillPtts(IXLWorksheet worksheet, Session session, int pathCol)
     {
         var ptts = session.PathToTargets;
-        var mapCenters = JsonConvert.DeserializeObject<List<Point2D<float>>>(session.MapNavigation.CoordinatesJson)!;
+        var mapCenters = JsonConvert.DeserializeObject<List<Point2D<float>>>(session.AppointmentNavigation.MapNavigation.CoordinatesJson)!;
 
         int pttRow = 8;
         foreach (var ptt in ptts)
@@ -134,7 +134,7 @@ public class ExcelFiller(IMapRepository mapRepository) : IExcelFiller
     private static void FillPits(IXLWorksheet worksheet, Session session, int pathCol)
     {
         var pits = session.PathInTargets;
-        var mapCenters = JsonConvert.DeserializeObject<List<Point2D<float>>>(session.MapNavigation.CoordinatesJson)!;
+        var mapCenters = JsonConvert.DeserializeObject<List<Point2D<float>>>(session.AppointmentNavigation.MapNavigation.CoordinatesJson)!;
 
         foreach (var pit in pits)
         {

@@ -4,9 +4,11 @@ public partial class Appointment
 {
     public long Id { get; set; }
 
-    public string DateTime { get; set; } = null!;
+    public long Map { get; set; }
 
     public long Patient { get; set; }
+
+    public virtual Map MapNavigation { get; set; } = null!;
 
     public virtual Patient PatientNavigation { get; set; } = null!;
 

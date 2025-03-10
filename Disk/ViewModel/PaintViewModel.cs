@@ -30,7 +30,7 @@ public class PaintViewModel : PopupViewModel
         set
         {
             _currentSession = value;
-            TargetCenters = JsonConvert.DeserializeObject<List<Point2D<float>>>(_currentSession.MapNavigation.CoordinatesJson) ?? [];
+            TargetCenters = JsonConvert.DeserializeObject<List<Point2D<float>>>(_currentSession.AppointmentNavigation.MapNavigation.CoordinatesJson) ?? [];
         }
     }
 
@@ -162,8 +162,6 @@ public class PaintViewModel : PopupViewModel
 
         IsGame = false;
         DiskNetworkThread.Join();
-
-        //OnSessionOver?.Invoke();
 
         if (connectionFailed)
         {

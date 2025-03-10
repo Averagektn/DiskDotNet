@@ -71,7 +71,6 @@ public class StartSessionViewModel : ObserverViewModel
             Appointment = Appointment.Id,
             DateTime = DateTime.Now.ToString("dd.MM.yyyy", CultureInfo.InvariantCulture),
             LogFilePath = logPath,
-            Map = SelectedMap!.Id,
             MaxXAngle = Settings.XMaxAngle,
             MaxYAngle = Settings.YMaxAngle,
             CursorRadius = Settings.IniUserRadius,

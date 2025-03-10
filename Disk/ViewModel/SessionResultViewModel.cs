@@ -39,7 +39,7 @@ public class SessionResultViewModel(NavigationStore navigationStore) : ObserverV
         set
         {
             _currentSession = value;
-            TargetCenters = JsonConvert.DeserializeObject<List<Point2D<float>>>(CurrentSession.MapNavigation.CoordinatesJson)!;
+            TargetCenters = JsonConvert.DeserializeObject<List<Point2D<float>>>(CurrentSession.AppointmentNavigation.MapNavigation.CoordinatesJson)!;
             PathsToTargets = CurrentSession.PathToTargets
                 .Select(ptt => JsonConvert.DeserializeObject<List<Point2D<float>>>(ptt.CoordinatesJson)!)
                 .ToList() ?? [];

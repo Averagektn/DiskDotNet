@@ -11,7 +11,7 @@ namespace Disk.ViewModel;
 
 public class PatientsViewModel : ObserverViewModel
 {
-    private const int PatientsPerPage = 18;
+    private const int PatientsPerPage = 15;
     public Patient? SelectedPatient { get; set; }
 
     private int TotalPages => (int)float.Ceiling((float)_patientRepository.GetPatientsCount() / PatientsPerPage);

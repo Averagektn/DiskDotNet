@@ -49,7 +49,7 @@ public class AppointmentViewModel(ISessionRepository sessionRepository, IExcelFi
     
     public ICommand SessionSelectedCommand => new Command(SessionSelected);
     
-    public ICommand ExportToExcelCommand => new Command(_ => excelFiller.ExportToExcel(Sessions, Patient));
+    public ICommand ExportToExcelCommand => new Command(_ => excelFiller.ExportToExcel(Appointment, Patient));
 
     public ICommand ShowSessionCommand => new AsyncCommand(async _ =>
     {

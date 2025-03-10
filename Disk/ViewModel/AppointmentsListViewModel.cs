@@ -113,14 +113,6 @@ public class AppointmentsListViewModel(NavigationStore navigationStore, IAppoint
         UpdateAppointments();
     });
 
-    public ICommand SearchByDateCommand => new Command(_ =>
-    {
-        if (SelectedDate is not null)
-        {
-            Appointments = [.. appointmentRepository.GetAppoitmentsByDate(Patient.Id, SelectedDate.Value.Date)];
-        }
-    });
-
     private void UpdateAppointments()
     {
         Appointments = [.. appointmentRepository.GetPagedAppointments(Patient.Id, currPage, AppointmentsPerPage)];
@@ -131,7 +123,6 @@ public class AppointmentsListViewModel(NavigationStore navigationStore, IAppoint
     {
         var appointment = new Appointment()
         {
-            DateTime = DateTime.Now.ToString("dd.MM.yyyy HH:mm:ss", CultureInfo.InvariantCulture),
             Patient = Patient.Id
         };
 
