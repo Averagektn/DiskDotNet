@@ -1,20 +1,20 @@
-﻿using Disk.Entities;
+﻿using Disk.Db.Context;
+using Disk.Entities;
 using Disk.Navigators;
-using Disk.Repository.Interface;
 using Disk.Stores;
 using Disk.ViewModel.Common.Commands.Async;
 using Disk.ViewModel.Common.Commands.Sync;
 using Disk.ViewModel.Common.ViewModels;
+using Microsoft.EntityFrameworkCore;
 using System.Collections.ObjectModel;
-using System.Globalization;
 using System.Windows.Input;
 
 namespace Disk.ViewModel;
 
-public class AppointmentsListViewModel(NavigationStore navigationStore, IAppointmentRepository appointmentRepository,
-    ISessionRepository sessionRepository) : ObserverViewModel
+public class AppointmentsListViewModel(DiskContext database, NavigationStore navigationStore) : ObserverViewModel
 {
     private const int AppointmentsPerPage = 15;
+    private int _currPage;
     public Appointment? SelectedAppointment { get; set; }
 
     private Patient _patient = null!;
@@ -25,14 +25,17 @@ public class AppointmentsListViewModel(NavigationStore navigationStore, IAppoint
         {
             _patient = value;
 
-            Appointments = [.. appointmentRepository.GetPagedAppointments(Patient.Id, currPage, AppointmentsPerPage)];
+            _ = Task.Run(async () =>
+            {
+                await UpdateAppointmentsAsync();
 
-            IsNextEnabled = currPage < PagesCount - 1;
+                IsNextEnabled = _currPage < TotalPages - 1;
+            });
         }
     }
 
     private ObservableCollection<Appointment> _appointments = [];
-    public ObservableCollection<Appointment> Appointments 
+    public ObservableCollection<Appointment> Appointments
     {
         get => _appointments;
         set => SetProperty(ref _appointments, value);
@@ -47,14 +50,23 @@ public class AppointmentsListViewModel(NavigationStore navigationStore, IAppoint
     private bool _isPreviousEnabled;
     public bool IsPreviousEnabled { get => _isPreviousEnabled; set => SetProperty(ref _isPreviousEnabled, value); }
 
-    private int currPage;
-    private int PagesCount => (int)float.Ceiling((float)appointmentRepository.GetAppointmentsCount(Patient.Id) / AppointmentsPerPage);
+    private int TotalPages
+    {
+        get
+        {
+            var appointmentsCount = database.Appointments.Count();
 
-    public ICommand StartAppointmentCommand => new AsyncCommand(StartAppointmentAsync);
-    public ICommand CancelDateCommand => new Command(_ =>
+            return (int)Math.Ceiling((double)appointmentsCount / AppointmentsPerPage);
+        }
+    }
+
+    /*    public ICommand StartAppointmentCommand => new Command(_ => 
+            StartSessionNavigator.NavigateWithBar(navigationStore, Patient, appointment));*/
+
+    public ICommand CancelDateCommand => new AsyncCommand(async _ =>
     {
         SelectedDate = null;
-        UpdateAppointments();
+        await UpdateAppointmentsAsync();
     });
 
     public ICommand ToAppointmentCommand => new Command(_ =>
@@ -64,84 +76,71 @@ public class AppointmentsListViewModel(NavigationStore navigationStore, IAppoint
             return;
         }
 
-        var sessions = sessionRepository.GetSessionsWithResultsByAppointment(SelectedAppointment.Id).ToList();
-        AppointmentNavigator.NavigateWithBar(navigationStore, sessions, Patient, SelectedAppointment);
+        AppointmentNavigator.NavigateWithBar(navigationStore, Patient, SelectedAppointment);
     });
 
-    public ICommand DeleteAppointmentCommand => new Command(_ =>
+    public ICommand DeleteAppointmentCommand => new AsyncCommand(async _ =>
     {
         if (SelectedAppointment is null)
         {
             return;
         }
 
-        appointmentRepository.Delete(SelectedAppointment);
+        _ = database.Appointments.Remove(SelectedAppointment);
         _ = Appointments.Remove(SelectedAppointment);
         OnPropertyChanged(nameof(Appointments));
 
-        if (Appointments.Count == 0 && currPage > 0)
+        if (Appointments.Count == 0 && _currPage > 0)
         {
-            currPage--;
+            _currPage--;
         }
 
-        IsPreviousEnabled = currPage > 0;
-        IsNextEnabled = currPage < PagesCount - 1;
+        IsPreviousEnabled = _currPage > 0;
+        IsNextEnabled = _currPage < TotalPages - 1;
 
         SelectedDate = null;
-        UpdateAppointments();
+        await UpdateAppointmentsAsync();
     });
 
-    public ICommand NextPageCommand => new Command(_ =>
+    public ICommand NextPageCommand => new AsyncCommand(async _ =>
     {
-        currPage++;
+        _currPage++;
         IsPreviousEnabled = true;
-        IsNextEnabled = currPage < PagesCount - 1;
+        IsNextEnabled = _currPage < TotalPages - 1;
 
         SelectedDate = null;
 
-        UpdateAppointments();
+        await UpdateAppointmentsAsync();
     });
 
-    public ICommand PrevPageCommand => new Command(_ =>
+    public ICommand PrevPageCommand => new AsyncCommand(async _ =>
     {
-        currPage--;
-        IsPreviousEnabled = currPage > 0;
+        _currPage--;
+        IsPreviousEnabled = _currPage > 0;
         IsNextEnabled = true;
 
         SelectedDate = null;
 
-        UpdateAppointments();
+        await UpdateAppointmentsAsync();
     });
 
-    private void UpdateAppointments()
+    private async Task UpdateAppointmentsAsync()
     {
-        Appointments = [.. appointmentRepository.GetPagedAppointments(Patient.Id, currPage, AppointmentsPerPage)];
-        OnPropertyChanged(nameof(Appointments));
-    }
-
-    private async Task StartAppointmentAsync(object? arg)
-    {
-        var appointment = new Appointment()
-        {
-            Patient = Patient.Id
-        };
-
-        await appointmentRepository.AddAsync(appointment);
-
-        currPage = 0;
-        IsPreviousEnabled = false;
-        IsNextEnabled = currPage < PagesCount - 1;
-        UpdateAppointments();
-
-
-        var sessions = sessionRepository.GetSessionsWithResultsByAppointment(appointment.Id).ToList();
-        AppointmentNavigator.NavigateWithBar(navigationStore, sessions, Patient, appointment);
+        Appointments =
+        [..
+            await database.Appointments
+                .Where(a => a.Patient == Patient.Id)
+                .OrderByDescending(a => a.Id)
+                .Skip(AppointmentsPerPage * (_currPage - 1))
+                .Take(AppointmentsPerPage)
+                .ToListAsync()
+        ];
     }
 
     public override void Refresh()
     {
         base.Refresh();
 
-        UpdateAppointments();
+        _ = Task.Run(UpdateAppointmentsAsync);
     }
 }

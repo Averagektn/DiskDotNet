@@ -7,29 +7,26 @@ namespace Disk.Navigators;
 
 public class AppointmentNavigator : INavigator
 {
-    public static void Navigate(INavigationStore navigationStore, List<Session> sessions, Patient patient, Appointment appointment)
+    public static void Navigate(INavigationStore navigationStore, Patient patient, Appointment appointment)
     {
         navigationStore.SetViewModel<AppointmentViewModel>(vm =>
         {
             vm.IniNavigationStore = navigationStore;
             vm.Appointment = appointment;
             vm.Patient = patient;
-            vm.Sessions = [.. sessions];
         });
     }
 
-    public static void NavigateAndClose(INavigationStore navigationStore, List<Session> sessions, Patient patient,  
-        Appointment appointment)
+    public static void NavigateAndClose(INavigationStore navigationStore, Patient patient, Appointment appointment)
     {
         if (navigationStore.CanClose)
         {
             navigationStore.Close();
-            Navigate(navigationStore, sessions, patient, appointment);
+            Navigate(navigationStore, patient, appointment);
         }
     }
 
-    public static void NavigateWithBar(INavigationStore navigationStore, List<Session> sessions, Patient patient,
-        Appointment appointment)
+    public static void NavigateWithBar(INavigationStore navigationStore, Patient patient, Appointment appointment)
     {
         navigationStore.SetViewModel<NavigationBarLayoutViewModel>(vm =>
         {
@@ -38,18 +35,16 @@ public class AppointmentNavigator : INavigator
             {
                 vm.Appointment = appointment;
                 vm.Patient = patient;
-                vm.Sessions = [.. sessions];
             });
         });
     }
 
-    public static void NavigateWithBarAndClose(INavigationStore navigationStore, List<Session> sessions, Patient patient, 
-        Appointment appointment)
+    public static void NavigateWithBarAndClose(INavigationStore navigationStore, Patient patient, Appointment appointment)
     {
         if (navigationStore.CanClose)
         {
             navigationStore.Close();
-            NavigateWithBar(navigationStore, sessions, patient, appointment);
+            NavigateWithBar(navigationStore, patient, appointment);
         }
     }
 }
