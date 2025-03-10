@@ -40,7 +40,7 @@ public class PatientsViewModel : ObserverViewModel
         set
         {
             _ = SetProperty(ref _pageNum, value);
-            GetPagedPatients();
+            _ = Task.Run(GetPagedPatientsAsync);
         }
     }
 
@@ -59,8 +59,11 @@ public class PatientsViewModel : ObserverViewModel
         _modalNavigationStore = modalNavigationStore;
         _database = database;
 
-        GetPagedPatients();
-        IsNextEnabled = TotalPages > 1;
+        _ = Task.Run(async () =>
+        {
+            await GetPagedPatientsAsync();
+            IsNextEnabled = TotalPages > 1;
+        });
     }
 
     public ICommand SearchCommand => new AsyncCommand(async _ =>
@@ -84,7 +87,7 @@ public class PatientsViewModel : ObserverViewModel
         }
         else
         {
-            GetPagedPatients();
+            await GetPagedPatientsAsync();
         }
     });
 
@@ -116,7 +119,7 @@ public class PatientsViewModel : ObserverViewModel
         }
         else
         {
-            GetPagedPatients();
+            await GetPagedPatientsAsync();
         }
 
         IsPrevEnabled = PageNum > 1;
@@ -135,28 +138,29 @@ public class PatientsViewModel : ObserverViewModel
         EditPatientNavigator.Navigate(_modalNavigationStore, SelectedPatient);
     });
 
-    public ICommand NextPageCommand => new Command(_ =>
+    public ICommand NextPageCommand => new AsyncCommand(async _ =>
     {
         SearchText = string.Empty;
         PageNum++;
-        GetPagedPatients();
+        await GetPagedPatientsAsync();
     });
 
-    public ICommand PrevPageCommand => new Command(_ =>
+    public ICommand PrevPageCommand => new AsyncCommand(async _ =>
     {
         SearchText = string.Empty;
         PageNum--;
-        GetPagedPatients();
+        await GetPagedPatientsAsync();
     });
 
-    private void GetPagedPatients()
+    private async Task GetPagedPatientsAsync()
     {
         SortedPatients =
         [..
-            _database.Patients
-            .OrderByDescending(p => p.Id)
-            .Skip(PatientsPerPage * (PageNum - 1))
-            .Take(PatientsPerPage)
+                await _database.Patients
+                .OrderByDescending(p => p.Id)
+                .Skip(PatientsPerPage * (PageNum - 1))
+                .Take(PatientsPerPage)
+                .ToListAsync()
         ];
         IsPrevEnabled = PageNum > 1;
         IsNextEnabled = PageNum < TotalPages;
@@ -166,7 +170,7 @@ public class PatientsViewModel : ObserverViewModel
     {
         base.Refresh();
 
-        GetPagedPatients();
+        _ = Task.Run(GetPagedPatientsAsync);
     }
 
     public override void Dispose()
@@ -174,6 +178,6 @@ public class PatientsViewModel : ObserverViewModel
         base.Dispose();
         GC.SuppressFinalize(this);
 
-        _database.SaveChanges();
+        _ = _database.SaveChanges();
     }
 }
