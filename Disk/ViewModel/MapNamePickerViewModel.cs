@@ -1,7 +1,7 @@
 ﻿using Disk.Data.Impl;
+using Disk.Db.Context;
 using Disk.Entities;
 using Disk.Properties.Langs.MapNamePicker;
-using Disk.Repository.Interface;
 using Disk.ViewModel.Common.Commands.Async;
 using Disk.ViewModel.Common.Commands.Sync;
 using Disk.ViewModel.Common.ViewModels;
@@ -13,7 +13,7 @@ using System.Windows.Input;
 
 namespace Disk.ViewModel;
 
-public class MapNamePickerViewModel(IMapRepository mapRepository) : PopupViewModel
+public class MapNamePickerViewModel(DiskContext database) : PopupViewModel
 {
     public required List<Point2D<float>> Map { get; set; }
     public string MapName { get; set; } = string.Empty;
@@ -37,7 +37,8 @@ public class MapNamePickerViewModel(IMapRepository mapRepository) : PopupViewMod
 
         try
         {
-            await mapRepository.AddAsync(map);
+            _ = await database.Maps.AddAsync(map);
+            _ = await database.SaveChangesAsync();
             IniNavigationStore.Close();
         }
         catch (DbUpdateException ex)

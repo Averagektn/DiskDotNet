@@ -9,8 +9,6 @@ namespace Disk.ViewModel;
 
 public class MapCreatorViewModel(ModalNavigationStore modalNavigationStore) : ObserverViewModel
 {
-    public virtual ICommand CancelCommand => new Command(_ => IniNavigationStore.Close());
-
     public void SaveMap(List<NumberedTarget> targets)
     {
         if (targets.Count != 0)
@@ -24,4 +22,6 @@ public class MapCreatorViewModel(ModalNavigationStore modalNavigationStore) : Ob
 
         IniNavigationStore.Close();
     }
+
+    public virtual ICommand CancelCommand => new Command(_ => IniNavigationStore.Close());
 }
