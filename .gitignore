@@ -414,3 +414,5 @@ Db/disk.db
 /Disk/Db/disk.db
 Listener/Plot/avgs.json
 Listener/Plot/time.json
+/Disk/Db/disk.db-wal
+/Disk/Db/disk.db-shm
