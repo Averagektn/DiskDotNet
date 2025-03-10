@@ -13,7 +13,7 @@ namespace Disk.ViewModel;
 
 public class PatientsViewModel : ObserverViewModel
 {
-    private const int PatientsPerPage = 3;
+    private const int PatientsPerPage = 15;
 
     public Patient? SelectedPatient { get; set; }
 
@@ -166,7 +166,6 @@ public class PatientsViewModel : ObserverViewModel
     {
         base.Refresh();
 
-        _ = _database.SaveChanges();
         GetPagedPatients();
     }
 

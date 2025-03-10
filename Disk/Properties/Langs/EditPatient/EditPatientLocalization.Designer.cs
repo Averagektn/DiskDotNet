@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Disk.Properties.Langs.AddPatient {
+namespace Disk.Properties.Langs.EditPatient {
     using System;
     
     
@@ -22,14 +22,14 @@ namespace Disk.Properties.Langs.AddPatient {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public class AddPatientLocalization {
+    public class EditPatientLocalization {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal AddPatientLocalization() {
+        internal EditPatientLocalization() {
         }
         
         /// <summary>
@@ -39,7 +39,7 @@ namespace Disk.Properties.Langs.AddPatient {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Disk.Properties.Langs.AddPatient.AddPatientLocalization", typeof(AddPatientLocalization).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Disk.Properties.Langs.EditPatient.EditPatientLocalization", typeof(EditPatientLocalization).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -57,15 +57,6 @@ namespace Disk.Properties.Langs.AddPatient {
             }
             set {
                 resourceCulture = value;
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Add.
-        /// </summary>
-        public static string AddPatient {
-            get {
-                return ResourceManager.GetString("AddPatient", resourceCulture);
             }
         }
         
@@ -97,7 +88,7 @@ namespace Disk.Properties.Langs.AddPatient {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Adding error.
+        ///   Looks up a localized string similar to Update error.
         /// </summary>
         public static string ErrorHeader {
             get {
@@ -156,6 +147,15 @@ namespace Disk.Properties.Langs.AddPatient {
         public static string Surname {
             get {
                 return ResourceManager.GetString("Surname", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Update.
+        /// </summary>
+        public static string UpdatePatient {
+            get {
+                return ResourceManager.GetString("UpdatePatient", resourceCulture);
             }
         }
     }

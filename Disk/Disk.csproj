@@ -85,6 +85,11 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>CalibrationLocalization.resx</DependentUpon>
     </Compile>
+    <Compile Update="Properties\Langs\EditPatient\EditPatientLocalization.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>EditPatientLocalization.resx</DependentUpon>
+    </Compile>
     <Compile Update="Properties\Langs\MapCreator\MapCreatorLocalization.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
@@ -177,6 +182,10 @@
     </EmbeddedResource>
     <EmbeddedResource Update="Properties\Langs\Calibration\CalibrationLocalization.ru-RU.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Properties\Langs\EditPatient\EditPatientLocalization.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>EditPatientLocalization.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Update="Properties\Langs\MapCreator\MapCreatorLocalization.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>

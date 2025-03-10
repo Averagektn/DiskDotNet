@@ -61,6 +61,9 @@
             <DataTemplate DataType="{x:Type viewmodels:QuestionViewModel}">
                 <views:QuestionView/>
             </DataTemplate>
+            <DataTemplate DataType="{x:Type viewmodels:EditPatientViewModel}">
+                <views:EditPatientView/>
+            </DataTemplate>
         </Grid.Resources>
 
         <modalcontrol:Modal Panel.ZIndex="2" IsOpen="{Binding IsModalOpen}">

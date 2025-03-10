@@ -117,37 +117,37 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="AddPatient" xml:space="preserve">
-    <value>Добавить</value>
+  <data name="UpdatePatient" xml:space="preserve">
+    <value>Update</value>
   </data>
   <data name="Cancel" xml:space="preserve">
-    <value>Отмена</value>
+    <value>Cancel</value>
   </data>
   <data name="DateOfBirth" xml:space="preserve">
-    <value>Дата рождения</value>
+    <value>Date of birth</value>
   </data>
   <data name="Duplication" xml:space="preserve">
-    <value>Пациент уже существует</value>
+    <value>Patient already exists</value>
   </data>
   <data name="ErrorHeader" xml:space="preserve">
-    <value>Ошибка добавления пациента</value>
+    <value>Update error</value>
   </data>
   <data name="HomePhone" xml:space="preserve">
-    <value>Домашний телефон</value>
+    <value>Home phone</value>
   </data>
   <data name="MobilePhone" xml:space="preserve">
-    <value>Мобильный телефон</value>
+    <value>Mobile phone</value>
   </data>
   <data name="Name" xml:space="preserve">
-    <value>Имя</value>
+    <value>Name</value>
   </data>
   <data name="Patronymic" xml:space="preserve">
-    <value>Отчество</value>
-  </data>
-  <data name="PossibleDuplication" xml:space="preserve">
-    <value>Пациент с такими данными уже существует. Вы уверены?</value>
+    <value>Patronymic</value>
   </data>
   <data name="Surname" xml:space="preserve">
-    <value>Фамилия</value>
+    <value>Surname</value>
+  </data>
+  <data name="PossibleDuplication" xml:space="preserve">
+    <value>Such patient may exist. Are you sure?</value>
   </data>
 </root>

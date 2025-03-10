@@ -1,7 +1,7 @@
 ﻿using Disk.Db.Context;
 using Disk.Entities;
 using Disk.Navigators;
-using Disk.Properties.Langs.AddPatient;
+using Disk.Properties.Langs.EditPatient;
 using Disk.Service.Exceptions;
 using Disk.Service.Interface;
 using Disk.Stores;
@@ -13,16 +13,17 @@ using System.Windows.Media;
 
 namespace Disk.ViewModel;
 
-public class EditPatientViewModel(IPatientService patientService, ModalNavigationStore modalNavigationStore, DiskContext database) 
+public class EditPatientViewModel(IPatientService patientService, ModalNavigationStore modalNavigationStore, DiskContext database)
     : AddPatientViewModel(patientService, modalNavigationStore, database)
 {
     public required Patient AttachedPatient;
     private readonly IPatientService _patientService = patientService;
     private readonly ModalNavigationStore _modalNavigationStore = modalNavigationStore;
     private readonly DiskContext _database = database;
+
     public override ICommand AddPatientCommand => new AsyncCommand(async _ =>
     {
-        bool success = false;
+        bool validated = false;
 
         AttachedPatient.Surname = Patient.Surname;
         AttachedPatient.Name = Patient.Name;
@@ -33,50 +34,58 @@ public class EditPatientViewModel(IPatientService patientService, ModalNavigatio
 
         try
         {
-            _patientService.Update(AttachedPatient);
-            success = true;
+            await _patientService.UpdateAsync(AttachedPatient);
+            validated = true;
         }
         catch (DbUpdateException ex)
         {
             Log.Error(ex.Message);
-            await ShowPopup(AddPatientLocalization.ErrorHeader, AddPatientLocalization.Duplication);
+            BgMobilePhone = Brushes.Red;
+            _database.Entry(AttachedPatient).Reload();
+            await ShowPopup(EditPatientLocalization.ErrorHeader, EditPatientLocalization.Duplication);
         }
         catch (PossibleDuplicateEntityException ex)
         {
             Log.Information(ex.Message);
-            QuestionNavigator.Navigate(_modalNavigationStore, message: "Possible duplicate",
-                onConfirm: () => { _database.Update(Patient); IniNavigationStore.Close(); },
+            QuestionNavigator.Navigate(_modalNavigationStore,
+                message: EditPatientLocalization.PossibleDuplication,
+                onConfirm: () =>
+                {
+                    _ = _database.Update(AttachedPatient);
+                    _ = _database.SaveChanges();
+                    IniNavigationStore.Close();
+                },
                 onCancel: null);
         }
         catch (InvalidNameException ex)
         {
             Log.Information(ex.Message);
-            BgName = new SolidColorBrush(Colors.Red);
-            await ShowPopup(AddPatientLocalization.ErrorHeader, ex.Output);
+            BgName = Brushes.Red;
+            await ShowPopup(EditPatientLocalization.ErrorHeader, ex.Output);
         }
         catch (InvalidSurnameException ex)
         {
             Log.Information(ex.Message);
-            BgSurname = new SolidColorBrush(Colors.Red);
-            await ShowPopup(AddPatientLocalization.ErrorHeader, ex.Output);
+            BgSurname = Brushes.Red;
+            await ShowPopup(EditPatientLocalization.ErrorHeader, ex.Output);
         }
         catch (InvalidDateException ex)
         {
             Log.Information(ex.Message);
-            BgDateOfBirth = new SolidColorBrush(Colors.Red);
-            await ShowPopup(AddPatientLocalization.ErrorHeader, ex.Output);
+            BgDateOfBirth = Brushes.Red;
+            await ShowPopup(EditPatientLocalization.ErrorHeader, ex.Output);
         }
         catch (InvalidPhoneNumberException ex)
         {
             Log.Information(ex.Message);
-            BgMobilePhone = new SolidColorBrush(Colors.Red);
-            await ShowPopup(AddPatientLocalization.ErrorHeader, ex.Output);
+            BgMobilePhone = Brushes.Red;
+            await ShowPopup(EditPatientLocalization.ErrorHeader, ex.Output);
         }
         catch (InvalidHomePhoneException ex)
         {
             Log.Information(ex.Message);
-            BgHomePhone = new SolidColorBrush(Colors.Red);
-            await ShowPopup(AddPatientLocalization.ErrorHeader, ex.Output);
+            BgHomePhone = Brushes.Red;
+            await ShowPopup(EditPatientLocalization.ErrorHeader, ex.Output);
         }
         catch (Exception ex)
         {
@@ -84,7 +93,7 @@ public class EditPatientViewModel(IPatientService patientService, ModalNavigatio
             throw;
         }
 
-        if (success)
+        if (validated)
         {
             IniNavigationStore.Close();
         }

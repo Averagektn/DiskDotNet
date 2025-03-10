@@ -9,8 +9,8 @@ public class NavigationStore(Func<Type, ObserverViewModel> getViewModel) : INavi
     public static readonly Stack<ObserverViewModel> ViewModels = [];
     public event Action? CurrentViewModelChanged;
 
-    public ObserverViewModel CurrentViewModel => ViewModels.Peek();
     public bool CanClose => ViewModels.Count > 1;
+    public ObserverViewModel? CurrentViewModel => CanClose ? ViewModels.Peek() : null;
 
     public ObserverViewModel GetViewModel(Type vmType)
     {

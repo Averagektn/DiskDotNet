@@ -9,9 +9,9 @@ public class ModalNavigationStore(Func<Type, ObserverViewModel> getViewModel) : 
     public static readonly Stack<ObserverViewModel> ViewModels = [];
     public event Action? CurrentViewModelChanged;
 
-    public bool IsOpen => CurrentViewModel != null;
+    public bool IsOpen => CurrentViewModel is not null;
     public bool CanClose => ViewModels.Count > 0;
-    public ObserverViewModel? CurrentViewModel => ViewModels.Count == 0 ? null : ViewModels.Peek();
+    public ObserverViewModel? CurrentViewModel => CanClose ? ViewModels.Peek() : null;
 
     public ObserverViewModel GetViewModel(Type vmType)
     {

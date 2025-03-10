@@ -15,7 +15,7 @@ using System.Windows.Media;
 
 namespace Disk.ViewModel;
 
-public class AddPatientViewModel(IPatientService patientService, ModalNavigationStore modalNavigationStore, DiskContext database) 
+public class AddPatientViewModel(IPatientService patientService, ModalNavigationStore modalNavigationStore, DiskContext database)
     : PopupViewModel
 {
     private Patient _patient = new()
@@ -72,12 +72,16 @@ public class AddPatientViewModel(IPatientService patientService, ModalNavigation
 
     public virtual ICommand AddPatientCommand => new AsyncCommand(async _ =>
     {
-        bool success = false;
+        bool validated = false;
+        if (Patient.PhoneHome == string.Empty)
+        {
+            Patient.PhoneHome = null;
+        }
 
         try
         {
             await patientService.AddAsync(Patient);
-            success = true;
+            validated = true;
         }
         catch (DbUpdateException ex)
         {
@@ -87,8 +91,14 @@ public class AddPatientViewModel(IPatientService patientService, ModalNavigation
         catch (PossibleDuplicateEntityException ex)
         {
             Log.Error(ex.Message);
-            QuestionNavigator.Navigate(modalNavigationStore, message: "Possible duplicate", 
-                onConfirm: () => { database.Add(Patient); IniNavigationStore.Close(); }, 
+            QuestionNavigator.Navigate(modalNavigationStore,
+                message: AddPatientLocalization.PossibleDuplication,
+                onConfirm: () =>
+                {
+                    _ = database.Add(Patient);
+                    _ = database.SaveChanges();
+                    IniNavigationStore.Close();
+                },
                 onCancel: null);
         }
         catch (InvalidNameException ex)
@@ -127,9 +137,8 @@ public class AddPatientViewModel(IPatientService patientService, ModalNavigation
             throw;
         }
 
-        if (success)
+        if (validated)
         {
-            // add
             IniNavigationStore.Close();
         }
     });

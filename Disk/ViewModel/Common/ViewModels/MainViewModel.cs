@@ -8,7 +8,7 @@ public class MainViewModel : ObserverViewModel
     private readonly NavigationStore _navigationStore;
     private readonly ModalNavigationStore _modalNavigationStore;
 
-    public ObserverViewModel CurrentViewModel => _navigationStore.CurrentViewModel;
+    public ObserverViewModel? CurrentViewModel => _navigationStore.CurrentViewModel;
     public ObserverViewModel? CurrentModalViewModel => _modalNavigationStore.CurrentViewModel;
     public bool IsModalOpen => _modalNavigationStore.IsOpen;
 

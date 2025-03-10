@@ -14,7 +14,13 @@ public class PatientService(DiskContext database) : IPatientService
     {
         if (Validate(patient))
         {
+            if (CheckPossibleDuplicate(patient))
+            {
+                throw new PossibleDuplicateEntityException("Possible duplication of patient");
+            }
+
             _ = database.Add(patient);
+            _ = database.SaveChanges();
         }
     }
 
@@ -22,14 +28,9 @@ public class PatientService(DiskContext database) : IPatientService
     {
         if (Validate(patient))
         {
-            var isPossibleDuplicate = await database.Patients.AnyAsync(p =>
-                p.Name == patient.Name &&
-                p.Surname == patient.Surname &&
-                p.Patronymic == patient.Patronymic &&
-                p.DateOfBirth == patient.DateOfBirth);
-            if (isPossibleDuplicate)
+            if (await CheckPossibleDuplicateAsync(patient))
             {
-                throw new PossibleDuplicateEntityException("Same phone number");
+                throw new PossibleDuplicateEntityException("Possible duplication of patient");
             }
 
             _ = await database.AddAsync(patient);
@@ -41,6 +42,11 @@ public class PatientService(DiskContext database) : IPatientService
     {
         if (Validate(patient))
         {
+            if (CheckPossibleDuplicate(patient))
+            {
+                throw new PossibleDuplicateEntityException("Possible duplication of patient");
+            }
+
             _ = database.Update(patient);
             _ = database.SaveChanges();
         }
@@ -50,9 +56,46 @@ public class PatientService(DiskContext database) : IPatientService
     {
         if (Validate(patient))
         {
+            if (await CheckPossibleDuplicateAsync(patient))
+            {
+                throw new PossibleDuplicateEntityException("Possible duplication of patient");
+            }
+
             _ = database.Update(patient);
             _ = await database.SaveChangesAsync();
         }
+    }
+
+    private async Task<bool> CheckPossibleDuplicateAsync(Patient patient)
+    {
+        if (await database.Patients.AnyAsync(p => p.PhoneMobile == patient.PhoneMobile))
+        {
+            throw new DbUpdateException();
+        }
+
+        var isPossibleDuplicate = await database.Patients.AnyAsync(p =>
+            p.Name == patient.Name &&
+            p.Surname == patient.Surname &&
+            p.Patronymic == patient.Patronymic &&
+            p.DateOfBirth == patient.DateOfBirth);
+
+        return isPossibleDuplicate;
+    }
+
+    private bool CheckPossibleDuplicate(Patient patient)
+    {
+        if (database.Patients.Any(p => p.PhoneMobile == patient.PhoneMobile))
+        {
+            throw new DbUpdateException();
+        }
+
+        var isPossibleDuplicate = database.Patients.Any(p =>
+            p.Name == patient.Name &&
+            p.Surname == patient.Surname &&
+            p.Patronymic == patient.Patronymic &&
+            p.DateOfBirth == patient.DateOfBirth);
+
+        return isPossibleDuplicate;
     }
 
     private static bool Validate(Patient patient)

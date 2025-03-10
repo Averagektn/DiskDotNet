@@ -117,8 +117,8 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="AddPatient" xml:space="preserve">
-    <value>Добавить</value>
+  <data name="UpdatePatient" xml:space="preserve">
+    <value>Обновить</value>
   </data>
   <data name="Cancel" xml:space="preserve">
     <value>Отмена</value>
@@ -130,7 +130,7 @@
     <value>Пациент уже существует</value>
   </data>
   <data name="ErrorHeader" xml:space="preserve">
-    <value>Ошибка добавления пациента</value>
+    <value>Ошибка обновления пациента</value>
   </data>
   <data name="HomePhone" xml:space="preserve">
     <value>Домашний телефон</value>
@@ -144,10 +144,10 @@
   <data name="Patronymic" xml:space="preserve">
     <value>Отчество</value>
   </data>
-  <data name="PossibleDuplication" xml:space="preserve">
-    <value>Пациент с такими данными уже существует. Вы уверены?</value>
-  </data>
   <data name="Surname" xml:space="preserve">
     <value>Фамилия</value>
+  </data>
+  <data name="PossibleDuplication" xml:space="preserve">
+    <value>Пациент с такими данными уже существует. Вы уверены?</value>
   </data>
 </root>
