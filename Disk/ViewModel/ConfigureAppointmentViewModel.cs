@@ -7,6 +7,7 @@ using Disk.ViewModel.Common.Commands.Sync;
 using Disk.ViewModel.Common.ViewModels;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.ObjectModel;
+using System.Globalization;
 using System.Windows;
 using System.Windows.Input;
 using Localization = Disk.Properties.Langs.ConfigureAppointment.ConfigureAppointmentLocalization;
@@ -50,6 +51,7 @@ public class ConfigureAppointmentViewModel : PopupViewModel
         {
             Map = SelectedMap.Id,
             Patient = Patient.Id,
+            Date = DateTime.Now.Date.ToString("dd.MM.yyyy", CultureInfo.InvariantCulture),
         };
 
         _ = await _database.Appointments.AddAsync(appointment);

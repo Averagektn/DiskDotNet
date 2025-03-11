@@ -39,6 +39,14 @@ public partial class DiskContext : DbContext
         }
     }
 
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    {
+        base.OnConfiguring(optionsBuilder);
+        if (!optionsBuilder.IsConfigured)
+        {
+            _ = optionsBuilder.UseSqlite(AppConfig.DbConnectionString);
+        }
+    }
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         _ = modelBuilder.Entity<Appointment>(entity =>
@@ -47,9 +55,12 @@ public partial class DiskContext : DbContext
 
             _ = entity.ToTable("appointment");
 
+            _ = entity.HasIndex(a => new { a.Date, a.Map, a.Patient }, "IX_UNQ_appointment_date_map_id_patient_id").IsUnique();
+
             _ = entity.Property(e => e.Id).HasColumnName("app_id");
             _ = entity.Property(e => e.Map).HasColumnName("app_map");
             _ = entity.Property(e => e.Patient).HasColumnName("app_patient");
+            _ = entity.Property(e => e.Date).HasColumnName("app_date");
 
             _ = entity.HasOne(d => d.PatientNavigation).WithMany(p => p.Appointments)
                 .HasForeignKey(d => d.Patient)
@@ -63,14 +74,13 @@ public partial class DiskContext : DbContext
         {
             _ = entity.ToTable("map");
 
-            _ = entity.HasIndex(e => e.Name, "IX_map_map_name").IsUnique();
+            _ = entity.HasIndex(e => e.Name, "IX_UNQ_map_map_name").IsUnique();
 
             _ = entity.Property(e => e.Id).HasColumnName("map_id");
             _ = entity.Property(e => e.CoordinatesJson).HasColumnName("map_coordinates_json");
             _ = entity.Property(e => e.CreatedAtDateTime).HasColumnName("map_created_at_date_time");
-            _ = entity.Property(e => e.Name)
-                .UseCollation("NOCASE")
-                .HasColumnName("map_name");
+            _ = entity.Property(e => e.Name).UseCollation("NOCASE").HasColumnName("map_name");
+            _ = entity.Property(e => e.Description).HasColumnName("map_description");
         });
 
         _ = modelBuilder.Entity<PathInTarget>(entity =>
@@ -114,6 +124,9 @@ public partial class DiskContext : DbContext
 
             _ = entity.ToTable("patient");
 
+            _ = entity.HasIndex(p => p.PhoneMobile, "IX_UNQ_phone_mobile").IsUnique();
+            _ = entity.HasIndex(p => p.PhoneHome, "IX_UNQ_phone_home").IsUnique();
+
             _ = entity.Property(e => e.Id).HasColumnName("pat_id");
             _ = entity.Property(e => e.DateOfBirth).HasColumnName("pat_date_of_birth");
             _ = entity.Property(e => e.Name)
@@ -130,8 +143,6 @@ public partial class DiskContext : DbContext
                 .UseCollation("NOCASE")
                 .HasColumnType("TEXT (30)")
                 .HasColumnName("pat_surname");
-            _ = entity.HasIndex(p => p.PhoneMobile).IsUnique();
-            _ = entity.HasIndex(p => p.PhoneHome).IsUnique();
         });
 
         _ = modelBuilder.Entity<Session>(entity =>
@@ -140,7 +151,7 @@ public partial class DiskContext : DbContext
 
             _ = entity.ToTable("session");
 
-            _ = entity.HasIndex(e => e.LogFilePath, "IX_session_ses_log_file_path").IsUnique();
+            _ = entity.HasIndex(e => e.LogFilePath, "IX_UNQ_session_ses_log_file_path").IsUnique();
 
             _ = entity.Property(e => e.Id).HasColumnName("ses_id");
             _ = entity.Property(e => e.Appointment).HasColumnName("ses_appointment");

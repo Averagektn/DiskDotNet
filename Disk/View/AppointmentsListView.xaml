@@ -146,8 +146,8 @@
                 <DataGrid.Columns>
                     <DataGridTextColumn 
                         Width="1*" 
-                        Header="{x:Static lang:AppointmentsListLocalization.DateTime}" 
-                        Binding="{Binding DateTime}" />
+                        Header="{x:Static lang:AppointmentsListLocalization.Date}" 
+                        Binding="{Binding Date}" />
                 </DataGrid.Columns>
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="MouseDoubleClick">

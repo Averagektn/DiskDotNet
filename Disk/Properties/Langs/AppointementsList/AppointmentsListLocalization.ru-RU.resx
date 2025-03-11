@@ -126,8 +126,8 @@
   <data name="DateOfBirth" xml:space="preserve">
     <value>Дата рождения</value>
   </data>
-  <data name="DateTime" xml:space="preserve">
-    <value>Дата/Время</value>
+  <data name="Date" xml:space="preserve">
+    <value>Дата</value>
   </data>
   <data name="Delete" xml:space="preserve">
     <value>Удалить</value>

@@ -2,6 +2,7 @@
 using Disk.Db.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -9,9 +10,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Disk.Migrations
 {
     [DbContext(typeof(DiskContext))]
-    partial class DiskContextModelSnapshot : ModelSnapshot
+    [Migration("20250311132304_AppointmentDate")]
+    partial class AppointmentDate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "9.0.2");
@@ -42,7 +45,7 @@ namespace Disk.Migrations
 
                     b.HasIndex("Patient");
 
-                    b.HasIndex(new[] { "Date", "Map", "Patient" }, "IX_UNQ_appointment_date_map_id_patient_id")
+                    b.HasIndex("Date", "Map")
                         .IsUnique();
 
                     b.ToTable("appointment", (string)null);
@@ -65,10 +68,6 @@ namespace Disk.Migrations
                         .HasColumnType("TEXT")
                         .HasColumnName("map_created_at_date_time");
 
-                    b.Property<string>("Description")
-                        .HasColumnType("TEXT")
-                        .HasColumnName("map_description");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("TEXT")
@@ -77,7 +76,7 @@ namespace Disk.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex(new[] { "Name" }, "IX_UNQ_map_map_name")
+                    b.HasIndex(new[] { "Name" }, "IX_map_map_name")
                         .IsUnique();
 
                     b.ToTable("map", (string)null);
@@ -183,10 +182,10 @@ namespace Disk.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex(new[] { "PhoneHome" }, "IX_UNQ_phone_home")
+                    b.HasIndex("PhoneHome")
                         .IsUnique();
 
-                    b.HasIndex(new[] { "PhoneMobile" }, "IX_UNQ_phone_mobile")
+                    b.HasIndex("PhoneMobile")
                         .IsUnique();
 
                     b.ToTable("patient", (string)null);
@@ -233,7 +232,7 @@ namespace Disk.Migrations
 
                     b.HasIndex("Appointment");
 
-                    b.HasIndex(new[] { "LogFilePath" }, "IX_UNQ_session_ses_log_file_path")
+                    b.HasIndex(new[] { "LogFilePath" }, "IX_session_ses_log_file_path")
                         .IsUnique();
 
                     b.ToTable("session", (string)null);

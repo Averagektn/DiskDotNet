@@ -136,6 +136,7 @@ public class AppointmentsListViewModel(DiskContext database, NavigationStore nav
         [..
             await database.Appointments
                 .Where(a => a.Patient == Patient.Id)
+                .Include(a => a.MapNavigation)
                 .OrderByDescending(a => a.Id)
                 .Skip(AppointmentsPerPage * (_currPage - 1))
                 .Take(AppointmentsPerPage)
