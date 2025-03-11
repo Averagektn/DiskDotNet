@@ -6,7 +6,6 @@ using Disk.Stores;
 using Disk.ViewModel.Common.Commands.Async;
 using Disk.ViewModel.Common.Commands.Sync;
 using Disk.ViewModel.Common.ViewModels;
-using DocumentFormat.OpenXml.Wordprocessing;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Windows;
@@ -16,7 +15,7 @@ using Settings = Disk.Properties.Config.Config;
 
 namespace Disk.ViewModel;
 
-public class AppointmentViewModel(ISessionRepository sessionRepository, IExcelFiller excelFiller, NavigationStore navigationStore) : 
+public class AppointmentViewModel(ISessionRepository sessionRepository, IExcelFiller excelFiller, NavigationStore navigationStore) :
     PopupViewModel
 {
     public required Patient Patient { get; set; }
@@ -38,30 +37,30 @@ public class AppointmentViewModel(ISessionRepository sessionRepository, IExcelFi
         get => _appointment;
         set
         {
-            SetProperty(ref _appointment, value);
+            _ = SetProperty(ref _appointment, value);
             Sessions = [.. sessionRepository.GetSessionsWithResultsByAppointment(value.Id)];
         }
     }
 
     private ObservableCollection<Session> _sessions = [];
-    public ObservableCollection<Session> Sessions 
+    public ObservableCollection<Session> Sessions
     {
         get => _sessions;
         set => SetProperty(ref _sessions, value);
     }
 
     private ObservableCollection<PathToTarget> _pathsToTargets = [];
-    public ObservableCollection<PathToTarget> PathsToTargets 
-    { 
+    public ObservableCollection<PathToTarget> PathsToTargets
+    {
         get => _pathsToTargets;
-        set => SetProperty(ref _pathsToTargets, value); 
+        set => SetProperty(ref _pathsToTargets, value);
     }
 
-/*    public ICommand StartSessionCommand => 
-        new Command(_ => StartSessionNavigator.NavigateWithBar(navigationStore, Patient));*/
-    
+    /*    public ICommand StartSessionCommand => 
+            new Command(_ => StartSessionNavigator.NavigateWithBar(navigationStore, Patient));*/
+
     public ICommand SessionSelectedCommand => new Command(SessionSelected);
-    
+
     public ICommand ExportToExcelCommand => new Command(_ => excelFiller.ExportToExcel(Appointment, Patient));
 
     public ICommand ShowSessionCommand => new AsyncCommand(async _ =>

@@ -10,6 +10,7 @@
              xmlns:calibration="clr-namespace:Disk.Properties.Langs.Calibration"
              xmlns:settings="clr-namespace:Disk.Properties.Langs.Settings"
              xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+             xmlns:styles="clr-namespace:Disk.Style"
              mc:Ignorable="d" 
              d:DesignHeight="800" 
              d:DesignWidth="800">
@@ -25,16 +26,15 @@
         </Grid.ColumnDefinitions>
 
         <DataGrid 
-                Grid.Row="0"
-                x:Name="MapsDataGrid"
-                SelectionChanged="DataGrid_SelectionChanged"
-                FontSize="25"
-                SelectionMode="Single"
-                Grid.Column="0"
-                ItemsSource="{Binding Maps}" 
-                IsReadOnly="True"
-                AutoGenerateColumns="False"
-                SelectedItem="{Binding SelectedMap}">
+            Grid.Row="0"
+            x:Name="MapsDataGrid"
+            FontSize="25"
+            SelectionMode="Single"
+            Grid.Column="0"
+            ItemsSource="{Binding Maps}" 
+            IsReadOnly="True"
+            AutoGenerateColumns="False"
+            SelectedItem="{Binding SelectedMap}">
             <DataGrid.Columns>
                 <DataGridTextColumn  
                     Width="*"
@@ -62,37 +62,10 @@
             </DataGrid.ContextMenu>
         </DataGrid>
 
-        <Grid Grid.Row="1">
-            <Line 
-                Visibility="{Binding MapVisibility}"
-                X1="0" 
-                X2="0" 
-                Y1="0" 
-                Y2="{Binding ActualHeight, RelativeSource={RelativeSource AncestorType=Grid}}" 
-                Stroke="Black" 
-                StrokeThickness="2" 
-                HorizontalAlignment="Center" />
-            
-            <Line 
-                Visibility="{Binding MapVisibility}"
-                X1="0" 
-                Y1="0" 
-                X2="{Binding ActualWidth, RelativeSource={RelativeSource AncestorType=Grid}}" 
-                Y2="0" 
-                Stroke="Black" 
-                StrokeThickness="2" 
-                VerticalAlignment="Center" />
-
-            <Border BorderBrush="Black" BorderThickness="2">
-                <Canvas Visibility="{Binding MapVisibility}" x:Name="PaintArea">
-                    <Path Stretch="Fill" Fill="Transparent" Stroke="Black" StrokeThickness="2">
-                        <Path.Data>
-                            <EllipseGeometry x:Name="FullRadiusEllipse"/>
-                        </Path.Data>
-                    </Path>
-                </Canvas>
-            </Border>
-        </Grid>
+        <local:MapPreviewView 
+            Grid.Row="1"
+            Visibility="{Binding MapVisibility}"
+            Map="{Binding SelectedMap}"/>
 
         <Button
             IsEnabled="{Binding IsCreateAppointmentEnabled}"
@@ -100,5 +73,10 @@
             Margin="200 10"
             Content="{x:Static lang:ConfigureAppointmentLocalization.Create}" 
             Command="{Binding CreateAppointmentCommand}"/>
+
+        <styles:Popup 
+            PopupMessage="{Binding PopupMessage}" 
+            IsPopupOpen="{Binding IsShowPopup}" 
+            PopupHeader="{Binding PopupHeader}"/>
     </Grid>
 </UserControl>

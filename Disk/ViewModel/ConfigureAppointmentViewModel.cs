@@ -25,7 +25,7 @@ public class ConfigureAppointmentViewModel : PopupViewModel
         get => _selectedMap;
         set
         {
-            SetProperty(ref _selectedMap, value);
+            _ = SetProperty(ref _selectedMap, value);
             OnPropertyChanged(nameof(IsCreateAppointmentEnabled));
         }
     }
@@ -63,8 +63,15 @@ public class ConfigureAppointmentViewModel : PopupViewModel
             Date = DateTime.Now.Date.ToString("dd.MM.yyyy", CultureInfo.InvariantCulture),
         };
 
-        _ = await _database.Appointments.AddAsync(appointment);
-        _ = await _database.SaveChangesAsync();
+        try
+        {
+            _ = await _database.Appointments.AddAsync(appointment);
+            _ = await _database.SaveChangesAsync();
+        }
+        catch
+        {
+            await ShowPopup(header: Localization.Map, message: Localization.DuplicatePatientDateMap);
+        }
 
         IniNavigationStore.Close();
         AppointmentNavigator.NavigateWithBar(_navigationStore, Patient, appointment);
@@ -80,7 +87,7 @@ public class ConfigureAppointmentViewModel : PopupViewModel
                 _ = await _database.SaveChangesAsync();
                 _ = Maps.Remove(m);
             }
-            catch (InvalidOperationException)
+            catch
             {
                 await ShowPopup(header: Localization.Map, message: Localization.MapIsInUseError);
             }

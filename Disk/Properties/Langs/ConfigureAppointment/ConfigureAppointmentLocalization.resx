@@ -138,4 +138,7 @@
   <data name="Create" xml:space="preserve">
     <value>Create appointment</value>
   </data>
+  <data name="DuplicatePatientDateMap" xml:space="preserve">
+    <value>Patient already has an appointment on this map today</value>
+  </data>
 </root>

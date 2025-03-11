@@ -138,4 +138,7 @@
   <data name="Create" xml:space="preserve">
     <value>Создать</value>
   </data>
+  <data name="DuplicatePatientDateMap" xml:space="preserve">
+    <value>Сегодня данная карта уже используется пациентом</value>
+  </data>
 </root>

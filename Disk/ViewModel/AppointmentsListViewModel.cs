@@ -8,15 +8,29 @@ using Disk.ViewModel.Common.ViewModels;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
 using System.Collections.ObjectModel;
+using System.Windows;
 using System.Windows.Input;
 
 namespace Disk.ViewModel;
 
-public class AppointmentsListViewModel(DiskContext database, NavigationStore navigationStore) : ObserverViewModel
+public class AppointmentsListViewModel(DiskContext database, NavigationStore navigationStore, ConfigureAppointmentViewModel configureAppointmentViewModel) : ObserverViewModel
 {
     private const int AppointmentsPerPage = 15;
     private int _currPage;
-    public Appointment? SelectedAppointment { get; set; }
+
+    public ConfigureAppointmentViewModel ConfigureAppointmentViewModel => configureAppointmentViewModel;
+    public Visibility MapVisibility => SelectedAppointment is null ? Visibility.Hidden : Visibility.Visible;
+
+    private Appointment? _selectedAppointment = null;
+    public Appointment? SelectedAppointment
+    {
+        get => _selectedAppointment;
+        set
+        {
+            _ = SetProperty(ref _selectedAppointment, value);
+            OnPropertyChanged(nameof(MapVisibility));
+        }
+    }
 
     private Patient _patient = null!;
     public required Patient Patient
@@ -29,7 +43,6 @@ public class AppointmentsListViewModel(DiskContext database, NavigationStore nav
             _ = Task.Run(async () =>
             {
                 await UpdateAppointmentsAsync();
-
                 IsNextEnabled = _currPage < TotalPages - 1;
             });
         }
@@ -100,10 +113,8 @@ public class AppointmentsListViewModel(DiskContext database, NavigationStore nav
         {
             _currPage--;
         }
-
         IsPreviousEnabled = _currPage > 0;
         IsNextEnabled = _currPage < TotalPages - 1;
-
         SelectedDate = null;
         await UpdateAppointmentsAsync();
     });
@@ -113,9 +124,7 @@ public class AppointmentsListViewModel(DiskContext database, NavigationStore nav
         _currPage++;
         IsPreviousEnabled = true;
         IsNextEnabled = _currPage < TotalPages - 1;
-
         SelectedDate = null;
-
         await UpdateAppointmentsAsync();
     });
 
@@ -124,9 +133,7 @@ public class AppointmentsListViewModel(DiskContext database, NavigationStore nav
         _currPage--;
         IsPreviousEnabled = _currPage > 0;
         IsNextEnabled = true;
-
         SelectedDate = null;
-
         await UpdateAppointmentsAsync();
     });
 

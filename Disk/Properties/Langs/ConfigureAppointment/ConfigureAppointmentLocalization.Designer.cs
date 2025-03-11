@@ -88,6 +88,15 @@ namespace Disk.Properties.Langs.ConfigureAppointment {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Patient already has an appointment on this map today.
+        /// </summary>
+        public static string DuplicatePatientDateMap {
+            get {
+                return ResourceManager.GetString("DuplicatePatientDateMap", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Map.
         /// </summary>
         public static string Map {
