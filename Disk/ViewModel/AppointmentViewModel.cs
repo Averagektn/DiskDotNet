@@ -6,10 +6,13 @@ using Disk.Stores;
 using Disk.ViewModel.Common.Commands.Async;
 using Disk.ViewModel.Common.Commands.Sync;
 using Disk.ViewModel.Common.ViewModels;
+using DocumentFormat.OpenXml.Wordprocessing;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Windows;
 using System.Windows.Input;
 using Localization = Disk.Properties.Langs.Appointment.AppointmentLocalization;
+using Settings = Disk.Properties.Config.Config;
 
 namespace Disk.ViewModel;
 
@@ -20,6 +23,16 @@ public class AppointmentViewModel(ISessionRepository sessionRepository, IExcelFi
     public Session? SelectedSession { get; set; } = null;
 
     private Appointment _appointment = null!;
+
+    public static string MaxXAngle => $"{Settings.XMaxAngle:f2}";
+    public static string MaxYAngle => $"{Settings.YMaxAngle:f2}";
+    public static string Ip => Settings.IP;
+    public static string CursorImageName => Path.GetFileName(Settings.CursorFilePath);
+    public static string CursorImagePath => Settings.CursorFilePath;
+    public static int ShotFrequency => 1000 / Settings.ShotTime;
+    public static int TargetLifespan => 1000 * Settings.TargetHp / ShotFrequency;
+    private static Settings Settings => Settings.Default;
+
     public required Appointment Appointment
     {
         get => _appointment;
@@ -44,8 +57,8 @@ public class AppointmentViewModel(ISessionRepository sessionRepository, IExcelFi
         set => SetProperty(ref _pathsToTargets, value); 
     }
 
-    public ICommand StartSessionCommand => 
-        new Command(_ => StartSessionNavigator.NavigateWithBar(navigationStore, Appointment, Patient));
+/*    public ICommand StartSessionCommand => 
+        new Command(_ => StartSessionNavigator.NavigateWithBar(navigationStore, Patient));*/
     
     public ICommand SessionSelectedCommand => new Command(SessionSelected);
     

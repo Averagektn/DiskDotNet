@@ -6,6 +6,7 @@ using Disk.ViewModel.Common.Commands.Async;
 using Disk.ViewModel.Common.Commands.Sync;
 using Disk.ViewModel.Common.ViewModels;
 using Microsoft.EntityFrameworkCore;
+using Serilog;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
 
@@ -60,8 +61,12 @@ public class AppointmentsListViewModel(DiskContext database, NavigationStore nav
         }
     }
 
-    /*    public ICommand StartAppointmentCommand => new Command(_ => 
-            StartSessionNavigator.NavigateWithBar(navigationStore, Patient, appointment));*/
+    public ICommand ConfigureAppointmentCommand => new Command(_ => ConfigureAppointmentNavigator.NavigateWithBar(navigationStore, Patient));
+
+    public ICommand SearchByDateCommand => new Command(_ =>
+    {
+        Log.Information("SearchByDateCommand");
+    });
 
     public ICommand CancelDateCommand => new AsyncCommand(async _ =>
     {

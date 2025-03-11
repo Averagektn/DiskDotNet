@@ -60,7 +60,7 @@ public partial class App : Application
         _ = services.AddSingleton<SettingsViewModel>();
         _ = services.AddSingleton<AppointmentsListViewModel>();
         _ = services.AddSingleton<AppointmentViewModel>();
-        _ = services.AddSingleton<StartSessionViewModel>();
+        _ = services.AddSingleton<ConfigureAppointmentViewModel>();
         _ = services.AddSingleton<SessionResultViewModel>();
         _ = services.AddSingleton<CalibrationViewModel>();
 

@@ -98,7 +98,7 @@
                 Margin="10"
                 Grid.Column="1"
                 Content="{x:Static lang:AppointmentsListLocalization.StartAppoiment}"  
-                Command="{Binding StartAppointmentCommand}"
+                Command="{Binding ConfigureAppointmentCommand}"
                 Padding="10"/>
 
             <DockPanel Grid.Row="1" Grid.ColumnSpan="2">

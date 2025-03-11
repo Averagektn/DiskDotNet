@@ -46,8 +46,8 @@
             <DataTemplate DataType="{x:Type viewmodels:AppointmentViewModel}">
                 <views:AppointmentView/>
             </DataTemplate>
-            <DataTemplate DataType="{x:Type viewmodels:StartSessionViewModel}">
-                <views:StartSessionView/>
+            <DataTemplate DataType="{x:Type viewmodels:ConfigureAppointmentViewModel}">
+                <views:ConfigureAppointmentView/>
             </DataTemplate>
             <DataTemplate DataType="{x:Type viewmodels:PaintViewModel}">
                 <paintview:PaintView/>

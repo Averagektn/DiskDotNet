@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Disk.Properties.Langs.StartSession {
+namespace Disk.Properties.Langs.ConfigureAppointment {
     using System;
     
     
@@ -22,14 +22,14 @@ namespace Disk.Properties.Langs.StartSession {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public class StartSessionLocalization {
+    public class ConfigureAppointmentLocalization {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal StartSessionLocalization() {
+        internal ConfigureAppointmentLocalization() {
         }
         
         /// <summary>
@@ -39,7 +39,7 @@ namespace Disk.Properties.Langs.StartSession {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Disk.Properties.Langs.StartSession.StartSessionLocalization", typeof(StartSessionLocalization).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Disk.Properties.Langs.ConfigureAppointment.ConfigureAppointmentLocalization", typeof(ConfigureAppointmentLocalization).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -66,6 +66,15 @@ namespace Disk.Properties.Langs.StartSession {
         public static string Cancel {
             get {
                 return ResourceManager.GetString("Cancel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Create appointment.
+        /// </summary>
+        public static string Create {
+            get {
+                return ResourceManager.GetString("Create", resourceCulture);
             }
         }
         
@@ -111,15 +120,6 @@ namespace Disk.Properties.Langs.StartSession {
         public static string SelectedMap {
             get {
                 return ResourceManager.GetString("SelectedMap", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Start session.
-        /// </summary>
-        public static string Start {
-            get {
-                return ResourceManager.GetString("Start", resourceCulture);
             }
         }
     }

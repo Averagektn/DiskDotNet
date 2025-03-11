@@ -9,19 +9,19 @@ using Settings = Disk.Properties.Config.Config;
 
 namespace Disk.View;
 
-public partial class StartSessionView : UserControl
+public partial class ConfigureAppointmentView : UserControl
 {
     private Converter? _converter;
     private readonly List<NumberedTarget> _targets = [];
     private static readonly Converter IniConverter = new(IniWidth, IniHeight, AngleWidth, AngleHeight);
 
-    private StartSessionViewModel? ViewModel => (StartSessionViewModel)DataContext;
+    private ConfigureAppointmentViewModel? ViewModel => (ConfigureAppointmentViewModel)DataContext;
     private static int IniWidth => Settings.Default.IniScreenWidth;
     private static int IniHeight => Settings.Default.IniScreenHeight;
     private static float AngleWidth => Settings.Default.XMaxAngle * 2;
     private static float AngleHeight => Settings.Default.YMaxAngle * 2;
 
-    public StartSessionView()
+    public ConfigureAppointmentView()
     {
         InitializeComponent();
 

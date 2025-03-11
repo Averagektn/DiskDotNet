@@ -140,10 +140,10 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>SettingsLocalization.resx</DependentUpon>
     </Compile>
-    <Compile Update="Properties\Langs\StartSession\StartSessionLocalization.Designer.cs">
+    <Compile Update="Properties\Langs\ConfigureAppointment\ConfigureAppointmentLocalization.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
-      <DependentUpon>StartSessionLocalization.resx</DependentUpon>
+      <DependentUpon>ConfigureAppointmentLocalization.resx</DependentUpon>
     </Compile>
   </ItemGroup>
 
@@ -251,11 +251,11 @@
     <EmbeddedResource Update="Properties\Langs\Settings\SettingsLocalization.ru-RU.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="Properties\Langs\StartSession\StartSessionLocalization.resx">
+    <EmbeddedResource Update="Properties\Langs\ConfigureAppointment\ConfigureAppointmentLocalization.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>StartSessionLocalization.Designer.cs</LastGenOutput>
+      <LastGenOutput>ConfigureAppointmentLocalization.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Update="Properties\Langs\StartSession\StartSessionLocalization.ru-RU.resx">
+    <EmbeddedResource Update="Properties\Langs\ConfigureAppointment\ConfigureAppointmentLocalization.ru-RU.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
     </EmbeddedResource>
   </ItemGroup>

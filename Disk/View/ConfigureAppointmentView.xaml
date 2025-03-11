@@ -1,12 +1,12 @@
-﻿<UserControl x:Class="Disk.View.StartSessionView"
+﻿<UserControl x:Class="Disk.View.ConfigureAppointmentView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Disk.View" 
              xmlns:viewmodel="clr-namespace:Disk.ViewModel" 
-             d:DataContext="{d:DesignInstance Type=viewmodel:StartSessionViewModel}"
-             xmlns:lang="clr-namespace:Disk.Properties.Langs.StartSession" 
+             d:DataContext="{d:DesignInstance Type=viewmodel:ConfigureAppointmentViewModel}"
+             xmlns:lang="clr-namespace:Disk.Properties.Langs.ConfigureAppointment" 
              xmlns:calibration="clr-namespace:Disk.Properties.Langs.Calibration"
              xmlns:settings="clr-namespace:Disk.Properties.Langs.Settings"
              xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
@@ -41,7 +41,7 @@
                     <DataGrid.Columns>
                         <DataGridTextColumn  
                             Width="*"
-                            Header="{x:Static lang:StartSessionLocalization.Map}" 
+                            Header="{x:Static lang:ConfigureAppointmentLocalization.Map}" 
                             Binding="{Binding Name}" />
                     </DataGrid.Columns>
                     <i:Interaction.Triggers>
@@ -52,7 +52,7 @@
                     <DataGrid.ContextMenu>
                         <ContextMenu FontSize="20">
                             <MenuItem 
-                                Header="{x:Static lang:StartSessionLocalization.Delete}" 
+                                Header="{x:Static lang:ConfigureAppointmentLocalization.Delete}" 
                                 Command="{Binding DeleteMapCommand}" 
                                 CommandParameter="{Binding SelectedMap}" />
                         </ContextMenu>
@@ -105,39 +105,11 @@
                     <RowDefinition Height="auto"/>
                 </Grid.RowDefinitions>
 
-                <ScrollViewer Grid.Row="0">
-                    <StackPanel>
-
-                        <TextBlock HorizontalAlignment="Center" FontSize="25" Text="{x:Static calibration:CalibrationLocalization.AngleX}"/>
-                        <TextBlock HorizontalAlignment="Center" FontSize="25" Text="{Binding MaxXAngle}"/>
-
-                        <TextBlock HorizontalAlignment="Center" FontSize="25" Text="{x:Static calibration:CalibrationLocalization.AngleY}"/>
-                        <TextBlock HorizontalAlignment="Center" FontSize="25" Text="{Binding MaxYAngle}"/>
-
-                        <TextBlock HorizontalAlignment="Center" FontSize="25" Text="{x:Static settings:SettingsLocalization.Ip}"/>
-                        <TextBlock HorizontalAlignment="Center" FontSize="25" Text="{Binding Ip}"/>
-
-                        <TextBlock HorizontalAlignment="Center" FontSize="25" Text="{x:Static settings:SettingsLocalization.CursorImagePath}"/>
-                        <TextBlock HorizontalAlignment="Center" MaxWidth="200" FontSize="25" Text="{Binding CursorImageName}">
-                            <TextBlock.ToolTip>
-                                <Image MaxWidth="400" MaxHeight="400" Source="{Binding CursorImagePath}"/>
-                            </TextBlock.ToolTip>
-                        </TextBlock>
-
-                        <TextBlock HorizontalAlignment="Center" FontSize="25" Text="{x:Static settings:SettingsLocalization.ShotTime}"/>
-                        <TextBlock HorizontalAlignment="Center" FontSize="25" Text="{Binding ShotFrequency}"/>
-
-
-                        <TextBlock HorizontalAlignment="Center" FontSize="25" Text="{x:Static settings:SettingsLocalization.TargetHp}"/>
-                        <TextBlock HorizontalAlignment="Center" FontSize="25" Text="{Binding TargetLifespan}"/>
-                    </StackPanel>
-                </ScrollViewer>
-
                 <Button
                     Grid.Row="1" 
                     Margin="10"
-                    Content="{x:Static lang:StartSessionLocalization.Start}" 
-                    Command="{Binding StartSessionCommand}"/>
+                    Content="{x:Static lang:ConfigureAppointmentLocalization.Create}" 
+                    Command="{Binding CreateAppointmentCommand}"/>
             </Grid>
         </Grid>
     </Grid>
