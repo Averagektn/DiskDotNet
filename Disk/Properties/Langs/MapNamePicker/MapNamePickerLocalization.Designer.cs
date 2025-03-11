@@ -88,6 +88,15 @@ namespace Disk.Properties.Langs.MapNamePicker {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Map description.
+        /// </summary>
+        public static string MapDescription {
+            get {
+                return ResourceManager.GetString("MapDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Map name.
         /// </summary>
         public static string MapName {

@@ -126,6 +126,9 @@
   <data name="EmptyName" xml:space="preserve">
     <value>Name is empty</value>
   </data>
+  <data name="MapDescription" xml:space="preserve">
+    <value>Map description</value>
+  </data>
   <data name="MapName" xml:space="preserve">
     <value>Map name</value>
   </data>

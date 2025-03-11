@@ -144,10 +144,20 @@
                     <KeyBinding Key="Enter" Command="{Binding ToAppointmentCommand}"/>
                 </DataGrid.InputBindings>
                 <DataGrid.Columns>
-                    <DataGridTextColumn 
-                        Width="1*" 
-                        Header="{x:Static lang:AppointmentsListLocalization.Date}" 
-                        Binding="{Binding Date}" />
+                    <DataGridTemplateColumn Width="auto" Header="{x:Static lang:AppointmentsListLocalization.Date}">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Date}" ToolTip="{Binding MapNavigation.Description}"/>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTemplateColumn Width="*" Header="{x:Static lang:AppointmentsListLocalization.MapName}">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding MapNavigation.Name}" ToolTip="{Binding MapNavigation.Description}"/>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
                 </DataGrid.Columns>
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="MouseDoubleClick">

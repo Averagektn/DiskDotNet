@@ -20,8 +20,17 @@ public class ConfigureAppointmentViewModel : PopupViewModel
 
     // Binding
     private Map? _selectedMap = null;
-    public Map? SelectedMap { get => _selectedMap; set => SetProperty(ref _selectedMap, value); }
+    public Map? SelectedMap
+    {
+        get => _selectedMap;
+        set
+        {
+            SetProperty(ref _selectedMap, value);
+            OnPropertyChanged(nameof(IsCreateAppointmentEnabled));
+        }
+    }
     public Visibility MapVisibility => SelectedMap is null ? Visibility.Hidden : Visibility.Visible;
+    public bool IsCreateAppointmentEnabled => SelectedMap is not null;
 
     private ObservableCollection<Map> _maps = [];
     public ObservableCollection<Map> Maps

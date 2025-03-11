@@ -16,28 +16,31 @@ namespace Disk.ViewModel;
 public class MapNamePickerViewModel(DiskContext database) : PopupViewModel
 {
     public required List<Point2D<float>> Map { get; set; }
-    public string MapName { get; set; } = string.Empty;
-
+    public Map MapEntity { get; set; } = new()
+    {
+        Description = string.Empty,
+        Name = string.Empty,
+        CoordinatesJson = string.Empty,
+        Appointments = [],
+        CreatedAtDateTime = string.Empty,
+        Id = 0,
+    };
     public ICommand CancelCommand => new Command(_ => IniNavigationStore.Close());
 
     public ICommand SaveMapCommand => new AsyncCommand(async _ =>
     {
-        if (MapName.Trim().Length == 0)
+        if (MapEntity.Name.Trim().Length == 0)
         {
             await ShowPopup(MapNamePickerLocalization.SavingError, MapNamePickerLocalization.EmptyName);
             return;
         }
 
-        var map = new Map()
-        {
-            Name = MapName,
-            CoordinatesJson = JsonConvert.SerializeObject(Map),
-            CreatedAtDateTime = DateTime.Now.ToString("dd.MM.yyyy", CultureInfo.InvariantCulture)
-        };
+        MapEntity.CoordinatesJson = JsonConvert.SerializeObject(Map);
+        MapEntity.CreatedAtDateTime = DateTime.Now.ToString("dd.MM.yyyy", CultureInfo.InvariantCulture);
 
         try
         {
-            _ = await database.Maps.AddAsync(map);
+            _ = await database.Maps.AddAsync(MapEntity);
             _ = await database.SaveChangesAsync();
             IniNavigationStore.Close();
         }

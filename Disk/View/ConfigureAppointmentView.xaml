@@ -95,6 +95,7 @@
         </Grid>
 
         <Button
+            IsEnabled="{Binding IsCreateAppointmentEnabled}"
             Grid.Row="2" 
             Margin="200 10"
             Content="{x:Static lang:ConfigureAppointmentLocalization.Create}" 

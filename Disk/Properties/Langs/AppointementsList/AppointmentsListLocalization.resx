@@ -162,4 +162,7 @@
   <data name="Text" xml:space="preserve">
     <value>Text</value>
   </data>
+  <data name="MapName" xml:space="preserve">
+    <value>Map name</value>
+  </data>
 </root>

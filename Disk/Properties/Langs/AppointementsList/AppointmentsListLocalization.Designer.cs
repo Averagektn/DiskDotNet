@@ -115,6 +115,15 @@ namespace Disk.Properties.Langs.AppointementsList {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Map name.
+        /// </summary>
+        public static string MapName {
+            get {
+                return ResourceManager.GetString("MapName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Mobile phone.
         /// </summary>
         public static string MobilePhone {

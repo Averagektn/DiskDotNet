@@ -162,4 +162,7 @@
   <data name="Text" xml:space="preserve">
     <value>Текст</value>
   </data>
+  <data name="MapName" xml:space="preserve">
+    <value>Карта</value>
+  </data>
 </root>

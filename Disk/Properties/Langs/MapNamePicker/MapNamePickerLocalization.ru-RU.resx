@@ -126,6 +126,9 @@
   <data name="EmptyName" xml:space="preserve">
     <value>Не введено имя карты</value>
   </data>
+  <data name="MapDescription" xml:space="preserve">
+    <value>Описание карты</value>
+  </data>
   <data name="MapName" xml:space="preserve">
     <value>Название карты</value>
   </data>
