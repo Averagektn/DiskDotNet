@@ -9,6 +9,7 @@ using Disk.ViewModel.Common.ViewModels;
 using Microsoft.Extensions.DependencyInjection;
 using Serilog;
 using System.Windows;
+using System.Windows.Threading;
 
 namespace Disk;
 
@@ -70,7 +71,7 @@ public partial class App : Application
         _ = services.AddTransient<QuestionViewModel>();
         _ = services.AddTransient<PaintViewModel>();
         _ = services.AddTransient<EditPatientViewModel>();
-        
+
         // Rework
         _ = services.AddTransient<NavigationBarLayoutViewModel>();
 
@@ -78,7 +79,7 @@ public partial class App : Application
         {
             provider
                 .GetRequiredService<NavigationStore>()
-                .SetViewModel<NavigationBarLayoutViewModel>(vm => 
+                .SetViewModel<NavigationBarLayoutViewModel>(vm =>
                     vm.CurrentViewModel = provider.GetRequiredService<PatientsViewModel>());
 
             return new()
@@ -99,7 +100,30 @@ public partial class App : Application
 
         MainWindow = _serviceProvider.GetRequiredService<MainWindow>();
         MainWindow.Show();
+        DispatcherUnhandledException += App_DispatcherUnhandledException;
+        Exit += App_Exit;
 
         base.OnStartup(e);
+    }
+
+    private void App_Exit(object sender, ExitEventArgs e)
+    {
+        var db = _serviceProvider.GetService<DiskContext>();
+        _ = (db?.SaveChanges());
+        Log.Information("App exit DB save");
+        Log.Information("------------------------------------------------------");
+    }
+
+    private void App_DispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
+    {
+        Log.Fatal("------------------------------------------------------");
+        Log.Fatal(e.Exception.Message);
+        Log.Fatal(e.Exception.StackTrace ?? "Empty stack trace");
+        Log.Fatal(e.Exception.TargetSite?.ToString() ?? "No method found");
+        Log.Fatal("------------------------------------------------------");
+
+        var db = _serviceProvider.GetService<DiskContext>();
+        _ = (db?.SaveChanges());
+        Log.Information("Unhandled exception DB save");
     }
 }

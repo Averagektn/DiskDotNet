@@ -18,16 +18,18 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="1*" />
             <RowDefinition Height="1*" />
+            <RowDefinition Height="auto" />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
 
         <ScrollViewer 
-            HorizontalScrollBarVisibility="Auto" 
+            x:Name="MapsScroll"
+            HorizontalScrollBarVisibility="Visible" 
             VerticalScrollBarVisibility="Disabled"
             Grid.Row="0">
-            <Grid x:Name="grid">
+            <Grid x:Name="MapsGrid">
                 <DataGrid 
                     SelectionChanged="DataGrid_SelectionChanged"
                     FontSize="25"
@@ -37,7 +39,7 @@
                     IsReadOnly="True"
                     AutoGenerateColumns="False"
                     SelectedItem="{Binding SelectedMap}"
-                    Width="{Binding ElementName=grid, Path=ActualWidth}">
+                    Width="{Binding ElementName=MapsGrid, Path=ActualWidth}">
                     <DataGrid.Columns>
                         <DataGridTextColumn  
                             Width="*"
@@ -62,13 +64,8 @@
         </ScrollViewer>
 
         <Grid Grid.Row="1">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="auto"/>
-            </Grid.ColumnDefinitions>
             <Line 
                 Visibility="{Binding MapVisibility}"
-                Grid.Column="0"
                 X1="0" 
                 X2="0" 
                 Y1="0" 
@@ -79,7 +76,6 @@
 
             <Line 
                 Visibility="{Binding MapVisibility}"
-                Grid.Column="0"
                 X1="0" 
                 Y1="0" 
                 X2="{Binding ActualWidth, RelativeSource={RelativeSource AncestorType=Grid}}" 
@@ -89,7 +85,7 @@
                 VerticalAlignment="Center" />
 
             <Border BorderBrush="Black" BorderThickness="2">
-                <Canvas Visibility="{Binding MapVisibility}" Grid.Column="0" x:Name="PaintArea">
+                <Canvas Visibility="{Binding MapVisibility}" x:Name="PaintArea">
                     <Path Stretch="Fill" Fill="Transparent" Stroke="Black" StrokeThickness="2">
                         <Path.Data>
                             <EllipseGeometry x:Name="FullRadiusEllipse"/>
@@ -99,18 +95,12 @@
             </Border>
 
 
-            <Grid Grid.Column="1">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="*"/>
-                    <RowDefinition Height="auto"/>
-                </Grid.RowDefinitions>
-
-                <Button
-                    Grid.Row="1" 
-                    Margin="10"
-                    Content="{x:Static lang:ConfigureAppointmentLocalization.Create}" 
-                    Command="{Binding CreateAppointmentCommand}"/>
-            </Grid>
         </Grid>
+
+        <Button
+            Grid.Row="2" 
+            Margin="200 10"
+            Content="{x:Static lang:ConfigureAppointmentLocalization.Create}" 
+            Command="{Binding CreateAppointmentCommand}"/>
     </Grid>
 </UserControl>

@@ -262,7 +262,7 @@
 
   <ItemGroup>
     <None Update="Db\disk.db">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="Properties\Config\appsettings.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

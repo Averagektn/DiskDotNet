@@ -92,6 +92,7 @@ public class AppointmentsListViewModel(DiskContext database, NavigationStore nav
         }
 
         _ = database.Appointments.Remove(SelectedAppointment);
+        _ = await database.SaveChangesAsync();
         _ = Appointments.Remove(SelectedAppointment);
         OnPropertyChanged(nameof(Appointments));
 

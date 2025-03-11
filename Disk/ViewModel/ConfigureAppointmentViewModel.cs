@@ -53,6 +53,7 @@ public class ConfigureAppointmentViewModel : PopupViewModel
         };
 
         _ = await _database.Appointments.AddAsync(appointment);
+        _ = await _database.SaveChangesAsync();
 
         IniNavigationStore.Close();
         AppointmentNavigator.NavigateWithBar(_navigationStore, Patient, appointment);
@@ -65,6 +66,7 @@ public class ConfigureAppointmentViewModel : PopupViewModel
             try
             {
                 _ = _database.Maps.Remove(m);
+                _ = await _database.SaveChangesAsync();
                 _ = Maps.Remove(m);
             }
             catch (InvalidOperationException)
@@ -86,13 +88,5 @@ public class ConfigureAppointmentViewModel : PopupViewModel
         base.Refresh();
 
         _ = Task.Run(UpdateMapsAsync);
-    }
-
-    public override void Dispose()
-    {
-        base.Dispose();
-        GC.SuppressFinalize(this);
-
-        _ = Task.Run(async () => await _database.SaveChangesAsync());
     }
 }

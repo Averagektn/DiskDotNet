@@ -91,11 +91,10 @@ public class PatientsViewModel : ObserverViewModel
         }
     });
 
-    public ICommand SelectPatientCommand => new AsyncCommand(async _ =>
+    public ICommand SelectPatientCommand => new Command(_ =>
     {
         if (SelectedPatient is not null)
         {
-            _ = await _database.SaveChangesAsync();
             AppointmentsListNavigator.NavigateWithBar(_navigationStore, SelectedPatient);
         }
     });
@@ -171,13 +170,5 @@ public class PatientsViewModel : ObserverViewModel
         base.Refresh();
 
         _ = Task.Run(GetPagedPatientsAsync);
-    }
-
-    public override void Dispose()
-    {
-        base.Dispose();
-        GC.SuppressFinalize(this);
-
-        _ = _database.SaveChanges();
     }
 }
