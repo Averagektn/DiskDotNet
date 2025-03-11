@@ -20,11 +20,6 @@ public partial class DiskContext : DbContext
     public virtual DbSet<Session> Sessions { get; set; }
     public virtual DbSet<SessionResult> SessionResults { get; set; }
 
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-    {
-        _ = optionsBuilder.UseSqlite(AppConfig.DbConnectionString);
-    }
-
     public void EnsureDatabaseExists()
     {
         //Database.EnsureDeleted();

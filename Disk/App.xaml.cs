@@ -1,4 +1,5 @@
 ﻿using Disk.Db.Context;
+using Disk.Properties.Config;
 using Disk.Repository.Implementation;
 using Disk.Repository.Interface;
 using Disk.Service.Implementation;
@@ -6,8 +7,11 @@ using Disk.Service.Interface;
 using Disk.Stores;
 using Disk.ViewModel;
 using Disk.ViewModel.Common.ViewModels;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 using Serilog;
+using System.Configuration;
 using System.Windows;
 using System.Windows.Threading;
 
@@ -31,7 +35,9 @@ public partial class App : Application
             .CreateLogger();
 
         var services = new ServiceCollection();
-        _ = services.AddDbContext<DiskContext>();
+        _ = services.AddDbContext<DiskContext>(
+            options => options.UseSqlite(AppConfig.DbConnectionString),
+            contextLifetime: ServiceLifetime.Transient);
 
         _ = services.AddSingleton<Func<Type, ObserverViewModel>>(provider =>
             type =>
