@@ -9,9 +9,7 @@ using Disk.ViewModel;
 using Disk.ViewModel.Common.ViewModels;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Options;
 using Serilog;
-using System.Configuration;
 using System.Windows;
 using System.Windows.Threading;
 

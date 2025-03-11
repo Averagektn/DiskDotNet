@@ -6,7 +6,6 @@ using Disk.Service.Exceptions;
 using Disk.Service.Interface;
 using Disk.Stores;
 using Disk.ViewModel.Common.Commands.Async;
-using Microsoft.EntityFrameworkCore;
 using Serilog;
 using System.Windows.Input;
 using System.Windows.Media;
@@ -34,14 +33,12 @@ public class EditPatientViewModel(IPatientService patientService, ModalNavigatio
 
         try
         {
-            await _patientService.UpdateAsync(AttachedPatient);
+            await _patientService.CheckDuplicateAndUpdateAsync(AttachedPatient);
             validated = true;
         }
-        catch (DbUpdateException ex)
+        catch (DuplicateEntityException ex)
         {
             Log.Error(ex.Message);
-            BgMobilePhone = Brushes.Red;
-            _database.Entry(AttachedPatient).Reload();
             await ShowPopup(EditPatientLocalization.ErrorHeader, EditPatientLocalization.Duplication);
         }
         catch (PossibleDuplicateEntityException ex)

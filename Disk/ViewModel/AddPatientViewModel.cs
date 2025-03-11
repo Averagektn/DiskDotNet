@@ -8,7 +8,6 @@ using Disk.Stores;
 using Disk.ViewModel.Common.Commands.Async;
 using Disk.ViewModel.Common.Commands.Sync;
 using Disk.ViewModel.Common.ViewModels;
-using Microsoft.EntityFrameworkCore;
 using Serilog;
 using System.Windows.Input;
 using System.Windows.Media;
@@ -80,10 +79,10 @@ public class AddPatientViewModel(IPatientService patientService, ModalNavigation
 
         try
         {
-            await patientService.AddAsync(Patient);
+            await patientService.CheckDuplicateAndAddAsync(Patient);
             validated = true;
         }
-        catch (DbUpdateException ex)
+        catch (DuplicateEntityException ex)
         {
             Log.Error(ex.Message);
             await ShowPopup(AddPatientLocalization.ErrorHeader, AddPatientLocalization.Duplication);

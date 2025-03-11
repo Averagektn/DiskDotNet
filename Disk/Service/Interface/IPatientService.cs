@@ -4,9 +4,9 @@ namespace Disk.Service.Interface;
 
 public interface IPatientService
 {
-    void Add(Patient patient);
-    Task AddAsync(Patient patient);
+    void CheckDuplicateAndAdd(Patient patient);
+    Task CheckDuplicateAndAddAsync(Patient patient);
 
-    void Update(Patient patient);
-    Task UpdateAsync(Patient patient);
+    void CheckDuplicateAndUpdate(Patient patient);
+    Task CheckDuplicateAndUpdateAsync(Patient patient);
 }

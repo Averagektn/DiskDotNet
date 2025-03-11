@@ -124,9 +124,6 @@ public partial class DiskContext : DbContext
 
             _ = entity.ToTable("patient");
 
-            _ = entity.HasIndex(p => p.PhoneMobile, "IX_UNQ_phone_mobile").IsUnique();
-            _ = entity.HasIndex(p => p.PhoneHome, "IX_UNQ_phone_home").IsUnique();
-
             _ = entity.Property(e => e.Id).HasColumnName("pat_id");
             _ = entity.Property(e => e.DateOfBirth).HasColumnName("pat_date_of_birth");
             _ = entity.Property(e => e.Name)
