@@ -1,5 +1,4 @@
 ﻿using Disk.Db.Context;
-using Disk.Entities;
 using Disk.Navigators;
 using Disk.Properties.Langs.EditPatient;
 using Disk.Service.Exceptions;
@@ -15,30 +14,29 @@ namespace Disk.ViewModel;
 public class EditPatientViewModel(IPatientService patientService, ModalNavigationStore modalNavigationStore, DiskContext database)
     : AddPatientViewModel(patientService, modalNavigationStore, database)
 {
-    public required Patient AttachedPatient;
     private readonly IPatientService _patientService = patientService;
     private readonly ModalNavigationStore _modalNavigationStore = modalNavigationStore;
     private readonly DiskContext _database = database;
+
+    public override ICommand CancelCommand => new AsyncCommand(async _ =>
+    {
+        await _database.Entry(Patient).ReloadAsync();
+        base.CancelCommand.Execute(null);
+    });
 
     public override ICommand AddPatientCommand => new AsyncCommand(async _ =>
     {
         bool validated = false;
 
-        AttachedPatient.Surname = Patient.Surname;
-        AttachedPatient.Name = Patient.Name;
-        AttachedPatient.Patronymic = Patient.Patronymic;
-        AttachedPatient.DateOfBirth = Patient.DateOfBirth;
-        AttachedPatient.PhoneHome = Patient.PhoneHome;
-        AttachedPatient.PhoneMobile = Patient.PhoneMobile;
-
         try
         {
-            await _patientService.CheckDuplicateAndUpdateAsync(AttachedPatient);
+            await _patientService.CheckDuplicateAndUpdateAsync(Patient);
             validated = true;
         }
         catch (DuplicateEntityException ex)
         {
             Log.Error(ex.Message);
+            await _database.Entry(Patient).ReloadAsync();
             await ShowPopup(EditPatientLocalization.ErrorHeader, EditPatientLocalization.Duplication);
         }
         catch (PossibleDuplicateEntityException ex)
@@ -48,40 +46,48 @@ public class EditPatientViewModel(IPatientService patientService, ModalNavigatio
                 message: EditPatientLocalization.PossibleDuplication,
                 onConfirm: () =>
                 {
-                    _ = _database.Update(AttachedPatient);
-                    _ = _database.SaveChanges();
-                    IniNavigationStore.Close();
+                    _ = Task.Run(async () =>
+                    {
+                        _ = _database.Update(Patient);
+                        _ = await _database.SaveChangesAsync();
+                        IniNavigationStore.Close();
+                    });
                 },
-                onCancel: null);
+                onCancel: () => Task.Run(async () => await _database.Entry(Patient).ReloadAsync()));
         }
         catch (InvalidNameException ex)
         {
             Log.Information(ex.Message);
             BgName = Brushes.Red;
+            await _database.Entry(Patient).ReloadAsync();
             await ShowPopup(EditPatientLocalization.ErrorHeader, ex.Output);
         }
         catch (InvalidSurnameException ex)
         {
             Log.Information(ex.Message);
             BgSurname = Brushes.Red;
+            await _database.Entry(Patient).ReloadAsync();
             await ShowPopup(EditPatientLocalization.ErrorHeader, ex.Output);
         }
         catch (InvalidDateException ex)
         {
             Log.Information(ex.Message);
             BgDateOfBirth = Brushes.Red;
+            await _database.Entry(Patient).ReloadAsync();
             await ShowPopup(EditPatientLocalization.ErrorHeader, ex.Output);
         }
         catch (InvalidPhoneNumberException ex)
         {
             Log.Information(ex.Message);
             BgMobilePhone = Brushes.Red;
+            await _database.Entry(Patient).ReloadAsync();
             await ShowPopup(EditPatientLocalization.ErrorHeader, ex.Output);
         }
         catch (InvalidHomePhoneException ex)
         {
             Log.Information(ex.Message);
             BgHomePhone = Brushes.Red;
+            await _database.Entry(Patient).ReloadAsync();
             await ShowPopup(EditPatientLocalization.ErrorHeader, ex.Output);
         }
         catch (Exception ex)

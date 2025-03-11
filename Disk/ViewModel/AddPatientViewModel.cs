@@ -94,9 +94,12 @@ public class AddPatientViewModel(IPatientService patientService, ModalNavigation
                 message: AddPatientLocalization.PossibleDuplication,
                 onConfirm: () =>
                 {
-                    _ = database.Add(Patient);
-                    _ = database.SaveChanges();
-                    IniNavigationStore.Close();
+                    _ = Task.Run(async () =>
+                    {
+                        _ = await database.AddAsync(Patient);
+                        _ = await database.SaveChangesAsync();
+                        IniNavigationStore.Close();
+                    });
                 },
                 onCancel: null);
         }

@@ -15,7 +15,7 @@ public class EditPatientNavigator : INavigator
         {
             vm.IniNavigationStore = navigationStore;
             vm.Patient = JsonConvert.DeserializeObject<Patient>(JsonConvert.SerializeObject(patient))!;
-            vm.AttachedPatient = patient;
+            vm.Patient = patient;
             vm.DateOfBirth = DateTime.ParseExact(patient.DateOfBirth, "dd.MM.yyyy", CultureInfo.InvariantCulture);
         });
     }
@@ -38,7 +38,7 @@ public class EditPatientNavigator : INavigator
             {
                 vm.IniNavigationStore = navigationStore;
                 vm.Patient = JsonConvert.DeserializeObject<Patient>(JsonConvert.SerializeObject(patient))!;
-                vm.AttachedPatient = patient;
+                vm.Patient = patient;
             });
         });
     }
