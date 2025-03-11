@@ -59,8 +59,10 @@
         </Setter>
     </Style>
     <Style TargetType="DataGridColumnHeader">
-        <Setter Property="HorizontalContentAlignment"
-                 Value="Center" />
+        <Setter Property="HorizontalContentAlignment" Value="Center" />
+    </Style>
+    <Style TargetType="TextBlock">
+        <Setter Property="TextWrapping" Value="Wrap" />
     </Style>
 </ResourceDictionary>
     

@@ -5,6 +5,7 @@ using Disk.Visual.Impl;
 using Newtonsoft.Json;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using Settings = Disk.Properties.Config.Config;
 
 namespace Disk.View;

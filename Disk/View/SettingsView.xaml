@@ -192,7 +192,7 @@
                 AutoToolTipPlacement="TopLeft" AutoToolTipPrecision="0" />
             <TextBlock
                 Text="{Binding TargetTtl}"
-                FontSize="15" 
+                FontSize="20" 
                 HorizontalAlignment="Center" 
                 Margin="200 0"/>
         </StackPanel>

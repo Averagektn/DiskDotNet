@@ -17,51 +17,50 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="1*" />
-            <RowDefinition Height="1*" />
+            <RowDefinition Height="2*" />
             <RowDefinition Height="auto" />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
 
-        <ScrollViewer 
-            x:Name="MapsScroll"
-            HorizontalScrollBarVisibility="Visible" 
-            VerticalScrollBarVisibility="Disabled"
-            Grid.Row="0">
-            <Grid x:Name="MapsGrid">
-                <DataGrid 
-                    SelectionChanged="DataGrid_SelectionChanged"
-                    FontSize="25"
-                    SelectionMode="Single"
-                    Grid.Column="0"
-                    ItemsSource="{Binding Maps}" 
-                    IsReadOnly="True"
-                    AutoGenerateColumns="False"
-                    SelectedItem="{Binding SelectedMap}"
-                    Width="{Binding ElementName=MapsGrid, Path=ActualWidth}">
-                    <DataGrid.Columns>
-                        <DataGridTextColumn  
-                            Width="*"
-                            Header="{x:Static lang:ConfigureAppointmentLocalization.Map}" 
-                            Binding="{Binding Name}" />
-                    </DataGrid.Columns>
-                    <i:Interaction.Triggers>
-                        <i:EventTrigger EventName="SelectionChanged">
-                            <i:InvokeCommandAction Command="{Binding MapSelectedCommand}" />
-                        </i:EventTrigger>
-                    </i:Interaction.Triggers>
-                    <DataGrid.ContextMenu>
-                        <ContextMenu FontSize="20">
-                            <MenuItem 
-                                Header="{x:Static lang:ConfigureAppointmentLocalization.Delete}" 
-                                Command="{Binding DeleteMapCommand}" 
-                                CommandParameter="{Binding SelectedMap}" />
-                        </ContextMenu>
-                    </DataGrid.ContextMenu>
-                </DataGrid>
-            </Grid>
-        </ScrollViewer>
+        <DataGrid 
+                Grid.Row="0"
+                x:Name="MapsDataGrid"
+                SelectionChanged="DataGrid_SelectionChanged"
+                FontSize="25"
+                SelectionMode="Single"
+                Grid.Column="0"
+                ItemsSource="{Binding Maps}" 
+                IsReadOnly="True"
+                AutoGenerateColumns="False"
+                SelectedItem="{Binding SelectedMap}">
+            <DataGrid.Columns>
+                <DataGridTextColumn  
+                    Width="*"
+                    Header="{x:Static lang:ConfigureAppointmentLocalization.Map}" 
+                    Binding="{Binding Name}" >
+                    <DataGridTextColumn.ElementStyle>
+                        <Style>
+                            <Setter Property="TextBlock.TextWrapping" Value="Wrap"></Setter>
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
+                </DataGridTextColumn>
+            </DataGrid.Columns>
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="SelectionChanged">
+                    <i:InvokeCommandAction Command="{Binding MapSelectedCommand}" />
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
+            <DataGrid.ContextMenu>
+                <ContextMenu FontSize="20">
+                    <MenuItem 
+                        Header="{x:Static lang:ConfigureAppointmentLocalization.Delete}" 
+                        Command="{Binding DeleteMapCommand}" 
+                        CommandParameter="{Binding SelectedMap}" />
+                </ContextMenu>
+            </DataGrid.ContextMenu>
+        </DataGrid>
 
         <Grid Grid.Row="1">
             <Line 
@@ -73,7 +72,7 @@
                 Stroke="Black" 
                 StrokeThickness="2" 
                 HorizontalAlignment="Center" />
-
+            
             <Line 
                 Visibility="{Binding MapVisibility}"
                 X1="0" 
@@ -93,8 +92,6 @@
                     </Path>
                 </Canvas>
             </Border>
-
-
         </Grid>
 
         <Button
