@@ -56,7 +56,15 @@ public class AppointmentsListViewModel(DiskContext database, NavigationStore nav
     }
 
     private DateTime? _selectedDate;
-    public DateTime? SelectedDate { get => _selectedDate; set => SetProperty(ref _selectedDate, value); }
+    public DateTime? SelectedDate 
+    { 
+        get => _selectedDate;
+        set
+        {
+            SetProperty(ref _selectedDate, value);
+            Task.Run(UpdateAppointmentsAsync);
+        }
+    }
 
     private bool _isNextEnabled;
     public bool IsNextEnabled { get => _isNextEnabled; set => SetProperty(ref _isNextEnabled, value); }
@@ -75,11 +83,6 @@ public class AppointmentsListViewModel(DiskContext database, NavigationStore nav
     }
 
     public ICommand ConfigureAppointmentCommand => new Command(_ => ConfigureAppointmentNavigator.NavigateWithBar(navigationStore, Patient));
-
-    public ICommand SearchByDateCommand => new Command(_ =>
-    {
-        Log.Information("SearchByDateCommand");
-    });
 
     public ICommand CancelDateCommand => new AsyncCommand(async _ =>
     {
@@ -139,12 +142,20 @@ public class AppointmentsListViewModel(DiskContext database, NavigationStore nav
 
     private async Task UpdateAppointmentsAsync()
     {
+        var query = database.Appointments
+            .Where(a => a.Patient == Patient.Id)
+            .Include(a => a.MapNavigation)
+            .OrderByDescending(a => a.Id)
+            .AsQueryable();
+
+        if (SelectedDate is not null)
+        {
+            query = query.Where(a => a.Date == SelectedDate.Value.Date.ToString("dd.MM.yyyy"));
+        }
+
         Appointments =
         [..
-            await database.Appointments
-                .Where(a => a.Patient == Patient.Id)
-                .Include(a => a.MapNavigation)
-                .OrderByDescending(a => a.Id)
+            await query
                 .Skip(AppointmentsPerPage * (_currPage - 1))
                 .Take(AppointmentsPerPage)
                 .ToListAsync()

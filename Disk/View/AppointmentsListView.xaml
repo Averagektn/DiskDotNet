@@ -75,11 +75,6 @@
                     Grid.ColumnSpan="2"
                     SelectedDateFormat="Short"
                     SelectedDate="{Binding SelectedDate}">
-                    <i:Interaction.Triggers>
-                        <i:EventTrigger EventName="SelectedDateChanged">
-                            <i:InvokeCommandAction Command="{Binding SearchByDateCommand}" />
-                        </i:EventTrigger>
-                    </i:Interaction.Triggers>
                 </DatePicker>
             </DockPanel>
 
