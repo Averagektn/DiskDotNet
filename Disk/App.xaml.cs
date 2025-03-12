@@ -1,7 +1,5 @@
 ﻿using Disk.Db.Context;
 using Disk.Properties.Config;
-using Disk.Repository.Implementation;
-using Disk.Repository.Interface;
 using Disk.Service.Implementation;
 using Disk.Service.Interface;
 using Disk.Stores;
@@ -47,13 +45,6 @@ public partial class App : Application
         );
         _ = services.AddSingleton<NavigationStore>();
         _ = services.AddSingleton<ModalNavigationStore>();
-
-        _ = services.AddTransient<IAppointmentRepository, AppointmentRepository>();
-        _ = services.AddTransient<IMapRepository, MapRepository>();
-        _ = services.AddTransient<IPathInTargetRepository, PathInTargetRepository>();
-        _ = services.AddTransient<IPathToTargetRepository, PathToTargetRepository>();
-        _ = services.AddTransient<ISessionRepository, SessionRepository>();
-        _ = services.AddTransient<ISessionResultRepository, SessionResultRepository>();
 
         _ = services.AddTransient<IPatientService, PatientService>();
         _ = services.AddTransient<IExcelFiller, ExcelFiller>();

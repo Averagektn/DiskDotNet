@@ -1,7 +1,6 @@
 ﻿using ClosedXML.Excel;
 using Disk.Data.Impl;
 using Disk.Entities;
-using Disk.Repository.Interface;
 using Disk.Service.Interface;
 using Microsoft.Win32;
 using Newtonsoft.Json;
@@ -12,7 +11,7 @@ using Localization = Disk.Properties.Langs.Appointment.AppointmentLocalization;
 
 namespace Disk.Service.Implementation;
 
-public class ExcelFiller(IMapRepository mapRepository) : IExcelFiller
+public class ExcelFiller : IExcelFiller
 {
     private const int ColsPerPath = 7;
 
@@ -56,7 +55,7 @@ public class ExcelFiller(IMapRepository mapRepository) : IExcelFiller
             worksheet.Cell(1, 2).Value = Localization.Map;
 
             worksheet.Cell(2, 1).Value = session.DateTime;
-            worksheet.Cell(2, 2).Value = mapRepository.GetById(appointment.Map).Name;
+            //worksheet.Cell(2, 2).Value = mapRepository.GetById(appointment.Map).Name;
 
             worksheet.Cell(4, 1).Value = $"{Localization.Deviation} X";
             worksheet.Cell(4, 2).Value = $"{Localization.Deviation} Y";
