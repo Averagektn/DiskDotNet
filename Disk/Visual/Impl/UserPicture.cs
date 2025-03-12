@@ -105,6 +105,9 @@ public class UserPicture : User
         Image.Width = (int)Math.Round(IniImageSize.Width * (coeffX + coeffY) / 2);
         Image.Height = (int)Math.Round(IniImageSize.Height * (coeffX + coeffY) / 2);
 
+        //Image.Width = (int)Math.Round(IniImageSize.Width * Math.Min(coeffX, coeffY));
+        //Image.Height = (int)Math.Round(IniImageSize.Height * Math.Min(coeffX, coeffY));
+
         base.Scale();
     }
 }

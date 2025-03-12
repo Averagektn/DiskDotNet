@@ -217,7 +217,7 @@
                     <Slider 
                         Grid.Column="0"
                         x:Name="UserRadiusSlider"
-                        Minimum="2" 
+                        Minimum="3" 
                         Maximum="15" 
                         Value="{Binding UserRadius}"
                         TickFrequency="1" 
@@ -249,7 +249,7 @@
                     <Slider 
                         Grid.Column="0"
                         x:Name="TargetRadiusSlider"
-                        Minimum="2" 
+                        Minimum="3" 
                         Maximum="15" 
                         Value="{Binding TargetRadius}"
                         TickFrequency="1" 

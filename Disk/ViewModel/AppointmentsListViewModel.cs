@@ -156,5 +156,6 @@ public class AppointmentsListViewModel(DiskContext database, NavigationStore nav
         base.Refresh();
 
         _ = Task.Run(UpdateAppointmentsAsync);
+        SelectedAppointment = null;
     }
 }
