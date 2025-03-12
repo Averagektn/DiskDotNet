@@ -186,4 +186,31 @@
   <data name="ErrorCaption" xml:space="preserve">
     <value>Error</value>
   </data>
+  <data name="CursorImagePath" xml:space="preserve">
+    <value>Cursor image path</value>
+  </data>
+  <data name="Ip" xml:space="preserve">
+    <value>IP</value>
+  </data>
+  <data name="TargetRadius" xml:space="preserve">
+    <value>Target radius</value>
+  </data>
+  <data name="UserRadius" xml:space="preserve">
+    <value>Cursor radius</value>
+  </data>
+  <data name="ShotTime" xml:space="preserve">
+    <value>Sample rate, Hz</value>
+  </data>
+  <data name="TargetHp" xml:space="preserve">
+    <value>Target time to live, ms</value>
+  </data>
+  <data name="TargetImagePath" xml:space="preserve">
+    <value>Target image path</value>
+  </data>
+  <data name="MoveTime" xml:space="preserve">
+    <value>Frames per second</value>
+  </data>
+  <data name="Angles" xml:space="preserve">
+    <value>Max angles (X, Y}</value>
+  </data>
 </root>

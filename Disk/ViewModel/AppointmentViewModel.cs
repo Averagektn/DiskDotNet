@@ -1,11 +1,12 @@
-﻿using Disk.Entities;
+﻿using Disk.Db.Context;
+using Disk.Entities;
 using Disk.Navigators;
-using Disk.Repository.Interface;
 using Disk.Service.Interface;
 using Disk.Stores;
 using Disk.ViewModel.Common.Commands.Async;
 using Disk.ViewModel.Common.Commands.Sync;
 using Disk.ViewModel.Common.ViewModels;
+using Microsoft.EntityFrameworkCore;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Windows;
@@ -15,8 +16,8 @@ using Settings = Disk.Properties.Config.Config;
 
 namespace Disk.ViewModel;
 
-public class AppointmentViewModel(ISessionRepository sessionRepository, IExcelFiller excelFiller, NavigationStore navigationStore) :
-    PopupViewModel
+public class AppointmentViewModel(DiskContext database, IExcelFiller excelFiller, NavigationStore navigationStore,
+    ModalNavigationStore modalNavigationStore) : PopupViewModel
 {
     public required Patient Patient { get; set; }
     public Session? SelectedSession { get; set; } = null;
@@ -26,9 +27,12 @@ public class AppointmentViewModel(ISessionRepository sessionRepository, IExcelFi
     public static string MaxXAngle => $"{Settings.XMaxAngle:f2}";
     public static string MaxYAngle => $"{Settings.YMaxAngle:f2}";
     public static string Ip => Settings.IP;
-    public static string CursorImageName => Path.GetFileName(Settings.CursorFilePath);
+    public static string CursorImageName => Path.GetFileName(CursorImagePath);
     public static string CursorImagePath => Settings.CursorFilePath;
+    public static string TargetImageName => Path.GetFileName(TargetImagePath);
+    public static string TargetImagePath => Settings.TargetFilePath;
     public static int ShotFrequency => 1000 / Settings.ShotTime;
+    public static int MoveFrequency => 1000 / Settings.MoveTime;
     public static int TargetLifespan => 1000 * Settings.TargetHp / ShotFrequency;
     private static Settings Settings => Settings.Default;
 
@@ -38,7 +42,7 @@ public class AppointmentViewModel(ISessionRepository sessionRepository, IExcelFi
         set
         {
             _ = SetProperty(ref _appointment, value);
-            Sessions = [.. sessionRepository.GetSessionsWithResultsByAppointment(value.Id)];
+            _ = Task.Run(UpdateAsync);
         }
     }
 
@@ -49,15 +53,49 @@ public class AppointmentViewModel(ISessionRepository sessionRepository, IExcelFi
         set => SetProperty(ref _sessions, value);
     }
 
-    private ObservableCollection<PathToTarget> _pathsToTargets = [];
-    public ObservableCollection<PathToTarget> PathsToTargets
+    private ObservableCollection<(PathToTarget Ptt, PathInTarget Pit)> _paths = [];
+    public ObservableCollection<(PathToTarget Ptt, PathInTarget Pit)> Paths
     {
-        get => _pathsToTargets;
-        set => SetProperty(ref _pathsToTargets, value);
+        get => _paths;
+        set => SetProperty(ref _paths, value);
     }
 
-    /*    public ICommand StartSessionCommand => 
-            new Command(_ => StartSessionNavigator.NavigateWithBar(navigationStore, Patient));*/
+    public ICommand StartSessionCommand => new Command(_ =>
+        QuestionNavigator.Navigate(
+            modalNavigationStore,
+            message: 
+                $"""
+                    {Localization.Angles}: {MaxXAngle};{MaxYAngle}
+                    {Localization.Ip}: {Ip}
+                    {Localization.CursorImagePath}: {CursorImageName}
+                    {Localization.TargetImagePath}: {TargetImageName}
+                    {Localization.ShotTime}: {ShotFrequency}
+                    {Localization.MoveTime}: {MoveFrequency}
+                    {Localization.TargetHp}: {TargetLifespan}
+                """,
+            afterConfirm: () =>
+            {
+                var now = DateTime.Now;
+                var session = new Session()
+                {
+                    Appointment = Appointment.Id,
+                    CursorRadius = Settings.IniUserRadius,
+                    DateTime = now.ToString("dd.MM.yyyy HH:mm"),
+                    MaxXAngle = Settings.XMaxAngle,
+                    MaxYAngle = Settings.YMaxAngle,
+                    TargetRadius = Settings.IniUserRadius,
+                    LogFilePath = $"{Settings.MainDirPath}{Path.DirectorySeparatorChar}" +
+                                  $"{Patient.Surname} {Patient.Name}{Path.DirectorySeparatorChar}" +
+                                  $"{now:dd.MM.yyyy HH:mm:ss}",
+                };
+
+                Task.Run(async () =>
+                {
+                    await database.AddAsync(session);
+                    await database.SaveChangesAsync();
+                    PaintNavigator.Navigate(navigationStore, session);
+                });
+            }));
 
     public ICommand SessionSelectedCommand => new Command(SessionSelected);
 
@@ -81,12 +119,13 @@ public class AppointmentViewModel(ISessionRepository sessionRepository, IExcelFi
         }
     });
 
-    public ICommand DeleteSessionCommand => new Command(_ =>
+    public ICommand DeleteSessionCommand => new AsyncCommand(async _ =>
     {
-        sessionRepository.Delete(SelectedSession!);
+        _ = database.Sessions.Remove(SelectedSession!);
+        _ = await database.SaveChangesAsync();
         _ = Sessions.Remove(SelectedSession!);
         OnPropertyChanged(nameof(Sessions));
-        PathsToTargets.Clear();
+        Paths.Clear();
 
         SelectedSession = null;
     });
@@ -98,18 +137,27 @@ public class AppointmentViewModel(ISessionRepository sessionRepository, IExcelFi
             return;
         }
 
-        PathsToTargets = [.. SelectedSession.PathToTargets];
+        Paths = [.. SelectedSession.PathToTargets.Zip(SelectedSession.PathInTargets, (ptt, pit) => (ptt, pit))];
     }
 
-    private void Update()
+    private async Task UpdateAsync()
     {
-        Sessions = [.. sessionRepository.GetSessionsWithResultsByAppointment(Appointment.Id)];
+        Sessions =
+        [..
+            await database.Sessions
+                .Where(s => s.Appointment == Appointment.Id)
+                .OrderByDescending(s => s.Id)
+                .Include(s => s.SessionResult)
+                .Include(s => s.PathInTargets)
+                .Include(s => s.PathToTargets)
+                .ToListAsync()
+        ];
     }
 
     public override void Refresh()
     {
         base.Refresh();
 
-        Update();
+        _ = Task.Run(UpdateAsync);
     }
 }

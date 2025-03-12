@@ -92,7 +92,7 @@ public class AddPatientViewModel(IPatientService patientService, ModalNavigation
             Log.Error(ex.Message);
             QuestionNavigator.Navigate(modalNavigationStore,
                 message: AddPatientLocalization.PossibleDuplication,
-                onConfirm: () =>
+                beforeConfirm: () =>
                 {
                     _ = Task.Run(async () =>
                     {
@@ -100,8 +100,7 @@ public class AddPatientViewModel(IPatientService patientService, ModalNavigation
                         _ = await database.SaveChangesAsync();
                         IniNavigationStore.Close();
                     });
-                },
-                onCancel: null);
+                });
         }
         catch (InvalidNameException ex)
         {

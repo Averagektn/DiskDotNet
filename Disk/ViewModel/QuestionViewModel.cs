@@ -10,19 +10,23 @@ public class QuestionViewModel : ObserverViewModel
     private string _message = string.Empty;
     public required string Message { get => _message; set => SetProperty(ref _message, value); }
 
-    public event Action? OnConfirm;
-    public event Action? OnCancel;
+    public event Action? BeforeConfirm;
+    public event Action? AfterConfirm;
+    public event Action? BeforeCancel;
+    public event Action? AfterCancel;
 
     public ICommand ConfirmCommand => new Command(_ =>
     {
-        OnConfirm?.Invoke();
+        BeforeConfirm?.Invoke();
         IniNavigationStore.Close();
+        AfterConfirm?.Invoke();
     });
 
     public ICommand CancelCommand => new Command(_ =>
     {
-        OnCancel?.Invoke();
+        BeforeCancel?.Invoke();
         IniNavigationStore.Close();
+        AfterCancel?.Invoke();
     });
 
     public override void Dispose()
@@ -30,7 +34,7 @@ public class QuestionViewModel : ObserverViewModel
         base.Dispose();
         GC.SuppressFinalize(this);
 
-        OnConfirm = null;
-        OnCancel = null;
+        BeforeConfirm = null;
+        BeforeCancel = null;
     }
 }

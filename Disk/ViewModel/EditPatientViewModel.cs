@@ -44,7 +44,7 @@ public class EditPatientViewModel(IPatientService patientService, ModalNavigatio
             Log.Information(ex.Message);
             QuestionNavigator.Navigate(_modalNavigationStore,
                 message: EditPatientLocalization.PossibleDuplication,
-                onConfirm: () =>
+                beforeConfirm: () =>
                 {
                     _ = Task.Run(async () =>
                     {
@@ -53,7 +53,7 @@ public class EditPatientViewModel(IPatientService patientService, ModalNavigatio
                         IniNavigationStore.Close();
                     });
                 },
-                onCancel: () => Task.Run(async () => await _database.Entry(Patient).ReloadAsync()));
+                beforeCancel: () => Task.Run(async () => await _database.Entry(Patient).ReloadAsync()));
         }
         catch (InvalidNameException ex)
         {

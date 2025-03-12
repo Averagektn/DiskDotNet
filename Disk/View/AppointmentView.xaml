@@ -195,7 +195,7 @@
             SelectionMode="Single"
             IsReadOnly="True" 
             Grid.ColumnSpan="2"
-            ItemsSource="{Binding PathsToTargets}" 
+            ItemsSource="{Binding Paths}" 
             AutoGenerateColumns="False" 
             ScrollViewer.VerticalScrollBarVisibility="Auto">
 
@@ -203,19 +203,23 @@
                 <DataGridTextColumn 
                     Width="1*" 
                     Header="{x:Static lang:AppointmentLocalization.TargetNum}" 
-                    Binding="{Binding TargetNumInc}" />
+                    Binding="{Binding Ptt.TargetNumInc}" />
                 <DataGridTextColumn 
                     Width="1*" 
                     Header="{x:Static lang:AppointmentLocalization.AverageSpeed}" 
-                    Binding="{Binding AngleSpeed, StringFormat=N1}" />
+                    Binding="{Binding Ptt.AverageSpeed, StringFormat=N1}" />
                 <DataGridTextColumn 
                     Width="1*" 
                     Header="{x:Static lang:AppointmentLocalization.ApproachSpeed}" 
-                    Binding="{Binding ApproachSpeed, StringFormat=N1}" />
+                    Binding="{Binding Ptt.ApproachSpeed, StringFormat=N1}" />
                 <DataGridTextColumn 
                     Width="1*" 
                     Header="{x:Static lang:AppointmentLocalization.Time}" 
-                    Binding="{Binding Time, StringFormat=N1}" />
+                    Binding="{Binding Ptt.Time, StringFormat=N1}" />
+                <DataGridTextColumn 
+                    Width="1*" 
+                    Header="{x:Static lang:AppointmentLocalization.Precision}" 
+                    Binding="{Binding Pit.Precision, StringFormat=N1}" />
             </DataGrid.Columns>
         </DataGrid>
 

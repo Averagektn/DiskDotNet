@@ -32,5 +32,6 @@
         <Setter Property="Foreground" Value="White"/>
         <Setter Property="FontSize" Value="25"/>
         <Setter Property="Background" Value="#4bb342"/>
+        <Setter Property="Padding" Value="10"/>
     </Style>
 </ResourceDictionary>

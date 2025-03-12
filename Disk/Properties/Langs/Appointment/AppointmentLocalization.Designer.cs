@@ -61,6 +61,15 @@ namespace Disk.Properties.Langs.Appointment {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Max angles (X, Y}.
+        /// </summary>
+        public static string Angles {
+            get {
+                return ResourceManager.GetString("Angles", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Approach speed.
         /// </summary>
         public static string ApproachSpeed {
@@ -75,6 +84,15 @@ namespace Disk.Properties.Langs.Appointment {
         public static string AverageSpeed {
             get {
                 return ResourceManager.GetString("AverageSpeed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cursor image path.
+        /// </summary>
+        public static string CursorImagePath {
+            get {
+                return ResourceManager.GetString("CursorImagePath", resourceCulture);
             }
         }
         
@@ -151,6 +169,15 @@ namespace Disk.Properties.Langs.Appointment {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to IP.
+        /// </summary>
+        public static string Ip {
+            get {
+                return ResourceManager.GetString("Ip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Map.
         /// </summary>
         public static string Map {
@@ -165,6 +192,15 @@ namespace Disk.Properties.Langs.Appointment {
         public static string MathExp {
             get {
                 return ResourceManager.GetString("MathExp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Frames per second.
+        /// </summary>
+        public static string MoveTime {
+            get {
+                return ResourceManager.GetString("MoveTime", resourceCulture);
             }
         }
         
@@ -232,6 +268,15 @@ namespace Disk.Properties.Langs.Appointment {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Sample rate, Hz.
+        /// </summary>
+        public static string ShotTime {
+            get {
+                return ResourceManager.GetString("ShotTime", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Start.
         /// </summary>
         public static string Start {
@@ -250,6 +295,24 @@ namespace Disk.Properties.Langs.Appointment {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Target time to live, ms.
+        /// </summary>
+        public static string TargetHp {
+            get {
+                return ResourceManager.GetString("TargetHp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Target image path.
+        /// </summary>
+        public static string TargetImagePath {
+            get {
+                return ResourceManager.GetString("TargetImagePath", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Target number.
         /// </summary>
         public static string TargetNum {
@@ -259,11 +322,29 @@ namespace Disk.Properties.Langs.Appointment {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Target radius.
+        /// </summary>
+        public static string TargetRadius {
+            get {
+                return ResourceManager.GetString("TargetRadius", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Time.
         /// </summary>
         public static string Time {
             get {
                 return ResourceManager.GetString("Time", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cursor radius.
+        /// </summary>
+        public static string UserRadius {
+            get {
+                return ResourceManager.GetString("UserRadius", resourceCulture);
             }
         }
     }

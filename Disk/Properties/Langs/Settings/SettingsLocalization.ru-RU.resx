@@ -172,7 +172,7 @@
     <value>Очистка поля приведет к использованию курсора по умолчанию</value>
   </data>
   <data name="TargetImagePath" xml:space="preserve">
-    <value>Путь к картинке курсора</value>
+    <value>Путь к картинке мишени</value>
   </data>
   <data name="TargetImagePathTip" xml:space="preserve">
     <value>Очистка поля приведет к использованию мишени по умолчанию</value>

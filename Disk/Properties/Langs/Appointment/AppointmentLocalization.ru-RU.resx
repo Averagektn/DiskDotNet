@@ -186,4 +186,31 @@
   <data name="ErrorCaption" xml:space="preserve">
     <value>Ошибка</value>
   </data>
+  <data name="CursorImagePath" xml:space="preserve">
+    <value>Картинка курсора</value>
+  </data>
+  <data name="Ip" xml:space="preserve">
+    <value>IP</value>
+  </data>
+  <data name="TargetRadius" xml:space="preserve">
+    <value>Размер мишени</value>
+  </data>
+  <data name="UserRadius" xml:space="preserve">
+    <value>Размер курсора</value>
+  </data>
+  <data name="ShotTime" xml:space="preserve">
+    <value>Частота сбора информации, Гц</value>
+  </data>
+  <data name="TargetHp" xml:space="preserve">
+    <value>Время жизни мишени, мс</value>
+  </data>
+  <data name="TargetImagePath" xml:space="preserve">
+    <value>Картинка мишени</value>
+  </data>
+  <data name="MoveTime" xml:space="preserve">
+    <value>Частота обновления экрана, Гц</value>
+  </data>
+  <data name="Angles" xml:space="preserve">
+    <value>Максимальные углы наклона (X;Y)</value>
+  </data>
 </root>

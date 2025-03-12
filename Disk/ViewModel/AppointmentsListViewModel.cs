@@ -6,7 +6,6 @@ using Disk.ViewModel.Common.Commands.Async;
 using Disk.ViewModel.Common.Commands.Sync;
 using Disk.ViewModel.Common.ViewModels;
 using Microsoft.EntityFrameworkCore;
-using Serilog;
 using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Input;
@@ -56,13 +55,13 @@ public class AppointmentsListViewModel(DiskContext database, NavigationStore nav
     }
 
     private DateTime? _selectedDate;
-    public DateTime? SelectedDate 
-    { 
+    public DateTime? SelectedDate
+    {
         get => _selectedDate;
         set
         {
-            SetProperty(ref _selectedDate, value);
-            Task.Run(UpdateAppointmentsAsync);
+            _ = SetProperty(ref _selectedDate, value);
+            _ = Task.Run(UpdateAppointmentsAsync);
         }
     }
 
