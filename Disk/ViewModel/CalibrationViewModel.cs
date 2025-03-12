@@ -160,6 +160,17 @@ public class CalibrationViewModel : ObserverViewModel
     {
         base.Refresh();
 
+        IsRunningThread = false;
+
+        TextBoxUpdateTimer.Stop();
+
+        if (DataThread is not null && DataThread.IsAlive)
+        {
+            DataThread.Join();
+        }
+
         StartCalibrationEnabled = true;
+        XCoord = $"{Settings.XMaxAngle:f2}";
+        YCoord = $"{Settings.YMaxAngle:f2}";
     }
 }

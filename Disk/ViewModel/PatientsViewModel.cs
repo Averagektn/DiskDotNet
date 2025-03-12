@@ -7,6 +7,7 @@ using Disk.ViewModel.Common.Commands.Sync;
 using Disk.ViewModel.Common.ViewModels;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.ObjectModel;
+using System.Windows;
 using System.Windows.Input;
 
 namespace Disk.ViewModel;
@@ -40,7 +41,7 @@ public class PatientsViewModel : ObserverViewModel
         set
         {
             _ = SetProperty(ref _pageNum, value);
-            _ = Task.Run(GetPagedPatientsAsync);
+            _ = Application.Current.Dispatcher.InvokeAsync(GetPagedPatientsAsync);
         }
     }
 
@@ -59,11 +60,8 @@ public class PatientsViewModel : ObserverViewModel
         _modalNavigationStore = modalNavigationStore;
         _database = database;
 
-        _ = Task.Run(async () =>
-        {
-            await GetPagedPatientsAsync();
-            IsNextEnabled = TotalPages > 1;
-        });
+        GetPagedPatientsAsync().Wait();
+        IsNextEnabled = TotalPages > 1;
     }
 
     public ICommand SearchCommand => new AsyncCommand(async _ =>
@@ -155,7 +153,7 @@ public class PatientsViewModel : ObserverViewModel
     {
         SortedPatients =
         [..
-                await _database.Patients
+            await _database.Patients
                 .OrderByDescending(p => p.Id)
                 .Skip(PatientsPerPage * (PageNum - 1))
                 .Take(PatientsPerPage)
@@ -169,6 +167,7 @@ public class PatientsViewModel : ObserverViewModel
     {
         base.Refresh();
 
-        _ = Task.Run(GetPagedPatientsAsync);
+        _ = Application.Current.Dispatcher.InvokeAsync(GetPagedPatientsAsync);
+        SelectedPatient = null;
     }
 }

@@ -17,6 +17,8 @@ public class Logger : ILogger, IDisposable
 
     private readonly StreamWriter Writer;
 
+    private static object _lock = new object();
+
     /// <summary>
     ///     Initializes a new instance of the <see cref="Logger"/> class with the specified filename.
     /// </summary>
@@ -46,8 +48,11 @@ public class Logger : ILogger, IDisposable
 
         if (logger is null)
         {
-            logger = new Logger(filename);
-            Loggers.Add(logger);
+            lock (_lock)
+            {
+                logger = new Logger(filename);
+                Loggers.Add(logger);
+            }
         }
 
         return logger;

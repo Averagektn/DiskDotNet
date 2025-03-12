@@ -196,6 +196,6 @@ public partial class PaintView : UserControl
     {
         StopGame();
 
-        _ = Application.Current.Dispatcher.BeginInvoke(async () => await ViewModel.SaveSessionResult());
+        _ = Application.Current.Dispatcher.InvokeAsync(async () => await ViewModel.SaveSessionResultAsync());
     }
 }

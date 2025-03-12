@@ -206,7 +206,26 @@ public class SettingsViewModel : ObserverViewModel
     {
         base.Refresh();
 
-        SaveSettings();
+        Ip = Settings.IP;
+
+        CursorFilePath = Settings.CursorFilePath;
+        TargetFilePath = Settings.TargetFilePath;
+
+        MoveTime = RoundToNearest(value: 1000 / Settings.MoveTime, nearest: 5).ToString();
+        ShotTime = RoundToNearest(value: 1000 / Settings.MoveTime, nearest: 5).ToString();
+
+        TargetRadius = Settings.IniTargetRadius.ToString();
+        UserRadius = Settings.IniUserRadius.ToString();
+
+        TargetTtl = RoundToNearest(value: 1000 * Settings.TargetHp / (1000 / Settings.ShotTime), nearest: 100).ToString();
+    }
+
+    public override void Dispose()
+    {
+        base.Dispose();
+        GC.SuppressFinalize(this);
+
+        // Add Question
     }
 
     private void SaveSettings()

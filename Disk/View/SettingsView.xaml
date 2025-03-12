@@ -72,6 +72,7 @@
                         Text="{x:Static lang:SettingsLocalization.MoveTime}"/>
 
                     <Button 
+                        Padding="0"
                         Width="40" 
                         Height="30" 
                         Background="Transparent">
@@ -127,6 +128,7 @@
                         FontSize="20" 
                         Text="{x:Static lang:SettingsLocalization.ShotTime}"/>
                     <Button 
+                        Padding="0"
                         Width="40" 
                         Height="30" 
                         Background="Transparent">
@@ -275,6 +277,7 @@
                     Text="{x:Static lang:SettingsLocalization.CursorImagePath}"/>
 
                 <Button 
+                    Padding="0"
                     Width="40" 
                     Height="30" 
                     Background="Transparent" 
@@ -312,7 +315,8 @@
                     Grid.Column="0"
                     Content="🗑️" 
                     Command="{Binding ClearCursorImageCommand}" 
-                    Margin="10 20"/>
+                    Margin="10 20"
+                    Padding="0"/>
 
                 <TextBox
                     IsReadOnly="True"
@@ -347,6 +351,7 @@
                     Text="{x:Static lang:SettingsLocalization.TargetImagePath}"/>
 
                 <Button 
+                    Padding="0"
                     Width="40" 
                     Height="30" 
                     Background="Transparent" 
@@ -384,7 +389,8 @@
                     Grid.Column="0"
                     Content="🗑️" 
                     Command="{Binding ClearTargetImageCommand}" 
-                    Margin="10 20"/>
+                    Margin="10 20"
+                    Padding="0"/>
 
                 <TextBox
                     IsReadOnly="True"

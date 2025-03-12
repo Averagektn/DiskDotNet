@@ -7,25 +7,25 @@ namespace Disk.Navigators;
 
 public class SessionResultNavigator : INavigator
 {
-    public static void Navigate(INavigationStore navigationStore, Session session)
+    public static void Navigate(INavigationStore navigationStore, long sessionId)
     {
         navigationStore.SetViewModel<SessionResultViewModel>(vm =>
         {
             vm.IniNavigationStore = navigationStore;
-            vm.CurrentSession = session;
+            vm.SessionId = sessionId;
         });
     }
 
-    public static void NavigateAndClose(INavigationStore navigationStore, Session session)
+    public static void NavigateAndClose(INavigationStore navigationStore, long sessionId)
     {
         if (navigationStore.CanClose)
         {
             navigationStore.Close();
-            Navigate(navigationStore, session);
+            Navigate(navigationStore, sessionId);
         }
     }
 
-    public static void NavigateWithBar(INavigationStore navigationStore, Session session)
+    public static void NavigateWithBar(INavigationStore navigationStore, long sessionId)
     {
         navigationStore.SetViewModel<NavigationBarLayoutViewModel>(vm =>
         {
@@ -33,17 +33,17 @@ public class SessionResultNavigator : INavigator
             vm.CurrentViewModel = navigationStore.GetViewModel<SessionResultViewModel>(vm =>
             {
                 vm.IniNavigationStore = navigationStore;
-                vm.CurrentSession = session;
+                vm.SessionId = sessionId;
             });
         });
     }
 
-    public static void NavigateWithBarAndClose(INavigationStore navigationStore, Session session)
+    public static void NavigateWithBarAndClose(INavigationStore navigationStore, long sessionId)
     {
         if (navigationStore.CanClose)
         {
             navigationStore.Close();
-            NavigateWithBar(navigationStore, session);
+            NavigateWithBar(navigationStore, sessionId);
         }
     }
 }

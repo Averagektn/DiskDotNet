@@ -1,18 +1,17 @@
 ﻿using Disk.Calculations.Impl;
 using Disk.Calculations.Impl.Converters;
 using Disk.Data.Impl;
+using Disk.Db.Context;
 using Disk.Entities;
 using Disk.Navigators;
-using Disk.Repository.Interface;
 using Disk.Service.Implementation;
 using Disk.Stores;
 using Disk.ViewModel.Common.ViewModels;
-using Disk.Visual.Impl;
 using Disk.Visual.Interface;
+using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using System.Diagnostics;
 using System.Net;
-using System.Threading.Tasks;
 using System.Windows;
 using FilePath = System.IO.Path;
 using Localization = Disk.Properties.Langs.PaintWindow.PaintWindowLocalization;
@@ -22,15 +21,32 @@ namespace Disk.ViewModel;
 
 public class PaintViewModel : PopupViewModel
 {
-    // Can set on creation
+    private long _sessionId;
+    public required long SessionId
+    {
+        get => _sessionId;
+        set
+        {
+            _sessionId = value;
+            _ = Application.Current.Dispatcher.InvokeAsync(async () =>
+                CurrentSession = await _database.Sessions
+                    .Where(s => s.Id == value)
+                    .Include(s => s.AppointmentNavigation)
+                    .Include(s => s.AppointmentNavigation.MapNavigation)
+                    .FirstAsync());
+        }
+    }
+
+
     private Session _currentSession = null!;
-    public required Session CurrentSession
+    public Session CurrentSession
     {
         get => _currentSession;
         set
         {
             _currentSession = value;
-            TargetCenters = JsonConvert.DeserializeObject<List<Point2D<float>>>(_currentSession.AppointmentNavigation.MapNavigation.CoordinatesJson) ?? [];
+            TargetCenters = JsonConvert
+                .DeserializeObject<List<Point2D<float>>>(_currentSession.AppointmentNavigation.MapNavigation.CoordinatesJson) ?? [];
         }
     }
 
@@ -80,24 +96,16 @@ public class PaintViewModel : PopupViewModel
 
     // DI
     private readonly NavigationStore _navigationStore;
-    private readonly IPathToTargetRepository _pathToTargetRepository;
-    private readonly IPathInTargetRepository _pathInTargetRepository;
-    private readonly ISessionResultRepository _sessionResultRepository;
-    private readonly ISessionRepository _sessionRepository;
+    private readonly DiskContext _database;
 
-    public PaintViewModel(NavigationStore navigationStore, IPathToTargetRepository pathToTargetRepository,
-        IPathInTargetRepository pathInTargetRepository, ISessionResultRepository sessionResultRepository, 
-        ISessionRepository sessionRepository)
+    public PaintViewModel(NavigationStore navigationStore, DiskContext database)
     {
         DiskNetworkThread = new(ReceiveUserPos);
 
         Converter = DrawableFabric.GetIniConverter();
 
         _navigationStore = navigationStore;
-        _pathToTargetRepository = pathToTargetRepository;
-        _pathInTargetRepository = pathInTargetRepository;
-        _sessionResultRepository = sessionResultRepository;
-        _sessionRepository = sessionRepository;
+        _database = database;
     }
 
     public void StartReceiving()
@@ -122,11 +130,11 @@ public class PaintViewModel : PopupViewModel
             connectionFailed = true;
 
             _ = MessageBox.Show(Localization.ConnectionLost);
-            _ = Application.Current.Dispatcher.BeginInvoke(new Action(async () => await SaveSessionResult()));
+            _ = Application.Current.Dispatcher.InvokeAsync(SaveSessionResultAsync);
         }
     }
 
-    public async Task SaveSessionResult()
+    public async Task SaveSessionResultAsync()
     {
         if (PathsInTargets.Count != 0)
         {
@@ -143,12 +151,13 @@ public class PaintViewModel : PopupViewModel
                 Score = Score,
             };
 
-            _sessionResultRepository.Add(sres);
+            _ = await _database.SessionResults.AddAsync(sres);
         }
         else
         {
-            _sessionRepository.Delete(CurrentSession);
+            _ = _database.Sessions.Remove(CurrentSession);
         }
+        _ = await _database.SaveChangesAsync();
 
         using (var logger = Logger.GetLogger(UsrAngLog))
         {
@@ -159,7 +168,6 @@ public class PaintViewModel : PopupViewModel
         }
 
         IsStopEnabled = false;
-
         IsGame = false;
         DiskNetworkThread.Join();
 
@@ -171,7 +179,7 @@ public class PaintViewModel : PopupViewModel
         {
             try
             {
-                SessionResultNavigator.NavigateAndClose(_navigationStore, CurrentSession);
+                SessionResultNavigator.NavigateAndClose(_navigationStore, CurrentSession.Id);
             }
             catch
             {
@@ -182,13 +190,16 @@ public class PaintViewModel : PopupViewModel
 
     public void SwitchToPathInTarget(Point2D<int> userShot)
     {
-        PathToTargetStopwatch!.Stop();
+        if (PathToTargetStopwatch is null)
+        {
+            return;
+        }
+        PathToTargetStopwatch.Stop();
 
         if (userShot.X != 0 && userShot.Y != 0)
         {
             PathsToTargets[TargetId - 1].Add(Converter.ToAngle_FromWnd(userShot));
         }
-        //PathToTargetStopwatch!.Stop();
         PathsInTargets.Add([]);
 
         double distance = 0;
@@ -199,7 +210,7 @@ public class PaintViewModel : PopupViewModel
         }
 
         var touchPoint = Converter.ToAngle_FromWnd(userShot);
-        var time = PathToTargetStopwatch!.Elapsed.TotalSeconds;
+        var time = PathToTargetStopwatch.Elapsed.TotalSeconds;
         var avgSpeed = distance / time;
         var approachSpeed = pathToTarget[0].GetDistance(touchPoint) / time;
 
@@ -213,11 +224,21 @@ public class PaintViewModel : PopupViewModel
             Session = CurrentSession.Id,
             Time = time
         };
-        SavePathToTarget(ptt);
+
+        _ = Application.Current.Dispatcher.InvokeAsync(async () =>
+        {
+            _ = await _database.PathToTargets.AddAsync(ptt);
+            _ = await _database.SaveChangesAsync();
+        });
     }
 
     public bool SwitchToPathToTarget(IProgressTarget target)
     {
+        if (PathToTargetStopwatch is null)
+        {
+            return false;
+        }
+
         var pathInTarget = PathsInTargets[TargetId - 1];
         PathsToTargets.Add([]);
 
@@ -231,7 +252,11 @@ public class PaintViewModel : PopupViewModel
             Precision = precision
         };
 
-        SavePathInTarget(pit);
+        _ = Application.Current.Dispatcher.InvokeAsync(async () =>
+        {
+            _ = await _database.PathInTargets.AddAsync(pit);
+            _ = await _database.SaveChangesAsync();
+        });
 
         var newCenter = NextTargetCenter;
         target.Reset();
@@ -241,7 +266,7 @@ public class PaintViewModel : PopupViewModel
             var wndCenter = Converter.ToWndCoord(newCenter);
             target.Move(wndCenter);
 
-            PathToTargetStopwatch!.Restart();
+            PathToTargetStopwatch.Restart();
 
             return true;
         }
@@ -259,7 +284,4 @@ public class PaintViewModel : PopupViewModel
             DiskNetworkThread.Join();
         }
     }
-
-    public void SavePathToTarget(PathToTarget pathToTarget) => _pathToTargetRepository.Add(pathToTarget);
-    public void SavePathInTarget(PathInTarget pathInTarget) => _pathInTargetRepository.Add(pathInTarget);
 }

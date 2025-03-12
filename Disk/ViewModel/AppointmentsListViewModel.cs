@@ -12,7 +12,8 @@ using System.Windows.Input;
 
 namespace Disk.ViewModel;
 
-public class AppointmentsListViewModel(DiskContext database, NavigationStore navigationStore, ConfigureAppointmentViewModel configureAppointmentViewModel) : ObserverViewModel
+public class AppointmentsListViewModel(DiskContext database, NavigationStore navigationStore,
+    ConfigureAppointmentViewModel configureAppointmentViewModel) : ObserverViewModel
 {
     private const int AppointmentsPerPage = 15;
     private int _currPage;
@@ -39,7 +40,7 @@ public class AppointmentsListViewModel(DiskContext database, NavigationStore nav
         {
             _patient = value;
 
-            _ = Task.Run(async () =>
+            _ = Application.Current.Dispatcher.InvokeAsync(async () =>
             {
                 await UpdateAppointmentsAsync();
                 IsNextEnabled = _currPage < TotalPages - 1;
@@ -61,7 +62,7 @@ public class AppointmentsListViewModel(DiskContext database, NavigationStore nav
         set
         {
             _ = SetProperty(ref _selectedDate, value);
-            _ = Task.Run(UpdateAppointmentsAsync);
+            _ = Application.Current.Dispatcher.InvokeAsync(UpdateAppointmentsAsync);
         }
     }
 
@@ -81,7 +82,8 @@ public class AppointmentsListViewModel(DiskContext database, NavigationStore nav
         }
     }
 
-    public ICommand ConfigureAppointmentCommand => new Command(_ => ConfigureAppointmentNavigator.NavigateWithBar(navigationStore, Patient));
+    public ICommand ConfigureAppointmentCommand => new Command(_ =>
+        ConfigureAppointmentNavigator.NavigateWithBar(navigationStore, Patient));
 
     public ICommand CancelDateCommand => new AsyncCommand(async _ =>
     {
@@ -163,7 +165,7 @@ public class AppointmentsListViewModel(DiskContext database, NavigationStore nav
     {
         base.Refresh();
 
-        _ = Task.Run(UpdateAppointmentsAsync);
+        _ = Application.Current.Dispatcher.InvokeAsync(UpdateAppointmentsAsync);
         SelectedAppointment = null;
     }
 }

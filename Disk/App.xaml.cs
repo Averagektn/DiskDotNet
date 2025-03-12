@@ -48,35 +48,30 @@ public partial class App : Application
         _ = services.AddSingleton<NavigationStore>();
         _ = services.AddSingleton<ModalNavigationStore>();
 
-        _ = services.AddSingleton<IAppointmentRepository, AppointmentRepository>();
-        _ = services.AddSingleton<IMapRepository, MapRepository>();
-        _ = services.AddSingleton<IPathInTargetRepository, PathInTargetRepository>();
-        _ = services.AddSingleton<IPathToTargetRepository, PathToTargetRepository>();
-        _ = services.AddSingleton<ISessionRepository, SessionRepository>();
-        _ = services.AddSingleton<ISessionResultRepository, SessionResultRepository>();
+        _ = services.AddTransient<IAppointmentRepository, AppointmentRepository>();
+        _ = services.AddTransient<IMapRepository, MapRepository>();
+        _ = services.AddTransient<IPathInTargetRepository, PathInTargetRepository>();
+        _ = services.AddTransient<IPathToTargetRepository, PathToTargetRepository>();
+        _ = services.AddTransient<ISessionRepository, SessionRepository>();
+        _ = services.AddTransient<ISessionResultRepository, SessionResultRepository>();
 
-        _ = services.AddSingleton<IPatientService, PatientService>();
-        _ = services.AddSingleton<IExcelFiller, ExcelFiller>();
+        _ = services.AddTransient<IPatientService, PatientService>();
+        _ = services.AddTransient<IExcelFiller, ExcelFiller>();
 
-        // Common state
-        _ = services.AddSingleton<MainViewModel>();
-        _ = services.AddSingleton<MapCreatorViewModel>();
-        _ = services.AddSingleton<PatientsViewModel>();
-        _ = services.AddSingleton<SettingsViewModel>();
-        _ = services.AddSingleton<AppointmentsListViewModel>();
-        _ = services.AddSingleton<AppointmentViewModel>();
-        _ = services.AddSingleton<ConfigureAppointmentViewModel>();
-        _ = services.AddSingleton<SessionResultViewModel>();
-        _ = services.AddSingleton<CalibrationViewModel>();
-
-        // New state
+        _ = services.AddTransient<MainViewModel>();
+        _ = services.AddTransient<SettingsViewModel>();
+        _ = services.AddTransient<CalibrationViewModel>();
+        _ = services.AddTransient<MapCreatorViewModel>();
+        _ = services.AddTransient<PatientsViewModel>();
+        _ = services.AddTransient<AppointmentsListViewModel>();
+        _ = services.AddTransient<ConfigureAppointmentViewModel>();
+        _ = services.AddTransient<SessionResultViewModel>();
+        _ = services.AddTransient<AppointmentViewModel>();
         _ = services.AddTransient<MapNamePickerViewModel>();
         _ = services.AddTransient<AddPatientViewModel>();
         _ = services.AddTransient<QuestionViewModel>();
         _ = services.AddTransient<PaintViewModel>();
         _ = services.AddTransient<EditPatientViewModel>();
-
-        // Rework
         _ = services.AddTransient<NavigationBarLayoutViewModel>();
 
         _ = services.AddSingleton<MainWindow>(provider =>

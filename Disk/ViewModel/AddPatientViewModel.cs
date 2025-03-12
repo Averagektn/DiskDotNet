@@ -9,6 +9,7 @@ using Disk.ViewModel.Common.Commands.Async;
 using Disk.ViewModel.Common.Commands.Sync;
 using Disk.ViewModel.Common.ViewModels;
 using Serilog;
+using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
 
@@ -94,7 +95,7 @@ public class AddPatientViewModel(IPatientService patientService, ModalNavigation
                 message: AddPatientLocalization.PossibleDuplication,
                 beforeConfirm: () =>
                 {
-                    _ = Task.Run(async () =>
+                    _ = Application.Current.Dispatcher.InvokeAsync(async () =>
                     {
                         _ = await database.AddAsync(Patient);
                         _ = await database.SaveChangesAsync();

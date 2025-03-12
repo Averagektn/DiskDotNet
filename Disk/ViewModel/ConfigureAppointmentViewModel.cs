@@ -46,7 +46,7 @@ public class ConfigureAppointmentViewModel : PopupViewModel
         _navigationStore = navigationStore;
         _database = database;
 
-        _ = Task.Run(UpdateMapsAsync);
+        UpdateMapsAsync().Wait();
     }
 
     public ICommand CreateAppointmentCommand => new AsyncCommand(async _ =>
@@ -105,6 +105,6 @@ public class ConfigureAppointmentViewModel : PopupViewModel
     {
         base.Refresh();
 
-        _ = Task.Run(UpdateMapsAsync);
+        _ = Application.Current.Dispatcher.InvokeAsync(UpdateMapsAsync);
     }
 }

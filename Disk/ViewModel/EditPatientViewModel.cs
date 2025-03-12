@@ -6,6 +6,7 @@ using Disk.Service.Interface;
 using Disk.Stores;
 using Disk.ViewModel.Common.Commands.Async;
 using Serilog;
+using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
 
@@ -46,14 +47,16 @@ public class EditPatientViewModel(IPatientService patientService, ModalNavigatio
                 message: EditPatientLocalization.PossibleDuplication,
                 beforeConfirm: () =>
                 {
-                    _ = Task.Run(async () =>
+                    _ = Application.Current.Dispatcher.InvokeAsync(async () =>
                     {
                         _ = _database.Update(Patient);
                         _ = await _database.SaveChangesAsync();
                         IniNavigationStore.Close();
                     });
                 },
-                beforeCancel: () => Task.Run(async () => await _database.Entry(Patient).ReloadAsync()));
+                beforeCancel: () =>
+                    _ = Application.Current.Dispatcher.InvokeAsync(async () =>
+                        await _database.Entry(Patient).ReloadAsync()));
         }
         catch (InvalidNameException ex)
         {

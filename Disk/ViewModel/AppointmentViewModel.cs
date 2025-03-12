@@ -42,7 +42,7 @@ public class AppointmentViewModel(DiskContext database, IExcelFiller excelFiller
         set
         {
             _ = SetProperty(ref _appointment, value);
-            _ = Task.Run(UpdateAsync);
+            _ = Application.Current.Dispatcher.InvokeAsync(UpdateAsync);
         }
     }
 
@@ -63,7 +63,7 @@ public class AppointmentViewModel(DiskContext database, IExcelFiller excelFiller
     public ICommand StartSessionCommand => new Command(_ =>
         QuestionNavigator.Navigate(
             modalNavigationStore,
-            message: 
+            message:
                 $"""
                     {Localization.Angles}: {MaxXAngle};{MaxYAngle}
                     {Localization.Ip}: {Ip}
@@ -76,6 +76,11 @@ public class AppointmentViewModel(DiskContext database, IExcelFiller excelFiller
             afterConfirm: () =>
             {
                 var now = DateTime.Now;
+                var logPath = $"{Settings.MainDirPath}{Path.DirectorySeparatorChar}" +
+                              $"{Patient.Surname} {Patient.Name}{Path.DirectorySeparatorChar}" +
+                              $"{now:dd.MM.yyyy HH-mm-ss}";
+                _ = Directory.CreateDirectory(logPath);
+
                 var session = new Session()
                 {
                     Appointment = Appointment.Id,
@@ -84,16 +89,14 @@ public class AppointmentViewModel(DiskContext database, IExcelFiller excelFiller
                     MaxXAngle = Settings.XMaxAngle,
                     MaxYAngle = Settings.YMaxAngle,
                     TargetRadius = Settings.IniUserRadius,
-                    LogFilePath = $"{Settings.MainDirPath}{Path.DirectorySeparatorChar}" +
-                                  $"{Patient.Surname} {Patient.Name}{Path.DirectorySeparatorChar}" +
-                                  $"{now:dd.MM.yyyy HH:mm:ss}",
+                    LogFilePath = logPath,
                 };
 
-                Task.Run(async () =>
+                _ = Application.Current.Dispatcher.InvokeAsync(async () =>
                 {
-                    await database.AddAsync(session);
-                    await database.SaveChangesAsync();
-                    PaintNavigator.Navigate(navigationStore, session);
+                    _ = await database.AddAsync(session);
+                    _ = await database.SaveChangesAsync();
+                    PaintNavigator.Navigate(navigationStore, session.Id);
                 });
             }));
 
@@ -110,7 +113,7 @@ public class AppointmentViewModel(DiskContext database, IExcelFiller excelFiller
 
         try
         {
-            SessionResultNavigator.Navigate(navigationStore, SelectedSession);
+            SessionResultNavigator.Navigate(navigationStore, SelectedSession.Id);
             Application.Current.MainWindow.WindowState = WindowState.Maximized;
         }
         catch
@@ -158,6 +161,6 @@ public class AppointmentViewModel(DiskContext database, IExcelFiller excelFiller
     {
         base.Refresh();
 
-        _ = Task.Run(UpdateAsync);
+        _ = Application.Current.Dispatcher.InvokeAsync(UpdateAsync);
     }
 }

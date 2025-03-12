@@ -1,6 +1,5 @@
 ﻿using Disk.ViewModel.Common.Commands.Sync;
 using Disk.ViewModel.Common.ViewModels;
-using Serilog;
 using System.Windows.Input;
 
 namespace Disk.ViewModel;

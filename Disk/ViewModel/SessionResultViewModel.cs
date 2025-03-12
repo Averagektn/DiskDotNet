@@ -1,5 +1,6 @@
 ﻿using Disk.Calculations.Impl.Converters;
 using Disk.Data.Impl;
+using Disk.Db.Context;
 using Disk.Entities;
 using Disk.Service.Implementation;
 using Disk.Stores;
@@ -7,6 +8,7 @@ using Disk.ViewModel.Common.Commands.Sync;
 using Disk.ViewModel.Common.ViewModels;
 using Disk.Visual.Impl;
 using Disk.Visual.Interface;
+using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using System.Collections.ObjectModel;
 using System.Windows;
@@ -18,28 +20,37 @@ using Settings = Disk.Properties.Config.Config;
 
 namespace Disk.ViewModel;
 
-public class SessionResultViewModel(NavigationStore navigationStore) : ObserverViewModel
+public class SessionResultViewModel(NavigationStore navigationStore, DiskContext database) : ObserverViewModel
 {
-    private List<List<Point2D<float>>> PathsToTargets { get; set; } = [];
-    private List<List<Point2D<float>>> PathsInTargets { get; set; } = [];
-    public Point2D<int> UserCenter => Converter.ToWndCoord(PathsToTargets[SelectedIndex][0]);
-    public Point2D<int> TargetCenter => Converter.ToWndCoord(TargetCenters[SelectedIndex]);
-    public ObservableCollection<string> Indices { get; set; } = [];
-    public Converter Converter { get; set; } = DrawableFabric.GetIniConverter();
-    public Settings Settings => Settings.Default;
+    private long _sessionId;
+    public required long SessionId
+    {
+        get => _sessionId;
+        set
+        {
+            _sessionId = value;
+            _ = Application.Current.Dispatcher.InvokeAsync(async () =>
+                CurrentSession = await database.Sessions
+                    .Where(s => s.Id == value)
+                    .Include(s => s.AppointmentNavigation)
+                    .Include(s => s.AppointmentNavigation.MapNavigation)
+                    .Include(s => s.PathToTargets)
+                    .Include(s => s.PathInTargets)
+                    .Include(s => s.SessionResult)
+                    .FirstAsync());
+        }
+    }
 
     private Session _currentSession = null!;
-
-    public bool ShowPathInTarget { get; set; }
-    public bool ShowPathToTarget { get; set; }
-
     public required Session CurrentSession
     {
         get => _currentSession;
         set
         {
             _currentSession = value;
-            TargetCenters = JsonConvert.DeserializeObject<List<Point2D<float>>>(CurrentSession.AppointmentNavigation.MapNavigation.CoordinatesJson)!;
+
+            TargetCenters = JsonConvert
+                .DeserializeObject<List<Point2D<float>>>(CurrentSession.AppointmentNavigation.MapNavigation.CoordinatesJson)!;
             PathsToTargets = CurrentSession.PathToTargets
                 .Select(ptt => JsonConvert.DeserializeObject<List<Point2D<float>>>(ptt.CoordinatesJson)!)
                 .ToList() ?? [];
@@ -49,10 +60,44 @@ public class SessionResultViewModel(NavigationStore navigationStore) : ObserverV
 
             IsPathChecked = true;
             SelectedIndex = 0;
+            OnPropertyChanged(nameof(UserCenter));
+            OnPropertyChanged(nameof(TargetCenter));
 
             NewItemSelectedCommand.Execute(null);
         }
     }
+
+    public Point2D<int> UserCenter
+    {
+        get
+        {
+            if (PathsInTargets.Count == 0 || SelectedIndex < 0)
+            {
+                return new(0, 0);
+            }
+            return Converter.ToWndCoord(PathsToTargets[SelectedIndex][0]);
+        }
+    }
+    public Point2D<int> TargetCenter
+    {
+        get
+        {
+            if (TargetCenters.Count == 0 || SelectedIndex < 0)
+            {
+                return new(0, 0);
+            }
+            return Converter.ToWndCoord(TargetCenters[SelectedIndex]);
+        }
+    }
+    public static Settings Settings => Settings.Default;
+
+    private List<List<Point2D<float>>> PathsToTargets { get; set; } = [];
+    private List<List<Point2D<float>>> PathsInTargets { get; set; } = [];
+    public ObservableCollection<string> Indices { get; set; } = [];
+    public Converter Converter { get; set; } = DrawableFabric.GetIniConverter();
+    public bool ShowPathInTarget { get; set; }
+    public bool ShowPathToTarget { get; set; }
+
     public IEnumerable<(bool IsNewTarget, Point2D<float> Point)> FullPath
     {
         get
@@ -149,8 +194,8 @@ public class SessionResultViewModel(NavigationStore navigationStore) : ObserverV
             }
 
             var res = new List<IStaticFigure>();
-            var pathToTarget = new Path(PathsToTargets[SelectedIndex], Converter, new SolidColorBrush(Colors.Green), canvas);
-            var pathInTarget = new Path(PathsInTargets[SelectedIndex], Converter, new SolidColorBrush(Colors.Blue), canvas);
+            var pathToTarget = new Path(PathsToTargets[SelectedIndex], Converter, Brushes.Green, canvas);
+            var pathInTarget = new Path(PathsInTargets[SelectedIndex], Converter, Brushes.Blue, canvas);
 
             if (ShowPathToTarget)
             {
@@ -177,7 +222,7 @@ public class SessionResultViewModel(NavigationStore navigationStore) : ObserverV
 
         var target = new ProgressTarget
         (
-            center: new(0, 0), 
+            center: new(0, 0),
             radius: CurrentSession.TargetRadius,
             parent: canvas,
             hp: 0,
@@ -202,7 +247,5 @@ public class SessionResultViewModel(NavigationStore navigationStore) : ObserverV
     {
         GC.SuppressFinalize(this);
         base.Dispose();
-
-        Application.Current.MainWindow.WindowState = WindowState.Normal;
     }
 }
