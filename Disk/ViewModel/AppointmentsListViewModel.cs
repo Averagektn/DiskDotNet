@@ -127,7 +127,6 @@ public class AppointmentsListViewModel(DiskContext database, NavigationStore nav
         _currPage++;
         IsPreviousEnabled = true;
         IsNextEnabled = _currPage < TotalPages - 1;
-        SelectedDate = null;
         await UpdateAppointmentsAsync();
     });
 
@@ -136,7 +135,6 @@ public class AppointmentsListViewModel(DiskContext database, NavigationStore nav
         _currPage--;
         IsPreviousEnabled = _currPage > 0;
         IsNextEnabled = true;
-        SelectedDate = null;
         await UpdateAppointmentsAsync();
     });
 
