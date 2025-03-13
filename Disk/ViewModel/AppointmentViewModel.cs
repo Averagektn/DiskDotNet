@@ -53,12 +53,22 @@ public class AppointmentViewModel(DiskContext database, IExcelFiller excelFiller
         set => SetProperty(ref _sessions, value);
     }
 
-    private ObservableCollection<(PathToTarget Ptt, PathInTarget Pit)> _paths = [];
+    private ObservableCollection<MergedPaths> _paths = [];
+    public ObservableCollection<MergedPaths> Paths
+    {
+        get => _paths;
+        set
+        {
+            SetProperty(ref _paths, value);
+            OnPropertyChanged(nameof(Paths));
+        }
+    }
+/*    private ObservableCollection<MergedPaths> _paths = [];
     public ObservableCollection<(PathToTarget Ptt, PathInTarget Pit)> Paths
     {
         get => _paths;
         set => SetProperty(ref _paths, value);
-    }
+    }*/
 
     public ICommand StartSessionCommand => new Command(_ =>
         QuestionNavigator.Navigate(this, modalNavigationStore,
@@ -149,7 +159,7 @@ public class AppointmentViewModel(DiskContext database, IExcelFiller excelFiller
             return;
         }
 
-        Paths = [.. SelectedSession.PathToTargets.Zip(SelectedSession.PathInTargets, (ptt, pit) => (ptt, pit))];
+        Paths = [.. SelectedSession.PathToTargets.Zip(SelectedSession.PathInTargets, (ptt, pit) => new MergedPaths(ptt, pit))];
     }
 
     private async Task UpdateAsync()
@@ -171,5 +181,11 @@ public class AppointmentViewModel(DiskContext database, IExcelFiller excelFiller
         base.Refresh();
 
         _ = Application.Current.Dispatcher.InvokeAsync(UpdateAsync);
+    }
+
+    public class MergedPaths(PathToTarget pathToTarget, PathInTarget pathInTarget)
+    {
+        public PathToTarget PathToTarget { get; set; } = pathToTarget;
+        public PathInTarget PathInTarget { get; set; } = pathInTarget;
     }
 }

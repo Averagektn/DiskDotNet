@@ -205,23 +205,23 @@
                 <DataGridTextColumn 
                     Width="1*" 
                     Header="{x:Static lang:AppointmentLocalization.TargetNum}" 
-                    Binding="{Binding Ptt.TargetNumInc}" />
+                    Binding="{Binding PathToTarget.TargetNumInc}" />
                 <DataGridTextColumn 
                     Width="1*" 
                     Header="{x:Static lang:AppointmentLocalization.AverageSpeed}" 
-                    Binding="{Binding Ptt.AverageSpeed, StringFormat=N1}" />
+                    Binding="{Binding PathToTarget.AverageSpeed, StringFormat=N1}" />
                 <DataGridTextColumn 
                     Width="1*" 
                     Header="{x:Static lang:AppointmentLocalization.ApproachSpeed}" 
-                    Binding="{Binding Ptt.ApproachSpeed, StringFormat=N1}" />
+                    Binding="{Binding PathToTarget.ApproachSpeed, StringFormat=N1}" />
                 <DataGridTextColumn 
                     Width="1*" 
                     Header="{x:Static lang:AppointmentLocalization.Time}" 
-                    Binding="{Binding Ptt.Time, StringFormat=N1}" />
+                    Binding="{Binding PathToTarget.Time, StringFormat=N1}" />
                 <DataGridTextColumn 
                     Width="1*" 
                     Header="{x:Static lang:AppointmentLocalization.Precision}" 
-                    Binding="{Binding Pit.Precision, StringFormat=N1}" />
+                    Binding="{Binding PathInTarget.Precision, StringFormat=N1}" />
             </DataGrid.Columns>
         </DataGrid>
 
