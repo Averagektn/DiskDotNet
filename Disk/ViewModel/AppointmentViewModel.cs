@@ -1,6 +1,7 @@
 ﻿using Disk.Db.Context;
 using Disk.Entities;
 using Disk.Navigators;
+using Disk.Service.Implementation;
 using Disk.Service.Interface;
 using Disk.Stores;
 using Disk.ViewModel.Common.Commands.Async;
@@ -63,12 +64,6 @@ public class AppointmentViewModel(DiskContext database, IExcelFiller excelFiller
             OnPropertyChanged(nameof(Paths));
         }
     }
-/*    private ObservableCollection<MergedPaths> _paths = [];
-    public ObservableCollection<(PathToTarget Ptt, PathInTarget Pit)> Paths
-    {
-        get => _paths;
-        set => SetProperty(ref _paths, value);
-    }*/
 
     public ICommand StartSessionCommand => new Command(_ =>
         QuestionNavigator.Navigate(this, modalNavigationStore,
@@ -115,7 +110,7 @@ public class AppointmentViewModel(DiskContext database, IExcelFiller excelFiller
     {
         try
         {
-            excelFiller.ExportToExcel(Appointment, Patient);
+            excelFiller.ExportToExcel(Appointment, [.. Sessions],  Patient, Appointment.MapNavigation);
         }
         catch
         {

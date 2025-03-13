@@ -15,11 +15,11 @@ public class ExcelFiller : IExcelFiller
 {
     private const int ColsPerPath = 7;
 
-    public void ExportToExcel(Appointment appointment, Patient patient)
+    public void ExportToExcel(Appointment appointment, List<Session> sessions, Patient patient, Map map)
     {
         using var workbook = new XLWorkbook();
 
-        FillExcel(workbook, appointment);
+        FillExcel(workbook, sessions, appointment, map);
 
         var saveFileDialog = new SaveFileDialog
         {
@@ -45,9 +45,9 @@ public class ExcelFiller : IExcelFiller
         }
     }
 
-    private void FillExcel(XLWorkbook workbook, Appointment appointment)
+    private static void FillExcel(XLWorkbook workbook, List<Session> sessions, Appointment appointment, Map map)
     {
-        foreach (var session in appointment.Sessions)
+        foreach (var session in sessions)
         {
             var worksheet = workbook.Worksheets.Add();
 
@@ -55,13 +55,12 @@ public class ExcelFiller : IExcelFiller
             worksheet.Cell(1, 2).Value = Localization.Map;
 
             worksheet.Cell(2, 1).Value = session.DateTime;
-            //worksheet.Cell(2, 2).Value = mapRepository.GetById(appointment.Map).Name;
+            worksheet.Cell(2, 2).Value = map.Name;
 
             worksheet.Cell(4, 1).Value = $"{Localization.Deviation} X";
             worksheet.Cell(4, 2).Value = $"{Localization.Deviation} Y";
             worksheet.Cell(4, 3).Value = $"{Localization.MathExp} X";
             worksheet.Cell(4, 4).Value = $"{Localization.MathExp} Y";
-            worksheet.Cell(4, 5).Value = Localization.Score;
 
             var sres = session.SessionResult;
             if (sres is not null)
@@ -70,23 +69,23 @@ public class ExcelFiller : IExcelFiller
                 SetFloatCell(worksheet, 5, 2, (float)sres.DeviationY);
                 SetFloatCell(worksheet, 5, 3, (float)sres.MathExpX);
                 SetFloatCell(worksheet, 5, 4, (float)sres.MathExpY);
-                worksheet.Cell(5, 5).Value = sres.Score;
             }
 
             worksheet.Cell(7, 1).Value = Localization.TargetNum;
             worksheet.Cell(7, 2).Value = Localization.Time;
             worksheet.Cell(7, 3).Value = Localization.ApproachSpeed;
+            worksheet.Cell(7, 4).Value = Localization.AverageSpeed;
 
             const int pathCol = 7;
 
-            FillPtts(worksheet, session, pathCol);
-            FillPits(worksheet, session, pathCol + ColsPerPath);
+            FillPtts(worksheet, session, pathCol, map);
+            FillPits(worksheet, session, pathCol + ColsPerPath, map);
 
             new List<IXLRange>()
                 {
                     worksheet.Range(firstCellRow: 1, firstCellColumn: 1, lastCellRow: 1, lastCellColumn: 2),
-                    worksheet.Range(firstCellRow: 4, firstCellColumn: 1, lastCellRow: 4, lastCellColumn: 3),
-                    worksheet.Range(firstCellRow: 7, firstCellColumn: 1, lastCellRow: 7, lastCellColumn: 3),
+                    worksheet.Range(firstCellRow: 4, firstCellColumn: 1, lastCellRow: 4, lastCellColumn: 4),
+                    worksheet.Range(firstCellRow: 7, firstCellColumn: 1, lastCellRow: 7, lastCellColumn: 4),
                     worksheet.Range(firstCellRow: 1, firstCellColumn: pathCol, lastCellRow: 2,
                         lastCellColumn: (ColsPerPath * (session.PathToTargets.Count + session.PathInTargets.Count + 1)) - 2),
                 }
@@ -108,10 +107,10 @@ public class ExcelFiller : IExcelFiller
         }
     }
 
-    private static void FillPtts(IXLWorksheet worksheet, Session session, int pathCol)
+    private static void FillPtts(IXLWorksheet worksheet, Session session, int pathCol, Map map)
     {
         var ptts = session.PathToTargets;
-        var mapCenters = JsonConvert.DeserializeObject<List<Point2D<float>>>(session.AppointmentNavigation.MapNavigation.CoordinatesJson)!;
+        var mapCenters = JsonConvert.DeserializeObject<List<Point2D<float>>>(map.CoordinatesJson)!;
 
         int pttRow = 8;
         foreach (var ptt in ptts)
@@ -119,6 +118,7 @@ public class ExcelFiller : IExcelFiller
             worksheet.Cell(pttRow, 1).Value = ptt.TargetNum + 1;
             SetFloatCell(worksheet, pttRow, 2, (float)ptt.Time);
             SetFloatCell(worksheet, pttRow, 3, (float)ptt.ApproachSpeed);
+            SetFloatCell(worksheet, pttRow, 4, (float)ptt.AverageSpeed);
             pttRow++;
 
             var pathList = JsonConvert.DeserializeObject<List<Point2D<float>>>(ptt.CoordinatesJson)!;
@@ -130,10 +130,10 @@ public class ExcelFiller : IExcelFiller
         }
     }
 
-    private static void FillPits(IXLWorksheet worksheet, Session session, int pathCol)
+    private static void FillPits(IXLWorksheet worksheet, Session session, int pathCol, Map map)
     {
         var pits = session.PathInTargets;
-        var mapCenters = JsonConvert.DeserializeObject<List<Point2D<float>>>(session.AppointmentNavigation.MapNavigation.CoordinatesJson)!;
+        var mapCenters = JsonConvert.DeserializeObject<List<Point2D<float>>>(map.CoordinatesJson)!;
 
         foreach (var pit in pits)
         {
