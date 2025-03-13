@@ -74,7 +74,7 @@ public class ConfigureAppointmentViewModel : PopupViewModel
         }
 
         IniNavigationStore.Close();
-        AppointmentNavigator.NavigateWithBar(_navigationStore, Patient, appointment);
+        AppointmentNavigator.NavigateWithBar(this, _navigationStore, Patient, appointment);
     });
 
     public ICommand DeleteMapCommand => new AsyncCommand(async map =>

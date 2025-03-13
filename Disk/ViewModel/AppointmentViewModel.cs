@@ -61,8 +61,7 @@ public class AppointmentViewModel(DiskContext database, IExcelFiller excelFiller
     }
 
     public ICommand StartSessionCommand => new Command(_ =>
-        QuestionNavigator.Navigate(
-            modalNavigationStore,
+        QuestionNavigator.Navigate(this, modalNavigationStore,
             message:
                 $"""
                     {Localization.Angles}: {MaxXAngle};{MaxYAngle}
@@ -96,7 +95,7 @@ public class AppointmentViewModel(DiskContext database, IExcelFiller excelFiller
                 {
                     _ = await database.AddAsync(session);
                     _ = await database.SaveChangesAsync();
-                    PaintNavigator.Navigate(navigationStore, session.Id);
+                    PaintNavigator.Navigate(this, navigationStore, session.Id);
                 });
             }));
 
@@ -113,7 +112,7 @@ public class AppointmentViewModel(DiskContext database, IExcelFiller excelFiller
 
         try
         {
-            SessionResultNavigator.Navigate(navigationStore, SelectedSession.Id);
+            SessionResultNavigator.Navigate(this, navigationStore, SelectedSession.Id);
             Application.Current.MainWindow.WindowState = WindowState.Maximized;
         }
         catch

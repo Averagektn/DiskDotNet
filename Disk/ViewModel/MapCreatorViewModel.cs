@@ -17,7 +17,7 @@ public class MapCreatorViewModel(ModalNavigationStore modalNavigationStore) : Ob
                 .Select(t => t.Angles)
                 .ToList();
 
-            MapNamePickerNavigator.Navigate(modalNavigationStore, map);
+            MapNamePickerNavigator.Navigate(this, modalNavigationStore, map);
         }
 
         IniNavigationStore.Close();

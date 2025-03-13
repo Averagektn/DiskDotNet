@@ -93,11 +93,11 @@ public class PatientsViewModel : ObserverViewModel
     {
         if (SelectedPatient is not null)
         {
-            AppointmentsListNavigator.NavigateWithBar(_navigationStore, SelectedPatient);
+            AppointmentsListNavigator.NavigateWithBar(this, _navigationStore, SelectedPatient);
         }
     });
 
-    public ICommand AddPatientCommand => new Command(_ => AddPatientNavigator.Navigate(_modalNavigationStore));
+    public ICommand AddPatientCommand => new Command(_ => AddPatientNavigator.Navigate(this, _modalNavigationStore));
 
     public ICommand DeletePatientCommand => new AsyncCommand(async _ =>
     {
@@ -132,7 +132,7 @@ public class PatientsViewModel : ObserverViewModel
             return;
         }
 
-        EditPatientNavigator.Navigate(_modalNavigationStore, SelectedPatient);
+        EditPatientNavigator.Navigate(this, _modalNavigationStore, SelectedPatient);
     });
 
     public ICommand NextPageCommand => new AsyncCommand(async _ =>

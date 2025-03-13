@@ -232,6 +232,15 @@ namespace Disk.Properties.Langs.Settings {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Settings are not saved. Would you like to save them?.
+        /// </summary>
+        public static string UnsavedSettings {
+            get {
+                return ResourceManager.GetString("UnsavedSettings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Cursor radius.
         /// </summary>
         public static string UserRadius {

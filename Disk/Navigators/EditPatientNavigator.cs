@@ -2,6 +2,7 @@
 using Disk.Navigators.Interface;
 using Disk.Stores.Interface;
 using Disk.ViewModel;
+using Disk.ViewModel.Common.ViewModels;
 using Newtonsoft.Json;
 using System.Globalization;
 
@@ -9,8 +10,9 @@ namespace Disk.Navigators;
 
 public class EditPatientNavigator : INavigator
 {
-    public static void Navigate(INavigationStore navigationStore, Patient patient)
+    public static void Navigate(ObserverViewModel currentViewModel, INavigationStore navigationStore, Patient patient)
     {
+        currentViewModel.BeforeNavigation();
         navigationStore.SetViewModel<EditPatientViewModel>(vm =>
         {
             vm.IniNavigationStore = navigationStore;
@@ -18,19 +20,21 @@ public class EditPatientNavigator : INavigator
             vm.Patient = patient;
             vm.DateOfBirth = DateTime.ParseExact(patient.DateOfBirth, "dd.MM.yyyy", CultureInfo.InvariantCulture);
         });
+        currentViewModel.AfterNavigation();
     }
 
-    public static void NavigateAndClose(INavigationStore navigationStore, Patient patient)
+    public static void NavigateAndClose(ObserverViewModel currentViewModel, INavigationStore navigationStore, Patient patient)
     {
-        if (navigationStore.CanClose)
+        if (currentViewModel.IniNavigationStore.CanClose)
         {
-            navigationStore.Close();
-            Navigate(navigationStore, patient);
+            currentViewModel.IniNavigationStore.Close();
+            Navigate(currentViewModel, navigationStore, patient);
         }
     }
 
-    public static void NavigateWithBar(INavigationStore navigationStore, Patient patient)
+    public static void NavigateWithBar(ObserverViewModel currentViewModel, INavigationStore navigationStore, Patient patient)
     {
+        currentViewModel.BeforeNavigation();
         navigationStore.SetViewModel<NavigationBarLayoutViewModel>(vm =>
         {
             vm.IniNavigationStore = navigationStore;
@@ -41,14 +45,15 @@ public class EditPatientNavigator : INavigator
                 vm.Patient = patient;
             });
         });
+        currentViewModel.AfterNavigation();
     }
 
-    public static void NavigateWithBarAndClose(INavigationStore navigationStore, Patient patient)
+    public static void NavigateWithBarAndClose(ObserverViewModel currentViewModel, INavigationStore navigationStore, Patient patient)
     {
-        if (navigationStore.CanClose)
+        if (currentViewModel.IniNavigationStore.CanClose)
         {
-            navigationStore.Close();
-            NavigateWithBar(navigationStore, patient);
+            currentViewModel.IniNavigationStore.Close();
+            NavigateWithBar(currentViewModel, navigationStore, patient);
         }
     }
 }

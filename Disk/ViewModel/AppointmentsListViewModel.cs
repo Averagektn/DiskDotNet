@@ -83,7 +83,7 @@ public class AppointmentsListViewModel(DiskContext database, NavigationStore nav
     }
 
     public ICommand ConfigureAppointmentCommand => new Command(_ =>
-        ConfigureAppointmentNavigator.NavigateWithBar(navigationStore, Patient));
+        ConfigureAppointmentNavigator.NavigateWithBar(this, navigationStore, Patient));
 
     public ICommand CancelDateCommand => new AsyncCommand(async _ =>
     {
@@ -98,7 +98,7 @@ public class AppointmentsListViewModel(DiskContext database, NavigationStore nav
             return;
         }
 
-        AppointmentNavigator.NavigateWithBar(navigationStore, Patient, SelectedAppointment);
+        AppointmentNavigator.NavigateWithBar(this, navigationStore, Patient, SelectedAppointment);
     });
 
     public ICommand DeleteAppointmentCommand => new AsyncCommand(async _ =>

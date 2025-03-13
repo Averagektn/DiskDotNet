@@ -177,4 +177,7 @@
   <data name="TargetImagePathTip" xml:space="preserve">
     <value>Очистка поля приведет к использованию мишени по умолчанию</value>
   </data>
+  <data name="UnsavedSettings" xml:space="preserve">
+    <value>Настройки не сохранены. Желаете сохранить их?</value>
+  </data>
 </root>

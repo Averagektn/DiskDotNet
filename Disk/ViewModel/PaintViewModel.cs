@@ -179,7 +179,7 @@ public class PaintViewModel : PopupViewModel
         {
             try
             {
-                SessionResultNavigator.NavigateAndClose(_navigationStore, CurrentSession.Id);
+                SessionResultNavigator.NavigateAndClose(this, _navigationStore, CurrentSession.Id);
             }
             catch
             {

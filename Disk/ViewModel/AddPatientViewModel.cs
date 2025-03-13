@@ -91,7 +91,7 @@ public class AddPatientViewModel(IPatientService patientService, ModalNavigation
         catch (PossibleDuplicateEntityException ex)
         {
             Log.Error(ex.Message);
-            QuestionNavigator.Navigate(modalNavigationStore,
+            QuestionNavigator.Navigate(this, modalNavigationStore,
                 message: AddPatientLocalization.PossibleDuplication,
                 beforeConfirm: () =>
                 {

@@ -32,10 +32,14 @@ public class NavigationBarLayoutViewModel(NavigationStore navigationStore) : Obs
     }
 
     public ICommand NavigateBackCommand => new Command(_ => navigationStore.Close());
-    public ICommand NavigateToPatientsCommand => new Command(_ => PatientsNavigator.NavigateWithBar(navigationStore));
-    public ICommand NavigateToSettingsCommand => new Command(_ => SettingsNavigator.NavigateWithBar(navigationStore));
-    public ICommand NavigateToCalibrationCommand => new Command(_ => CalibrationNavigator.NavigateWithBar(navigationStore));
-    public ICommand NavigateToMapCreatorCommand => new Command(_ => MapCreatorNavigator.Navigate(navigationStore));
+    public ICommand NavigateToPatientsCommand => new Command(_ => 
+        PatientsNavigator.NavigateWithBar(CurrentViewModel ?? this, navigationStore));
+    public ICommand NavigateToSettingsCommand => new Command(_ => 
+        SettingsNavigator.NavigateWithBar(CurrentViewModel ?? this, navigationStore));
+    public ICommand NavigateToCalibrationCommand => new Command(_ => 
+        CalibrationNavigator.NavigateWithBar(CurrentViewModel ?? this, navigationStore));
+    public ICommand NavigateToMapCreatorCommand => new Command(_ => 
+        MapCreatorNavigator.Navigate(CurrentViewModel ?? this, navigationStore));
 
     public override void Refresh()
     {

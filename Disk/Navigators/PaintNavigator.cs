@@ -2,31 +2,35 @@
 using Disk.Navigators.Interface;
 using Disk.Stores.Interface;
 using Disk.ViewModel;
+using Disk.ViewModel.Common.ViewModels;
 
 namespace Disk.Navigators;
 
 public class PaintNavigator : INavigator
 {
-    public static void Navigate(INavigationStore navigationStore, long sessionId)
+    public static void Navigate(ObserverViewModel currentViewModel, INavigationStore navigationStore, long sessionId)
     {
+        currentViewModel.BeforeNavigation();
         navigationStore.SetViewModel<PaintViewModel>(vm =>
         {
             vm.IniNavigationStore = navigationStore;
             vm.SessionId = sessionId;
         });
+        currentViewModel.AfterNavigation();
     }
 
-    public static void NavigateAndClose(INavigationStore navigationStore, long sessionId)
+    public static void NavigateAndClose(ObserverViewModel currentViewModel, INavigationStore navigationStore, long sessionId)
     {
-        if (navigationStore.CanClose)
+        if (currentViewModel.IniNavigationStore.CanClose)
         {
-            navigationStore.Close();
-            Navigate(navigationStore, sessionId);
+            currentViewModel.IniNavigationStore.Close();
+            Navigate(currentViewModel, navigationStore, sessionId);
         }
     }
 
-    public static void NavigateWithBar(INavigationStore navigationStore, long sessionId)
+    public static void NavigateWithBar(ObserverViewModel currentViewModel, INavigationStore navigationStore, long sessionId)
     {
+        currentViewModel.BeforeNavigation();
         navigationStore.SetViewModel<NavigationBarLayoutViewModel>(vm =>
         {
             vm.IniNavigationStore = navigationStore;
@@ -36,14 +40,16 @@ public class PaintNavigator : INavigator
                 vm.SessionId = sessionId;
             });
         });
+        currentViewModel.AfterNavigation();
     }
 
-    public static void NavigateWithBarAndClose(INavigationStore navigationStore, long sessionId)
+    public static void NavigateWithBarAndClose(ObserverViewModel currentViewModel, INavigationStore navigationStore, 
+        long sessionId)
     {
-        if (navigationStore.CanClose)
+        if (currentViewModel.IniNavigationStore.CanClose)
         {
-            navigationStore.Close();
-            NavigateWithBar(navigationStore, sessionId);
+            currentViewModel.IniNavigationStore.Close();
+            NavigateWithBar(currentViewModel, navigationStore, sessionId);
         }
     }
 }

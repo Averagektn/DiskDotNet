@@ -2,31 +2,35 @@
 using Disk.Navigators.Interface;
 using Disk.Stores.Interface;
 using Disk.ViewModel;
+using Disk.ViewModel.Common.ViewModels;
 
 namespace Disk.Navigators;
 
 public class ConfigureAppointmentNavigator : INavigator
 {
-    public static void Navigate(INavigationStore navigationStore, Patient patient)
+    public static void Navigate(ObserverViewModel currentViewModel, INavigationStore navigationStore, Patient patient)
     {
+        currentViewModel.BeforeNavigation();
         navigationStore.SetViewModel<ConfigureAppointmentViewModel>(vm =>
         {
             vm.IniNavigationStore = navigationStore;
             vm.Patient = patient;
         });
+        currentViewModel.AfterNavigation();
     }
 
-    public static void NavigateAndClose(INavigationStore navigationStore, Patient patient)
+    public static void NavigateAndClose(ObserverViewModel currentViewModel, INavigationStore navigationStore, Patient patient)
     {
-        if (navigationStore.CanClose)
+        if (currentViewModel.IniNavigationStore.CanClose)
         {
-            navigationStore.Close();
-            Navigate(navigationStore, patient);
+            currentViewModel.IniNavigationStore.Close();
+            Navigate(currentViewModel, navigationStore, patient);
         }
     }
 
-    public static void NavigateWithBar(INavigationStore navigationStore, Patient patient)
+    public static void NavigateWithBar(ObserverViewModel currentViewModel, INavigationStore navigationStore, Patient patient)
     {
+        currentViewModel.BeforeNavigation();
         navigationStore.SetViewModel<NavigationBarLayoutViewModel>(vm =>
         {
             vm.IniNavigationStore = navigationStore;
@@ -36,14 +40,15 @@ public class ConfigureAppointmentNavigator : INavigator
                 vm.Patient = patient;
             });
         });
+        currentViewModel.AfterNavigation();
     }
 
-    public static void NavigateWithBarAndClose(INavigationStore navigationStore, Patient patient)
+    public static void NavigateWithBarAndClose(ObserverViewModel currentViewModel, INavigationStore navigationStore, Patient patient)
     {
-        if (navigationStore.CanClose)
+        if (currentViewModel.IniNavigationStore.CanClose)
         {
-            navigationStore.Close();
-            NavigateWithBar(navigationStore, patient);
+            currentViewModel.IniNavigationStore.Close();
+            NavigateWithBar(currentViewModel, navigationStore, patient);
         }
     }
 }

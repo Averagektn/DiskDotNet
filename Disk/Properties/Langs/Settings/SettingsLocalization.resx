@@ -177,4 +177,7 @@
   <data name="TargetImagePathTip" xml:space="preserve">
     <value>Clearing the field will cause the default target to be used</value>
   </data>
+  <data name="UnsavedSettings" xml:space="preserve">
+    <value>Settings are not saved. Would you like to save them?</value>
+  </data>
 </root>

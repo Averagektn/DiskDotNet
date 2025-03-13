@@ -1,17 +1,19 @@
 ﻿using Disk.Navigators.Interface;
 using Disk.Stores.Interface;
 using Disk.ViewModel;
+using Disk.ViewModel.Common.ViewModels;
 
 namespace Disk.Navigators;
 
 public class QuestionNavigator : INavigator
 {
-    public static void Navigate(INavigationStore navigationStore, string message, 
+    public static void Navigate(ObserverViewModel currentViewModel, INavigationStore navigationStore, string message, 
         Action? beforeConfirm = null, 
         Action? beforeCancel = null,
         Action? afterConfirm = null,
         Action? afterCancel = null)
     {
+        currentViewModel.BeforeNavigation();
         navigationStore.SetViewModel<QuestionViewModel>(vm =>
         {
             vm.IniNavigationStore = navigationStore;
@@ -21,32 +23,35 @@ public class QuestionNavigator : INavigator
             vm.AfterConfirm += afterConfirm;
             vm.AfterCancel += afterCancel;
         });
+        currentViewModel.AfterNavigation();
     }
 
-    public static void NavigateAndClose(INavigationStore navigationStore, string message,
+    public static void NavigateAndClose(ObserverViewModel currentViewModel, INavigationStore navigationStore, string message,
         Action? beforeConfirm = null,
         Action? beforeCancel = null,
         Action? afterConfirm = null,
         Action? afterCancel = null)
     {
-        if (navigationStore.CanClose)
+        if (currentViewModel.IniNavigationStore.CanClose)
         {
-            navigationStore.Close();
-            Navigate(navigationStore, message, beforeConfirm, beforeCancel, afterConfirm, afterCancel);
+            currentViewModel.IniNavigationStore.Close();
+            Navigate(currentViewModel, navigationStore, message, beforeConfirm, beforeCancel, afterConfirm, afterCancel);
         }
     }
 
-    public static void NavigateWithBar(INavigationStore navigationStore, string message,
+    public static void NavigateWithBar(ObserverViewModel currentViewModel, INavigationStore navigationStore, string message,
         Action? beforeConfirm = null,
         Action? beforeCancel = null,
         Action? afterConfirm = null,
         Action? afterCancel = null)
     {
+        currentViewModel.BeforeNavigation();
         navigationStore.SetViewModel<NavigationBarLayoutViewModel>(vm =>
         {
             vm.IniNavigationStore = navigationStore;
             vm.CurrentViewModel = navigationStore.GetViewModel<QuestionViewModel>(vm =>
             {
+                vm.IniNavigationStore = navigationStore;
                 vm.Message = message;
                 vm.BeforeConfirm += beforeConfirm;
                 vm.BeforeCancel += beforeCancel;
@@ -54,18 +59,20 @@ public class QuestionNavigator : INavigator
                 vm.AfterCancel += afterCancel;
             });
         });
+        currentViewModel.AfterNavigation();
     }
 
-    public static void NavigateWithBarAndClose(INavigationStore navigationStore, string message,
+    public static void NavigateWithBarAndClose(ObserverViewModel currentViewModel, INavigationStore navigationStore, 
+        string message,
         Action? beforeConfirm = null,
         Action? beforeCancel = null,
         Action? afterConfirm = null,
         Action? afterCancel = null)
     {
-        if (navigationStore.CanClose)
+        if (currentViewModel.IniNavigationStore.CanClose)
         {
-            navigationStore.Close();
-            NavigateWithBar(navigationStore, message, beforeConfirm, beforeCancel, afterConfirm, afterCancel);
+            currentViewModel.IniNavigationStore.Close();
+            NavigateWithBar(currentViewModel, navigationStore, message, beforeConfirm, beforeCancel, afterConfirm, afterCancel);
         }
     }
 }

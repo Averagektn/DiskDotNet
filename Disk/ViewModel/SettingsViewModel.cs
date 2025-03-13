@@ -1,4 +1,6 @@
-﻿using Disk.ViewModel.Common.Commands.Sync;
+﻿using Disk.Navigators;
+using Disk.Stores;
+using Disk.ViewModel.Common.Commands.Sync;
 using Disk.ViewModel.Common.ViewModels;
 using Microsoft.Win32;
 using System.Net;
@@ -9,7 +11,7 @@ using Settings = Disk.Properties.Config.Config;
 
 namespace Disk.ViewModel;
 
-public class SettingsViewModel : ObserverViewModel
+public class SettingsViewModel(ModalNavigationStore modalNavigationStore) : ObserverViewModel
 {
     private static Settings Settings => Settings.Default;
 
@@ -220,12 +222,36 @@ public class SettingsViewModel : ObserverViewModel
         TargetTtl = RoundToNearest(value: 1000 * Settings.TargetHp / (1000 / Settings.ShotTime), nearest: 100).ToString();
     }
 
+    public override void AfterNavigation()
+    {
+        base.AfterNavigation();
+        
+        var ipChanged = Ip != Settings.IP;
+        var cursorPathChanged = CursorFilePath != Settings.CursorFilePath;
+        var targetPathChanged = TargetFilePath != Settings.TargetFilePath;
+        var moveTimeChanged = MoveTime != RoundToNearest(value: 1000 / Settings.MoveTime, nearest: 5).ToString();
+        var shotTimeChanged = ShotTime != RoundToNearest(value: 1000 / Settings.MoveTime, nearest: 5).ToString();
+        var targetRadiusChanged = TargetRadius != Settings.IniTargetRadius.ToString();
+        var userRadiusChanged = UserRadius != Settings.IniUserRadius.ToString();
+        var targetTtlChanged = TargetTtl != RoundToNearest(value: 1000 * Settings.TargetHp / (1000 / Settings.ShotTime), nearest: 100)
+                                            .ToString();
+
+        if (ipChanged || cursorPathChanged || targetPathChanged || moveTimeChanged || shotTimeChanged || targetRadiusChanged ||
+            userRadiusChanged || targetTtlChanged || targetTtlChanged)
+        {
+            if (modalNavigationStore.CurrentViewModel is not QuestionViewModel)
+            {
+                QuestionNavigator.Navigate(this, modalNavigationStore,
+                    message: Localization.UnsavedSettings,
+                    beforeConfirm: SaveSettings);
+            }
+        }
+    }
+
     public override void Dispose()
     {
         base.Dispose();
         GC.SuppressFinalize(this);
-
-        // Add Question
     }
 
     private void SaveSettings()

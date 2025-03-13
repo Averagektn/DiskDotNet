@@ -33,4 +33,6 @@ public class ObserverViewModel : INotifyPropertyChanged, IDisposable
     }
 
     public virtual void Refresh() { }
+    public virtual void BeforeNavigation() { }
+    public virtual void AfterNavigation() { }
 }

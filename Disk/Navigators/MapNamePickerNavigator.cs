@@ -2,31 +2,37 @@
 using Disk.Navigators.Interface;
 using Disk.Stores.Interface;
 using Disk.ViewModel;
+using Disk.ViewModel.Common.ViewModels;
 
 namespace Disk.Navigators;
 
 public class MapNamePickerNavigator : INavigator
 {
-    public static void Navigate(INavigationStore navigationStore, List<Point2D<float>> map)
+    public static void Navigate(ObserverViewModel currentViewModel, INavigationStore navigationStore, List<Point2D<float>> map)
     {
+        currentViewModel.BeforeNavigation();
         navigationStore.SetViewModel<MapNamePickerViewModel>(vm =>
         {
             vm.IniNavigationStore = navigationStore;
             vm.Map = map;
         });
+        currentViewModel.AfterNavigation();
     }
 
-    public static void NavigateAndClose(INavigationStore navigationStore, List<Point2D<float>> map)
+    public static void NavigateAndClose(ObserverViewModel currentViewModel, INavigationStore navigationStore, 
+        List<Point2D<float>> map)
     {
-        if (navigationStore.CanClose)
+        if (currentViewModel.IniNavigationStore.CanClose)
         {
-            navigationStore.Close();
-            Navigate(navigationStore, map);
+            currentViewModel.IniNavigationStore.Close();
+            Navigate(currentViewModel, navigationStore, map);
         }
     }
 
-    public static void NavigateWithBar(INavigationStore navigationStore, List<Point2D<float>> map)
+    public static void NavigateWithBar(ObserverViewModel currentViewModel, INavigationStore navigationStore, 
+        List<Point2D<float>> map)
     {
+        currentViewModel.BeforeNavigation();
         navigationStore.SetViewModel<NavigationBarLayoutViewModel>(vm =>
         {
             vm.IniNavigationStore = navigationStore;
@@ -36,14 +42,16 @@ public class MapNamePickerNavigator : INavigator
                 vm.Map = map;
             });
         });
+        currentViewModel.AfterNavigation();
     }
 
-    public static void NavigateWithBarAndClose(INavigationStore navigationStore, List<Point2D<float>> map)
+    public static void NavigateWithBarAndClose(ObserverViewModel currentViewModel, INavigationStore navigationStore, 
+        List<Point2D<float>> map)
     {
-        if (navigationStore.CanClose)
+        if (currentViewModel.IniNavigationStore.CanClose)
         {
-            navigationStore.Close();
-            NavigateWithBar(navigationStore, map);
+            currentViewModel.IniNavigationStore.Close();
+            NavigateWithBar(currentViewModel, navigationStore, map);
         }
     }
 }
