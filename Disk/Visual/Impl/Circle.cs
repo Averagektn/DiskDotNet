@@ -234,11 +234,8 @@ public class Circle : IDynamicFigure
         double coeffX = Parent.ActualWidth / IniSize.Width;
         double coeffY = Parent.ActualHeight / IniSize.Height;
 
-        //Speed = (int)Math.Round(IniSpeed * (coeffX + coeffY) / 2);
-        //Radius = (int)Math.Round(IniRadius * (coeffX + coeffY) / 2);
-        
-        Speed = (int)Math.Round(IniSpeed * Math.Min(coeffX, coeffY));
-        Radius = (int)Math.Round(IniRadius * Math.Min(coeffX, coeffY));
+        Speed = (int)Math.Round(IniSpeed * (coeffX + coeffY) / 2);
+        Radius = (int)Math.Round(IniRadius * (coeffX + coeffY) / 2);
 
         Center = new
         (

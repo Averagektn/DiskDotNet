@@ -102,11 +102,8 @@ public class UserPicture : User
         double coeffX = (double)Parent.RenderSize.Width / IniSize.Width;
         double coeffY = (double)Parent.RenderSize.Height / IniSize.Height;
 
-        Image.Width = (int)Math.Round(IniImageSize.Width * (coeffX + coeffY) / 2);
-        Image.Height = (int)Math.Round(IniImageSize.Height * (coeffX + coeffY) / 2);
-
-        //Image.Width = (int)Math.Round(IniImageSize.Width * Math.Min(coeffX, coeffY));
-        //Image.Height = (int)Math.Round(IniImageSize.Height * Math.Min(coeffX, coeffY));
+        Image.Width = (int)Math.Round(IniImageSize.Width * Math.Min(coeffX, coeffY));
+        Image.Height = (int)Math.Round(IniImageSize.Height * Math.Min(coeffX, coeffY));
 
         base.Scale();
     }
