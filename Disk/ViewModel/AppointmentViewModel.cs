@@ -101,7 +101,17 @@ public class AppointmentViewModel(DiskContext database, IExcelFiller excelFiller
 
     public ICommand SessionSelectedCommand => new Command(SessionSelected);
 
-    public ICommand ExportToExcelCommand => new Command(_ => excelFiller.ExportToExcel(Appointment, Patient));
+    public ICommand ExportToExcelCommand => new Command(async _ =>
+    {
+        try
+        {
+            excelFiller.ExportToExcel(Appointment, Patient);
+        }
+        catch
+        {
+            await ShowPopup(header: Localization.SaveFailed, message: "");
+        }
+    });
 
     public ICommand ShowSessionCommand => new AsyncCommand(async _ =>
     {

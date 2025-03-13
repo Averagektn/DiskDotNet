@@ -39,8 +39,8 @@ public class ExcelFiller : IExcelFiller
             }
             catch (Exception ex)
             {
-                _ = MessageBox.Show($"{Localization.SaveFailed}: {ex.Message}");
-                Log.Error("Error saving excel file " + filePath);
+                Log.Error($"Error saving excel file {ex}");
+                throw;
             }
         }
     }

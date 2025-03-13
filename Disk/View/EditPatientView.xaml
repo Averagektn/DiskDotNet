@@ -149,11 +149,14 @@
                 Margin="10"
                 Padding="100 10"
                 Command="{Binding CancelCommand}"/>
-
-            <styles:Popup 
-                PopupMessage="{Binding PopupMessage}" 
-                IsPopupOpen="{Binding IsShowPopup}" 
-                PopupHeader="{Binding PopupHeader}"/>
         </StackPanel>
+
+        <styles:Popup 
+            Grid.RowSpan="3"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
+            PopupMessage="{Binding PopupMessage}" 
+            IsPopupOpen="{Binding IsShowPopup}" 
+            PopupHeader="{Binding PopupHeader}"/>
     </Grid>
 </UserControl>

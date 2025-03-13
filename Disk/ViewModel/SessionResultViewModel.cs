@@ -20,7 +20,7 @@ using Settings = Disk.Properties.Config.Config;
 
 namespace Disk.ViewModel;
 
-public class SessionResultViewModel(NavigationStore navigationStore, DiskContext database) : ObserverViewModel
+public class SessionResultViewModel(NavigationStore navigationStore, DiskContext database) : PopupViewModel
 {
     private long _sessionId;
     public required long SessionId
@@ -189,7 +189,8 @@ public class SessionResultViewModel(NavigationStore navigationStore, DiskContext
         {
             if (PathsToTargets.Count <= SelectedIndex || PathsToTargets[SelectedIndex].Count == 0)
             {
-                _ = MessageBox.Show(Localization.NoContentForPathError);
+                Application.Current.Dispatcher.InvokeAsync(async () => 
+                    await ShowPopup(header: "", message: Localization.NoContentForPathError));
                 return [];
             }
 
@@ -216,7 +217,8 @@ public class SessionResultViewModel(NavigationStore navigationStore, DiskContext
     {
         if (PathsInTargets.Count <= SelectedIndex || PathsInTargets[SelectedIndex].Count == 0)
         {
-            _ = MessageBox.Show(Localization.NoContentForDiagramError);
+            Application.Current.Dispatcher.InvokeAsync(async () =>
+                await ShowPopup(header: "", message: Localization.NoContentForDiagramError));
             return new Graph([], Brushes.LightGreen, canvas, 8);
         }
 

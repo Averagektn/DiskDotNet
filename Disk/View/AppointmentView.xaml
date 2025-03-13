@@ -35,6 +35,8 @@
         <styles:Popup 
             Grid.Row="2"
             Grid.ColumnSpan="2"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
             PopupMessage="{Binding PopupMessage}" 
             IsPopupOpen="{Binding IsShowPopup}" 
             PopupHeader="{Binding PopupHeader}"/>

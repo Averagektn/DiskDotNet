@@ -129,8 +129,11 @@ public class PaintViewModel : PopupViewModel
         {
             connectionFailed = true;
 
-            _ = MessageBox.Show(Localization.ConnectionLost);
-            _ = Application.Current.Dispatcher.InvokeAsync(SaveSessionResultAsync);
+            Application.Current.Dispatcher.InvokeAsync(async () =>
+            {
+                await ShowPopup(header: Localization.ConnectionLost, message: "");
+                await SaveSessionResultAsync();
+            });
         }
     }
 

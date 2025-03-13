@@ -68,13 +68,15 @@
                         Command="{Binding CancelCommand}"                    
                         Margin="25 10"
                         MaxWidth="400"/>
-
-                    <popup:Popup 
-                        IsPopupOpen="{Binding IsShowPopup}" 
-                        PopupHeader="{Binding PopupHeader}" 
-                        PopupMessage="{Binding PopupMessage}"/>
                 </StackPanel>
             </Grid>
         </ScrollViewer>
+        
+        <popup:Popup 
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
+            IsPopupOpen="{Binding IsShowPopup}" 
+            PopupHeader="{Binding PopupHeader}" 
+            PopupMessage="{Binding PopupMessage}"/>
     </Grid>
 </UserControl>

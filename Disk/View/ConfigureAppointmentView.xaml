@@ -21,9 +21,6 @@
             <RowDefinition Height="2*" />
             <RowDefinition Height="auto" />
         </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition/>
-        </Grid.ColumnDefinitions>
 
         <DataGrid 
             Grid.Row="0"
@@ -75,6 +72,9 @@
             Command="{Binding CreateAppointmentCommand}"/>
 
         <styles:Popup 
+            Grid.RowSpan="3"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
             PopupMessage="{Binding PopupMessage}" 
             IsPopupOpen="{Binding IsShowPopup}" 
             PopupHeader="{Binding PopupHeader}"/>

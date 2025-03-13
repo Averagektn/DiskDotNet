@@ -10,7 +10,7 @@ using Settings = Disk.Properties.Config.Config;
 
 namespace Disk.ViewModel;
 
-public class CalibrationViewModel : ObserverViewModel
+public class CalibrationViewModel : PopupViewModel
 {
     private string _xCoord;
     public string XCoord { get => _xCoord; set => SetProperty(ref _xCoord, value); }
@@ -103,7 +103,8 @@ public class CalibrationViewModel : ObserverViewModel
         }
         catch
         {
-            _ = MessageBox.Show(CalibrationLocalization.ConnectionLost);
+            Application.Current.Dispatcher.InvokeAsync(async () => 
+                await ShowPopup(header: CalibrationLocalization.ConnectionLost, message: ""));
         }
     }
 

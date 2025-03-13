@@ -11,8 +11,10 @@ using Settings = Disk.Properties.Config.Config;
 
 namespace Disk.ViewModel;
 
-public class SettingsViewModel(ModalNavigationStore modalNavigationStore) : ObserverViewModel
+public class SettingsViewModel(ModalNavigationStore modalNavigationStore) : PopupViewModel
 {
+    private bool _areValidSettings = true;
+
     private static Settings Settings => Settings.Default;
 
     private string _ip = Settings.IP;
@@ -27,8 +29,13 @@ public class SettingsViewModel(ModalNavigationStore modalNavigationStore) : Obse
             }
             else
             {
-                _ = MessageBox.Show(Localization.InvalidIpError, Localization.InvalidIpError, MessageBoxButton.OK, MessageBoxImage.Error);
+                _areValidSettings = false;
                 _ = SetProperty(ref _ip, Settings.IP);
+                Application.Current.Dispatcher.InvokeAsync(async () =>
+                {
+                    await ShowPopup(header: Localization.InvalidIpError, message: Localization.InvalidIpError);
+                    _areValidSettings = true;
+                });
             }
         }
     }
@@ -46,8 +53,13 @@ public class SettingsViewModel(ModalNavigationStore modalNavigationStore) : Obse
             }
             else
             {
-                _ = MessageBox.Show(Localization.InvalidMoveTime, "", MessageBoxButton.OK, MessageBoxImage.Error);
+                _areValidSettings = false;
                 _ = SetProperty(ref _moveTime, Settings.MoveTime);
+                Application.Current.Dispatcher.InvokeAsync(async () =>
+                {
+                    await ShowPopup(header: Localization.InvalidMoveTime, message: Localization.InvalidMoveTime);
+                    _areValidSettings = true;
+                });
             }
         }
     }
@@ -65,8 +77,13 @@ public class SettingsViewModel(ModalNavigationStore modalNavigationStore) : Obse
             }
             else
             {
-                _ = MessageBox.Show(Localization.InvalidShotTime, "", MessageBoxButton.OK, MessageBoxImage.Error);
+                _areValidSettings = false;
                 _ = SetProperty(ref _shotTime, Settings.ShotTime);
+                Application.Current.Dispatcher.InvokeAsync(async () =>
+                {
+                    await ShowPopup(header: Localization.InvalidShotTime, message: Localization.InvalidShotTime);
+                    _areValidSettings = true;
+                });
             }
         }
     }
@@ -83,8 +100,13 @@ public class SettingsViewModel(ModalNavigationStore modalNavigationStore) : Obse
             }
             else
             {
-                _ = MessageBox.Show(Localization.InvalidUserRadius, "", MessageBoxButton.OK, MessageBoxImage.Error);
+                _areValidSettings = false;
                 _ = SetProperty(ref _userRadius, Settings.IniUserRadius);
+                Application.Current.Dispatcher.InvokeAsync(async () =>
+                {
+                    await ShowPopup(header: Localization.InvalidUserRadius, message: Localization.InvalidUserRadius);
+                    _areValidSettings = true;
+                });
             }
         }
     }
@@ -101,11 +123,22 @@ public class SettingsViewModel(ModalNavigationStore modalNavigationStore) : Obse
             }
             else
             {
-                _ = MessageBox.Show(Localization.InvalidTargetRadius, "", MessageBoxButton.OK, MessageBoxImage.Error);
+                _areValidSettings = false;
                 _ = SetProperty(ref _targetRadius, Settings.IniTargetRadius);
+                Application.Current.Dispatcher.InvokeAsync(async () =>
+                {
+                    await ShowPopup(header: Localization.InvalidTargetRadius, message: Localization.InvalidTargetRadius);
+                    _areValidSettings = true;
+                });
             }
         }
     }
+
+    private string _cursorFilePath = Settings.CursorFilePath;
+    public string CursorFilePath { get => _cursorFilePath; set => SetProperty(ref _cursorFilePath, value); }
+
+    private string _targetFilePath = Settings.TargetFilePath;
+    public string TargetFilePath { get => _targetFilePath; set => SetProperty(ref _targetFilePath, value); }
 
     // convert int hp to ms
     private int _targetTtl = RoundToNearest(value: 1000 * Settings.TargetHp / (1000 / Settings.ShotTime), nearest: 100);
@@ -120,8 +153,13 @@ public class SettingsViewModel(ModalNavigationStore modalNavigationStore) : Obse
             }
             else
             {
-                _ = MessageBox.Show(Localization.InvalidTargetHP, "", MessageBoxButton.OK, MessageBoxImage.Error);
+                _areValidSettings = false;
                 _ = SetProperty(ref _targetTtl, Settings.TargetHp);
+                Application.Current.Dispatcher.InvokeAsync(async () =>
+                {
+                    await ShowPopup(header: Localization.InvalidTargetHP, message: Localization.InvalidTargetHP);
+                    _areValidSettings = true;
+                });
             }
         }
     }
@@ -147,14 +185,15 @@ public class SettingsViewModel(ModalNavigationStore modalNavigationStore) : Obse
     public ICommand SaveCommand => new Command(_ =>
     {
         SaveSettings();
-        IniNavigationStore.Close();
+        if (_areValidSettings)
+        {
+            IniNavigationStore.Close();
+        }
+        else
+        {
+            _areValidSettings = true;
+        }
     });
-
-    private string _cursorFilePath = Settings.CursorFilePath;
-    public string CursorFilePath { get => _cursorFilePath; set => SetProperty(ref _cursorFilePath, value); }
-
-    private string _targetFilePath = Settings.TargetFilePath;
-    public string TargetFilePath { get => _targetFilePath; set => SetProperty(ref _targetFilePath, value); }
 
     public ICommand PickCursorImageCommand => new Command(_ =>
     {
@@ -246,12 +285,6 @@ public class SettingsViewModel(ModalNavigationStore modalNavigationStore) : Obse
                     beforeConfirm: SaveSettings);
             }
         }
-    }
-
-    public override void Dispose()
-    {
-        base.Dispose();
-        GC.SuppressFinalize(this);
     }
 
     private void SaveSettings()

@@ -9,6 +9,7 @@
              xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
              d:DataContext="{d:DesignInstance Type=viewmodel:SettingsViewModel}"
              mc:Ignorable="d" 
+             xmlns:styles="clr-namespace:Disk.Style"
              d:DesignHeight="800" 
              d:DesignWidth="800">
     
@@ -439,5 +440,13 @@
                 Padding="50 0"
                 Command="{Binding CancelCommand}"/>
         </DockPanel>
+
+        <styles:Popup 
+            Grid.Row="6"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
+            PopupMessage="{Binding PopupMessage}" 
+            IsPopupOpen="{Binding IsShowPopup}" 
+            PopupHeader="{Binding PopupHeader}"/>
     </Grid>
 </UserControl>
