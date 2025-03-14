@@ -24,14 +24,14 @@ public partial class DiskContext : DbContext
     {
         //Database.EnsureDeleted();
 
-        if (!Directory.Exists("./Db"))
+        if (!Directory.Exists(AppConfig.DbDir))
         {
             Log.Fatal("Db folder not found");
             _ = Directory.CreateDirectory("./Db");
             Log.Information("Created new db folder");
         }
 
-        if (!File.Exists(AppConfig.DbConnectionString))
+        if (!File.Exists(AppConfig.DbPath))
         {
             Log.Fatal("Db file not found");
             _ = Database.EnsureCreated();
