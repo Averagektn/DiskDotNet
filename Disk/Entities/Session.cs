@@ -18,9 +18,9 @@ public partial class Session
 
     public long Appointment { get; set; }
 
-    public virtual ICollection<PathInTarget> PathInTargets { get; set; } = [];
+    public virtual ICollection<PathInTarget> PathInTargets { get; set; } = null!;
 
-    public virtual ICollection<PathToTarget> PathToTargets { get; set; } = [];
+    public virtual ICollection<PathToTarget> PathToTargets { get; set; } = null!;
 
     public virtual Appointment AppointmentNavigation { get; set; } = null!;
 

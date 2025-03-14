@@ -12,7 +12,7 @@ public partial class Map
 
     public string? Description { get; set; }
 
-    public virtual ICollection<Appointment> Appointments { get; set; } = [];
+    public virtual ICollection<Appointment> Appointments { get; set; } = null!;
 
     public override string ToString() => Name;
 }

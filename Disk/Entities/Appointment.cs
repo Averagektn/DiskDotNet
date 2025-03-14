@@ -14,5 +14,5 @@ public partial class Appointment
 
     public virtual Patient PatientNavigation { get; set; } = null!;
 
-    public virtual ICollection<Session> Sessions { get; set; } = [];
+    public virtual ICollection<Session> Sessions { get; set; } = null!;
 }
