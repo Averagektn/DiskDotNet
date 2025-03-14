@@ -66,6 +66,11 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>AddPatientLocalization.resx</DependentUpon>
     </Compile>
+    <Compile Update="Properties\Langs\ExcelFiller\ExcelFillerLocalization.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>ExcelFillerLocalization.resx</DependentUpon>
+    </Compile>
     <Compile Update="Properties\Langs\SessionsList\SessionsListLocalization.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
@@ -155,6 +160,10 @@
     </EmbeddedResource>
     <EmbeddedResource Update="Properties\Langs\AddPatient\AddPatientLocalization.ru-RU.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Properties\Langs\ExcelFiller\ExcelFillerLocalization.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>ExcelFillerLocalization.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Update="Properties\Langs\SessionsList\SessionsListLocalization.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>

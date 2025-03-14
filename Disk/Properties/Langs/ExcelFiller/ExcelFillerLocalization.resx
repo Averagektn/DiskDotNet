@@ -117,52 +117,61 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="AppoimentsHeader" xml:space="preserve">
-    <value>Appointments</value>
+  <data name="ApproachSpeed" xml:space="preserve">
+    <value>Approach speed</value>
   </data>
-  <data name="Cancel" xml:space="preserve">
-    <value>Cancel</value>
+  <data name="AverageSpeed" xml:space="preserve">
+    <value>Average speed</value>
   </data>
-  <data name="DateOfBirth" xml:space="preserve">
-    <value>Date of birth</value>
+  <data name="CursorRadius" xml:space="preserve">
+    <value>Cursor radius</value>
   </data>
-  <data name="Date" xml:space="preserve">
-    <value>Date</value>
+  <data name="DateTime" xml:space="preserve">
+    <value>Date/Time</value>
   </data>
-  <data name="Delete" xml:space="preserve">
-    <value>Delete</value>
+  <data name="Deviation" xml:space="preserve">
+    <value>Deviation</value>
   </data>
-  <data name="HomePhone" xml:space="preserve">
-    <value>Home phone</value>
+  <data name="ExportToExcel" xml:space="preserve">
+    <value>Export to Excel</value>
   </data>
-  <data name="MobilePhone" xml:space="preserve">
-    <value>Mobile phone</value>
+  <data name="FrontLeftFoot" xml:space="preserve">
+    <value>Front left foot</value>
   </data>
-  <data name="Name" xml:space="preserve">
-    <value>Name</value>
+  <data name="FrontRightFoot" xml:space="preserve">
+    <value>Front right foot</value>
   </data>
-  <data name="Next" xml:space="preserve">
-    <value>Next</value>
+  <data name="Map" xml:space="preserve">
+    <value>Map</value>
   </data>
-  <data name="NotesHeader" xml:space="preserve">
-    <value>Notes</value>
+  <data name="MathExp" xml:space="preserve">
+    <value>Mathematial expectation</value>
   </data>
-  <data name="Patronymic" xml:space="preserve">
-    <value>Patronymic</value>
+  <data name="MaxAngle" xml:space="preserve">
+    <value>Maximum tilt angle of the complex</value>
   </data>
-  <data name="Prev" xml:space="preserve">
-    <value>Previous</value>
+  <data name="PathInTarget" xml:space="preserve">
+    <value>Path in target</value>
   </data>
-  <data name="StartAppoiment" xml:space="preserve">
-    <value>Start appointment</value>
+  <data name="PathToTarget" xml:space="preserve">
+    <value>Path to target</value>
   </data>
-  <data name="Surname" xml:space="preserve">
-    <value>Surname</value>
+  <data name="Precision" xml:space="preserve">
+    <value>Precision</value>
   </data>
-  <data name="Text" xml:space="preserve">
-    <value>Text</value>
+  <data name="ProfileProjection" xml:space="preserve">
+    <value>Profile prejection</value>
   </data>
-  <data name="MapName" xml:space="preserve">
-    <value>Map name</value>
+  <data name="TargetCenter" xml:space="preserve">
+    <value>Target center</value>
+  </data>
+  <data name="TargetNum" xml:space="preserve">
+    <value>Target number</value>
+  </data>
+  <data name="TargetRadius" xml:space="preserve">
+    <value>Target radius</value>
+  </data>
+  <data name="Time" xml:space="preserve">
+    <value>Time</value>
   </data>
 </root>

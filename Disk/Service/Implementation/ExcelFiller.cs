@@ -7,7 +7,7 @@ using Newtonsoft.Json;
 using Serilog;
 using System.Diagnostics;
 using System.Windows;
-using Localization = Disk.Properties.Langs.Session.SessionLocalization;
+using Localization = Disk.Properties.Langs.ExcelFiller.ExcelFillerLocalization;
 
 namespace Disk.Service.Implementation;
 
@@ -61,6 +61,10 @@ public class ExcelFiller : IExcelFiller
             worksheet.Cell(4, 2).Value = $"{Localization.Deviation} Y";
             worksheet.Cell(4, 3).Value = $"{Localization.MathExp} X";
             worksheet.Cell(4, 4).Value = $"{Localization.MathExp} Y";
+            worksheet.Cell(4, 5).Value = $"{Localization.MaxAngle} (X;Y)";
+            worksheet.Range(4, 5, 4, 6).Merge();
+            worksheet.Cell(4, 7).Value = $"{Localization.CursorRadius}";
+            worksheet.Cell(4, 8).Value = $"{Localization.TargetRadius}";
 
             var sres = attempt.AttemptResult;
             if (sres is not null)
@@ -69,6 +73,10 @@ public class ExcelFiller : IExcelFiller
                 SetFloatCell(worksheet, 5, 2, (float)sres.DeviationY);
                 SetFloatCell(worksheet, 5, 3, (float)sres.MathExpX);
                 SetFloatCell(worksheet, 5, 4, (float)sres.MathExpY);
+                SetFloatCell(worksheet, 5, 5, (float)attempt.MaxXAngle);
+                SetFloatCell(worksheet, 5, 6, (float)attempt.MaxYAngle);
+                SetFloatCell(worksheet, 5, 7, attempt.CursorRadius);
+                SetFloatCell(worksheet, 5, 8, attempt.TargetRadius);
             }
 
             worksheet.Cell(7, 1).Value = Localization.TargetNum;
@@ -76,7 +84,7 @@ public class ExcelFiller : IExcelFiller
             worksheet.Cell(7, 3).Value = Localization.ApproachSpeed;
             worksheet.Cell(7, 4).Value = Localization.AverageSpeed;
 
-            const int pathCol = 7;
+            const int pathCol = 10;
 
             FillPtts(worksheet, attempt, pathCol, map);
             FillPits(worksheet, attempt, pathCol + ColsPerPath, map);
@@ -84,7 +92,7 @@ public class ExcelFiller : IExcelFiller
             new List<IXLRange>()
                 {
                     worksheet.Range(firstCellRow: 1, firstCellColumn: 1, lastCellRow: 1, lastCellColumn: 2),
-                    worksheet.Range(firstCellRow: 4, firstCellColumn: 1, lastCellRow: 4, lastCellColumn: 4),
+                    worksheet.Range(firstCellRow: 4, firstCellColumn: 1, lastCellRow: 4, lastCellColumn: 8),
                     worksheet.Range(firstCellRow: 7, firstCellColumn: 1, lastCellRow: 7, lastCellColumn: 4),
                     worksheet.Range(firstCellRow: 1, firstCellColumn: pathCol, lastCellRow: 2,
                         lastCellColumn: (ColsPerPath * (attempt.PathToTargets.Count + attempt.PathInTargets.Count + 1)) - 2),

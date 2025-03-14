@@ -117,52 +117,61 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="AppoimentsHeader" xml:space="preserve">
-    <value>Appointments</value>
+  <data name="ApproachSpeed" xml:space="preserve">
+    <value>Скорость сближения</value>
   </data>
-  <data name="Cancel" xml:space="preserve">
-    <value>Cancel</value>
+  <data name="AverageSpeed" xml:space="preserve">
+    <value>Средняя скорость</value>
   </data>
-  <data name="DateOfBirth" xml:space="preserve">
-    <value>Date of birth</value>
+  <data name="CursorRadius" xml:space="preserve">
+    <value>Радиус курсора</value>
   </data>
-  <data name="Date" xml:space="preserve">
-    <value>Date</value>
+  <data name="DateTime" xml:space="preserve">
+    <value>Дата/Время попытки</value>
   </data>
-  <data name="Delete" xml:space="preserve">
-    <value>Delete</value>
+  <data name="Deviation" xml:space="preserve">
+    <value>Среднеквадратическое отклонение</value>
   </data>
-  <data name="HomePhone" xml:space="preserve">
-    <value>Home phone</value>
+  <data name="ExportToExcel" xml:space="preserve">
+    <value>Экспорт в Excel</value>
   </data>
-  <data name="MobilePhone" xml:space="preserve">
-    <value>Mobile phone</value>
+  <data name="FrontLeftFoot" xml:space="preserve">
+    <value>Левая нога. Фронтальная проекция</value>
   </data>
-  <data name="Name" xml:space="preserve">
-    <value>Name</value>
+  <data name="FrontRightFoot" xml:space="preserve">
+    <value>Правая нога. Фронтальная проекция</value>
   </data>
-  <data name="Next" xml:space="preserve">
-    <value>Next</value>
+  <data name="Map" xml:space="preserve">
+    <value>Карта</value>
   </data>
-  <data name="NotesHeader" xml:space="preserve">
-    <value>Notes</value>
+  <data name="MathExp" xml:space="preserve">
+    <value>Математическое ожидение</value>
   </data>
-  <data name="Patronymic" xml:space="preserve">
-    <value>Patronymic</value>
+  <data name="MaxAngle" xml:space="preserve">
+    <value>Максимальный угол наклоне комплекса</value>
   </data>
-  <data name="Prev" xml:space="preserve">
-    <value>Previous</value>
+  <data name="PathInTarget" xml:space="preserve">
+    <value>Путь в мишени</value>
   </data>
-  <data name="StartAppoiment" xml:space="preserve">
-    <value>Start appointment</value>
+  <data name="PathToTarget" xml:space="preserve">
+    <value>Путь к мишени</value>
   </data>
-  <data name="Surname" xml:space="preserve">
-    <value>Surname</value>
+  <data name="Precision" xml:space="preserve">
+    <value>Точность</value>
   </data>
-  <data name="Text" xml:space="preserve">
-    <value>Text</value>
+  <data name="ProfileProjection" xml:space="preserve">
+    <value>Профильная проекция</value>
   </data>
-  <data name="MapName" xml:space="preserve">
-    <value>Map name</value>
+  <data name="TargetCenter" xml:space="preserve">
+    <value>Центр мишени</value>
+  </data>
+  <data name="TargetNum" xml:space="preserve">
+    <value>Номер мишени</value>
+  </data>
+  <data name="TargetRadius" xml:space="preserve">
+    <value>Радиус мишени</value>
+  </data>
+  <data name="Time" xml:space="preserve">
+    <value>Время</value>
   </data>
 </root>
