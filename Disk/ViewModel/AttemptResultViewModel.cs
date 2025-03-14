@@ -10,6 +10,7 @@ using Disk.Visual.Impl;
 using Disk.Visual.Interface;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
+using Serilog;
 using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Controls;
@@ -198,6 +199,8 @@ public class AttemptResultViewModel(NavigationStore navigationStore, DiskContext
             var pathToTarget = new Path(PathsToTargets[SelectedIndex], Converter, Brushes.Green, canvas);
             var pathInTarget = new Path(PathsInTargets[SelectedIndex], Converter, Brushes.Blue, canvas);
 
+            Log.Information("Created Path");
+
             if (ShowPathToTarget)
             {
                 res.Add(pathToTarget);
@@ -241,6 +244,8 @@ public class AttemptResultViewModel(NavigationStore navigationStore, DiskContext
             // Cutoff points in target
             //.Where(p => Math.Abs(p.X) > angRadius && Math.Abs(p.Y) > angRadius)
             .ToList();
+
+        Log.Information("Created Graph");
 
         return new Graph(dataset, Brushes.LightGreen, canvas, 8);
     }

@@ -52,6 +52,7 @@ public class EditPatientViewModel(IPatientService patientService, ModalNavigatio
                         _ = _database.Update(Patient);
                         _ = await _database.SaveChangesAsync();
                         IniNavigationStore.Close();
+                        Log.Information("Patient updated");
                     });
                 },
                 beforeCancel: () =>

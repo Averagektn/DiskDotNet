@@ -46,7 +46,7 @@ public class MapNamePickerViewModel(DiskContext database) : PopupViewModel
         }
         catch (DbUpdateException ex)
         {
-            Log.Error(ex.Message);
+            Log.Error($"Mapp adding error {ex.Message} {ex.StackTrace}");
             await ShowPopup(MapNamePickerLocalization.SavingError, MapNamePickerLocalization.NameDuplication);
         }
     });

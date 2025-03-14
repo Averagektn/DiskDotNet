@@ -6,6 +6,7 @@ using Disk.ViewModel.Common.Commands.Async;
 using Disk.ViewModel.Common.Commands.Sync;
 using Disk.ViewModel.Common.ViewModels;
 using Microsoft.EntityFrameworkCore;
+using Serilog;
 using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Windows;
@@ -33,11 +34,7 @@ public class ConfigureSessionViewModel : PopupViewModel
     public bool IsCreateSessionEnabled => SelectedMap is not null;
 
     private ObservableCollection<Map> _maps = [];
-    public ObservableCollection<Map> Maps
-    {
-        get => _maps;
-        set => SetProperty(ref _maps, value);
-    }
+    public ObservableCollection<Map> Maps { get => _maps; set => SetProperty(ref _maps, value); }
 
     private readonly NavigationStore _navigationStore;
     private readonly DiskContext _database;
@@ -87,8 +84,9 @@ public class ConfigureSessionViewModel : PopupViewModel
                 _ = await _database.SaveChangesAsync();
                 _ = Maps.Remove(m);
             }
-            catch
+            catch (Exception ex)
             {
+                Log.Error($"Map deletion error {ex.Message} {ex.StackTrace}");
                 await ShowPopup(header: Localization.Map, message: Localization.MapIsInUseError);
             }
         }

@@ -3,6 +3,7 @@ using Disk.Stores;
 using Disk.ViewModel.Common.Commands.Sync;
 using Disk.ViewModel.Common.ViewModels;
 using Microsoft.Win32;
+using Serilog;
 using System.Net;
 using System.Windows;
 using System.Windows.Input;
@@ -29,6 +30,7 @@ public class SettingsViewModel(ModalNavigationStore modalNavigationStore) : Popu
             }
             else
             {
+                Log.Information("Settings: Invalid IP");
                 _areValidSettings = false;
                 _ = SetProperty(ref _ip, Settings.IP);
                 _ = Application.Current.Dispatcher.InvokeAsync(async () =>
@@ -47,6 +49,7 @@ public class SettingsViewModel(ModalNavigationStore modalNavigationStore) : Popu
         get => _moveTime.ToString();
         set
         {
+            Log.Information("Settings: Invalid move time");
             if (int.TryParse(value, out var res) || _moveTime >= 1000 || _moveTime <= 1)
             {
                 _ = SetProperty(ref _moveTime, res);
@@ -77,6 +80,7 @@ public class SettingsViewModel(ModalNavigationStore modalNavigationStore) : Popu
             }
             else
             {
+                Log.Information("Settings: Invalid shot time");
                 _areValidSettings = false;
                 _ = SetProperty(ref _shotTime, Settings.ShotTime);
                 _ = Application.Current.Dispatcher.InvokeAsync(async () =>
@@ -100,6 +104,7 @@ public class SettingsViewModel(ModalNavigationStore modalNavigationStore) : Popu
             }
             else
             {
+                Log.Information("Settings: Invalid user radius");
                 _areValidSettings = false;
                 _ = SetProperty(ref _userRadius, Settings.IniUserRadius);
                 _ = Application.Current.Dispatcher.InvokeAsync(async () =>
@@ -123,6 +128,7 @@ public class SettingsViewModel(ModalNavigationStore modalNavigationStore) : Popu
             }
             else
             {
+                Log.Information("Settings: Invalid target radius");
                 _areValidSettings = false;
                 _ = SetProperty(ref _targetRadius, Settings.IniTargetRadius);
                 _ = Application.Current.Dispatcher.InvokeAsync(async () =>
@@ -135,10 +141,26 @@ public class SettingsViewModel(ModalNavigationStore modalNavigationStore) : Popu
     }
 
     private string _cursorFilePath = Settings.CursorFilePath;
-    public string CursorFilePath { get => _cursorFilePath; set => SetProperty(ref _cursorFilePath, value); }
+    public string CursorFilePath
+    {
+        get => _cursorFilePath;
+        set
+        {
+            SetProperty(ref _cursorFilePath, value);
+            Log.Information($"Settings: Cursor file path set to {_cursorFilePath}");
+        }
+    }
 
     private string _targetFilePath = Settings.TargetFilePath;
-    public string TargetFilePath { get => _targetFilePath; set => SetProperty(ref _targetFilePath, value); }
+    public string TargetFilePath 
+    { 
+        get => _targetFilePath;
+        set
+        {
+            SetProperty(ref _targetFilePath, value);
+            Log.Information($"Settings: Target file path set to {_targetFilePath}");
+        }
+    }
 
     // convert int hp to ms
     private int _targetTtl = RoundToNearest(value: 1000 * Settings.TargetHp / (1000 / Settings.ShotTime), nearest: 100);
@@ -153,6 +175,7 @@ public class SettingsViewModel(ModalNavigationStore modalNavigationStore) : Popu
             }
             else
             {
+                Log.Information("Settings: Invalid target ttl");
                 _areValidSettings = false;
                 _ = SetProperty(ref _targetTtl, Settings.TargetHp);
                 _ = Application.Current.Dispatcher.InvokeAsync(async () =>

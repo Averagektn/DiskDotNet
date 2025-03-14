@@ -6,6 +6,7 @@ using Disk.ViewModel.Common.Commands.Async;
 using Disk.ViewModel.Common.Commands.Sync;
 using Disk.ViewModel.Common.ViewModels;
 using Microsoft.EntityFrameworkCore;
+using Serilog;
 using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Input;
@@ -82,6 +83,7 @@ public class PatientsViewModel : ObserverViewModel
 
             var patients = await query.OrderByDescending(p => p.Id).ToListAsync();
             SortedPatients = [.. patients];
+            Log.Information($"Patient search by: {string.Join(", ", nsp)}");
         }
         else
         {

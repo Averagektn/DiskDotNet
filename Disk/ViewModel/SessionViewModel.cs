@@ -7,6 +7,7 @@ using Disk.ViewModel.Common.Commands.Async;
 using Disk.ViewModel.Common.Commands.Sync;
 using Disk.ViewModel.Common.ViewModels;
 using Microsoft.EntityFrameworkCore;
+using Serilog;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Windows;
@@ -100,6 +101,7 @@ public class SessionViewModel(DiskContext database, IExcelFiller excelFiller, Na
                     _ = await database.AddAsync(attempt);
                     _ = await database.SaveChangesAsync();
                     PaintNavigator.Navigate(this, navigationStore, attempt.Id);
+                    Log.Information("Created session");
                 });
             }));
 
@@ -111,8 +113,9 @@ public class SessionViewModel(DiskContext database, IExcelFiller excelFiller, Na
         {
             excelFiller.ExportToExcel(Session, [.. Attempts], Patient, Session.MapNavigation);
         }
-        catch
+        catch (Exception ex)
         {
+            Log.Error($"Exception error {ex.Message} {ex.StackTrace}");
             await ShowPopup(header: Localization.SaveFailed, message: "");
         }
     });
