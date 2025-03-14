@@ -60,4 +60,14 @@ public static class Calculator2D
             Calculator.Dispersion([.. dataset.Select(p => p.Y)])
         );
     }
+
+    public static double CountShapeArea(IList<Point2D<float>> dataset, Point2D<float> center)
+    {
+        throw new NotImplementedException();
+    }
+
+    public static double[] GetAmplitudeCharacteristic(List<Point2D<float>> dataset)
+    {
+        throw new NotImplementedException();
+    }
 }
