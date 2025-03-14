@@ -31,7 +31,7 @@ public class SessionNavigator : INavigator
         }
     }
 
-    public static void NavigateWithBar(ObserverViewModel currentViewModel, INavigationStore navigationStore, Patient patient, 
+    public static void NavigateWithBar(ObserverViewModel currentViewModel, INavigationStore navigationStore, Patient patient,
         Session session)
     {
         currentViewModel.BeforeNavigation();
@@ -48,7 +48,7 @@ public class SessionNavigator : INavigator
         currentViewModel.AfterNavigation();
     }
 
-    public static void NavigateWithBarAndClose(ObserverViewModel currentViewModel, INavigationStore navigationStore, 
+    public static void NavigateWithBarAndClose(ObserverViewModel currentViewModel, INavigationStore navigationStore,
         Patient patient, Session session)
     {
         if (currentViewModel.IniNavigationStore.CanClose)

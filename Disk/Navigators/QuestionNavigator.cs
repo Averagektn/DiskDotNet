@@ -7,8 +7,8 @@ namespace Disk.Navigators;
 
 public class QuestionNavigator : INavigator
 {
-    public static void Navigate(ObserverViewModel currentViewModel, INavigationStore navigationStore, string message, 
-        Action? beforeConfirm = null, 
+    public static void Navigate(ObserverViewModel currentViewModel, INavigationStore navigationStore, string message,
+        Action? beforeConfirm = null,
         Action? beforeCancel = null,
         Action? afterConfirm = null,
         Action? afterCancel = null)
@@ -62,7 +62,7 @@ public class QuestionNavigator : INavigator
         currentViewModel.AfterNavigation();
     }
 
-    public static void NavigateWithBarAndClose(ObserverViewModel currentViewModel, INavigationStore navigationStore, 
+    public static void NavigateWithBarAndClose(ObserverViewModel currentViewModel, INavigationStore navigationStore,
         string message,
         Action? beforeConfirm = null,
         Action? beforeCancel = null,

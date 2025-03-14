@@ -10,19 +10,19 @@ namespace Disk.Migrations
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropForeignKey(
+            _ = migrationBuilder.DropForeignKey(
                 name: "FK_path_in_target_session_pit_session",
                 table: "path_in_target");
 
-            migrationBuilder.DropForeignKey(
+            _ = migrationBuilder.DropForeignKey(
                 name: "FK_path_to_target_session_ptt_session",
                 table: "path_to_target");
 
-            migrationBuilder.DropForeignKey(
+            _ = migrationBuilder.DropForeignKey(
                 name: "FK_session_result_session_sres_id",
                 table: "session_result");
 
-            migrationBuilder.AddForeignKey(
+            _ = migrationBuilder.AddForeignKey(
                 name: "FK_path_in_target_session_pit_session",
                 table: "path_in_target",
                 column: "pit_session",
@@ -30,7 +30,7 @@ namespace Disk.Migrations
                 principalColumn: "ses_id",
                 onDelete: ReferentialAction.Cascade);
 
-            migrationBuilder.AddForeignKey(
+            _ = migrationBuilder.AddForeignKey(
                 name: "FK_path_to_target_session_ptt_session",
                 table: "path_to_target",
                 column: "ptt_session",
@@ -38,7 +38,7 @@ namespace Disk.Migrations
                 principalColumn: "ses_id",
                 onDelete: ReferentialAction.Cascade);
 
-            migrationBuilder.AddForeignKey(
+            _ = migrationBuilder.AddForeignKey(
                 name: "FK_session_result_session_sres_id",
                 table: "session_result",
                 column: "sres_id",
@@ -50,19 +50,19 @@ namespace Disk.Migrations
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropForeignKey(
+            _ = migrationBuilder.DropForeignKey(
                 name: "FK_path_in_target_session_pit_session",
                 table: "path_in_target");
 
-            migrationBuilder.DropForeignKey(
+            _ = migrationBuilder.DropForeignKey(
                 name: "FK_path_to_target_session_ptt_session",
                 table: "path_to_target");
 
-            migrationBuilder.DropForeignKey(
+            _ = migrationBuilder.DropForeignKey(
                 name: "FK_session_result_session_sres_id",
                 table: "session_result");
 
-            migrationBuilder.AddForeignKey(
+            _ = migrationBuilder.AddForeignKey(
                 name: "FK_path_in_target_session_pit_session",
                 table: "path_in_target",
                 column: "pit_session",
@@ -70,7 +70,7 @@ namespace Disk.Migrations
                 principalColumn: "ses_id",
                 onDelete: ReferentialAction.Restrict);
 
-            migrationBuilder.AddForeignKey(
+            _ = migrationBuilder.AddForeignKey(
                 name: "FK_path_to_target_session_ptt_session",
                 table: "path_to_target",
                 column: "ptt_session",
@@ -78,7 +78,7 @@ namespace Disk.Migrations
                 principalColumn: "ses_id",
                 onDelete: ReferentialAction.Restrict);
 
-            migrationBuilder.AddForeignKey(
+            _ = migrationBuilder.AddForeignKey(
                 name: "FK_session_result_session_sres_id",
                 table: "session_result",
                 column: "sres_id",

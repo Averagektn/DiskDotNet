@@ -1,11 +1,9 @@
 ﻿using Disk.Calculations.Impl.Converters;
 using Disk.Service.Implementation;
 using Disk.ViewModel;
-using Disk.Visual.Impl;
 using Disk.Visual.Interface;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Media;
 using System.Windows.Threading;
 using Settings = Disk.Properties.Config.Config;
 
@@ -25,7 +23,7 @@ public partial class AttemptResultView : UserControl
     private AttemptResultViewModel? ViewModel => DataContext as AttemptResultViewModel;
     private Size PaintPanelSize => PaintArea.RenderSize;
     private Converter? Converter => ViewModel?.Converter;
-    
+
 
     private bool _isReply;
     private bool IsReply

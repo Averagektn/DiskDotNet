@@ -43,7 +43,7 @@ public class SessionsListNavigator : INavigator
         currentViewModel.AfterNavigation();
     }
 
-    public static void NavigateWithBarAndClose(ObserverViewModel currentViewModel, INavigationStore navigationStore, 
+    public static void NavigateWithBarAndClose(ObserverViewModel currentViewModel, INavigationStore navigationStore,
         Patient patient)
     {
         if (currentViewModel.IniNavigationStore.CanClose)

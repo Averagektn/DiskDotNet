@@ -1,6 +1,4 @@
-﻿using Disk.Data.Impl;
-using Disk.Service.Implementation;
-using Disk.Visual.Impl;
+﻿using Disk.Visual.Impl;
 using Disk.Visual.Interface;
 using System.IO;
 using System.Windows;
@@ -35,7 +33,7 @@ public partial class SettingsView : UserControl
     {
         double userColumnWidth = PaintGrid.ColumnDefinitions[0].ActualWidth;
         double targetColumnWidth = PaintGrid.ColumnDefinitions[1].ActualWidth;
-        double centerX = targetColumnWidth / 2 + userColumnWidth;
+        double centerX = (targetColumnWidth / 2) + userColumnWidth;
         double centerY = PaintGrid.ActualHeight / 2;
         var targetCenter = PaintGrid.TransformToAncestor(MainGrid).Transform(new Point(centerX, centerY));
         var screenIniSize = new Size(Settings.Default.IniScreenWidth, Settings.Default.IniScreenHeight);
@@ -49,7 +47,7 @@ public partial class SettingsView : UserControl
                 center: new(0, 0),
                 imageSize: new(TargetRadius * 10, TargetRadius * 10),
                 parent: PaintArea,
-                iniSize: screenIniSize, 
+                iniSize: screenIniSize,
                 hp: 0
             );
         }

@@ -10,22 +10,22 @@ namespace Disk.Migrations
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.RenameColumn(
+            _ = migrationBuilder.RenameColumn(
                 name: "sres_math_exp",
                 table: "session_result",
                 newName: "sres_math_exp_y");
 
-            migrationBuilder.RenameColumn(
+            _ = migrationBuilder.RenameColumn(
                 name: "sres_dispersion",
                 table: "session_result",
                 newName: "sres_math_exp_x");
 
-            migrationBuilder.RenameColumn(
+            _ = migrationBuilder.RenameColumn(
                 name: "sres_deviation",
                 table: "session_result",
                 newName: "sres_deviation_y");
 
-            migrationBuilder.AddColumn<double>(
+            _ = migrationBuilder.AddColumn<double>(
                 name: "sres_deviation_x",
                 table: "session_result",
                 type: "REAL",
@@ -36,21 +36,21 @@ namespace Disk.Migrations
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropColumn(
+            _ = migrationBuilder.DropColumn(
                 name: "sres_deviation_x",
                 table: "session_result");
 
-            migrationBuilder.RenameColumn(
+            _ = migrationBuilder.RenameColumn(
                 name: "sres_math_exp_y",
                 table: "session_result",
                 newName: "sres_math_exp");
 
-            migrationBuilder.RenameColumn(
+            _ = migrationBuilder.RenameColumn(
                 name: "sres_math_exp_x",
                 table: "session_result",
                 newName: "sres_dispersion");
 
-            migrationBuilder.RenameColumn(
+            _ = migrationBuilder.RenameColumn(
                 name: "sres_deviation_y",
                 table: "session_result",
                 newName: "sres_deviation");

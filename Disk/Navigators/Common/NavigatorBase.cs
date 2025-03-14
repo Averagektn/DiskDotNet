@@ -16,7 +16,7 @@ public abstract class NavigatorBase<TViewModel> : INavigator where TViewModel : 
 
     public static void NavigateAndClose(ObserverViewModel currentViewModel, INavigationStore navigationStore)
     {
-        
+
         if (currentViewModel.IniNavigationStore.CanClose)
         {
             currentViewModel.IniNavigationStore.Close();

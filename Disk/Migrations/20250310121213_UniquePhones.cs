@@ -10,47 +10,47 @@ namespace Disk.Migrations
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropForeignKey(
+            _ = migrationBuilder.DropForeignKey(
                 name: "FK_session_map_ses_map",
                 table: "session");
 
-            migrationBuilder.DropIndex(
+            _ = migrationBuilder.DropIndex(
                 name: "IX_session_ses_map",
                 table: "session");
 
-            migrationBuilder.DropColumn(
+            _ = migrationBuilder.DropColumn(
                 name: "ses_map",
                 table: "session");
 
-            migrationBuilder.DropColumn(
+            _ = migrationBuilder.DropColumn(
                 name: "app_date_time",
                 table: "appointment");
 
-            migrationBuilder.AddColumn<long>(
+            _ = migrationBuilder.AddColumn<long>(
                 name: "app_map",
                 table: "appointment",
                 type: "INTEGER",
                 nullable: false,
                 defaultValue: 0L);
 
-            migrationBuilder.CreateIndex(
+            _ = migrationBuilder.CreateIndex(
                 name: "IX_patient_pat_phone_home",
                 table: "patient",
                 column: "pat_phone_home",
                 unique: true);
 
-            migrationBuilder.CreateIndex(
+            _ = migrationBuilder.CreateIndex(
                 name: "IX_patient_pat_phone_mobile",
                 table: "patient",
                 column: "pat_phone_mobile",
                 unique: true);
 
-            migrationBuilder.CreateIndex(
+            _ = migrationBuilder.CreateIndex(
                 name: "IX_appointment_app_map",
                 table: "appointment",
                 column: "app_map");
 
-            migrationBuilder.AddForeignKey(
+            _ = migrationBuilder.AddForeignKey(
                 name: "FK_appointment_map_app_map",
                 table: "appointment",
                 column: "app_map",
@@ -62,46 +62,46 @@ namespace Disk.Migrations
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropForeignKey(
+            _ = migrationBuilder.DropForeignKey(
                 name: "FK_appointment_map_app_map",
                 table: "appointment");
 
-            migrationBuilder.DropIndex(
+            _ = migrationBuilder.DropIndex(
                 name: "IX_patient_pat_phone_home",
                 table: "patient");
 
-            migrationBuilder.DropIndex(
+            _ = migrationBuilder.DropIndex(
                 name: "IX_patient_pat_phone_mobile",
                 table: "patient");
 
-            migrationBuilder.DropIndex(
+            _ = migrationBuilder.DropIndex(
                 name: "IX_appointment_app_map",
                 table: "appointment");
 
-            migrationBuilder.DropColumn(
+            _ = migrationBuilder.DropColumn(
                 name: "app_map",
                 table: "appointment");
 
-            migrationBuilder.AddColumn<long>(
+            _ = migrationBuilder.AddColumn<long>(
                 name: "ses_map",
                 table: "session",
                 type: "INTEGER",
                 nullable: false,
                 defaultValue: 0L);
 
-            migrationBuilder.AddColumn<string>(
+            _ = migrationBuilder.AddColumn<string>(
                 name: "app_date_time",
                 table: "appointment",
                 type: "TEXT",
                 nullable: false,
                 defaultValue: "");
 
-            migrationBuilder.CreateIndex(
+            _ = migrationBuilder.CreateIndex(
                 name: "IX_session_ses_map",
                 table: "session",
                 column: "ses_map");
 
-            migrationBuilder.AddForeignKey(
+            _ = migrationBuilder.AddForeignKey(
                 name: "FK_session_map_ses_map",
                 table: "session",
                 column: "ses_map",

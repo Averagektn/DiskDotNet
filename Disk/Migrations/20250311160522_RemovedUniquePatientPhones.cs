@@ -10,11 +10,11 @@ namespace Disk.Migrations
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropIndex(
+            _ = migrationBuilder.DropIndex(
                 name: "IX_UNQ_phone_home",
                 table: "patient");
 
-            migrationBuilder.DropIndex(
+            _ = migrationBuilder.DropIndex(
                 name: "IX_UNQ_phone_mobile",
                 table: "patient");
         }
@@ -22,13 +22,13 @@ namespace Disk.Migrations
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.CreateIndex(
+            _ = migrationBuilder.CreateIndex(
                 name: "IX_UNQ_phone_home",
                 table: "patient",
                 column: "pat_phone_home",
                 unique: true);
 
-            migrationBuilder.CreateIndex(
+            _ = migrationBuilder.CreateIndex(
                 name: "IX_UNQ_phone_mobile",
                 table: "patient",
                 column: "pat_phone_mobile",

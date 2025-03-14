@@ -30,8 +30,8 @@ namespace Disk.Style
 
         public string PopupMessage
         {
-            get => (string)GetValue(PopupMessageProperty); 
-            set => SetValue(PopupMessageProperty, value); 
+            get => (string)GetValue(PopupMessageProperty);
+            set => SetValue(PopupMessageProperty, value);
         }
 
         public static readonly DependencyProperty PopupMessageProperty =
@@ -48,8 +48,8 @@ namespace Disk.Style
 
         public bool IsPopupOpen
         {
-            get => (bool)GetValue(IsPopupOpenProperty); 
-            set => SetValue(IsPopupOpenProperty, value); 
+            get => (bool)GetValue(IsPopupOpenProperty);
+            set => SetValue(IsPopupOpenProperty, value);
         }
 
         public static readonly DependencyProperty IsPopupOpenProperty =

@@ -103,7 +103,7 @@ public class CalibrationViewModel : PopupViewModel
         }
         catch
         {
-            Application.Current.Dispatcher.InvokeAsync(async () => 
+            _ = Application.Current.Dispatcher.InvokeAsync(async () =>
                 await ShowPopup(header: CalibrationLocalization.ConnectionLost, message: ""));
         }
     }

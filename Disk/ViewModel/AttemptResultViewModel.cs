@@ -189,7 +189,7 @@ public class AttemptResultViewModel(NavigationStore navigationStore, DiskContext
         {
             if (PathsToTargets.Count <= SelectedIndex || PathsToTargets[SelectedIndex].Count == 0)
             {
-                Application.Current.Dispatcher.InvokeAsync(async () => 
+                _ = Application.Current.Dispatcher.InvokeAsync(async () =>
                     await ShowPopup(header: "", message: Localization.NoContentForPathError));
                 return [];
             }
@@ -217,7 +217,7 @@ public class AttemptResultViewModel(NavigationStore navigationStore, DiskContext
     {
         if (PathsInTargets.Count <= SelectedIndex || PathsInTargets[SelectedIndex].Count == 0)
         {
-            Application.Current.Dispatcher.InvokeAsync(async () =>
+            _ = Application.Current.Dispatcher.InvokeAsync(async () =>
                 await ShowPopup(header: "", message: Localization.NoContentForDiagramError));
             return new Graph([], Brushes.LightGreen, canvas, 8);
         }

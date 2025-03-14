@@ -17,7 +17,7 @@ public class Logger : ILogger, IDisposable
 
     private readonly StreamWriter Writer;
 
-    private static object _lock = new object();
+    private static readonly object _lock = new();
 
     /// <summary>
     ///     Initializes a new instance of the <see cref="Logger"/> class with the specified filename.

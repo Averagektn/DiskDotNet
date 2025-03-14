@@ -1,5 +1,4 @@
-﻿using Disk.Entities;
-using Disk.Navigators.Interface;
+﻿using Disk.Navigators.Interface;
 using Disk.Stores.Interface;
 using Disk.ViewModel;
 using Disk.ViewModel.Common.ViewModels;
@@ -43,7 +42,7 @@ public class AttemptResultNavigator : INavigator
         currentViewModel.AfterNavigation();
     }
 
-    public static void NavigateWithBarAndClose(ObserverViewModel currentViewModel, INavigationStore navigationStore, 
+    public static void NavigateWithBarAndClose(ObserverViewModel currentViewModel, INavigationStore navigationStore,
         long attemptId)
     {
         if (currentViewModel.IniNavigationStore.CanClose)

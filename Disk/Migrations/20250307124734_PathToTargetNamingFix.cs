@@ -10,7 +10,7 @@ namespace Disk.Migrations
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.RenameColumn(
+            _ = migrationBuilder.RenameColumn(
                 name: "ptt_target_num",
                 table: "path_to_target",
                 newName: "ptt_target_id");
@@ -19,7 +19,7 @@ namespace Disk.Migrations
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.RenameColumn(
+            _ = migrationBuilder.RenameColumn(
                 name: "ptt_target_id",
                 table: "path_to_target",
                 newName: "ptt_target_num");

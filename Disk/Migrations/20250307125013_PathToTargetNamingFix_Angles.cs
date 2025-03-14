@@ -10,12 +10,12 @@ namespace Disk.Migrations
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.RenameColumn(
+            _ = migrationBuilder.RenameColumn(
                 name: "ptt_angle_speed",
                 table: "path_to_target",
                 newName: "ptt_distance");
 
-            migrationBuilder.RenameColumn(
+            _ = migrationBuilder.RenameColumn(
                 name: "ptt_ange_distance",
                 table: "path_to_target",
                 newName: "ptt_average_speed");
@@ -24,12 +24,12 @@ namespace Disk.Migrations
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.RenameColumn(
+            _ = migrationBuilder.RenameColumn(
                 name: "ptt_distance",
                 table: "path_to_target",
                 newName: "ptt_angle_speed");
 
-            migrationBuilder.RenameColumn(
+            _ = migrationBuilder.RenameColumn(
                 name: "ptt_average_speed",
                 table: "path_to_target",
                 newName: "ptt_ange_distance");

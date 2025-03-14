@@ -128,7 +128,7 @@ public class Point3D<CoordType> : Point2D<CoordType>, IEquatable<Point3D<CoordTy
     {
         return other is not null && XDbl.Equals(other.XDbl) && YDbl.Equals(other.YDbl) && ZDbl.Equals(other.ZDbl);
     }
-        
+
 
     /// <summary>
     ///     Determines whether this point is equal to the specified object

@@ -1,5 +1,4 @@
 ﻿using Disk.Data.Impl;
-using Disk.Entities;
 using Disk.Visual.Interface;
 using System.Windows;
 using System.Windows.Controls;

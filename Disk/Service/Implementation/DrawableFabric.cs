@@ -28,21 +28,21 @@ public static class DrawableFabric
         {
             return new UserPicture
             (
-                filePath: userImagePath, 
-                center: new(ScreenIniCenterX, ScreenIniCenterY), 
-                speed: 0, 
+                filePath: userImagePath,
+                center: new(ScreenIniCenterX, ScreenIniCenterY),
+                speed: 0,
                 imageSize: new(Settings.IniUserRadius * 10, Settings.IniUserRadius * 10),
-                parent, 
+                parent,
                 iniSize: ScreenIniSize
             );
         }
         return new User
         (
             center: new(ScreenIniCenterX, ScreenIniCenterY),
-            radius: Settings.IniUserRadius * 5, 
-            speed: 0, 
-            color: UserBrush, 
-            parent, 
+            radius: Settings.IniUserRadius * 5,
+            speed: 0,
+            color: UserBrush,
+            parent,
             iniSize: ScreenIniSize
         );
     }

@@ -29,10 +29,10 @@ public class UserPicture : User
 
     /// <inheritdoc/>
     public override int Top => (int)(Center.Y - (Image.Height / 2));
-    
+
     /// <inheritdoc/>
     public override int Bottom => (int)(Center.Y + (Image.Height / 2));
-    
+
     /// <inheritdoc/>
     public override int Left => (int)(Center.X - (Image.Width / 2));
 

@@ -19,7 +19,7 @@ public class MapNamePickerNavigator : INavigator
         currentViewModel.AfterNavigation();
     }
 
-    public static void NavigateAndClose(ObserverViewModel currentViewModel, INavigationStore navigationStore, 
+    public static void NavigateAndClose(ObserverViewModel currentViewModel, INavigationStore navigationStore,
         List<Point2D<float>> map)
     {
         if (currentViewModel.IniNavigationStore.CanClose)
@@ -29,7 +29,7 @@ public class MapNamePickerNavigator : INavigator
         }
     }
 
-    public static void NavigateWithBar(ObserverViewModel currentViewModel, INavigationStore navigationStore, 
+    public static void NavigateWithBar(ObserverViewModel currentViewModel, INavigationStore navigationStore,
         List<Point2D<float>> map)
     {
         currentViewModel.BeforeNavigation();
@@ -45,7 +45,7 @@ public class MapNamePickerNavigator : INavigator
         currentViewModel.AfterNavigation();
     }
 
-    public static void NavigateWithBarAndClose(ObserverViewModel currentViewModel, INavigationStore navigationStore, 
+    public static void NavigateWithBarAndClose(ObserverViewModel currentViewModel, INavigationStore navigationStore,
         List<Point2D<float>> map)
     {
         if (currentViewModel.IniNavigationStore.CanClose)

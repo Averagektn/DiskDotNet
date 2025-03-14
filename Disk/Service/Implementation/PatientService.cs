@@ -40,8 +40,8 @@ public class PatientService(DiskContext database) : IPatientService
             throw new PossibleDuplicateEntityException("Possible duplication of patient");
         }
 
-        database.Add(patient);
-        database.SaveChanges();
+        _ = database.Add(patient);
+        _ = database.SaveChanges();
     }
 
     public async Task CheckDuplicateAndAddAsync(Patient patient)
@@ -74,8 +74,8 @@ public class PatientService(DiskContext database) : IPatientService
             throw new PossibleDuplicateEntityException("Possible duplication of patient");
         }
 
-        await database.AddAsync(patient);
-        await database.SaveChangesAsync();
+        _ = await database.AddAsync(patient);
+        _ = await database.SaveChangesAsync();
     }
 
     public void CheckDuplicateAndUpdate(Patient patient)
@@ -110,8 +110,8 @@ public class PatientService(DiskContext database) : IPatientService
             throw new PossibleDuplicateEntityException("Possible duplication of patient");
         }
 
-        database.Update(patient);
-        database.SaveChanges();
+        _ = database.Update(patient);
+        _ = database.SaveChanges();
     }
 
     public async Task CheckDuplicateAndUpdateAsync(Patient patient)
@@ -139,15 +139,15 @@ public class PatientService(DiskContext database) : IPatientService
             p.Surname == patient.Surname &&
             p.Patronymic == patient.Patronymic &&
             p.DateOfBirth == patient.DateOfBirth &&
-            p.Id != patient.Id); 
+            p.Id != patient.Id);
 
         if (isPossibleDuplicate)
         {
             throw new PossibleDuplicateEntityException("Possible duplication of patient");
         }
 
-        database.Update(patient);
-        await database.SaveChangesAsync();
+        _ = database.Update(patient);
+        _ = await database.SaveChangesAsync();
     }
     private static bool Validate(Patient patient)
     {

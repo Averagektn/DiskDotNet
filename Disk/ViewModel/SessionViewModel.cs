@@ -1,7 +1,6 @@
 ﻿using Disk.Db.Context;
 using Disk.Entities;
 using Disk.Navigators;
-using Disk.Service.Implementation;
 using Disk.Service.Interface;
 using Disk.Stores;
 using Disk.ViewModel.Common.Commands.Async;
@@ -60,7 +59,7 @@ public class SessionViewModel(DiskContext database, IExcelFiller excelFiller, Na
         get => _paths;
         set
         {
-            SetProperty(ref _paths, value);
+            _ = SetProperty(ref _paths, value);
             OnPropertyChanged(nameof(Paths));
         }
     }
@@ -110,7 +109,7 @@ public class SessionViewModel(DiskContext database, IExcelFiller excelFiller, Na
     {
         try
         {
-            excelFiller.ExportToExcel(Session, [.. Attempts],  Patient, Session.MapNavigation);
+            excelFiller.ExportToExcel(Session, [.. Attempts], Patient, Session.MapNavigation);
         }
         catch
         {

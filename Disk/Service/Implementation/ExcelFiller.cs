@@ -6,7 +6,6 @@ using Microsoft.Win32;
 using Newtonsoft.Json;
 using Serilog;
 using System.Diagnostics;
-using System.Windows;
 using Localization = Disk.Properties.Langs.ExcelFiller.ExcelFillerLocalization;
 
 namespace Disk.Service.Implementation;
@@ -62,7 +61,7 @@ public class ExcelFiller : IExcelFiller
             worksheet.Cell(4, 3).Value = $"{Localization.MathExp} X";
             worksheet.Cell(4, 4).Value = $"{Localization.MathExp} Y";
             worksheet.Cell(4, 5).Value = $"{Localization.MaxAngle} (X;Y)";
-            worksheet.Range(4, 5, 4, 6).Merge();
+            _ = worksheet.Range(4, 5, 4, 6).Merge();
             worksheet.Cell(4, 7).Value = $"{Localization.CursorRadius}";
             worksheet.Cell(4, 8).Value = $"{Localization.TargetRadius}";
 

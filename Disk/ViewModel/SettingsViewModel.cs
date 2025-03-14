@@ -31,7 +31,7 @@ public class SettingsViewModel(ModalNavigationStore modalNavigationStore) : Popu
             {
                 _areValidSettings = false;
                 _ = SetProperty(ref _ip, Settings.IP);
-                Application.Current.Dispatcher.InvokeAsync(async () =>
+                _ = Application.Current.Dispatcher.InvokeAsync(async () =>
                 {
                     await ShowPopup(header: Localization.InvalidIpError, message: Localization.InvalidIpError);
                     _areValidSettings = true;
@@ -55,7 +55,7 @@ public class SettingsViewModel(ModalNavigationStore modalNavigationStore) : Popu
             {
                 _areValidSettings = false;
                 _ = SetProperty(ref _moveTime, Settings.MoveTime);
-                Application.Current.Dispatcher.InvokeAsync(async () =>
+                _ = Application.Current.Dispatcher.InvokeAsync(async () =>
                 {
                     await ShowPopup(header: Localization.InvalidMoveTime, message: Localization.InvalidMoveTime);
                     _areValidSettings = true;
@@ -79,7 +79,7 @@ public class SettingsViewModel(ModalNavigationStore modalNavigationStore) : Popu
             {
                 _areValidSettings = false;
                 _ = SetProperty(ref _shotTime, Settings.ShotTime);
-                Application.Current.Dispatcher.InvokeAsync(async () =>
+                _ = Application.Current.Dispatcher.InvokeAsync(async () =>
                 {
                     await ShowPopup(header: Localization.InvalidShotTime, message: Localization.InvalidShotTime);
                     _areValidSettings = true;
@@ -102,7 +102,7 @@ public class SettingsViewModel(ModalNavigationStore modalNavigationStore) : Popu
             {
                 _areValidSettings = false;
                 _ = SetProperty(ref _userRadius, Settings.IniUserRadius);
-                Application.Current.Dispatcher.InvokeAsync(async () =>
+                _ = Application.Current.Dispatcher.InvokeAsync(async () =>
                 {
                     await ShowPopup(header: Localization.InvalidUserRadius, message: Localization.InvalidUserRadius);
                     _areValidSettings = true;
@@ -125,7 +125,7 @@ public class SettingsViewModel(ModalNavigationStore modalNavigationStore) : Popu
             {
                 _areValidSettings = false;
                 _ = SetProperty(ref _targetRadius, Settings.IniTargetRadius);
-                Application.Current.Dispatcher.InvokeAsync(async () =>
+                _ = Application.Current.Dispatcher.InvokeAsync(async () =>
                 {
                     await ShowPopup(header: Localization.InvalidTargetRadius, message: Localization.InvalidTargetRadius);
                     _areValidSettings = true;
@@ -155,7 +155,7 @@ public class SettingsViewModel(ModalNavigationStore modalNavigationStore) : Popu
             {
                 _areValidSettings = false;
                 _ = SetProperty(ref _targetTtl, Settings.TargetHp);
-                Application.Current.Dispatcher.InvokeAsync(async () =>
+                _ = Application.Current.Dispatcher.InvokeAsync(async () =>
                 {
                     await ShowPopup(header: Localization.InvalidTargetHP, message: Localization.InvalidTargetHP);
                     _areValidSettings = true;
@@ -264,7 +264,7 @@ public class SettingsViewModel(ModalNavigationStore modalNavigationStore) : Popu
     public override void AfterNavigation()
     {
         base.AfterNavigation();
-        
+
         var ipChanged = Ip != Settings.IP;
         var cursorPathChanged = CursorFilePath != Settings.CursorFilePath;
         var targetPathChanged = TargetFilePath != Settings.TargetFilePath;
