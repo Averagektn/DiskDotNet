@@ -6,50 +6,55 @@ using Disk.ViewModel.Common.ViewModels;
 
 namespace Disk.Navigators;
 
-public class PaintNavigator : INavigator
+public class SessionNavigator : INavigator
 {
-    public static void Navigate(ObserverViewModel currentViewModel, INavigationStore navigationStore, long attemptId)
+    public static void Navigate(ObserverViewModel currentViewModel, INavigationStore navigationStore, Patient patient,
+        Session session)
     {
         currentViewModel.BeforeNavigation();
-        navigationStore.SetViewModel<PaintViewModel>(vm =>
+        navigationStore.SetViewModel<SessionViewModel>(vm =>
         {
             vm.IniNavigationStore = navigationStore;
-            vm.AttemptId = attemptId;
+            vm.Session = session;
+            vm.Patient = patient;
         });
         currentViewModel.AfterNavigation();
     }
 
-    public static void NavigateAndClose(ObserverViewModel currentViewModel, INavigationStore navigationStore, long attemptId)
+    public static void NavigateAndClose(ObserverViewModel currentViewModel, INavigationStore navigationStore, Patient patient,
+        Session session)
     {
         if (currentViewModel.IniNavigationStore.CanClose)
         {
             currentViewModel.IniNavigationStore.Close();
-            Navigate(currentViewModel, navigationStore, attemptId);
+            Navigate(currentViewModel, navigationStore, patient, session);
         }
     }
 
-    public static void NavigateWithBar(ObserverViewModel currentViewModel, INavigationStore navigationStore, long attemptId)
+    public static void NavigateWithBar(ObserverViewModel currentViewModel, INavigationStore navigationStore, Patient patient, 
+        Session session)
     {
         currentViewModel.BeforeNavigation();
         navigationStore.SetViewModel<NavigationBarLayoutViewModel>(vm =>
         {
             vm.IniNavigationStore = navigationStore;
-            vm.CurrentViewModel = navigationStore.GetViewModel<PaintViewModel>(vm =>
+            vm.CurrentViewModel = navigationStore.GetViewModel<SessionViewModel>(vm =>
             {
                 vm.IniNavigationStore = navigationStore;
-                vm.AttemptId = attemptId;
+                vm.Session = session;
+                vm.Patient = patient;
             });
         });
         currentViewModel.AfterNavigation();
     }
 
     public static void NavigateWithBarAndClose(ObserverViewModel currentViewModel, INavigationStore navigationStore, 
-        long attemptId)
+        Patient patient, Session session)
     {
         if (currentViewModel.IniNavigationStore.CanClose)
         {
             currentViewModel.IniNavigationStore.Close();
-            NavigateWithBar(currentViewModel, navigationStore, attemptId);
+            NavigateWithBar(currentViewModel, navigationStore, patient, session);
         }
     }
 }

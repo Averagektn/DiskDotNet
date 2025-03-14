@@ -21,7 +21,7 @@ public partial class Patient
 
     public string? PhoneHome { get; set; }
 
-    public virtual ICollection<Appointment> Appointments { get; set; } = null!;
+    public virtual ICollection<Session> Sessions { get; set; } = null!;
 
     public override string ToString() => $"{Surname} {Name} {Patronymic}";
 }

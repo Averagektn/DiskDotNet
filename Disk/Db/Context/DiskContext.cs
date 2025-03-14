@@ -12,13 +12,13 @@ public partial class DiskContext : DbContext
 
     public DiskContext(DbContextOptions<DiskContext> options) : base(options) { }
 
-    public virtual DbSet<Appointment> Appointments { get; set; }
+    public virtual DbSet<Session> Sessions { get; set; }
     public virtual DbSet<Map> Maps { get; set; }
     public virtual DbSet<PathInTarget> PathInTargets { get; set; }
     public virtual DbSet<PathToTarget> PathToTargets { get; set; }
     public virtual DbSet<Patient> Patients { get; set; }
-    public virtual DbSet<Session> Sessions { get; set; }
-    public virtual DbSet<SessionResult> SessionResults { get; set; }
+    public virtual DbSet<Attempt> Attempts { get; set; }
+    public virtual DbSet<AttemptResult> AttemptResults { get; set; }
 
     public void EnsureDatabaseExists()
     {
@@ -49,23 +49,23 @@ public partial class DiskContext : DbContext
     }
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        _ = modelBuilder.Entity<Appointment>(entity =>
+        _ = modelBuilder.Entity<Session>(entity =>
         {
             _ = entity.HasKey(e => e.Id);
 
-            _ = entity.ToTable("appointment");
+            _ = entity.ToTable("session");
 
-            _ = entity.HasIndex(a => new { a.Date, a.Map, a.Patient }, "IX_UNQ_appointment_date_map_id_patient_id").IsUnique();
+            _ = entity.HasIndex(a => new { a.Date, a.Map, a.Patient }, "IX_UNQ_session_date_map_id_patient_id").IsUnique();
 
-            _ = entity.Property(e => e.Id).HasColumnName("app_id");
-            _ = entity.Property(e => e.Map).HasColumnName("app_map");
-            _ = entity.Property(e => e.Patient).HasColumnName("app_patient");
-            _ = entity.Property(e => e.Date).HasColumnName("app_date");
+            _ = entity.Property(e => e.Id).HasColumnName("ses_id");
+            _ = entity.Property(e => e.Map).HasColumnName("ses_map");
+            _ = entity.Property(e => e.Patient).HasColumnName("ses_patient");
+            _ = entity.Property(e => e.Date).HasColumnName("ses_date");
 
-            _ = entity.HasOne(d => d.PatientNavigation).WithMany(p => p.Appointments)
+            _ = entity.HasOne(d => d.PatientNavigation).WithMany(p => p.Sessions)
                 .HasForeignKey(d => d.Patient)
                 .OnDelete(DeleteBehavior.Cascade);
-            _ = entity.HasOne(d => d.MapNavigation).WithMany(p => p.Appointments)
+            _ = entity.HasOne(d => d.MapNavigation).WithMany(p => p.Sessions)
                 .HasForeignKey(d => d.Map)
                 .OnDelete(DeleteBehavior.Restrict);
         });
@@ -85,27 +85,27 @@ public partial class DiskContext : DbContext
 
         _ = modelBuilder.Entity<PathInTarget>(entity =>
         {
-            _ = entity.HasKey(e => new { e.Session, e.TargetId });
+            _ = entity.HasKey(e => new { e.Attempt, e.TargetId });
 
             _ = entity.ToTable("path_in_target");
 
-            _ = entity.Property(e => e.Session).HasColumnName("pit_session");
+            _ = entity.Property(e => e.Attempt).HasColumnName("pit_session");
             _ = entity.Property(e => e.TargetId).HasColumnName("pit_target_id");
             _ = entity.Property(e => e.CoordinatesJson).HasColumnName("pit_coordinates_json");
             _ = entity.Property(e => e.Precision).HasColumnName("pit_precision");
 
-            _ = entity.HasOne(d => d.SessionNavigation).WithMany(p => p.PathInTargets)
-                .HasForeignKey(d => d.Session)
+            _ = entity.HasOne(d => d.AttemptNavigation).WithMany(p => p.PathInTargets)
+                .HasForeignKey(d => d.Attempt)
                 .OnDelete(DeleteBehavior.Cascade);
         });
 
         _ = modelBuilder.Entity<PathToTarget>(entity =>
         {
-            _ = entity.HasKey(e => new { e.Session, e.TargetNum });
+            _ = entity.HasKey(e => new { e.Attempt, e.TargetNum });
 
             _ = entity.ToTable("path_to_target");
 
-            _ = entity.Property(e => e.Session).HasColumnName("ptt_session");
+            _ = entity.Property(e => e.Attempt).HasColumnName("ptt_session");
             _ = entity.Property(e => e.TargetNum).HasColumnName("ptt_target_id");
             _ = entity.Property(e => e.Distance).HasColumnName("ptt_distance");
             _ = entity.Property(e => e.AverageSpeed).HasColumnName("ptt_average_speed");
@@ -113,8 +113,8 @@ public partial class DiskContext : DbContext
             _ = entity.Property(e => e.CoordinatesJson).HasColumnName("ptt_coordinates_json");
             _ = entity.Property(e => e.Time).HasColumnName("ptt_time");
 
-            _ = entity.HasOne(d => d.SessionNavigation).WithMany(p => p.PathToTargets)
-                .HasForeignKey(d => d.Session)
+            _ = entity.HasOne(d => d.AttemptNavigation).WithMany(p => p.PathToTargets)
+                .HasForeignKey(d => d.Attempt)
                 .OnDelete(DeleteBehavior.Cascade);
         });
 
@@ -142,45 +142,45 @@ public partial class DiskContext : DbContext
                 .HasColumnName("pat_surname");
         });
 
-        _ = modelBuilder.Entity<Session>(entity =>
+        _ = modelBuilder.Entity<Attempt>(entity =>
         {
             _ = entity.HasKey(e => e.Id);
 
-            _ = entity.ToTable("session");
+            _ = entity.ToTable("attempt");
 
-            _ = entity.HasIndex(e => e.LogFilePath, "IX_UNQ_session_ses_log_file_path").IsUnique();
+            _ = entity.HasIndex(e => e.LogFilePath, "IX_UNQ_attempt_att_log_file_path").IsUnique();
 
-            _ = entity.Property(e => e.Id).HasColumnName("ses_id");
-            _ = entity.Property(e => e.Appointment).HasColumnName("ses_appointment");
-            _ = entity.Property(e => e.DateTime).HasColumnName("ses_date_time");
-            _ = entity.Property(e => e.LogFilePath).HasColumnName("ses_log_file_path");
-            _ = entity.Property(e => e.MaxXAngle).HasColumnName("ses_max_x_angle");
-            _ = entity.Property(e => e.MaxYAngle).HasColumnName("ses_max_y_angle");
-            _ = entity.Property(e => e.TargetRadius).HasColumnName("ses_target_radius");
-            _ = entity.Property(e => e.CursorRadius).HasColumnName("ses_cursor_radius");
+            _ = entity.Property(e => e.Id).HasColumnName("att_id");
+            _ = entity.Property(e => e.Session).HasColumnName("att_session");
+            _ = entity.Property(e => e.DateTime).HasColumnName("att_date_time");
+            _ = entity.Property(e => e.LogFilePath).HasColumnName("att_log_file_path");
+            _ = entity.Property(e => e.MaxXAngle).HasColumnName("att_max_x_angle");
+            _ = entity.Property(e => e.MaxYAngle).HasColumnName("att_max_y_angle");
+            _ = entity.Property(e => e.TargetRadius).HasColumnName("att_target_radius");
+            _ = entity.Property(e => e.CursorRadius).HasColumnName("att_cursor_radius");
 
-            _ = entity.HasOne(d => d.AppointmentNavigation).WithMany(p => p.Sessions)
-                .HasForeignKey(d => d.Appointment)
+            _ = entity.HasOne(d => d.SessionNavigation).WithMany(p => p.Attempts)
+                .HasForeignKey(d => d.Session)
                 .OnDelete(DeleteBehavior.Cascade);
         });
 
-        _ = modelBuilder.Entity<SessionResult>(entity =>
+        _ = modelBuilder.Entity<AttemptResult>(entity =>
         {
             _ = entity.HasKey(e => e.Id);
 
-            _ = entity.ToTable("session_result");
+            _ = entity.ToTable("attempt_result");
 
             _ = entity.Property(e => e.Id)
                 .ValueGeneratedNever()
-                .HasColumnName("sres_id");
-            _ = entity.Property(e => e.DeviationX).HasColumnName("sres_deviation_x");
-            _ = entity.Property(e => e.DeviationY).HasColumnName("sres_deviation_y");
-            _ = entity.Property(e => e.MathExpX).HasColumnName("sres_math_exp_x");
-            _ = entity.Property(e => e.MathExpY).HasColumnName("sres_math_exp_y");
-            _ = entity.Property(e => e.Score).HasColumnName("sres_score");
+                .HasColumnName("ares_id");
+            _ = entity.Property(e => e.DeviationX).HasColumnName("ares_deviation_x");
+            _ = entity.Property(e => e.DeviationY).HasColumnName("ares_deviation_y");
+            _ = entity.Property(e => e.MathExpX).HasColumnName("ares_math_exp_x");
+            _ = entity.Property(e => e.MathExpY).HasColumnName("ares_math_exp_y");
+            _ = entity.Property(e => e.Score).HasColumnName("ares_score");
 
-            _ = entity.HasOne(d => d.Sres).WithOne(p => p.SessionResult)
-                .HasForeignKey<SessionResult>(d => d.Id)
+            _ = entity.HasOne(d => d.Attempt).WithOne(p => p.AttemptResult)
+                .HasForeignKey<AttemptResult>(d => d.Id)
                 .OnDelete(DeleteBehavior.Cascade);
         });
 

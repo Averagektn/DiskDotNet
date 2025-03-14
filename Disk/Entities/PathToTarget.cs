@@ -2,7 +2,7 @@
 
 public partial class PathToTarget
 {
-    public long Session { get; set; }
+    public long Attempt { get; set; }
 
     public long TargetNum { get; set; }
     public long TargetNumInc => TargetNum + 1;
@@ -17,5 +17,5 @@ public partial class PathToTarget
 
     public double Time { get; set; }
 
-    public virtual Session SessionNavigation { get; set; } = null!;
+    public virtual Attempt AttemptNavigation { get; set; } = null!;
 }

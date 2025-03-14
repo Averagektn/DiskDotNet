@@ -2,7 +2,7 @@
 
 public partial class PathInTarget
 {
-    public long Session { get; set; }
+    public long Attempt { get; set; }
 
     public long TargetId { get; set; }
 
@@ -10,5 +10,5 @@ public partial class PathInTarget
 
     public float Precision { get; set; }
 
-    public virtual Session SessionNavigation { get; set; } = null!;
+    public virtual Attempt AttemptNavigation { get; set; } = null!;
 }

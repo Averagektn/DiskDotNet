@@ -4,25 +4,15 @@ public partial class Session
 {
     public long Id { get; set; }
 
-    public float MaxXAngle { get; set; }
+    public long Map { get; set; }
 
-    public float MaxYAngle { get; set; }
+    public long Patient { get; set; }
 
-    public int CursorRadius { get; set; }
+    public string Date { get; set; } = null!;
 
-    public int TargetRadius { get; set; }
+    public virtual Map MapNavigation { get; set; } = null!;
 
-    public string LogFilePath { get; set; } = null!;
+    public virtual Patient PatientNavigation { get; set; } = null!;
 
-    public string DateTime { get; set; } = null!;
-
-    public long Appointment { get; set; }
-
-    public virtual ICollection<PathInTarget> PathInTargets { get; set; } = null!;
-
-    public virtual ICollection<PathToTarget> PathToTargets { get; set; } = null!;
-
-    public virtual Appointment AppointmentNavigation { get; set; } = null!;
-
-    public virtual SessionResult? SessionResult { get; set; }
+    public virtual ICollection<Attempt> Attempts { get; set; } = null!;
 }

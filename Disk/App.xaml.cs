@@ -54,10 +54,10 @@ public partial class App : Application
         _ = services.AddTransient<CalibrationViewModel>();
         _ = services.AddTransient<MapCreatorViewModel>();
         _ = services.AddTransient<PatientsViewModel>();
-        _ = services.AddTransient<AppointmentsListViewModel>();
-        _ = services.AddTransient<ConfigureAppointmentViewModel>();
-        _ = services.AddTransient<SessionResultViewModel>();
-        _ = services.AddTransient<AppointmentViewModel>();
+        _ = services.AddTransient<SessionsListViewModel>();
+        _ = services.AddTransient<ConfigureSessionViewModel>();
+        _ = services.AddTransient<AttemptResultViewModel>();
+        _ = services.AddTransient<SessionViewModel>();
         _ = services.AddTransient<MapNamePickerViewModel>();
         _ = services.AddTransient<AddPatientViewModel>();
         _ = services.AddTransient<QuestionViewModel>();

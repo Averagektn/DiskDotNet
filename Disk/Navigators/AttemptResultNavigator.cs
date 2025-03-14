@@ -6,12 +6,12 @@ using Disk.ViewModel.Common.ViewModels;
 
 namespace Disk.Navigators;
 
-public class PaintNavigator : INavigator
+public class AttemptResultNavigator : INavigator
 {
     public static void Navigate(ObserverViewModel currentViewModel, INavigationStore navigationStore, long attemptId)
     {
         currentViewModel.BeforeNavigation();
-        navigationStore.SetViewModel<PaintViewModel>(vm =>
+        navigationStore.SetViewModel<AttemptResultViewModel>(vm =>
         {
             vm.IniNavigationStore = navigationStore;
             vm.AttemptId = attemptId;
@@ -34,7 +34,7 @@ public class PaintNavigator : INavigator
         navigationStore.SetViewModel<NavigationBarLayoutViewModel>(vm =>
         {
             vm.IniNavigationStore = navigationStore;
-            vm.CurrentViewModel = navigationStore.GetViewModel<PaintViewModel>(vm =>
+            vm.CurrentViewModel = navigationStore.GetViewModel<AttemptResultViewModel>(vm =>
             {
                 vm.IniNavigationStore = navigationStore;
                 vm.AttemptId = attemptId;

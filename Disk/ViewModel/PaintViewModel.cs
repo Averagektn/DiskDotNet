@@ -21,32 +21,32 @@ namespace Disk.ViewModel;
 
 public class PaintViewModel : PopupViewModel
 {
-    private long _sessionId;
-    public required long SessionId
+    private long _attemptId;
+    public required long AttemptId
     {
-        get => _sessionId;
+        get => _attemptId;
         set
         {
-            _sessionId = value;
+            _attemptId = value;
             _ = Application.Current.Dispatcher.InvokeAsync(async () =>
-                CurrentSession = await _database.Sessions
+                CurrentAttempt = await _database.Attempts
                     .Where(s => s.Id == value)
-                    .Include(s => s.AppointmentNavigation)
-                    .Include(s => s.AppointmentNavigation.MapNavigation)
+                    .Include(s => s.SessionNavigation)
+                    .Include(s => s.SessionNavigation.MapNavigation)
                     .FirstAsync());
         }
     }
 
 
-    private Session _currentSession = null!;
-    public Session CurrentSession
+    private Attempt _currentAttempt = null!;
+    public Attempt CurrentAttempt
     {
-        get => _currentSession;
+        get => _currentAttempt;
         set
         {
-            _currentSession = value;
+            _currentAttempt = value;
             TargetCenters = JsonConvert
-                .DeserializeObject<List<Point2D<float>>>(_currentSession.AppointmentNavigation.MapNavigation.CoordinatesJson) ?? [];
+                .DeserializeObject<List<Point2D<float>>>(_currentAttempt.SessionNavigation.MapNavigation.CoordinatesJson) ?? [];
         }
     }
 
@@ -56,13 +56,13 @@ public class PaintViewModel : PopupViewModel
     // Get only
     public Point2D<float>? NextTargetCenter => TargetCenters.Count <= TargetId ? null : TargetCenters[TargetId++];
     private static Settings Settings => Settings.Default;
-    private string UsrAngLog => $"{CurrentSession.LogFilePath}{FilePath.DirectorySeparatorChar}{Settings.UserLogFileName}";
+    private string UsrAngLog => $"{CurrentAttempt.LogFilePath}{FilePath.DirectorySeparatorChar}{Settings.UserLogFileName}";
     public bool IsPathToTarget => PathToTargetStopwatch?.IsRunning ?? false;
 
     // Disposable
     private readonly Thread DiskNetworkThread;
 
-    // Sessions datasets
+    // Attempts datasets
     public List<Point2D<float>> TargetCenters { get; set; } = [];
 
     public List<Point2D<float>> FullPath = [];
@@ -132,21 +132,21 @@ public class PaintViewModel : PopupViewModel
             Application.Current.Dispatcher.InvokeAsync(async () =>
             {
                 await ShowPopup(header: Localization.ConnectionLost, message: "");
-                await SaveSessionResultAsync();
+                await SaveAttemptResultAsync();
             });
         }
     }
 
-    public async Task SaveSessionResultAsync()
+    public async Task SaveAttemptResultAsync()
     {
         if (PathsInTargets.Count != 0)
         {
             var mx = Calculator2D.MathExp(FullPath);
             var deviation = Calculator2D.StandartDeviation(FullPath);
 
-            var sres = new SessionResult()
+            var sres = new AttemptResult()
             {
-                Id = CurrentSession.Id,
+                Id = CurrentAttempt.Id,
                 MathExpX = mx.XDbl,
                 MathExpY = mx.YDbl,
                 DeviationX = deviation.XDbl,
@@ -154,11 +154,11 @@ public class PaintViewModel : PopupViewModel
                 Score = Score,
             };
 
-            _ = await _database.SessionResults.AddAsync(sres);
+            _ = await _database.AttemptResults.AddAsync(sres);
         }
         else
         {
-            _ = _database.Sessions.Remove(CurrentSession);
+            _ = _database.Attempts.Remove(CurrentAttempt);
         }
         _ = await _database.SaveChangesAsync();
 
@@ -182,7 +182,7 @@ public class PaintViewModel : PopupViewModel
         {
             try
             {
-                SessionResultNavigator.NavigateAndClose(this, _navigationStore, CurrentSession.Id);
+                AttemptResultNavigator.NavigateAndClose(this, _navigationStore, CurrentAttempt.Id);
             }
             catch
             {
@@ -224,7 +224,7 @@ public class PaintViewModel : PopupViewModel
             ApproachSpeed = approachSpeed,
             CoordinatesJson = JsonConvert.SerializeObject(PathsToTargets[TargetId - 1]),
             TargetNum = TargetId - 1,
-            Session = CurrentSession.Id,
+            Attempt = CurrentAttempt.Id,
             Time = time
         };
 
@@ -250,7 +250,7 @@ public class PaintViewModel : PopupViewModel
         var pit = new PathInTarget()
         {
             CoordinatesJson = JsonConvert.SerializeObject(pathInTarget),
-            Session = CurrentSession.Id,
+            Attempt = CurrentAttempt.Id,
             TargetId = TargetId - 1,
             Precision = precision
         };

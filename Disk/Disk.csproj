@@ -66,15 +66,15 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>AddPatientLocalization.resx</DependentUpon>
     </Compile>
-    <Compile Update="Properties\Langs\AppointementsList\AppointmentsListLocalization.Designer.cs">
+    <Compile Update="Properties\Langs\SessionsList\SessionsListLocalization.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
-      <DependentUpon>AppointmentsListLocalization.resx</DependentUpon>
+      <DependentUpon>SessionsListLocalization.resx</DependentUpon>
     </Compile>
-    <Compile Update="Properties\Langs\Appointment\AppointmentLocalization.Designer.cs">
+    <Compile Update="Properties\Langs\Session\SessionLocalization.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
-      <DependentUpon>AppointmentLocalization.resx</DependentUpon>
+      <DependentUpon>SessionLocalization.resx</DependentUpon>
     </Compile>
     <Compile Update="Properties\Langs\Authentication\AuthenticationLocalization.Designer.cs">
       <DesignTime>True</DesignTime>
@@ -131,20 +131,20 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>ServiceExceptionLocalization.resx</DependentUpon>
     </Compile>
-    <Compile Update="Properties\Langs\SessionResult\SessionResultLocalization.Designer.cs">
+    <Compile Update="Properties\Langs\AttemptResult\AttemptResultLocalization.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
-      <DependentUpon>SessionResultLocalization.resx</DependentUpon>
+      <DependentUpon>AttemptResultLocalization.resx</DependentUpon>
     </Compile>
     <Compile Update="Properties\Langs\Settings\SettingsLocalization.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>SettingsLocalization.resx</DependentUpon>
     </Compile>
-    <Compile Update="Properties\Langs\ConfigureAppointment\ConfigureAppointmentLocalization.Designer.cs">
+    <Compile Update="Properties\Langs\ConfigureSession\ConfigureSessionLocalization.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
-      <DependentUpon>ConfigureAppointmentLocalization.resx</DependentUpon>
+      <DependentUpon>ConfigureSessionLocalization.resx</DependentUpon>
     </Compile>
   </ItemGroup>
 
@@ -156,18 +156,18 @@
     <EmbeddedResource Update="Properties\Langs\AddPatient\AddPatientLocalization.ru-RU.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="Properties\Langs\AppointementsList\AppointmentsListLocalization.resx">
+    <EmbeddedResource Update="Properties\Langs\SessionsList\SessionsListLocalization.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>AppointmentsListLocalization.Designer.cs</LastGenOutput>
+      <LastGenOutput>SessionsListLocalization.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Update="Properties\Langs\AppointementsList\AppointmentsListLocalization.ru-RU.resx">
+    <EmbeddedResource Update="Properties\Langs\SessionsList\SessionsListLocalization.ru-RU.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="Properties\Langs\Appointment\AppointmentLocalization.resx">
+    <EmbeddedResource Update="Properties\Langs\Session\SessionLocalization.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>AppointmentLocalization.Designer.cs</LastGenOutput>
+      <LastGenOutput>SessionLocalization.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Update="Properties\Langs\Appointment\AppointmentLocalization.ru-RU.resx">
+    <EmbeddedResource Update="Properties\Langs\Session\SessionLocalization.ru-RU.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Properties\Langs\Authentication\AuthenticationLocalization.resx">
@@ -238,11 +238,11 @@
     <EmbeddedResource Update="Properties\Langs\ServiceException\ServiceExceptionLocalization.ru-RU.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="Properties\Langs\SessionResult\SessionResultLocalization.resx">
+    <EmbeddedResource Update="Properties\Langs\AttemptResult\AttemptResultLocalization.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>SessionResultLocalization.Designer.cs</LastGenOutput>
+      <LastGenOutput>AttemptResultLocalization.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Update="Properties\Langs\SessionResult\SessionResultLocalization.ru-RU.resx">
+    <EmbeddedResource Update="Properties\Langs\AttemptResult\AttemptResultLocalization.ru-RU.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Properties\Langs\Settings\SettingsLocalization.resx">
@@ -252,11 +252,11 @@
     <EmbeddedResource Update="Properties\Langs\Settings\SettingsLocalization.ru-RU.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="Properties\Langs\ConfigureAppointment\ConfigureAppointmentLocalization.resx">
+    <EmbeddedResource Update="Properties\Langs\ConfigureSession\ConfigureSessionLocalization.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>ConfigureAppointmentLocalization.Designer.cs</LastGenOutput>
+      <LastGenOutput>ConfigureSessionLocalization.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Update="Properties\Langs\ConfigureAppointment\ConfigureAppointmentLocalization.ru-RU.resx">
+    <EmbeddedResource Update="Properties\Langs\ConfigureSession\ConfigureSessionLocalization.ru-RU.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
     </EmbeddedResource>
   </ItemGroup>
@@ -275,10 +275,6 @@
     <None Update="Properties\Untitled.ico">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Entities\" />
   </ItemGroup>
 
 </Project>

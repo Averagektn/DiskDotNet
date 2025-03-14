@@ -40,14 +40,14 @@
             <DataTemplate DataType="{x:Type viewmodels:AddPatientViewModel}">
                 <views:AddPatientView/>
             </DataTemplate>
-            <DataTemplate DataType="{x:Type viewmodels:AppointmentsListViewModel}">
-                <views:AppointmentsListView/>
+            <DataTemplate DataType="{x:Type viewmodels:SessionsListViewModel}">
+                <views:SessionsListView/>
             </DataTemplate>
-            <DataTemplate DataType="{x:Type viewmodels:AppointmentViewModel}">
-                <views:AppointmentView/>
+            <DataTemplate DataType="{x:Type viewmodels:SessionViewModel}">
+                <views:SessionView/>
             </DataTemplate>
-            <DataTemplate DataType="{x:Type viewmodels:ConfigureAppointmentViewModel}">
-                <views:ConfigureAppointmentView/>
+            <DataTemplate DataType="{x:Type viewmodels:ConfigureSessionViewModel}">
+                <views:ConfigureSessionView/>
             </DataTemplate>
             <DataTemplate DataType="{x:Type viewmodels:PaintViewModel}">
                 <paintview:PaintView/>
@@ -55,8 +55,8 @@
             <DataTemplate DataType="{x:Type viewmodels:NavigationBarLayoutViewModel}">
                 <views:NavigationBarLayoutView/>
             </DataTemplate>
-            <DataTemplate DataType="{x:Type viewmodels:SessionResultViewModel}">
-                <views:SessionResultView/>
+            <DataTemplate DataType="{x:Type viewmodels:AttemptResultViewModel}">
+                <views:AttemptResultView/>
             </DataTemplate>
             <DataTemplate DataType="{x:Type viewmodels:QuestionViewModel}">
                 <views:QuestionView/>

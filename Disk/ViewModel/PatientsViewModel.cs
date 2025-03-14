@@ -93,7 +93,7 @@ public class PatientsViewModel : ObserverViewModel
     {
         if (SelectedPatient is not null)
         {
-            AppointmentsListNavigator.NavigateWithBar(this, _navigationStore, SelectedPatient);
+            SessionsListNavigator.NavigateWithBar(this, _navigationStore, SelectedPatient);
         }
     });
 

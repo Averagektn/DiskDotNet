@@ -6,50 +6,49 @@ using Disk.ViewModel.Common.ViewModels;
 
 namespace Disk.Navigators;
 
-public class PaintNavigator : INavigator
+public class ConfigureSessionNavigator : INavigator
 {
-    public static void Navigate(ObserverViewModel currentViewModel, INavigationStore navigationStore, long attemptId)
+    public static void Navigate(ObserverViewModel currentViewModel, INavigationStore navigationStore, Patient patient)
     {
         currentViewModel.BeforeNavigation();
-        navigationStore.SetViewModel<PaintViewModel>(vm =>
+        navigationStore.SetViewModel<ConfigureSessionViewModel>(vm =>
         {
             vm.IniNavigationStore = navigationStore;
-            vm.AttemptId = attemptId;
+            vm.Patient = patient;
         });
         currentViewModel.AfterNavigation();
     }
 
-    public static void NavigateAndClose(ObserverViewModel currentViewModel, INavigationStore navigationStore, long attemptId)
+    public static void NavigateAndClose(ObserverViewModel currentViewModel, INavigationStore navigationStore, Patient patient)
     {
         if (currentViewModel.IniNavigationStore.CanClose)
         {
             currentViewModel.IniNavigationStore.Close();
-            Navigate(currentViewModel, navigationStore, attemptId);
+            Navigate(currentViewModel, navigationStore, patient);
         }
     }
 
-    public static void NavigateWithBar(ObserverViewModel currentViewModel, INavigationStore navigationStore, long attemptId)
+    public static void NavigateWithBar(ObserverViewModel currentViewModel, INavigationStore navigationStore, Patient patient)
     {
         currentViewModel.BeforeNavigation();
         navigationStore.SetViewModel<NavigationBarLayoutViewModel>(vm =>
         {
             vm.IniNavigationStore = navigationStore;
-            vm.CurrentViewModel = navigationStore.GetViewModel<PaintViewModel>(vm =>
+            vm.CurrentViewModel = navigationStore.GetViewModel<ConfigureSessionViewModel>(vm =>
             {
                 vm.IniNavigationStore = navigationStore;
-                vm.AttemptId = attemptId;
+                vm.Patient = patient;
             });
         });
         currentViewModel.AfterNavigation();
     }
 
-    public static void NavigateWithBarAndClose(ObserverViewModel currentViewModel, INavigationStore navigationStore, 
-        long attemptId)
+    public static void NavigateWithBarAndClose(ObserverViewModel currentViewModel, INavigationStore navigationStore, Patient patient)
     {
         if (currentViewModel.IniNavigationStore.CanClose)
         {
             currentViewModel.IniNavigationStore.Close();
-            NavigateWithBar(currentViewModel, navigationStore, attemptId);
+            NavigateWithBar(currentViewModel, navigationStore, patient);
         }
     }
 }

@@ -21,7 +21,7 @@ public class MapNamePickerViewModel(DiskContext database) : PopupViewModel
         Description = string.Empty,
         Name = string.Empty,
         CoordinatesJson = string.Empty,
-        Appointments = [],
+        Sessions = [],
         CreatedAtDateTime = string.Empty,
         Id = 0,
     };

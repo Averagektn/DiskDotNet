@@ -7,7 +7,7 @@ using Newtonsoft.Json;
 using Serilog;
 using System.Diagnostics;
 using System.Windows;
-using Localization = Disk.Properties.Langs.Appointment.AppointmentLocalization;
+using Localization = Disk.Properties.Langs.Session.SessionLocalization;
 
 namespace Disk.Service.Implementation;
 
@@ -15,11 +15,11 @@ public class ExcelFiller : IExcelFiller
 {
     private const int ColsPerPath = 7;
 
-    public void ExportToExcel(Appointment appointment, List<Session> sessions, Patient patient, Map map)
+    public void ExportToExcel(Session session, List<Attempt> attempts, Patient patient, Map map)
     {
         using var workbook = new XLWorkbook();
 
-        FillExcel(workbook, sessions, appointment, map);
+        FillExcel(workbook, attempts, session, map);
 
         var saveFileDialog = new SaveFileDialog
         {
@@ -45,16 +45,16 @@ public class ExcelFiller : IExcelFiller
         }
     }
 
-    private static void FillExcel(XLWorkbook workbook, List<Session> sessions, Appointment appointment, Map map)
+    private static void FillExcel(XLWorkbook workbook, List<Attempt> attempts, Session session, Map map)
     {
-        foreach (var session in sessions)
+        foreach (var attempt in attempts)
         {
             var worksheet = workbook.Worksheets.Add();
 
             worksheet.Cell(1, 1).Value = Localization.DateTime;
             worksheet.Cell(1, 2).Value = Localization.Map;
 
-            worksheet.Cell(2, 1).Value = session.DateTime;
+            worksheet.Cell(2, 1).Value = attempt.DateTime;
             worksheet.Cell(2, 2).Value = map.Name;
 
             worksheet.Cell(4, 1).Value = $"{Localization.Deviation} X";
@@ -62,7 +62,7 @@ public class ExcelFiller : IExcelFiller
             worksheet.Cell(4, 3).Value = $"{Localization.MathExp} X";
             worksheet.Cell(4, 4).Value = $"{Localization.MathExp} Y";
 
-            var sres = session.SessionResult;
+            var sres = attempt.AttemptResult;
             if (sres is not null)
             {
                 SetFloatCell(worksheet, 5, 1, (float)sres.DeviationX);
@@ -78,8 +78,8 @@ public class ExcelFiller : IExcelFiller
 
             const int pathCol = 7;
 
-            FillPtts(worksheet, session, pathCol, map);
-            FillPits(worksheet, session, pathCol + ColsPerPath, map);
+            FillPtts(worksheet, attempt, pathCol, map);
+            FillPits(worksheet, attempt, pathCol + ColsPerPath, map);
 
             new List<IXLRange>()
                 {
@@ -87,7 +87,7 @@ public class ExcelFiller : IExcelFiller
                     worksheet.Range(firstCellRow: 4, firstCellColumn: 1, lastCellRow: 4, lastCellColumn: 4),
                     worksheet.Range(firstCellRow: 7, firstCellColumn: 1, lastCellRow: 7, lastCellColumn: 4),
                     worksheet.Range(firstCellRow: 1, firstCellColumn: pathCol, lastCellRow: 2,
-                        lastCellColumn: (ColsPerPath * (session.PathToTargets.Count + session.PathInTargets.Count + 1)) - 2),
+                        lastCellColumn: (ColsPerPath * (attempt.PathToTargets.Count + attempt.PathInTargets.Count + 1)) - 2),
                 }
             .ForEach(header =>
             {
@@ -95,10 +95,10 @@ public class ExcelFiller : IExcelFiller
                 header.Style.Fill.BackgroundColor = XLColor.LightGray;
             });
             worksheet.Range(firstCellRow: 3, firstCellColumn: pathCol, lastCellRow: 2,
-                lastCellColumn: (ColsPerPath * (session.PathToTargets.Count + session.PathInTargets.Count + 1)) - 2)
+                lastCellColumn: (ColsPerPath * (attempt.PathToTargets.Count + attempt.PathInTargets.Count + 1)) - 2)
                 .Style.Fill.BackgroundColor = XLColor.LightSlateGray;
             worksheet.Range(firstCellRow: 3, firstCellColumn: pathCol, lastCellRow: 2,
-                lastCellColumn: (ColsPerPath * (session.PathToTargets.Count + session.PathInTargets.Count + 1)) - 2)
+                lastCellColumn: (ColsPerPath * (attempt.PathToTargets.Count + attempt.PathInTargets.Count + 1)) - 2)
                 .Style.Font.Bold = true;
 
             _ = worksheet
@@ -107,9 +107,9 @@ public class ExcelFiller : IExcelFiller
         }
     }
 
-    private static void FillPtts(IXLWorksheet worksheet, Session session, int pathCol, Map map)
+    private static void FillPtts(IXLWorksheet worksheet, Attempt attempt, int pathCol, Map map)
     {
-        var ptts = session.PathToTargets;
+        var ptts = attempt.PathToTargets;
         var mapCenters = JsonConvert.DeserializeObject<List<Point2D<float>>>(map.CoordinatesJson)!;
 
         int pttRow = 8;
@@ -130,9 +130,9 @@ public class ExcelFiller : IExcelFiller
         }
     }
 
-    private static void FillPits(IXLWorksheet worksheet, Session session, int pathCol, Map map)
+    private static void FillPits(IXLWorksheet worksheet, Attempt attempt, int pathCol, Map map)
     {
-        var pits = session.PathInTargets;
+        var pits = attempt.PathInTargets;
         var mapCenters = JsonConvert.DeserializeObject<List<Point2D<float>>>(map.CoordinatesJson)!;
 
         foreach (var pit in pits)
