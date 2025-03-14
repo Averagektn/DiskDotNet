@@ -145,7 +145,7 @@
     <value>Отчество</value>
   </data>
   <data name="PossibleDuplication" xml:space="preserve">
-    <value>Пациент с такими данными уже существует. Вы уверены?</value>
+    <value>Пациент с такими данными уже существует. Вы уверены, что хотите добавить нового пациента?</value>
   </data>
   <data name="Surname" xml:space="preserve">
     <value>Фамилия</value>

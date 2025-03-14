@@ -117,8 +117,8 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="AppoimentsHeader" xml:space="preserve">
-    <value>Appointments</value>
+  <data name="SessionsHeader" xml:space="preserve">
+    <value>Sessions</value>
   </data>
   <data name="Cancel" xml:space="preserve">
     <value>Cancel</value>
@@ -154,7 +154,7 @@
     <value>Previous</value>
   </data>
   <data name="StartAppoiment" xml:space="preserve">
-    <value>Start appointment</value>
+    <value>Start session...</value>
   </data>
   <data name="Surname" xml:space="preserve">
     <value>Surname</value>

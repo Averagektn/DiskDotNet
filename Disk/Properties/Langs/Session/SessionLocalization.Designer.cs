@@ -142,33 +142,6 @@ namespace Disk.Properties.Langs.Session {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Frontal projection.
-        /// </summary>
-        public static string FrontalProjection {
-            get {
-                return ResourceManager.GetString("FrontalProjection", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Left foot. Frontal projection.
-        /// </summary>
-        public static string FrontLeftFoot {
-            get {
-                return ResourceManager.GetString("FrontLeftFoot", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Right foot. Frontal projection.
-        /// </summary>
-        public static string FrontRightFoot {
-            get {
-                return ResourceManager.GetString("FrontRightFoot", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to IP.
         /// </summary>
         public static string Ip {
@@ -214,38 +187,11 @@ namespace Disk.Properties.Langs.Session {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Path in target.
-        /// </summary>
-        public static string PathInTarget {
-            get {
-                return ResourceManager.GetString("PathInTarget", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Path to target.
-        /// </summary>
-        public static string PathToTarget {
-            get {
-                return ResourceManager.GetString("PathToTarget", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Precision.
         /// </summary>
         public static string Precision {
             get {
                 return ResourceManager.GetString("Precision", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Profile projection.
-        /// </summary>
-        public static string ProfileProjection {
-            get {
-                return ResourceManager.GetString("ProfileProjection", resourceCulture);
             }
         }
         
@@ -282,15 +228,6 @@ namespace Disk.Properties.Langs.Session {
         public static string Start {
             get {
                 return ResourceManager.GetString("Start", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Target center.
-        /// </summary>
-        public static string TargetCenter {
-            get {
-                return ResourceManager.GetString("TargetCenter", resourceCulture);
             }
         }
         

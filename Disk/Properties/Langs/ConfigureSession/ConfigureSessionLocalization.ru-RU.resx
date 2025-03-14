@@ -139,6 +139,6 @@
     <value>Создать</value>
   </data>
   <data name="DuplicatePatientDateMap" xml:space="preserve">
-    <value>Сегодня данная карта уже используется пациентом</value>
+    <value>Данная карта уже используется пациентом в сегодняшнем сеансе</value>
   </data>
 </root>

@@ -97,33 +97,6 @@ namespace Disk.Properties.Langs.SessionsList {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Frontal projection.
-        /// </summary>
-        public static string FrontalProjection {
-            get {
-                return ResourceManager.GetString("FrontalProjection", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Left foot. Frontal projection.
-        /// </summary>
-        public static string FrontLeftFoot {
-            get {
-                return ResourceManager.GetString("FrontLeftFoot", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Right foot. Frontal projection.
-        /// </summary>
-        public static string FrontRightFoot {
-            get {
-                return ResourceManager.GetString("FrontRightFoot", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Home phone.
         /// </summary>
         public static string HomePhone {
@@ -196,15 +169,6 @@ namespace Disk.Properties.Langs.SessionsList {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Profile projection.
-        /// </summary>
-        public static string ProfileProjection {
-            get {
-                return ResourceManager.GetString("ProfileProjection", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Sessions.
         /// </summary>
         public static string SessionsHeader {
@@ -214,7 +178,7 @@ namespace Disk.Properties.Langs.SessionsList {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Start session.
+        ///   Looks up a localized string similar to Start session....
         /// </summary>
         public static string StartAppoiment {
             get {

@@ -148,6 +148,6 @@
     <value>Фамилия</value>
   </data>
   <data name="PossibleDuplication" xml:space="preserve">
-    <value>Пациент с такими данными уже существует. Вы уверены?</value>
+    <value>Пациент с такими данными уже существует. Вы уверены, что хотите выполнить обновление?</value>
   </data>
 </root>

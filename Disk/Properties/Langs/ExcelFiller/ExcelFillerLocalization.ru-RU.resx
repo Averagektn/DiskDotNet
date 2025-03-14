@@ -130,7 +130,7 @@
     <value>Дата/Время попытки</value>
   </data>
   <data name="Deviation" xml:space="preserve">
-    <value>Среднеквадратическое отклонение</value>
+    <value>Среднеквадратр. отклонение</value>
   </data>
   <data name="ExportToExcel" xml:space="preserve">
     <value>Экспорт в Excel</value>
@@ -145,10 +145,10 @@
     <value>Карта</value>
   </data>
   <data name="MathExp" xml:space="preserve">
-    <value>Математическое ожидение</value>
+    <value>Матожидание</value>
   </data>
   <data name="MaxAngle" xml:space="preserve">
-    <value>Максимальный угол наклоне комплекса</value>
+    <value>Максимальный угол наклона комплекса</value>
   </data>
   <data name="PathInTarget" xml:space="preserve">
     <value>Путь в мишени</value>

@@ -121,7 +121,7 @@
     <value>Назад</value>
   </data>
   <data name="ConnectionLost" xml:space="preserve">
-    <value>Потеряно соединение с диском</value>
+    <value>Потеряно соединение с комплексом</value>
   </data>
   <data name="EmptyMap" xml:space="preserve">
     <value>Карта пуста</value>
