@@ -96,14 +96,8 @@
                     </Button>
                 </StackPanel>
 
-                <Grid Margin="10">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="Auto" />
-                    </Grid.ColumnDefinitions>
-
+                <StackPanel Margin="10">
                     <Slider
-                        Grid.Column="0"
                         Minimum="30"
                         Maximum="100"
                         Value="{Binding MoveTime}"
@@ -115,11 +109,11 @@
                         AutoToolTipPrecision="0"/>
 
                     <TextBlock
-                        Grid.Column="1"
+                        HorizontalAlignment="Center"
                         Text="{Binding MoveTime}"
                         FontSize="20"
                         Margin="10 0 0 0" />
-                </Grid>
+                </StackPanel>
             </StackPanel>
 
             <StackPanel Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Center">
@@ -152,13 +146,8 @@
                     </Button>
                 </StackPanel>
 
-                <Grid Margin="10">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="Auto" />
-                    </Grid.ColumnDefinitions>
+                <StackPanel Margin="10">
                     <Slider 
-                        Grid.Column="0"
                         Minimum="30" 
                         Maximum="100" 
                         Value="{Binding ShotTime}"
@@ -169,11 +158,11 @@
                         AutoToolTipPlacement="TopLeft" AutoToolTipPrecision="0" />
 
                     <TextBlock
-                        Grid.Column="1"
+                        HorizontalAlignment="Center"
                         Text="{Binding ShotTime}"
                         FontSize="20" 
                         Margin="10 0 0 0"/>
-                </Grid>
+                </StackPanel>
             </StackPanel>
         </Grid>
 
@@ -212,13 +201,8 @@
                     FontSize="20" 
                     Text="{x:Static lang:SettingsLocalization.UserRadius}"/>
 
-                <Grid Margin="10">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="Auto" />
-                    </Grid.ColumnDefinitions>
+                <StackPanel Margin="10">
                     <Slider 
-                        Grid.Column="0"
                         x:Name="UserRadiusSlider"
                         Minimum="3" 
                         Maximum="15" 
@@ -229,13 +213,13 @@
                         HorizontalContentAlignment="Center" 
                         AutoToolTipPlacement="TopLeft" 
                         AutoToolTipPrecision="0" />
+                    
                     <TextBlock
-                        Grid.Column="1"
                         Text="{Binding UserRadius}"
                         FontSize="20" 
                         HorizontalAlignment="Center" 
                         Margin="10 0 0 0"/>
-                </Grid>
+                </StackPanel>
             </StackPanel>
 
             <StackPanel Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Center">
@@ -244,13 +228,8 @@
                     FontSize="20" 
                     Text="{x:Static lang:SettingsLocalization.TargetRadius}"/>
 
-                <Grid Margin="10">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="Auto" />
-                    </Grid.ColumnDefinitions>
+                <StackPanel Margin="10">
                     <Slider 
-                        Grid.Column="0"
                         x:Name="TargetRadiusSlider"
                         Minimum="3" 
                         Maximum="15" 
@@ -260,13 +239,13 @@
                         FontSize="20" 
                         HorizontalContentAlignment="Center" 
                         AutoToolTipPlacement="TopLeft" AutoToolTipPrecision="0" />
+                    
                     <TextBlock
-                        Grid.Column="1"
                         Text="{Binding TargetRadius}"
                         FontSize="20" 
                         HorizontalAlignment="Center" 
                         Margin="10 0 0 0"/>
-                </Grid>
+                </StackPanel>
             </StackPanel>
         </Grid>
 

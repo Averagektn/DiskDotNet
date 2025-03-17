@@ -14,15 +14,21 @@
 
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="3*"/>
-            <RowDefinition Height="1*"/>
-            <RowDefinition Height="3*"/>
-            <RowDefinition Height="3*"/>
-            <RowDefinition Height="1*"/>
-            <RowDefinition Height="3*"/>
-            <RowDefinition Height="3*"/>
-            <RowDefinition Height="1*"/>
-            <RowDefinition Height="3*"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+
+            <RowDefinition Height="*"/>
+
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            
+            <RowDefinition Height="*"/>
+            
+            <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="2*"/>
@@ -71,14 +77,14 @@
 
         <TextBlock 
             HorizontalAlignment="Center"
-            Grid.Row="4" 
+            Grid.Row="5" 
             Grid.Column="1"
             FontSize="25" 
             Text="{x:Static lang:CalibrationLocalization.AngleY}"/>
 
         <TextBox 
             VerticalAlignment="Center"
-            Grid.Row="5" 
+            Grid.Row="6" 
             Grid.Column="1"
             Text="{Binding YCoord}" 
             FontSize="25" 
@@ -87,28 +93,28 @@
             Margin="10"/>
 
         <Button 
-            Grid.Row="5" 
+            Grid.Row="6" 
             Grid.Column="2"
             Margin="20"
             Content="{x:Static lang:CalibrationLocalization.Centralize}" 
             Command="{Binding CentralizeYCommand}"/>
 
         <Button 
-            Grid.Row="6" 
+            Grid.Row="7" 
             Grid.Column="1"
             Margin="20"
             Content="{x:Static lang:CalibrationLocalization.SetY}" 
             Command="{Binding CalibrateYCommand}"/>
 
         <Button 
-            Grid.Row="8" 
+            Grid.Row="10" 
             Grid.Column="1"
             Margin="20"
             Content="{x:Static lang:CalibrationLocalization.Apply}" 
             Command="{Binding ApplyCommand}"/>
 
         <styles:Popup 
-            Grid.RowSpan="9"
+            Grid.RowSpan="11"
             Grid.ColumnSpan="3"
             VerticalAlignment="Center"
             HorizontalAlignment="Center"

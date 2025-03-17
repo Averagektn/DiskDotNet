@@ -24,11 +24,17 @@
             HorizontalAlignment="Center" 
             CanVerticallyScroll="True">
 
-            <TextBlock 
-                FontSize="25"
-                Text="{x:Static lang:EditPatientLocalization.Surname}" 
-                Margin="10 5"
-                HorizontalAlignment="Left"/>
+            <StackPanel Orientation="Horizontal">
+                <TextBlock 
+                    FontSize="25"
+                    Text="{x:Static lang:EditPatientLocalization.Surname}" 
+                    Margin="10 5"
+                    HorizontalAlignment="Left"/>
+                <TextBlock 
+                    FontSize="25"
+                    Text="*"
+                    Margin="10 5"/>
+            </StackPanel>
 
             <TextBox 
                 FontSize="25"
@@ -44,11 +50,17 @@
                 </i:Interaction.Triggers>
             </TextBox>
 
-            <TextBlock 
-                FontSize="25"
-                Text="{x:Static lang:EditPatientLocalization.Name}" 
-                Margin="10 5"
-                HorizontalAlignment="Left"/>
+            <StackPanel Orientation="Horizontal">
+                <TextBlock 
+                    FontSize="25"
+                    Text="{x:Static lang:EditPatientLocalization.Name}" 
+                    Margin="10 5"
+                    HorizontalAlignment="Left"/>
+                <TextBlock 
+                    FontSize="25"
+                    Text="*"
+                    Margin="10 5"/>
+            </StackPanel>
 
             <TextBox 
                 FontSize="25"
@@ -77,11 +89,17 @@
                 HorizontalAlignment="Stretch"
                 Text="{Binding Patient.Patronymic}"/>
 
-            <TextBlock 
-                FontSize="25"
-                Text="{x:Static lang:EditPatientLocalization.DateOfBirth}" 
-                Margin="10 5"
-                HorizontalAlignment="Left"/>
+            <StackPanel Orientation="Horizontal">
+                <TextBlock 
+                    FontSize="25"
+                    Text="{x:Static lang:EditPatientLocalization.DateOfBirth}" 
+                    Margin="10 5"
+                    HorizontalAlignment="Left"/>
+                <TextBlock 
+                    FontSize="25"
+                    Text="*"
+                    Margin="10 5"/>
+            </StackPanel>
 
             <DatePicker 
                 FontSize="25"
@@ -98,11 +116,17 @@
                 </i:Interaction.Triggers>
             </DatePicker>
 
-            <TextBlock 
-                FontSize="25"
-                Text="{x:Static lang:EditPatientLocalization.MobilePhone}" 
-                Margin="10 5"
-                HorizontalAlignment="Left"/>
+            <StackPanel Orientation="Horizontal">
+                <TextBlock 
+                    FontSize="25"
+                    Text="{x:Static lang:EditPatientLocalization.MobilePhone}" 
+                    Margin="10 5"
+                    HorizontalAlignment="Left"/>
+                <TextBlock 
+                    FontSize="25"
+                    Text="*"
+                    Margin="10 5"/>
+            </StackPanel>
 
             <TextBox 
                 FontSize="25"

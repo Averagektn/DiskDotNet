@@ -18,7 +18,7 @@ public class ExcelFiller : IExcelFiller
     {
         using var workbook = new XLWorkbook();
 
-        FillExcel(workbook, attempts, session, map);
+        FillExcel(workbook, attempts, map);
 
         var saveFileDialog = new SaveFileDialog
         {
@@ -44,7 +44,7 @@ public class ExcelFiller : IExcelFiller
         }
     }
 
-    private static void FillExcel(XLWorkbook workbook, List<Attempt> attempts, Session session, Map map)
+    private static void FillExcel(XLWorkbook workbook, List<Attempt> attempts, Map map)
     {
         foreach (var attempt in attempts)
         {
@@ -61,9 +61,8 @@ public class ExcelFiller : IExcelFiller
             worksheet.Cell(4, 3).Value = $"{Localization.MathExp} X";
             worksheet.Cell(4, 4).Value = $"{Localization.MathExp} Y";
             worksheet.Cell(4, 5).Value = $"{Localization.MaxAngle} (X;Y)";
-            _ = worksheet.Range(4, 5, 4, 6).Merge();
-            worksheet.Cell(4, 7).Value = $"{Localization.CursorRadius}";
-            worksheet.Cell(4, 8).Value = $"{Localization.TargetRadius}";
+            worksheet.Cell(4, 6).Value = $"{Localization.CursorRadius}";
+            worksheet.Cell(4, 7).Value = $"{Localization.TargetRadius}";
 
             var sres = attempt.AttemptResult;
             if (sres is not null)
@@ -72,10 +71,9 @@ public class ExcelFiller : IExcelFiller
                 SetFloatCell(worksheet, 5, 2, (float)sres.DeviationY);
                 SetFloatCell(worksheet, 5, 3, (float)sres.MathExpX);
                 SetFloatCell(worksheet, 5, 4, (float)sres.MathExpY);
-                SetFloatCell(worksheet, 5, 5, (float)attempt.MaxXAngle);
-                SetFloatCell(worksheet, 5, 6, (float)attempt.MaxYAngle);
-                SetFloatCell(worksheet, 5, 7, attempt.CursorRadius);
-                SetFloatCell(worksheet, 5, 8, attempt.TargetRadius);
+                worksheet.Cell(5, 5).Value = $"{attempt.MaxXAngle:f2}; {attempt.MaxYAngle:f2}";
+                SetFloatCell(worksheet, 5, 6, attempt.CursorRadius);
+                SetFloatCell(worksheet, 5, 7, attempt.TargetRadius);
             }
 
             worksheet.Cell(7, 1).Value = Localization.TargetNum;
@@ -83,7 +81,7 @@ public class ExcelFiller : IExcelFiller
             worksheet.Cell(7, 3).Value = Localization.ApproachSpeed;
             worksheet.Cell(7, 4).Value = Localization.AverageSpeed;
 
-            const int pathCol = 10;
+            const int pathCol = 9;
 
             FillPtts(worksheet, attempt, pathCol, map);
             FillPits(worksheet, attempt, pathCol + ColsPerPath, map);
@@ -91,7 +89,7 @@ public class ExcelFiller : IExcelFiller
             new List<IXLRange>()
                 {
                     worksheet.Range(firstCellRow: 1, firstCellColumn: 1, lastCellRow: 1, lastCellColumn: 2),
-                    worksheet.Range(firstCellRow: 4, firstCellColumn: 1, lastCellRow: 4, lastCellColumn: 8),
+                    worksheet.Range(firstCellRow: 4, firstCellColumn: 1, lastCellRow: 4, lastCellColumn: 7),
                     worksheet.Range(firstCellRow: 7, firstCellColumn: 1, lastCellRow: 7, lastCellColumn: 4),
                     worksheet.Range(firstCellRow: 1, firstCellColumn: pathCol, lastCellRow: 2,
                         lastCellColumn: (ColsPerPath * (attempt.PathToTargets.Count + attempt.PathInTargets.Count + 1)) - 2),

@@ -108,7 +108,7 @@ public class ProgressTarget : Target, IProgressTarget
     {
         base.Scale();
 
-        Border.Width = Radius * 2;
-        Border.Height = Radius * 2;
+        Border.Width = Radius * 2 + 1;
+        Border.Height = Radius * 2 + 1;
     }
 }

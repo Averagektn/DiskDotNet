@@ -75,8 +75,11 @@ public partial class SettingsView : UserControl
         }
         else
         {
-            var userBrush = new SolidColorBrush(Color.FromRgb(Settings.Default.UserColor.R, Settings.Default.UserColor.G, Settings.Default.UserColor.B));
-            _user = new User(new(0, 0), UserRadius, 0, userBrush, PaintArea, screenIniSize);
+            var r = Settings.Default.UserColor.R;
+            var g = Settings.Default.UserColor.G;
+            var b = Settings.Default.UserColor.B;
+            var userBrush = new SolidColorBrush(Color.FromRgb(r, g, b));
+            _user = new User(new(0, 0), UserRadius * 5, 0, userBrush, PaintArea, screenIniSize);
         }
 
         _user.Draw();
