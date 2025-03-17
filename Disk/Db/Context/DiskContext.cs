@@ -22,7 +22,7 @@ public partial class DiskContext : DbContext
 
     public void EnsureDatabaseExists()
     {
-        //Database.EnsureDeleted();
+        Database.EnsureDeleted();
 
         if (!Directory.Exists(AppConfig.DbDir))
         {
@@ -89,7 +89,7 @@ public partial class DiskContext : DbContext
 
             _ = entity.ToTable("path_in_target");
 
-            _ = entity.Property(e => e.Attempt).HasColumnName("pit_session");
+            _ = entity.Property(e => e.Attempt).HasColumnName("pit_attempt");
             _ = entity.Property(e => e.TargetId).HasColumnName("pit_target_id");
             _ = entity.Property(e => e.CoordinatesJson).HasColumnName("pit_coordinates_json");
             _ = entity.Property(e => e.Precision).HasColumnName("pit_precision");
@@ -105,7 +105,7 @@ public partial class DiskContext : DbContext
 
             _ = entity.ToTable("path_to_target");
 
-            _ = entity.Property(e => e.Attempt).HasColumnName("ptt_session");
+            _ = entity.Property(e => e.Attempt).HasColumnName("ptt_attempt");
             _ = entity.Property(e => e.TargetNum).HasColumnName("ptt_target_id");
             _ = entity.Property(e => e.Distance).HasColumnName("ptt_distance");
             _ = entity.Property(e => e.AverageSpeed).HasColumnName("ptt_average_speed");
@@ -158,6 +158,7 @@ public partial class DiskContext : DbContext
             _ = entity.Property(e => e.MaxYAngle).HasColumnName("att_max_y_angle");
             _ = entity.Property(e => e.TargetRadius).HasColumnName("att_target_radius");
             _ = entity.Property(e => e.CursorRadius).HasColumnName("att_cursor_radius");
+            _ = entity.Property(e => e.SamplingInterval).HasColumnName("att_sampling_interval");
 
             _ = entity.HasOne(d => d.SessionNavigation).WithMany(p => p.Attempts)
                 .HasForeignKey(d => d.Session)

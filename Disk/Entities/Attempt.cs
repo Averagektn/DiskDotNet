@@ -18,6 +18,8 @@ public partial class Attempt
 
     public long Session { get; set; }
 
+    public int SamplingInterval { get; set; }
+
     public virtual ICollection<PathInTarget> PathInTargets { get; set; } = null!;
 
     public virtual ICollection<PathToTarget> PathToTargets { get; set; } = null!;

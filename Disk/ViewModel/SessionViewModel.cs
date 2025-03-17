@@ -94,6 +94,7 @@ public class SessionViewModel(DiskContext database, IExcelFiller excelFiller, Na
                     MaxYAngle = Settings.YMaxAngle,
                     TargetRadius = Settings.IniUserRadius,
                     LogFilePath = logPath,
+                    SamplingInterval = Settings.Default.ShotTime,
                 };
 
                 _ = Application.Current.Dispatcher.InvokeAsync(async () =>

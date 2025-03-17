@@ -11,15 +11,10 @@ namespace Disk.View;
 
 public partial class AttemptResultView : UserControl
 {
-    private DispatcherTimer MoveTimer = new(DispatcherPriority.Normal)
-    {
-        Interval = TimeSpan.FromMilliseconds(Settings.ShotTime)
-    };
+    private DispatcherTimer? MoveTimer;
     private IUser _user = null!;
     private ITarget _target = null!;
 
-    //private List<IScalable> Scalables { get; set; } = [];
-    private static Settings Settings => Settings.Default;
     private AttemptResultViewModel? ViewModel => DataContext as AttemptResultViewModel;
     private Size PaintPanelSize => PaintArea.RenderSize;
     private Converter? Converter => ViewModel?.Converter;
@@ -105,7 +100,7 @@ public partial class AttemptResultView : UserControl
         var enumerator = ViewModel.FullPath.GetEnumerator();
         MoveTimer = new DispatcherTimer(DispatcherPriority.Normal)
         {
-            Interval = TimeSpan.FromMilliseconds(Settings.MoveTime)
+            Interval = TimeSpan.FromMilliseconds(ViewModel.CurrentAttempt.SamplingInterval)
         };
         MoveTimer.Tick += (_, _) =>
         {
@@ -130,7 +125,7 @@ public partial class AttemptResultView : UserControl
 
     private void StopTimer(object sender, RoutedEventArgs e)
     {
-        if (MoveTimer.IsEnabled)
+        if (MoveTimer is not null && MoveTimer.IsEnabled)
         {
             IsReply = false;
             MoveTimer.Stop();
