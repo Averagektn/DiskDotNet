@@ -22,7 +22,7 @@ public partial class DiskContext : DbContext
 
     public void EnsureDatabaseExists()
     {
-        Database.EnsureDeleted();
+        //Database.EnsureDeleted();
 
         if (!Directory.Exists(AppConfig.DbDir))
         {
@@ -176,8 +176,8 @@ public partial class DiskContext : DbContext
                 .HasColumnName("ares_id");
             _ = entity.Property(e => e.DeviationX).HasColumnName("ares_deviation_x");
             _ = entity.Property(e => e.DeviationY).HasColumnName("ares_deviation_y");
-            _ = entity.Property(e => e.MathExpX).HasColumnName("ares_math_exp_x");
-            _ = entity.Property(e => e.MathExpY).HasColumnName("ares_math_exp_y");
+            _ = entity.Property(e => e.MathExpX).HasColumnName("ares_shift_x");
+            _ = entity.Property(e => e.MathExpY).HasColumnName("ares_shift_y");
             _ = entity.Property(e => e.Score).HasColumnName("ares_score");
 
             _ = entity.HasOne(d => d.Attempt).WithOne(p => p.AttemptResult)
