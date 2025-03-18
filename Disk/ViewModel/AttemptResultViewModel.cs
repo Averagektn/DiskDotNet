@@ -249,10 +249,4 @@ public class AttemptResultViewModel(NavigationStore navigationStore, DiskContext
 
         return new Graph(dataset, Brushes.LightGreen, canvas, 8);
     }
-
-    public override void Dispose()
-    {
-        GC.SuppressFinalize(this);
-        base.Dispose();
-    }
 }

@@ -5,7 +5,6 @@ using Disk.Visual.Interface;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Threading;
-using Settings = Disk.Properties.Config.Config;
 
 namespace Disk.View;
 

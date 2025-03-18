@@ -146,18 +146,18 @@ public class SettingsViewModel(ModalNavigationStore modalNavigationStore) : Popu
         get => _cursorFilePath;
         set
         {
-            SetProperty(ref _cursorFilePath, value);
+            _ = SetProperty(ref _cursorFilePath, value);
             Log.Information($"Settings: Cursor file path set to {_cursorFilePath}");
         }
     }
 
     private string _targetFilePath = Settings.TargetFilePath;
-    public string TargetFilePath 
-    { 
+    public string TargetFilePath
+    {
         get => _targetFilePath;
         set
         {
-            SetProperty(ref _targetFilePath, value);
+            _ = SetProperty(ref _targetFilePath, value);
             Log.Information($"Settings: Target file path set to {_targetFilePath}");
         }
     }

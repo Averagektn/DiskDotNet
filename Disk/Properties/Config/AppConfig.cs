@@ -1,6 +1,4 @@
-﻿using System.IO;
-
-namespace Disk.Properties.Config;
+﻿namespace Disk.Properties.Config;
 
 public static class AppConfig
 {

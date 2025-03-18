@@ -70,9 +70,9 @@ public class CalibrationViewModel : PopupViewModel
     });
 
     public ICommand CentralizeXCommand => new Command(_ => XShift += XAngleRes);
-    
+
     public ICommand CentralizeYCommand => new Command(_ => YShift += YAngleRes);
-    
+
     public ICommand ApplyCommand => new Command(_ =>
     {
         IsRunningThread = false;
@@ -95,7 +95,7 @@ public class CalibrationViewModel : PopupViewModel
 
         Log.Information("Calibration applied");
     });
-    
+
     public ICommand CalibrateXCommand => new Command(_ =>
     {
         CalibrateXEnabled = false;
@@ -140,7 +140,7 @@ public class CalibrationViewModel : PopupViewModel
                 }
             }
         }
-        catch (Exception ex) 
+        catch (Exception ex)
         {
             Log.Error($"Calibration failed: {ex.Message} {ex.StackTrace}");
             _ = Application.Current.Dispatcher.InvokeAsync(async () =>

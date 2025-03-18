@@ -10,32 +10,32 @@ namespace Disk.Migrations
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropForeignKey(
+            _ = migrationBuilder.DropForeignKey(
                 name: "FK_path_in_target_attempt_pit_session",
                 table: "path_in_target");
 
-            migrationBuilder.DropForeignKey(
+            _ = migrationBuilder.DropForeignKey(
                 name: "FK_path_to_target_attempt_ptt_session",
                 table: "path_to_target");
 
-            migrationBuilder.RenameColumn(
+            _ = migrationBuilder.RenameColumn(
                 name: "ptt_session",
                 table: "path_to_target",
                 newName: "ptt_attempt");
 
-            migrationBuilder.RenameColumn(
+            _ = migrationBuilder.RenameColumn(
                 name: "pit_session",
                 table: "path_in_target",
                 newName: "pit_attempt");
 
-            migrationBuilder.AddColumn<int>(
+            _ = migrationBuilder.AddColumn<int>(
                 name: "att_sampling_interval",
                 table: "attempt",
                 type: "INTEGER",
                 nullable: false,
                 defaultValue: 50);
 
-            migrationBuilder.AddForeignKey(
+            _ = migrationBuilder.AddForeignKey(
                 name: "FK_path_in_target_attempt_pit_attempt",
                 table: "path_in_target",
                 column: "pit_attempt",
@@ -43,7 +43,7 @@ namespace Disk.Migrations
                 principalColumn: "att_id",
                 onDelete: ReferentialAction.Cascade);
 
-            migrationBuilder.AddForeignKey(
+            _ = migrationBuilder.AddForeignKey(
                 name: "FK_path_to_target_attempt_ptt_attempt",
                 table: "path_to_target",
                 column: "ptt_attempt",
@@ -55,29 +55,29 @@ namespace Disk.Migrations
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropForeignKey(
+            _ = migrationBuilder.DropForeignKey(
                 name: "FK_path_in_target_attempt_pit_attempt",
                 table: "path_in_target");
 
-            migrationBuilder.DropForeignKey(
+            _ = migrationBuilder.DropForeignKey(
                 name: "FK_path_to_target_attempt_ptt_attempt",
                 table: "path_to_target");
 
-            migrationBuilder.DropColumn(
+            _ = migrationBuilder.DropColumn(
                 name: "att_sampling_interval",
                 table: "attempt");
 
-            migrationBuilder.RenameColumn(
+            _ = migrationBuilder.RenameColumn(
                 name: "ptt_attempt",
                 table: "path_to_target",
                 newName: "ptt_session");
 
-            migrationBuilder.RenameColumn(
+            _ = migrationBuilder.RenameColumn(
                 name: "pit_attempt",
                 table: "path_in_target",
                 newName: "pit_session");
 
-            migrationBuilder.AddForeignKey(
+            _ = migrationBuilder.AddForeignKey(
                 name: "FK_path_in_target_attempt_pit_session",
                 table: "path_in_target",
                 column: "pit_session",
@@ -85,7 +85,7 @@ namespace Disk.Migrations
                 principalColumn: "att_id",
                 onDelete: ReferentialAction.Cascade);
 
-            migrationBuilder.AddForeignKey(
+            _ = migrationBuilder.AddForeignKey(
                 name: "FK_path_to_target_attempt_ptt_session",
                 table: "path_to_target",
                 column: "ptt_session",
