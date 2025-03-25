@@ -31,7 +31,12 @@ public class NavigationBarLayoutViewModel(NavigationStore navigationStore) : Obs
         }
     }
 
-    public ICommand NavigateBackCommand => new Command(_ => navigationStore.Close());
+    public ICommand NavigateBackCommand => new Command(_ =>
+    {
+        CurrentViewModel?.BeforeNavigation();
+        navigationStore.Close();
+        CurrentViewModel?.AfterNavigation();
+    });
     public ICommand NavigateToPatientsCommand => new Command(_ =>
         PatientsNavigator.NavigateWithBar(CurrentViewModel ?? this, navigationStore));
     public ICommand NavigateToSettingsCommand => new Command(_ =>

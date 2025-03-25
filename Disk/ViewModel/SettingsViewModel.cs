@@ -295,15 +295,15 @@ public class SettingsViewModel(ModalNavigationStore modalNavigationStore) : Popu
         var shotTimeChanged = ShotTime != RoundToNearest(value: 1000 / Settings.MoveTime, nearest: 5).ToString();
         var targetRadiusChanged = TargetRadius != Settings.IniTargetRadius.ToString();
         var userRadiusChanged = UserRadius != Settings.IniUserRadius.ToString();
-        var targetTtlChanged = TargetTtl != RoundToNearest(value: 1000 * Settings.TargetHp / (1000 / Settings.ShotTime), nearest: 100)
-                                            .ToString();
+        var targetTtlChanged = TargetTtl != RoundToNearest(value: 1000 * Settings.TargetHp / (1000 / Settings.ShotTime),
+            nearest: 100).ToString();
 
         if (ipChanged || cursorPathChanged || targetPathChanged || moveTimeChanged || shotTimeChanged || targetRadiusChanged ||
             userRadiusChanged || targetTtlChanged || targetTtlChanged)
         {
             if (modalNavigationStore.CurrentViewModel is not QuestionViewModel)
             {
-                QuestionNavigator.Navigate(this, modalNavigationStore,
+                QuestionNavigator.Navigate(IniNavigationStore.CurrentViewModel ?? this, modalNavigationStore,
                     message: Localization.UnsavedSettings,
                     beforeConfirm: SaveSettings);
             }

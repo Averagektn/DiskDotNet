@@ -31,21 +31,22 @@ public class ModalNavigationStore(Func<Type, ObserverViewModel> getViewModel) : 
         return viewModel;
     }
 
+
     public void Close()
     {
-        if (CanClose)
+        if (ViewModels.Count != 0)
         {
-            Log.Information($"Closing {ViewModels.Peek().GetType()}");
+            var currVm = ViewModels.Peek();
+            Log.Information($"Closing {currVm.GetType()}");
 
+            currVm.BeforeNavigation();
             ViewModels.Pop().Dispose();
-            if (ViewModels.TryPeek(out var modalVm))
-            {
-                modalVm.Refresh();
-            }
-            else if (NavigationStore.ViewModels.TryPeek(out var vm))
+            if (ViewModels.TryPeek(out var vm))
             {
                 vm.Refresh();
             }
+            currVm.AfterNavigation();
+
             OnCurrentViewModelChanged();
         }
     }

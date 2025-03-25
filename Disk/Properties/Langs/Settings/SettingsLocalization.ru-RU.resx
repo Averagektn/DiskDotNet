@@ -127,10 +127,10 @@
     <value>Некорректный IP адрес</value>
   </data>
   <data name="InvalidMoveTime" xml:space="preserve">
-    <value>Частота обновления экрана должна быть в диапазоне от 10 до 1000</value>
+    <value>Частота обновления экрана должна быть в диапазоне от 10 до 100</value>
   </data>
   <data name="InvalidShotTime" xml:space="preserve">
-    <value>Частота сбора информации должна быть в диапазоне от 1 до 1000</value>
+    <value>Частота сбора информации должна быть в диапазоне от 5 до 100</value>
   </data>
   <data name="InvalidTargetHP" xml:space="preserve">
     <value>Время жизни мишени должно быть больше 1</value>
@@ -139,7 +139,7 @@
     <value>Размер мишени должен быть в диапазоне от 1 до 15</value>
   </data>
   <data name="InvalidUserRadius" xml:space="preserve">
-    <value>Рахмер курсора должен быть в диапазоне от 1 до 15</value>
+    <value>Размер курсора должен быть в диапазоне от 1 до 15</value>
   </data>
   <data name="Ip" xml:space="preserve">
     <value>IP</value>

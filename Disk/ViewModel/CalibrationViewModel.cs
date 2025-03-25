@@ -1,5 +1,6 @@
 ﻿using Disk.Data.Impl;
-using Disk.Properties.Langs.Calibration;
+using Disk.Navigators;
+using Disk.Stores;
 using Disk.ViewModel.Common.Commands.Sync;
 using Disk.ViewModel.Common.ViewModels;
 using Serilog;
@@ -7,6 +8,7 @@ using System.Net;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Threading;
+using Localization = Disk.Properties.Langs.Calibration.CalibrationLocalization;
 using Settings = Disk.Properties.Config.Config;
 
 namespace Disk.ViewModel;
@@ -44,8 +46,12 @@ public class CalibrationViewModel : PopupViewModel
 
     private bool IsRunningThread = true;
 
-    public CalibrationViewModel()
+    private readonly ModalNavigationStore _modalNavigationStore;
+
+    public CalibrationViewModel(ModalNavigationStore modalNavigationStore)
     {
+        _modalNavigationStore = modalNavigationStore;
+
         _xCoord = $"{XAngle:F2}";
         _yCoord = $"{YAngle:F2}";
 
@@ -75,22 +81,7 @@ public class CalibrationViewModel : PopupViewModel
 
     public ICommand ApplyCommand => new Command(_ =>
     {
-        IsRunningThread = false;
-
-        TextBoxUpdateTimer.Stop();
-
-        if (DataThread is not null && DataThread.IsAlive)
-        {
-            DataThread.Join();
-        }
-
-        Settings.XMaxAngle = Math.Abs(Convert.ToSingle(XCoord));
-        Settings.YMaxAngle = Math.Abs(Convert.ToSingle(YCoord));
-
-        Settings.XAngleShift = XShift;
-        Settings.YAngleShift = YShift;
-
-        Settings.Save();
+        SaveSettings();
         IniNavigationStore.Close();
 
         Log.Information("Calibration applied");
@@ -109,6 +100,29 @@ public class CalibrationViewModel : PopupViewModel
         IsRunningThread = CalibrateXEnabled;
         Log.Information("Calibrate Y");
     });
+
+    private void SaveSettings()
+    {
+        IsRunningThread = false;
+
+        TextBoxUpdateTimer.Stop();
+
+        if (DataThread is not null && DataThread.IsAlive)
+        {
+            DataThread.Join();
+        }
+
+        XAngle = Math.Abs(Convert.ToSingle(XCoord));
+        YAngle = Math.Abs(Convert.ToSingle(YCoord));
+
+        Settings.XMaxAngle = XAngle;
+        Settings.YMaxAngle = YAngle;
+
+        Settings.XAngleShift = XShift;
+        Settings.YAngleShift = YShift;
+
+        Settings.Save();
+    }
 
     private void UpdateText(object? sender, EventArgs e)
     {
@@ -144,7 +158,9 @@ public class CalibrationViewModel : PopupViewModel
         {
             Log.Error($"Calibration failed: {ex.Message} {ex.StackTrace}");
             _ = Application.Current.Dispatcher.InvokeAsync(async () =>
-                await ShowPopup(header: CalibrationLocalization.ConnectionLost, message: ""));
+                await ShowPopup(header: Localization.ConnectionLost, message: ""));
+            IsRunningThread = false;
+            StartCalibrationEnabled = true;
         }
     }
 
@@ -179,5 +195,28 @@ public class CalibrationViewModel : PopupViewModel
         StartCalibrationEnabled = true;
         XCoord = $"{Settings.XMaxAngle:f2}";
         YCoord = $"{Settings.YMaxAngle:f2}";
+    }
+
+    public override void AfterNavigation()
+    {
+        base.AfterNavigation();
+
+        XAngle = Math.Abs(Convert.ToSingle(XCoord));
+        YAngle = Math.Abs(Convert.ToSingle(YCoord));
+
+        var xAngleChanged = float.Abs(XAngle - Settings.XMaxAngle) >= 0.01;
+        var yAngleChanged = float.Abs(YAngle - Settings.YMaxAngle) >= 0.01;
+        var xShiftChanged = float.Abs(XShift - Settings.XAngleShift) >= 0.01;
+        var yShiftChanged = float.Abs(YShift - Settings.YAngleShift) >= 0.01;
+
+        if (xAngleChanged || yAngleChanged || xShiftChanged || yShiftChanged)
+        {
+            if (_modalNavigationStore.CurrentViewModel is not QuestionViewModel)
+            {
+                QuestionNavigator.Navigate(IniNavigationStore.CurrentViewModel ?? this, _modalNavigationStore,
+                    message: Localization.UnsavedCalibration,
+                    beforeConfirm: SaveSettings);
+            }
+        }
     }
 }

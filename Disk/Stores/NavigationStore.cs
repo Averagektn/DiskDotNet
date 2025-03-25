@@ -56,13 +56,16 @@ public class NavigationStore(Func<Type, ObserverViewModel> getViewModel) : INavi
     {
         if (ViewModels.Count != 0)
         {
-            Log.Information($"Closing {ViewModels.Peek().GetType()}");
+            var currVm = ViewModels.Peek();
+            Log.Information($"Closing {currVm.GetType()}");
 
+            currVm.BeforeNavigation();
             ViewModels.Pop().Dispose();
             if (ViewModels.TryPeek(out var vm))
             {
                 vm.Refresh();
             }
+            currVm.AfterNavigation();
 
             OnCurrentViewModelChanged();
         }

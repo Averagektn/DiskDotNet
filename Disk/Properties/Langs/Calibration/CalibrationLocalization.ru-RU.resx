@@ -141,4 +141,7 @@
   <data name="Start" xml:space="preserve">
     <value>Начать калибровку</value>
   </data>
+  <data name="UnsavedCalibration" xml:space="preserve">
+    <value>Результаты калибровки не сохранены. Желаете сохранить их?</value>
+  </data>
 </root>

@@ -131,5 +131,14 @@ namespace Disk.Properties.Langs.Calibration {
                 return ResourceManager.GetString("Start", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Calibration results are not saved. Would you like to save them?.
+        /// </summary>
+        public static string UnsavedCalibration {
+            get {
+                return ResourceManager.GetString("UnsavedCalibration", resourceCulture);
+            }
+        }
     }
 }

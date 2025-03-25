@@ -98,7 +98,7 @@
 
                 <StackPanel Margin="10">
                     <Slider
-                        Minimum="30"
+                        Minimum="10"
                         Maximum="100"
                         Value="{Binding MoveTime}"
                         TickFrequency="5"
@@ -148,7 +148,7 @@
 
                 <StackPanel Margin="10">
                     <Slider 
-                        Minimum="30" 
+                        Minimum="10" 
                         Maximum="100" 
                         Value="{Binding ShotTime}"
                         TickFrequency="5" 
