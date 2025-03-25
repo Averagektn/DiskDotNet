@@ -3,7 +3,7 @@ using Newtonsoft.Json;
 using System.Diagnostics;
 using System.Net;
 
-var connection = Connection.GetConnection(IPAddress.Parse("192.168.0.106"), 9998);
+var connection = Connection.GetConnection(IPAddress.Parse("192.168.1.3"), 9998);
 var stopwatch = new Stopwatch();
 const int Seconds = 1 * 60;
 const int Freq = 60;
@@ -14,13 +14,14 @@ var endTime = DateTime.Now.AddSeconds(Seconds);
 while (DateTime.Now < endTime)
 {
     stopwatch.Restart();
-    _ = connection.GetXYZ();
+    var point = connection.GetXYZ();
     var ms = stopwatch.ElapsedMilliseconds;
 
     time.Add(ms);
     avgs.Add(time.Average());
 
     Console.WriteLine($"After add to list: {stopwatch.ElapsedMilliseconds}");
+    Console.WriteLine(point);
 }
 
 var avgsTask = File.WriteAllTextAsync("../../../../Plot/avgs.json", JsonConvert.SerializeObject(avgs));

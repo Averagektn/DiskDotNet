@@ -22,7 +22,7 @@ public partial class DiskContext : DbContext
 
     public void EnsureDatabaseExists()
     {
-        //Database.EnsureDeleted();
+        Database.EnsureDeleted();
 
         if (!Directory.Exists(AppConfig.DbDir))
         {
@@ -123,6 +123,8 @@ public partial class DiskContext : DbContext
             _ = entity.HasKey(e => e.Id);
 
             _ = entity.ToTable("patient");
+
+            _ = entity.HasIndex(e => new { e.Name, e.Surname, e.Patronymic }, "IX_nsp");
 
             _ = entity.Property(e => e.Id).HasColumnName("pat_id");
             _ = entity.Property(e => e.DateOfBirth).HasColumnName("pat_date_of_birth");
