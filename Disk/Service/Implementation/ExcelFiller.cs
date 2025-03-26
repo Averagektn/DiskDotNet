@@ -145,9 +145,9 @@ public class ExcelFiller : IExcelFiller
             var pathList = JsonConvert.DeserializeObject<List<Point2D<float>>>(pit.CoordinatesJson)!;
 
             worksheet.Cell(1, pathCol).Value = Localization.PathInTarget;
-            worksheet.Cell(4, pathCol).Value = Localization.Precision;
+            worksheet.Cell(4, pathCol).Value = Localization.Accuracy;
             worksheet.Cell(5, pathCol).Style.NumberFormat.Format = "0.00";
-            worksheet.Cell(5, pathCol++).Value = float.Round(pit.Precision, 3);
+            worksheet.Cell(5, pathCol++).Value = float.Round(pit.Accuracy, 3);
             FillPath(worksheet, pathCol, mapCenters, pathList, pit.TargetId);
 
             pathCol += (ColsPerPath * 2) - 1;

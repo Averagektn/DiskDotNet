@@ -8,7 +8,7 @@ public partial class PathInTarget
 
     public string CoordinatesJson { get; set; } = null!;
 
-    public float Precision { get; set; }
+    public float Accuracy { get; set; }
 
     public virtual Attempt AttemptNavigation { get; set; } = null!;
 }

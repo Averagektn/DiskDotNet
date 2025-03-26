@@ -22,7 +22,7 @@ public partial class DiskContext : DbContext
 
     public void EnsureDatabaseExists()
     {
-        //Database.EnsureDeleted();
+        Database.EnsureDeleted();
 
         if (!Directory.Exists(AppConfig.DbDir))
         {
@@ -92,7 +92,7 @@ public partial class DiskContext : DbContext
             _ = entity.Property(e => e.Attempt).HasColumnName("pit_attempt");
             _ = entity.Property(e => e.TargetId).HasColumnName("pit_target_id");
             _ = entity.Property(e => e.CoordinatesJson).HasColumnName("pit_coordinates_json");
-            _ = entity.Property(e => e.Precision).HasColumnName("pit_precision");
+            _ = entity.Property(e => e.Accuracy).HasColumnName("pit_accuracy");
 
             _ = entity.HasOne(d => d.AttemptNavigation).WithMany(p => p.PathInTargets)
                 .HasForeignKey(d => d.Attempt)

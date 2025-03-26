@@ -61,6 +61,15 @@ namespace Disk.Properties.Langs.ExcelFiller {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Accuracy.
+        /// </summary>
+        internal static string Accuracy {
+            get {
+                return ResourceManager.GetString("Accuracy", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Approach speed.
         /// </summary>
         internal static string ApproachSpeed {
@@ -174,15 +183,6 @@ namespace Disk.Properties.Langs.ExcelFiller {
         internal static string PathToTarget {
             get {
                 return ResourceManager.GetString("PathToTarget", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Precision.
-        /// </summary>
-        internal static string Precision {
-            get {
-                return ResourceManager.GetString("Precision", resourceCulture);
             }
         }
         

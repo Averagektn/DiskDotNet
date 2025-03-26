@@ -61,6 +61,15 @@ namespace Disk.Properties.Langs.AttemptResult {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Accuracy.
+        /// </summary>
+        public static string Accuracy {
+            get {
+                return ResourceManager.GetString("Accuracy", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Approach speed.
         /// </summary>
         public static string ApproachSpeed {
@@ -156,15 +165,6 @@ namespace Disk.Properties.Langs.AttemptResult {
         public static string PathToTarget {
             get {
                 return ResourceManager.GetString("PathToTarget", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Precision.
-        /// </summary>
-        public static string Precision {
-            get {
-                return ResourceManager.GetString("Precision", resourceCulture);
             }
         }
         

@@ -220,8 +220,8 @@
                     Binding="{Binding PathToTarget.Time, StringFormat=N1}" />
                 <DataGridTextColumn 
                     Width="1*" 
-                    Header="{x:Static lang:SessionLocalization.Precision}" 
-                    Binding="{Binding PathInTarget.Precision, StringFormat=N1}" />
+                    Header="{x:Static lang:SessionLocalization.Accuracy}" 
+                    Binding="{Binding PathInTarget.Accuracy, StringFormat=N1}" />
             </DataGrid.Columns>
         </DataGrid>
 

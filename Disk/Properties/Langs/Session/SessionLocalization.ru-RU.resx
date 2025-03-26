@@ -141,7 +141,7 @@
   <data name="MathExp" xml:space="preserve">
     <value>Матожидание</value>
   </data>
-  <data name="Precision" xml:space="preserve">
+  <data name="Accuracy" xml:space="preserve">
     <value>Точность</value>
   </data>
   <data name="SaveFailed" xml:space="preserve">

@@ -164,7 +164,7 @@ public class AttemptResultViewModel(NavigationStore navigationStore, DiskContext
             {Localization.AverageSpeed}: {CurrentAttempt.PathToTargets.ElementAt(SelectedIndex).AverageSpeed:F2}
             {Localization.ApproachSpeed}: {CurrentAttempt.PathToTargets.ElementAt(SelectedIndex).ApproachSpeed:F2}
             {Localization.Time}: {CurrentAttempt.PathToTargets.ElementAt(SelectedIndex).Time:F2}
-            {Localization.Precision}: {CurrentAttempt.PathInTargets.ElementAt(SelectedIndex).Precision:F2}  
+            {Localization.Accuracy}: {CurrentAttempt.PathInTargets.ElementAt(SelectedIndex).Accuracy:F2}  
             """);
 
     public void FillTargetsComboBox()

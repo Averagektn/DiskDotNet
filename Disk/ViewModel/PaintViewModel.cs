@@ -245,14 +245,14 @@ public class PaintViewModel : PopupViewModel
         var pathInTarget = PathsInTargets[TargetId - 1];
         PathsToTargets.Add([]);
 
-        var precision = (float)pathInTarget.Count(p => target.Contains(Converter.ToWndCoord(p))) / pathInTarget.Count;
+        var accuracy = (float)pathInTarget.Count(p => target.Contains(Converter.ToWndCoord(p))) / pathInTarget.Count;
 
         var pit = new PathInTarget()
         {
             CoordinatesJson = JsonConvert.SerializeObject(pathInTarget),
             Attempt = CurrentAttempt.Id,
             TargetId = TargetId - 1,
-            Precision = precision
+            Accuracy = accuracy
         };
 
         _ = Application.Current.Dispatcher.InvokeAsync(async () =>

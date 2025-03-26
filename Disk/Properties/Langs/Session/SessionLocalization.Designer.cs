@@ -61,6 +61,15 @@ namespace Disk.Properties.Langs.Session {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Accuracy.
+        /// </summary>
+        public static string Accuracy {
+            get {
+                return ResourceManager.GetString("Accuracy", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Max angles (X, Y}.
         /// </summary>
         public static string Angles {
@@ -183,15 +192,6 @@ namespace Disk.Properties.Langs.Session {
         public static string NoContentError {
             get {
                 return ResourceManager.GetString("NoContentError", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Precision.
-        /// </summary>
-        public static string Precision {
-            get {
-                return ResourceManager.GetString("Precision", resourceCulture);
             }
         }
         

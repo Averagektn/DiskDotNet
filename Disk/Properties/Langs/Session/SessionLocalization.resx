@@ -141,8 +141,8 @@
   <data name="MathExp" xml:space="preserve">
     <value>Math expectation</value>
   </data>
-  <data name="Precision" xml:space="preserve">
-    <value>Precision</value>
+  <data name="Accuracy" xml:space="preserve">
+    <value>Accuracy</value>
   </data>
   <data name="SaveFailed" xml:space="preserve">
     <value>Save failed</value>

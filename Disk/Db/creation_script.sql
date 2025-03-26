@@ -1,5 +1,5 @@
 --
--- File generated with SQLiteStudio v3.4.15 on пт март 14 14:26:36 2025
+-- File generated with SQLiteStudio v3.4.15 on ср март 26 13:14:44 2025
 --
 -- Text encoding used: System
 --
@@ -10,15 +10,16 @@ BEGIN TRANSACTION;
 DROP TABLE IF EXISTS attempt;
 
 CREATE TABLE IF NOT EXISTS attempt (
-    att_id            INTEGER NOT NULL
-                              CONSTRAINT PK_attempt PRIMARY KEY AUTOINCREMENT,
-    att_max_x_angle   REAL    NOT NULL,
-    att_max_y_angle   REAL    NOT NULL,
-    att_cursor_radius INTEGER NOT NULL,
-    att_target_radius INTEGER NOT NULL,
-    att_log_file_path TEXT    NOT NULL,
-    att_date_time     TEXT    NOT NULL,
-    att_session       INTEGER NOT NULL,
+    att_id                INTEGER NOT NULL
+                                  CONSTRAINT PK_attempt PRIMARY KEY AUTOINCREMENT,
+    att_max_x_angle       REAL    NOT NULL,
+    att_max_y_angle       REAL    NOT NULL,
+    att_cursor_radius     INTEGER NOT NULL,
+    att_target_radius     INTEGER NOT NULL,
+    att_log_file_path     TEXT    NOT NULL,
+    att_date_time         TEXT    NOT NULL,
+    att_session           INTEGER NOT NULL,
+    att_sampling_interval INTEGER NOT NULL,
     CONSTRAINT FK_attempt_session_att_session FOREIGN KEY (
         att_session
     )
@@ -32,8 +33,8 @@ DROP TABLE IF EXISTS attempt_result;
 CREATE TABLE IF NOT EXISTS attempt_result (
     ares_id          INTEGER NOT NULL
                              CONSTRAINT PK_attempt_result PRIMARY KEY,
-    ares_math_exp_y  REAL    NOT NULL,
-    ares_math_exp_x  REAL    NOT NULL,
+    ares_shift_y     REAL    NOT NULL,
+    ares_shift_x     REAL    NOT NULL,
     ares_deviation_x REAL    NOT NULL,
     ares_deviation_y REAL    NOT NULL,
     ares_score       INTEGER NOT NULL,
@@ -62,16 +63,16 @@ CREATE TABLE IF NOT EXISTS map (
 DROP TABLE IF EXISTS path_in_target;
 
 CREATE TABLE IF NOT EXISTS path_in_target (
-    pit_session          INTEGER NOT NULL,
+    pit_attempt          INTEGER NOT NULL,
     pit_target_id        INTEGER NOT NULL,
     pit_coordinates_json TEXT    NOT NULL,
-    pit_precision        REAL    NOT NULL,
+    pit_accuracy         REAL    NOT NULL,
     CONSTRAINT PK_path_in_target PRIMARY KEY (
-        pit_session,
+        pit_attempt,
         pit_target_id
     ),
-    CONSTRAINT FK_path_in_target_attempt_pit_session FOREIGN KEY (
-        pit_session
+    CONSTRAINT FK_path_in_target_attempt_pit_attempt FOREIGN KEY (
+        pit_attempt
     )
     REFERENCES attempt (att_id) ON DELETE CASCADE
 );
@@ -81,7 +82,7 @@ CREATE TABLE IF NOT EXISTS path_in_target (
 DROP TABLE IF EXISTS path_to_target;
 
 CREATE TABLE IF NOT EXISTS path_to_target (
-    ptt_session          INTEGER NOT NULL,
+    ptt_attempt          INTEGER NOT NULL,
     ptt_target_id        INTEGER NOT NULL,
     ptt_coordinates_json TEXT    NOT NULL,
     ptt_distance         REAL    NOT NULL,
@@ -89,11 +90,11 @@ CREATE TABLE IF NOT EXISTS path_to_target (
     ptt_approach_speed   REAL    NOT NULL,
     ptt_time             REAL    NOT NULL,
     CONSTRAINT PK_path_to_target PRIMARY KEY (
-        ptt_session,
+        ptt_attempt,
         ptt_target_id
     ),
-    CONSTRAINT FK_path_to_target_attempt_ptt_session FOREIGN KEY (
-        ptt_session
+    CONSTRAINT FK_path_to_target_attempt_ptt_attempt FOREIGN KEY (
+        ptt_attempt
     )
     REFERENCES attempt (att_id) ON DELETE CASCADE
 );
@@ -134,6 +135,22 @@ CREATE TABLE IF NOT EXISTS session (
         ses_patient
     )
     REFERENCES patient (pat_id) ON DELETE CASCADE
+);
+
+
+-- Index: IX_attempt_att_session
+DROP INDEX IF EXISTS IX_attempt_att_session;
+
+CREATE INDEX IF NOT EXISTS IX_attempt_att_session ON attempt (
+    "att_session"
+);
+
+
+-- Index: IX_UNQ_attempt_att_log_file_path
+DROP INDEX IF EXISTS IX_UNQ_attempt_att_log_file_path;
+
+CREATE UNIQUE INDEX IF NOT EXISTS IX_UNQ_attempt_att_log_file_path ON attempt (
+    "att_log_file_path"
 );
 
 

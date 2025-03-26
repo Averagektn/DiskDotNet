@@ -150,8 +150,8 @@
   <data name="PathToTarget" xml:space="preserve">
     <value>PathToTarget</value>
   </data>
-  <data name="Precision" xml:space="preserve">
-    <value>Precision</value>
+  <data name="Accuracy" xml:space="preserve">
+    <value>Accuracy</value>
   </data>
   <data name="Reply" xml:space="preserve">
     <value>Reply</value>
