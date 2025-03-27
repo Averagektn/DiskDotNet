@@ -106,6 +106,24 @@ namespace Disk.Properties.Langs.AttemptResult {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Hide cursor.
+        /// </summary>
+        public static string HideCursor {
+            get {
+                return ResourceManager.GetString("HideCursor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Hide target.
+        /// </summary>
+        public static string HideTarget {
+            get {
+                return ResourceManager.GetString("HideTarget", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to L.
         /// </summary>
         public static string LeftFoot {

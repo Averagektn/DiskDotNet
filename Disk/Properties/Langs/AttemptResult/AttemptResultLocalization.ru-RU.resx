@@ -171,4 +171,10 @@
   <data name="Time" xml:space="preserve">
     <value>Время</value>
   </data>
+  <data name="HideTarget" xml:space="preserve">
+    <value>Убрать мишень</value>
+  </data>
+  <data name="HideCursor" xml:space="preserve">
+    <value>Убрать курсор</value>
+  </data>
 </root>

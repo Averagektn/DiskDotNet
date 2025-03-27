@@ -22,7 +22,7 @@ public partial class DiskContext : DbContext
 
     public void EnsureDatabaseExists()
     {
-        Database.EnsureDeleted();
+        //Database.EnsureDeleted();
 
         if (!Directory.Exists(AppConfig.DbDir))
         {

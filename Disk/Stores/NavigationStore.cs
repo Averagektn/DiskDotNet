@@ -54,7 +54,7 @@ public class NavigationStore(Func<Type, ObserverViewModel> getViewModel) : INavi
 
     public void Close()
     {
-        if (ViewModels.Count != 0)
+        if (ViewModels.Count > 0)
         {
             var currVm = ViewModels.Peek();
             Log.Information($"Closing {currVm.GetType()}");

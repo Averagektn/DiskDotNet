@@ -34,14 +34,18 @@ public class ModalNavigationStore(Func<Type, ObserverViewModel> getViewModel) : 
 
     public void Close()
     {
-        if (ViewModels.Count != 0)
+        if (CanClose)
         {
             var currVm = ViewModels.Peek();
             Log.Information($"Closing {currVm.GetType()}");
 
             currVm.BeforeNavigation();
             ViewModels.Pop().Dispose();
-            if (ViewModels.TryPeek(out var vm))
+            if (ViewModels.TryPeek(out var modalVm))
+            {
+                modalVm.Refresh();
+            }
+            else if (NavigationStore.ViewModels.TryPeek(out var vm))
             {
                 vm.Refresh();
             }

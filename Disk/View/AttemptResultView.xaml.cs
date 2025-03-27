@@ -70,7 +70,7 @@ public partial class AttemptResultView : UserControl
 
         _target.Draw();
         _pathAndRose.ForEach(p => p.Remove());
-        _pathAndRose = ViewModel.GetPathAndRose(PaintArea);
+        _pathAndRose = ViewModel.GetPathAndRose(GraphArea);
         _pathAndRose.ForEach(p => p.Draw());
         _user.Draw();
 
@@ -79,6 +79,26 @@ public partial class AttemptResultView : UserControl
             _user.Move(ViewModel.UserCenter);
             _target.Move(ViewModel.TargetCenter);
         }
+    }
+
+    private void ShowCursor(object sender, RoutedEventArgs e)
+    {
+        _user?.Draw();
+    }
+
+    private void HideCursor(object sender, RoutedEventArgs e)
+    {
+        _user?.Remove();
+    }
+
+    private void ShowTarget(object sender, RoutedEventArgs e)
+    {
+        _target?.Draw();
+    }
+
+    private void HideTarget(object sender, RoutedEventArgs e)
+    {
+        _target?.Remove();
     }
 
     private void RadioButtonChecked(object sender, RoutedEventArgs e)

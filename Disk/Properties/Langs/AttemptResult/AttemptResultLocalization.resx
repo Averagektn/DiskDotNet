@@ -171,4 +171,10 @@
   <data name="Time" xml:space="preserve">
     <value>Time</value>
   </data>
+  <data name="HideTarget" xml:space="preserve">
+    <value>Hide target</value>
+  </data>
+  <data name="HideCursor" xml:space="preserve">
+    <value>Hide cursor</value>
+  </data>
 </root>

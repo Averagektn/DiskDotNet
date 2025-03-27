@@ -17,7 +17,7 @@
             <ColumnDefinition Width="*" Name="PaintWidth"/>
             <ColumnDefinition Width="auto"/>
         </Grid.ColumnDefinitions>
-        
+
         <Image 
             Panel.ZIndex="-10"
             Grid.Column="0"
@@ -25,26 +25,8 @@
             VerticalAlignment="Center"
             Source="/Properties/feet_projection.png" />
 
-        <Canvas Name="PaintArea" Grid.Column="0"/>
-
-        <TextBlock 
-            Grid.Column="0"
-            Margin="10 10 0 0" 
-            HorizontalAlignment="Left" 
-            VerticalAlignment="Top"
-            Text="{x:Static lang:AttemptResultLocalization.LeftFoot}" 
-            FontSize="55" />
-
-        <TextBlock 
-            Grid.Column="0" 
-            Margin="0 10 10 0" 
-            HorizontalAlignment="Right" 
-            VerticalAlignment="Top"    
-            Text="{x:Static lang:AttemptResultLocalization.RightFoot}" 
-            FontSize="55" />
-
         <Line  
-            Panel.ZIndex="-5"
+            Panel.ZIndex="-1"
             Grid.Column="0"
             X1="0" Y1="0" X2="0" 
             Y2="{Binding ActualHeight, RelativeSource={RelativeSource AncestorType=Grid}}"   
@@ -52,12 +34,44 @@
             HorizontalAlignment="Center" />
 
         <Line 
-            Panel.ZIndex="-5"
+            Panel.ZIndex="-1"
             Grid.Column="0"
             X1="0" Y1="0" 
             X2="{Binding ActualWidth, RelativeSource={RelativeSource AncestorType=Grid}}" 
             Y2="0" Stroke="Black" StrokeThickness="2" 
             VerticalAlignment="Center" />
+
+        <Canvas Name="PaintArea" Grid.Column="0"/>
+        <Canvas Name="GraphArea" Panel.ZIndex="-2" Grid.Column="0"/>
+        
+        <TextBlock 
+            Grid.Column="0" 
+            Margin="10" 
+            HorizontalAlignment="Right" 
+            VerticalAlignment="Top"    
+            Text="I" 
+            FontSize="55" />
+        <TextBlock 
+            Grid.Column="0"
+            Margin="10" 
+            HorizontalAlignment="Left" 
+            VerticalAlignment="Top"
+            Text="II" 
+            FontSize="55" />
+        <TextBlock 
+            Grid.Column="0" 
+            Margin="10" 
+            HorizontalAlignment="Left" 
+            VerticalAlignment="Bottom"    
+            Text="III" 
+            FontSize="55" />
+        <TextBlock 
+            Grid.Column="0" 
+            Margin="10" 
+            HorizontalAlignment="Right" 
+            VerticalAlignment="Bottom"    
+            Text="IV" 
+            FontSize="55" />
 
         <StackPanel Grid.Column="1">
             <TextBlock 
@@ -93,9 +107,17 @@
             <CheckBox
                 FontSize="25"
                 Margin="10"
-                Content="{x:Static lang:AttemptResultLocalization.PathInTarget}"
-                Checked="RadioButtonChecked"
-                Unchecked="RadioButtonChecked"
+                Content="{x:Static lang:AttemptResultLocalization.HideTarget}"
+                Checked="HideTarget"
+                Unchecked="ShowTarget"
+                IsChecked="{Binding ShowPathInTarget}"/>
+
+            <CheckBox
+                FontSize="25"
+                Margin="10"
+                Content="{x:Static lang:AttemptResultLocalization.HideCursor}"
+                Checked="HideCursor"
+                Unchecked="ShowCursor"
                 IsChecked="{Binding ShowPathInTarget}"/>
 
             <ComboBox   
