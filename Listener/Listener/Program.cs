@@ -3,7 +3,7 @@ using Newtonsoft.Json;
 using System.Diagnostics;
 using System.Net;
 
-var connection = Connection.GetConnection(IPAddress.Parse("192.168.1.3"), 9998);
+var connection = Connection.GetConnection(IPAddress.Parse("192.168.1.2"), 9998);
 var stopwatch = new Stopwatch();
 const int Seconds = 1 * 60;
 const int Freq = 60;

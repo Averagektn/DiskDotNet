@@ -1,5 +1,6 @@
 ﻿using Disk.Calculations.Impl.Converters;
 using Disk.Data.Interface;
+using DocumentFormat.OpenXml.Drawing.Diagrams;
 using System.Net;
 using System.Net.Sockets;
 
@@ -33,7 +34,7 @@ public class Connection : IDataSource<float>, IDisposable
     /// <summary>
     ///     Lock object
     /// </summary>
-    private static readonly object _lockObj = new();
+    private static readonly Lock _lockObj = new();
 
     /// <summary>
     ///     Initializes a new instance of the Connection class with the specified IP address, port, and receive timeout
@@ -115,20 +116,36 @@ public class Connection : IDataSource<float>, IDisposable
         return conn;
     }
 
+    const int Size = 48;
+    int Index = Size;
+    byte[] Data = new byte[Size];
     /// <inheritdoc/>
     public Point3D<float>? GetXYZ()
-    {
-        var coordX = new byte[4];
-        var coordY = new byte[4];
-        var coordZ = new byte[4];
+    {   
+        if (Index >= Size)
+        {
+            Index = 0;
+            _ = Socket.Receive(Data);
+        }
+        var num = BitConverter.ToInt32(Data, Index);
+        var y = BitConverter.ToSingle(Data, Index + 4);
+        var x = -BitConverter.ToSingle(Data, Index + 8);
+        var z = BitConverter.ToSingle(Data, Index + 12);
+        Index += 16;
 
-        _ = Socket.Receive(coordX);
-        _ = Socket.Receive(coordY);
-        _ = Socket.Receive(coordZ);
+        /*        var coordX = new byte[4];
+                var coordY = new byte[4];
+                var coordZ = new byte[4];
+                var packetNum = new byte[4];
 
-        var x = -BitConverter.ToSingle(coordX, 0);
-        var y = BitConverter.ToSingle(coordY, 0);
-        var z = BitConverter.ToSingle(coordZ, 0);
+                _ = Socket.Receive(packetNum);
+                _ = Socket.Receive(coordY);
+                _ = Socket.Receive(coordX);
+                _ = Socket.Receive(coordZ);
+
+                var x = -BitConverter.ToSingle(coordX, 0);
+                var y = BitConverter.ToSingle(coordY, 0);
+                var z = BitConverter.ToSingle(coordZ, 0);*/
 
         var p = new Point3D<float>(x, y, z);
 

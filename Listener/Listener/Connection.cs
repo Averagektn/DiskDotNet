@@ -107,6 +107,10 @@ internal class Connection : IDisposable
     }
 
     private readonly Stopwatch _stopwatch = new();
+
+    const int Size = 48;
+    int Index = Size;
+    byte[] Data = new byte[Size];
     /// <summary>
     ///     Retrieves XYZ coordinates from the connection
     /// </summary>
@@ -115,28 +119,59 @@ internal class Connection : IDisposable
     /// </returns>
     public string GetXYZ()
     {
-        var coordX = new byte[4];
-        var coordY = new byte[4];
-        var coordZ = new byte[4];
-        _stopwatch.Restart();
-        _ = Socket.Receive(coordX);
-        var xTime = _stopwatch.ElapsedMilliseconds;
-        Console.WriteLine($"X: {xTime}ms");
-        _ = Socket.Receive(coordY);
-        var yTime = _stopwatch.ElapsedMilliseconds;
-        Console.WriteLine($"Y: {yTime - xTime}ms");
-        _ = Socket.Receive(coordZ);
-        var zTime = _stopwatch.ElapsedMilliseconds;
-        Console.WriteLine($"Z: {zTime - yTime}ms");
+        if (Index >= Size)
+        {
+            Index = 0;
+            _ = Socket.Receive(Data);
+        }
+        var num = BitConverter.ToInt32(Data, Index);
+        Console.WriteLine($"Received packet: {num}");
 
-        var x = -BitConverter.ToSingle(coordX, 0);
-        //Console.WriteLine($"Received x {x}");
-        var y = BitConverter.ToSingle(coordY, 0);
-        //Console.WriteLine($"Received y {y}");
-        var z = BitConverter.ToSingle(coordZ, 0);
-        //Console.WriteLine($"Received z {z}");
+        var y = BitConverter.ToSingle(Data, Index + 4);
+        Console.WriteLine($"Received y {y}");
 
-        return $"{x} {y} {z}";
+        var x = -BitConverter.ToSingle(Data, Index + 8);
+        Console.WriteLine($"Received x {x}");
+
+        var z = BitConverter.ToSingle(Data, Index + 12);
+        Console.WriteLine($"Received z {z}");
+        Index += 16;
+        return $"{x} {y} {z} {num}";
+        /*        var coordX = new byte[4];
+                var coordY = new byte[4];
+                var coordZ = new byte[4];
+                var packetNum = new byte[4];
+                _stopwatch.Restart();
+
+                _ = Socket.Receive(packetNum);
+                var numTime = _stopwatch.ElapsedMilliseconds;
+                Console.WriteLine($"Num: {numTime}");
+
+                _ = Socket.Receive(coordY);
+                var yTime = _stopwatch.ElapsedMilliseconds;
+                Console.WriteLine($"Y: {yTime - numTime}ms");
+
+                _ = Socket.Receive(coordX);
+                var xTime = _stopwatch.ElapsedMilliseconds;
+                Console.WriteLine($"X: {xTime - yTime}ms");
+
+                _ = Socket.Receive(coordZ);
+                var zTime = _stopwatch.ElapsedMilliseconds;
+                Console.WriteLine($"Z: {zTime - xTime}ms");
+
+                var num = BitConverter.ToInt32(packetNum, 0);
+                Console.WriteLine($"Received packet: {num}");
+
+                var y = BitConverter.ToSingle(coordY, 0);
+                Console.WriteLine($"Received y {y}");
+
+                var x = -BitConverter.ToSingle(coordX, 0);
+                Console.WriteLine($"Received x {x}");
+
+                var z = BitConverter.ToSingle(coordZ, 0);
+                Console.WriteLine($"Received z {z}");
+
+                return $"{x} {y} {z}";*/
     }
 
     /// <summary>

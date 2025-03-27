@@ -13,6 +13,8 @@ public partial class MainWindow : Window
     private const float MaxYAngle = 20.0f;
     private const float MaxXAngle = 20.0f;
 
+    private static int _packetNum = 0;
+
     private bool _finish = false;
 
     private Point Center => new(
@@ -89,25 +91,22 @@ public partial class MainWindow : Window
                                     size = new Size(DrawArea.RenderSize.Width / 2, DrawArea.RenderSize.Height / 2);
                                 });
 
-                                var x = (float)((size.Width - (float)pos.X) / size.Width * MaxXAngle * Math.PI / 180.0f);
-                                var xBytes = BitConverter.GetBytes(x);
-                                if (handler.Connected)
-                                {
-                                    _ = handler.Send(xBytes);
-                                }
-
                                 var y = (float)((size.Height - (float)pos.Y) / size.Height * MaxYAngle * Math.PI / 180.0f);
-                                var yBytes = BitConverter.GetBytes(y);
-                                if (handler.Connected)
-                                {
-                                    _ = handler.Send(yBytes);
-                                }
-
+                                var x = (float)((size.Width - (float)pos.X) / size.Width * MaxXAngle * Math.PI / 180.0f);
                                 var z = 0.0f;
+
+                                var numBytes = BitConverter.GetBytes(_packetNum);
+                                var yBytes = BitConverter.GetBytes(y);
+                                var xBytes = BitConverter.GetBytes(x);
                                 var zBytes = BitConverter.GetBytes(z);
+
                                 if (handler.Connected)
                                 {
+                                    _ = handler.Send(numBytes);
+                                    _ = handler.Send(yBytes);
+                                    _ = handler.Send(xBytes);
                                     _ = handler.Send(zBytes);
+                                    _packetNum++;
                                 }
                             }
                         }
