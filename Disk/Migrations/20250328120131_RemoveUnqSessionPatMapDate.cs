@@ -10,7 +10,7 @@ namespace Disk.Migrations
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropIndex(
+            _ = migrationBuilder.DropIndex(
                 name: "IX_UNQ_session_date_map_id_patient_id",
                 table: "session");
         }
@@ -18,7 +18,7 @@ namespace Disk.Migrations
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.CreateIndex(
+            _ = migrationBuilder.CreateIndex(
                 name: "IX_UNQ_session_date_map_id_patient_id",
                 table: "session",
                 columns: new[] { "ses_date", "ses_map", "ses_patient" },

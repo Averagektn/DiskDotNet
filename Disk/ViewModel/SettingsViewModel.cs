@@ -276,7 +276,7 @@ public class SettingsViewModel(ModalNavigationStore modalNavigationStore) : Popu
         TargetFilePath = Settings.TargetFilePath;
 
         MoveTime = RoundToNearest(value: 1000 / Settings.MoveTime, nearest: 5).ToString();
-        ShotTime = RoundToNearest(value: 1000 / Settings.MoveTime, nearest: 5).ToString();
+        ShotTime = RoundToNearest(value: 1000 / Settings.ShotTime, nearest: 5).ToString();
 
         TargetRadius = Settings.IniTargetRadius.ToString();
         UserRadius = Settings.IniUserRadius.ToString();
