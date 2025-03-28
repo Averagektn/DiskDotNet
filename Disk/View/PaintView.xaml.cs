@@ -42,7 +42,8 @@ public partial class PaintView : UserControl
     {
         InitializeComponent();
 
-        MoveTimer = new(DispatcherPriority.Normal)
+        MoveTimer = new(DispatcherPriority.Send)
+        //MoveTimer = new(DispatcherPriority.Normal)
         {
             Interval = TimeSpan.FromMilliseconds(Settings.MoveTime)
         };
@@ -61,15 +62,11 @@ public partial class PaintView : UserControl
 
     private List<Point2DI> GetMultipleShots()
     {
-        var shot = User.Shot();
-
-        _ = shot.X;
-
-        _ = shot.Y;
-
-        _ = User.Radius / 2;
-
-        _ = Math.Sqrt(2);
+        //var shot = User.Shot();
+        //_ = shot.X;
+        //_ = shot.Y;
+        //_ = User.Radius / 2;
+        //_ = Math.Sqrt(2);
 
         return [User.Center];
         /*        return [new(x - halfRadius, y), new(x + halfRadius, y), new(x, y - halfRadius), new(x, y + halfRadius),

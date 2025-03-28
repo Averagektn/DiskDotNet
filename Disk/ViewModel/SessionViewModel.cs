@@ -99,14 +99,29 @@ public class SessionViewModel(DiskContext database, IExcelFiller excelFiller, Na
 
                 _ = Application.Current.Dispatcher.InvokeAsync(async () =>
                 {
-                    _ = await database.AddAsync(attempt);
-                    _ = await database.SaveChangesAsync();
-                    PaintNavigator.Navigate(this, navigationStore, attempt.Id);
-                    Log.Information("Created session");
+                    try
+                    {
+                        _ = await database.AddAsync(attempt);
+                        _ = await database.SaveChangesAsync();
+                        PaintNavigator.Navigate(this, navigationStore, attempt.Id);
+                        Log.Information("Created session");
+                    }
+                    catch (Exception ex)
+                    {
+                        Log.Error(ex, "Failed to create session");
+                    }
                 });
             }));
 
-    public ICommand AttemptSelectedCommand => new Command(AttemptSelected);
+    public ICommand AttemptSelectedCommand => new Command(_ =>
+    {
+        if (SelectedAttempt is null)
+        {
+            return;
+        }
+
+        Paths = [.. SelectedAttempt.PathToTargets.Zip(SelectedAttempt.PathInTargets, (ptt, pit) => new MergedPaths(ptt, pit))];
+    });
 
     public ICommand ExportToExcelCommand => new Command(async _ =>
     {
@@ -149,16 +164,6 @@ public class SessionViewModel(DiskContext database, IExcelFiller excelFiller, Na
 
         SelectedAttempt = null;
     });
-
-    private void AttemptSelected(object? obj)
-    {
-        if (SelectedAttempt is null)
-        {
-            return;
-        }
-
-        Paths = [.. SelectedAttempt.PathToTargets.Zip(SelectedAttempt.PathInTargets, (ptt, pit) => new MergedPaths(ptt, pit))];
-    }
 
     private async Task UpdateAsync()
     {

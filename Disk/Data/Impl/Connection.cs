@@ -1,6 +1,5 @@
 ﻿using Disk.Calculations.Impl.Converters;
 using Disk.Data.Interface;
-using DocumentFormat.OpenXml.Drawing.Diagrams;
 using System.Net;
 using System.Net.Sockets;
 
@@ -48,7 +47,7 @@ public class Connection : IDataSource<float>, IDisposable
     /// <param name="receiveTimeout">
     ///     The receive timeout in milliseconds
     /// </param>
-    private Connection(IPAddress ip, int port, int receiveTimeout = 2000)
+    private Connection(IPAddress ip, int port, int receiveTimeout = 5000)
     {
         IP = ip;
         Port = port;
@@ -116,40 +115,35 @@ public class Connection : IDataSource<float>, IDisposable
         return conn;
     }
 
-    const int Size = 48;
-    int Index = Size;
-    byte[] Data = new byte[Size];
+    private const int PacketSize = 16;
+    private const int PacketsCount = 4;
+    private const int Size = PacketSize * PacketsCount;
+    private int _currPacket = PacketsCount;
+    private readonly byte[] _data = new byte[Size];
+    private readonly List<Point3D<float>> _coords = [new(), new(), new(), new()];
     /// <inheritdoc/>
     public Point3D<float>? GetXYZ()
     {
-        if (Index >= Size)
+        if (_currPacket >= PacketsCount)
         {
-            Index = 0;
-            _ = Socket.Receive(Data);
+            _ = Socket.Receive(_data, Size, SocketFlags.None);
+            for (int i = 0, j = 0; i < Size; i += PacketSize, j++)
+            {
+                var y = BitConverter.ToSingle(_data, i + 4);
+                var x = -BitConverter.ToSingle(_data, i + 8);
+                var z = BitConverter.ToSingle(_data, i + 12);
+
+                _coords[j] = Converter.ToAngle_FromRadian(new Point3D<float>(x, y, z));
+            }
+            _currPacket = 0;
         }
-        var num = BitConverter.ToInt32(Data, Index);
-        var y = BitConverter.ToSingle(Data, Index + 4);
-        var x = -BitConverter.ToSingle(Data, Index + 8);
-        var z = BitConverter.ToSingle(Data, Index + 12);
-        Index += 16;
+        else if (Socket.Available < Size * 2)
+        {
+            Task.Delay(1).Wait();
+            //Thread.Sleep(2);
+        }
 
-        /*        var coordX = new byte[4];
-                var coordY = new byte[4];
-                var coordZ = new byte[4];
-                var packetNum = new byte[4];
-
-                _ = Socket.Receive(packetNum);
-                _ = Socket.Receive(coordY);
-                _ = Socket.Receive(coordX);
-                _ = Socket.Receive(coordZ);
-
-                var x = -BitConverter.ToSingle(coordX, 0);
-                var y = BitConverter.ToSingle(coordY, 0);
-                var z = BitConverter.ToSingle(coordZ, 0);
-        */
-        var p = new Point3D<float>(x, y, z);
-
-        return Converter.ToAngle_FromRadian(p);
+        return _coords[_currPacket++];
     }
 
     /// <inheritdoc/>

@@ -10,6 +10,7 @@ using Disk.ViewModel.Common.ViewModels;
 using Disk.Visual.Interface;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
+using Serilog;
 using System.Diagnostics;
 using System.Net;
 using System.Windows;
@@ -100,7 +101,10 @@ public class PaintViewModel : PopupViewModel
 
     public PaintViewModel(NavigationStore navigationStore, DiskContext database)
     {
-        DiskNetworkThread = new(ReceiveUserPos);
+        DiskNetworkThread = new(ReceiveUserPos)
+        {
+            Priority = ThreadPriority.Highest
+        };
 
         Converter = DrawableFabric.GetIniConverter();
 
@@ -125,12 +129,13 @@ public class PaintViewModel : PopupViewModel
                 CurrentPos = con.GetXYZ();
             }
         }
-        catch
+        catch (Exception ex)
         {
             connectionFailed = true;
 
             _ = Application.Current.Dispatcher.InvokeAsync(async () =>
             {
+                Log.Error($"{ex.Message} \n\n\n {ex.StackTrace}");
                 await ShowPopup(header: Localization.ConnectionLost, message: "");
                 await SaveAttemptResultAsync();
             });
@@ -184,9 +189,10 @@ public class PaintViewModel : PopupViewModel
             {
                 AttemptResultNavigator.NavigateAndClose(this, _navigationStore, CurrentAttempt.Id);
             }
-            catch
+            catch (Exception ex)
             {
                 await ShowPopup(header: Localization.ErrorCaption, message: Localization.SaveError);
+                Log.Error($"{ex.Message} \n\n\n {ex.StackTrace}");
             }
         }
     }

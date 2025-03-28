@@ -102,10 +102,12 @@ public partial class MainWindow : Window
 
                                 if (handler.Connected)
                                 {
-                                    _ = handler.Send(numBytes);
+                                    var data = numBytes.Concat(yBytes).Concat(xBytes).Concat(zBytes).ToArray();
+                                    _ = handler.Send(data);
+/*                                    _ = handler.Send(numBytes);
                                     _ = handler.Send(yBytes);
                                     _ = handler.Send(xBytes);
-                                    _ = handler.Send(zBytes);
+                                    _ = handler.Send(zBytes);*/
                                     _packetNum++;
                                 }
                             }

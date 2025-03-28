@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 using System.Net;
 using System.Net.Sockets;
 
@@ -106,37 +107,38 @@ internal class Connection : IDisposable
         return conn;
     }
 
-    private readonly Stopwatch _stopwatch = new();
-
-    const int Size = 48;
-    int Index = Size;
-    byte[] Data = new byte[Size];
-    /// <summary>
-    ///     Retrieves XYZ coordinates from the connection
-    /// </summary>
-    /// <returns>
-    ///     The Point3D object representing XYZ coordinates
-    /// </returns>
+    private const int PacketSize = 16;
+    private const int PacketsCount = 4;
+    private const int Size = PacketSize * PacketsCount;
+    private int _currPacket = PacketsCount;
+    private readonly byte[] _data = new byte[Size];
+    private readonly List<string> _coords = ["", "", "", ""];
+    /// <inheritdoc/>
     public string GetXYZ()
     {
-        if (Index >= Size)
+        if (_currPacket >= PacketsCount)
         {
-            Index = 0;
-            _ = Socket.Receive(Data);
+            _ = Socket.Receive(_data);
+            for (int i = 0, j = 0; i < Size; i += PacketSize, j++)
+            {
+                var y = BitConverter.ToSingle(_data, i + 4);
+                var x = -BitConverter.ToSingle(_data, i + 8);
+                var z = BitConverter.ToSingle(_data, i + 12);
+
+                //_coords[j] = Converter.ToAngle_FromRadian(new Point3D<float>(x, y, z));
+                _coords[j] = $"{x} {y} {x}";
+            }
+            _currPacket = 0;
         }
-        var num = BitConverter.ToInt32(Data, Index);
-        Console.WriteLine($"Received packet: {num}");
+        else if (Socket.Available < Size * 2)
+        {
+            Task.Delay(1).Wait();
+            //Thread.Sleep(2);
+        }
 
-        var y = BitConverter.ToSingle(Data, Index + 4);
-        Console.WriteLine($"Received y {y}");
-
-        var x = -BitConverter.ToSingle(Data, Index + 8);
-        Console.WriteLine($"Received x {x}");
-
-        var z = BitConverter.ToSingle(Data, Index + 12);
-        Console.WriteLine($"Received z {z}");
-        Index += 16;
-        return $"{x} {y} {z} {num}";
+        return _coords[_currPacket++];
+    
+        //return $"{x} {y} {z} {num}";
         /*        var coordX = new byte[4];
                 var coordY = new byte[4];
                 var coordZ = new byte[4];
