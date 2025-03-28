@@ -325,6 +325,7 @@ public class SettingsViewModel(ModalNavigationStore modalNavigationStore) : Popu
         Settings.TargetHp = _targetTtl * _shotTime / 1000;
 
         Settings.CursorFilePath = CursorFilePath;
+        Settings.TargetFilePath = TargetFilePath;
 
         Settings.Save();
     }

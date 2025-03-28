@@ -121,7 +121,7 @@ public class Connection : IDataSource<float>, IDisposable
     byte[] Data = new byte[Size];
     /// <inheritdoc/>
     public Point3D<float>? GetXYZ()
-    {   
+    {
         if (Index >= Size)
         {
             Index = 0;
@@ -145,8 +145,8 @@ public class Connection : IDataSource<float>, IDisposable
 
                 var x = -BitConverter.ToSingle(coordX, 0);
                 var y = BitConverter.ToSingle(coordY, 0);
-                var z = BitConverter.ToSingle(coordZ, 0);*/
-
+                var z = BitConverter.ToSingle(coordZ, 0);
+        */
         var p = new Point3D<float>(x, y, z);
 
         return Converter.ToAngle_FromRadian(p);

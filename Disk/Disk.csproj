@@ -12,6 +12,8 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Pictures\Honey.png" />
+    <None Remove="Pictures\Winnie.png" />
     <None Remove="Properties\feet_projection.png" />
     <None Remove="Properties\logo.gif" />
     <None Remove="Properties\logo.jpg" />
@@ -53,6 +55,15 @@
     <Content Include="Properties\logo.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Pictures\Honey.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Pictures\Winnie.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
   </ItemGroup>
 
   <ItemGroup>

@@ -55,8 +55,6 @@ public partial class DiskContext : DbContext
 
             _ = entity.ToTable("session");
 
-            _ = entity.HasIndex(a => new { a.Date, a.Map, a.Patient }, "IX_UNQ_session_date_map_id_patient_id").IsUnique();
-
             _ = entity.Property(e => e.Id).HasColumnName("ses_id");
             _ = entity.Property(e => e.Map).HasColumnName("ses_map");
             _ = entity.Property(e => e.Patient).HasColumnName("ses_patient");

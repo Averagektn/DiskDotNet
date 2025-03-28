@@ -27,6 +27,12 @@ public partial class SettingsView : UserControl
 
         TargetRadiusSlider.ValueChanged += (_, _) => DrawTarget();
         TargetFilePath.TextChanged += (_, _) => DrawTarget();
+
+        SizeChanged += (_, _) =>
+        {
+            DrawUser();
+            DrawTarget();
+        };
     }
 
     private void DrawTarget()
