@@ -66,7 +66,7 @@ public class TargetPicture : UserPicture, IProgressTarget
     /// <inheritdoc/>
     public override bool Contains(Point2D<int> shot)
     {
-        return Right <= shot.X && Left >= shot.X && Top >= shot.Y && Bottom <= shot.Y;
+        return Right >= shot.X && Left <= shot.X && Top <= shot.Y && Bottom >= shot.Y;
     }
 
     public void Reset()
