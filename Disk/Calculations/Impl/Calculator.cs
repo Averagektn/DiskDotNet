@@ -20,6 +20,23 @@ public static class Calculator
     }
 
     /// <summary>
+    ///     Rounds provided value to provided nearest
+    /// </summary>
+    /// <param name="value">
+    ///     Value to round
+    /// </param>
+    /// <param name="nearest">
+    ///     Nearest value to round to
+    /// </param>
+    /// <returns>
+    ///     Rouded value
+    /// </returns>
+    public static int RoundToNearest(int value, int nearest)
+    {
+        return (int)(Math.Round((double)value / nearest) * nearest);
+    }
+
+    /// <summary>
     ///     Calculates standart deviation
     /// </summary>
     /// <param name="dataset">

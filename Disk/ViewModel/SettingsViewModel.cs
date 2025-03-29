@@ -1,4 +1,5 @@
-﻿using Disk.Navigators;
+﻿using Disk.Calculations.Impl;
+using Disk.Navigators;
 using Disk.Stores;
 using Disk.ViewModel.Common.Commands.Sync;
 using Disk.ViewModel.Common.ViewModels;
@@ -43,7 +44,7 @@ public class SettingsViewModel(ModalNavigationStore modalNavigationStore) : Popu
     }
 
     // Convert ms to hz
-    private int _moveTime = RoundToNearest(value: 1000 / Settings.MoveTime, nearest: 5);
+    private int _moveTime = Calculator.RoundToNearest(value: 1000 / Settings.MoveTime, nearest: 5);
     public string MoveTime
     {
         get => _moveTime.ToString();
@@ -68,7 +69,7 @@ public class SettingsViewModel(ModalNavigationStore modalNavigationStore) : Popu
     }
 
     // Convert ms to hz
-    private int _shotTime = RoundToNearest(value: 1000 / Settings.ShotTime, nearest: 5);
+    private int _shotTime = Calculator.RoundToNearest(value: 1000 / Settings.ShotTime, nearest: 5);
     public string ShotTime
     {
         get => _shotTime.ToString();
@@ -163,7 +164,7 @@ public class SettingsViewModel(ModalNavigationStore modalNavigationStore) : Popu
     }
 
     // convert int hp to ms
-    private int _targetTtl = RoundToNearest(value: 1000 * Settings.TargetHp / (1000 / Settings.ShotTime), nearest: 100);
+    private int _targetTtl = Calculator.RoundToNearest(value: 1000 * Settings.TargetHp / (1000 / Settings.ShotTime), nearest: 100);
     public string TargetTtl
     {
         get => _targetTtl.ToString();
@@ -275,13 +276,13 @@ public class SettingsViewModel(ModalNavigationStore modalNavigationStore) : Popu
         CursorFilePath = Settings.CursorFilePath;
         TargetFilePath = Settings.TargetFilePath;
 
-        MoveTime = RoundToNearest(value: 1000 / Settings.MoveTime, nearest: 5).ToString();
-        ShotTime = RoundToNearest(value: 1000 / Settings.ShotTime, nearest: 5).ToString();
+        MoveTime = Calculator.RoundToNearest(value: 1000 / Settings.MoveTime, nearest: 5).ToString();
+        ShotTime = Calculator.RoundToNearest(value: 1000 / Settings.ShotTime, nearest: 5).ToString();
 
         TargetRadius = Settings.IniTargetRadius.ToString();
         UserRadius = Settings.IniUserRadius.ToString();
 
-        TargetTtl = RoundToNearest(value: 1000 * Settings.TargetHp / (1000 / Settings.ShotTime), nearest: 100).ToString();
+        TargetTtl = Calculator.RoundToNearest(value: 1000 * Settings.TargetHp / (1000 / Settings.ShotTime), nearest: 100).ToString();
     }
 
     public override void AfterNavigation()
@@ -291,11 +292,11 @@ public class SettingsViewModel(ModalNavigationStore modalNavigationStore) : Popu
         var ipChanged = Ip != Settings.IP;
         var cursorPathChanged = CursorFilePath != Settings.CursorFilePath;
         var targetPathChanged = TargetFilePath != Settings.TargetFilePath;
-        var moveTimeChanged = MoveTime != RoundToNearest(value: 1000 / Settings.MoveTime, nearest: 5).ToString();
-        var shotTimeChanged = ShotTime != RoundToNearest(value: 1000 / Settings.MoveTime, nearest: 5).ToString();
+        var moveTimeChanged = MoveTime != Calculator.RoundToNearest(value: 1000 / Settings.MoveTime, nearest: 5).ToString();
+        var shotTimeChanged = ShotTime != Calculator.RoundToNearest(value: 1000 / Settings.MoveTime, nearest: 5).ToString();
         var targetRadiusChanged = TargetRadius != Settings.IniTargetRadius.ToString();
         var userRadiusChanged = UserRadius != Settings.IniUserRadius.ToString();
-        var targetTtlChanged = TargetTtl != RoundToNearest(value: 1000 * Settings.TargetHp / (1000 / Settings.ShotTime),
+        var targetTtlChanged = TargetTtl != Calculator.RoundToNearest(value: 1000 * Settings.TargetHp / (1000 / Settings.ShotTime),
             nearest: 100).ToString();
 
         if (ipChanged || cursorPathChanged || targetPathChanged || moveTimeChanged || shotTimeChanged || targetRadiusChanged ||
@@ -328,10 +329,5 @@ public class SettingsViewModel(ModalNavigationStore modalNavigationStore) : Popu
         Settings.TargetFilePath = TargetFilePath;
 
         Settings.Save();
-    }
-
-    private static int RoundToNearest(int value, int nearest)
-    {
-        return (int)(Math.Round((double)value / nearest) * nearest);
     }
 }

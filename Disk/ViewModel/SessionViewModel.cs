@@ -1,4 +1,5 @@
-﻿using Disk.Db.Context;
+﻿using Disk.Calculations.Impl;
+using Disk.Db.Context;
 using Disk.Entities;
 using Disk.Navigators;
 using Disk.Service.Interface;
@@ -73,9 +74,9 @@ public class SessionViewModel(DiskContext database, IExcelFiller excelFiller, Na
                     {Localization.Ip}: {Ip}
                     {Localization.CursorImagePath}: {CursorImageName}
                     {Localization.TargetImagePath}: {TargetImageName}
-                    {Localization.ShotTime}: {ShotFrequency}
-                    {Localization.MoveTime}: {MoveFrequency}
-                    {Localization.TargetHp}: {TargetLifespan}
+                    {Localization.ShotTime}: {Calculator.RoundToNearest(ShotFrequency, nearest: 5)}
+                    {Localization.MoveTime}: {Calculator.RoundToNearest(MoveFrequency, nearest: 5)}
+                    {Localization.TargetHp}: {Calculator.RoundToNearest(TargetLifespan, nearest: 100)}
                 """,
             afterConfirm: () =>
             {

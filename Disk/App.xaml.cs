@@ -8,7 +8,10 @@ using Disk.ViewModel.Common.ViewModels;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Serilog;
+using System.Globalization;
 using System.Windows;
+using System.Windows.Interop;
+using System.Windows.Media;
 using System.Windows.Threading;
 
 namespace Disk;
@@ -22,8 +25,8 @@ public partial class App : Application
 
     private App()
     {
-        Thread.CurrentThread.CurrentUICulture = new System.Globalization.CultureInfo(Disk.Properties.Config.Config.Default.Language);
-        System.Windows.Media.RenderOptions.ProcessRenderMode = System.Windows.Interop.RenderMode.SoftwareOnly;
+        Thread.CurrentThread.CurrentUICulture = new CultureInfo(Config.Default.Language);
+        RenderOptions.ProcessRenderMode = RenderMode.SoftwareOnly;
 
         Log.Logger = new LoggerConfiguration()
             .MinimumLevel.Information()
@@ -31,8 +34,7 @@ public partial class App : Application
             .CreateLogger();
 
         var services = new ServiceCollection();
-        _ = services.AddDbContext<DiskContext>(
-            options => options.UseSqlite(AppConfig.DbConnectionString),
+        _ = services.AddDbContext<DiskContext>(options => options.UseSqlite(AppConfig.DbConnectionString),
             contextLifetime: ServiceLifetime.Transient);
 
         _ = services.AddSingleton<Func<Type, ObserverViewModel>>(provider =>
