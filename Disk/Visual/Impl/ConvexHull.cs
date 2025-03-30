@@ -7,6 +7,7 @@ using System.Windows.Media;
 using System.Windows.Shapes;
 using Brush = System.Windows.Media.Brush;
 using Point = System.Windows.Point;
+using Size = System.Windows.Size;
 
 namespace Disk.Visual.Impl;
 
@@ -23,9 +24,9 @@ public class ConvexHull : IStaticFigure
     protected readonly Panel Parent;
 
     /// <summary>
-    ///     Starting size
+    ///     Scaling size
     /// </summary>
-    protected readonly Size IniSize;
+    protected Size CurrSize;
 
     private readonly Polygon _polygon;
 
@@ -47,7 +48,7 @@ public class ConvexHull : IStaticFigure
             Points = new([.. points.Select(p => p.ToPoint())])
         };
         Parent = parent;
-        IniSize = iniSize;
+        CurrSize = iniSize;
     }
 
     /// <summary>
@@ -107,8 +108,8 @@ public class ConvexHull : IStaticFigure
     /// <inheritdoc/>
     public virtual void Scale()
     {
-        double xScale = Parent.ActualWidth / IniSize.Width;
-        double yScale = Parent.ActualHeight / IniSize.Height;
+        double xScale = Parent.ActualWidth / CurrSize.Width;
+        double yScale = Parent.ActualHeight / CurrSize.Height;
 
         var points = new List<Point>(_polygon.Points.Count);
         foreach (var item in _polygon.Points)
@@ -118,5 +119,6 @@ public class ConvexHull : IStaticFigure
             points.Add(new Point(x, y));
         }
         _polygon.Points = [.. points];
+        CurrSize = Parent.RenderSize;
     }
 }
