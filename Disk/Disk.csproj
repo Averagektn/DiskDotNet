@@ -9,6 +9,7 @@
     <SupportedOSPlatformVersion>7.0</SupportedOSPlatformVersion>
     <ApplicationIcon>Properties\Icon.ico</ApplicationIcon>
     <GenerateDocumentationFile>False</GenerateDocumentationFile>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
 
   <ItemGroup>
@@ -30,6 +31,9 @@
 
   <ItemGroup>
     <PackageReference Include="ClosedXML" Version="0.104.2" />
+    <PackageReference Include="Emgu.CV" Version="4.10.0.5680" />
+    <PackageReference Include="Emgu.CV.runtime.windows" Version="4.10.0.5680" />
+    <PackageReference Include="Emgu.CV.Wpf" Version="4.10.0.5680" />
     <PackageReference Include="Extended.Wpf.Toolkit" Version="4.7.25103.5738" />
     <PackageReference Include="MathNet.Numerics" Version="5.0.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.2">
@@ -48,6 +52,7 @@
     <PackageReference Include="Serilog.Extensions.Logging" Version="9.0.0" />
     <PackageReference Include="Serilog.Extensions.Logging.File" Version="3.0.0" />
     <PackageReference Include="SimpleModal.WPF" Version="1.0.0" />
+    <PackageReference Include="VL.SmallestCircle" Version="0.1.3" />
     <PackageReference Include="XamlRadialProgressBar" Version="1.0.3" />
   </ItemGroup>
 
