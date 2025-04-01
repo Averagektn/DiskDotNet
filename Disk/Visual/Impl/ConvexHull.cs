@@ -14,6 +14,27 @@ namespace Disk.Visual.Impl;
 public class ConvexHull : IStaticFigure
 {
     /// <summary>
+    ///     Returns convex hull. OpenCV wrapper
+    /// </summary>
+    /// <typeparam name="T">Coord type</typeparam>
+    /// <param name="points">List of points</param>
+    /// <returns>Convex hull</returns>
+    public static List<PointF> GetConvexHull<T>(List<Point2D<T>> points, float percent = 0.95f) where T : IConvertible, new()
+    {
+        var centerX = points.Average(p => p.XDbl);
+        var centerY = points.Average(p => p.YDbl);
+        var center = new Point2D<T>((T)Convert.ChangeType(centerX, typeof(T)), (T)Convert.ChangeType(centerY, typeof(T)));
+
+        var data = points
+            .OrderBy(p => p.GetDistance(center))
+            .Take((int)(points.Count * percent))
+            .Select(p => p.ToPointF())
+            .ToArray();
+
+        return [.. CvInvoke.ConvexHull(data)];
+    }
+
+    /// <summary>
     ///     Protects from multiple <see cref="Draw"/> calls
     /// </summary>
     public bool IsDrawn { get; private set; }
@@ -49,19 +70,6 @@ public class ConvexHull : IStaticFigure
         };
         Parent = parent;
         CurrSize = iniSize;
-    }
-
-    /// <summary>
-    ///     Returns convex hull. OpenCV wrapper
-    /// </summary>
-    /// <typeparam name="T">Coord type</typeparam>
-    /// <param name="points">List of points</param>
-    /// <returns>Convex hull</returns>
-    public static List<PointF> GetConvexHull<T>(List<Point2D<T>> points) where T : IConvertible, new()
-    {
-        var data = points.Select(p => p.ToPointF()).ToArray();
-
-        return [.. CvInvoke.ConvexHull(data)];
     }
 
     /// <inheritdoc/>
