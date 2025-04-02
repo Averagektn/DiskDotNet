@@ -177,4 +177,13 @@
   <data name="HideCursor" xml:space="preserve">
     <value>Убрать курсор</value>
   </data>
+  <data name="FullPathArea" xml:space="preserve">
+    <value>Площадь полного пути</value>
+  </data>
+  <data name="PathToTargetArea" xml:space="preserve">
+    <value>Площадь пути к мишени</value>
+  </data>
+  <data name="PathInTargetArea" xml:space="preserve">
+    <value>Площадь пути в мишени</value>
+  </data>
 </root>

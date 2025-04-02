@@ -41,7 +41,9 @@
             Y2="0" Stroke="Black" StrokeThickness="2" 
             VerticalAlignment="Center" />
 
-        <Canvas Name="PaintArea" Grid.Column="0"/>
+        <Canvas Name="PathArea" Panel.ZIndex="2" Grid.Column="0"/>
+        <Canvas Name="PaintArea" Panel.ZIndex="1" Grid.Column="0"/>
+        <Canvas Name="EllipseArea" Panel.ZIndex="0" Grid.Column="0"/>
         <Canvas Name="GraphArea" Panel.ZIndex="-2" Grid.Column="0"/>
         
         <TextBlock 
@@ -84,7 +86,7 @@
                 Content="{x:Static lang:AttemptResultLocalization.Diagram}"
                 FontSize="25"
                 GroupName="DataType" 
-                Checked="RadioButtonChecked"
+                Checked="SelectionChanged"
                 IsChecked="{Binding IsDiagramChecked}" 
                 Margin="10"/>
 
@@ -92,7 +94,7 @@
                 Content="{x:Static lang:AttemptResultLocalization.Path}"
                 FontSize="25"
                 GroupName="DataType"
-                Checked="RadioButtonChecked"
+                Checked="SelectionChanged"
                 IsChecked="{Binding IsPathChecked}"
                 Margin="10"/>
 
@@ -100,25 +102,55 @@
                 FontSize="25"
                 Margin="10"
                 Content="{x:Static lang:AttemptResultLocalization.PathToTarget}"
-                Checked="RadioButtonChecked"
-                Unchecked="RadioButtonChecked"
+                Checked="SelectionChanged"
+                Unchecked="SelectionChanged"
                 IsChecked="{Binding ShowPathToTarget}"/>
+
+            <CheckBox 
+                FontSize="25"
+                Margin="10"
+                Content="{x:Static lang:AttemptResultLocalization.PathInTarget}"
+                Checked="SelectionChanged"
+                Unchecked="SelectionChanged"
+                IsChecked="{Binding ShowPathInTarget}"/>
 
             <CheckBox
                 FontSize="25"
                 Margin="10"
                 Content="{x:Static lang:AttemptResultLocalization.HideTarget}"
                 Checked="HideTarget"
-                Unchecked="ShowTarget"
-                IsChecked="{Binding ShowPathInTarget}"/>
+                Unchecked="ShowTarget"/>
 
             <CheckBox
                 FontSize="25"
                 Margin="10"
                 Content="{x:Static lang:AttemptResultLocalization.HideCursor}"
                 Checked="HideCursor"
-                Unchecked="ShowCursor"
-                IsChecked="{Binding ShowPathInTarget}"/>
+                Unchecked="ShowCursor"/>
+
+            <CheckBox
+                FontSize="25"
+                Margin="10"
+                Content="{x:Static lang:AttemptResultLocalization.FullPathArea}"
+                Checked="HideFullPathEllipse"
+                Unchecked="ShowFullPathEllipse"
+                IsChecked="True"/>
+
+            <CheckBox
+                FontSize="25"
+                Margin="10"
+                Content="{x:Static lang:AttemptResultLocalization.PathInTargetArea}"
+                Checked="HidePathInTargetEllipse"
+                Unchecked="ShowPathInTargetEllipse"
+                IsChecked="True"/>
+
+            <CheckBox
+                FontSize="25"
+                Margin="10"
+                Content="{x:Static lang:AttemptResultLocalization.PathToTargetArea}"
+                Checked="HidePathToTargetEllipse"
+                Unchecked="ShowPathToTargetEllipse"
+                IsChecked="True"/>
 
             <ComboBox   
                 FontSize="25"

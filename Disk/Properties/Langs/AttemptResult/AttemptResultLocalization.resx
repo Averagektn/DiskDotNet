@@ -177,4 +177,13 @@
   <data name="HideCursor" xml:space="preserve">
     <value>Hide cursor</value>
   </data>
+  <data name="FullPathArea" xml:space="preserve">
+    <value>Full path area</value>
+  </data>
+  <data name="PathToTargetArea" xml:space="preserve">
+    <value>Path to target area</value>
+  </data>
+  <data name="PathInTargetArea" xml:space="preserve">
+    <value>Path in target area</value>
+  </data>
 </root>

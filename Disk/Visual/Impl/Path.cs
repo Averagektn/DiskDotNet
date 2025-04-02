@@ -1,6 +1,7 @@
 ﻿using Disk.Calculations.Impl.Converters;
 using Disk.Data.Impl;
 using Disk.Visual.Interface;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Shapes;
@@ -72,7 +73,7 @@ public class Path : IStaticFigure
         Parent.SizeChanged += Parent_SizeChanged;
     }
 
-    private void Parent_SizeChanged(object sender, System.Windows.SizeChangedEventArgs e)
+    private void Parent_SizeChanged(object sender, SizeChangedEventArgs e)
     {
         Scale();
     }

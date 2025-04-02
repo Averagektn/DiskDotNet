@@ -2,6 +2,7 @@
 using Disk.Service.Implementation;
 using Disk.ViewModel;
 using Disk.Visual.Interface;
+using Serilog;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Threading;
@@ -62,13 +63,13 @@ public partial class PaintView : UserControl
 
     private List<Point2DI> GetMultipleShots()
     {
-        //var shot = User.Shot();
+        var shot = User.Shot();
         //_ = shot.X;
         //_ = shot.Y;
         //_ = User.Radius / 2;
         //_ = Math.Sqrt(2);
 
-        return [User.Center];
+        return [shot];
         /*        return [new(x - halfRadius, y), new(x + halfRadius, y), new(x, y - halfRadius), new(x, y + halfRadius),
                         new((int)(x - (halfRadius / sqrt2)), (int)(y - (halfRadius / sqrt2))),
                         new((int)(x + (halfRadius / sqrt2)), (int)(y - (halfRadius / sqrt2))),
@@ -196,6 +197,22 @@ public partial class PaintView : UserControl
     {
         StopGame();
 
-        _ = Application.Current.Dispatcher.InvokeAsync(async () => await ViewModel.SaveAttemptResultAsync());
+        _ = Application.Current.Dispatcher.InvokeAsync(async () =>
+        {
+            try
+            {
+                await ViewModel.SaveAttemptResultAsync();
+            }
+            catch (Exception ex)
+            {
+                Log.Debug(ex.Message + ex.StackTrace);
+            }
+        }).Task.ContinueWith(task =>
+        {
+            if (task.Exception is not null)
+            {
+                Log.Fatal($"{task.Exception.Message} \n {task.Exception.StackTrace}");
+            }
+        });
     }
 }

@@ -8,6 +8,8 @@ using Disk.ViewModel.Common.Commands.Sync;
 using Disk.ViewModel.Common.ViewModels;
 using Disk.Visual.Impl;
 using Disk.Visual.Interface;
+using Emgu.CV.Util;
+using Emgu.CV;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using Serilog;
@@ -16,8 +18,12 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Shapes;
+using VL.Lib.Mathematics;
 using Localization = Disk.Properties.Langs.AttemptResult.AttemptResultLocalization;
 using Settings = Disk.Properties.Config.Config;
+using System.Drawing;
+using Brushes = System.Windows.Media.Brushes;
 
 namespace Disk.ViewModel;
 
@@ -94,6 +100,30 @@ public class AttemptResultViewModel(NavigationStore navigationStore, DiskContext
 
     private List<List<Point2D<float>>> PathsToTargets { get; set; } = [];
     private List<List<Point2D<float>>> PathsInTargets { get; set; } = [];
+
+    public List<Point2D<float>> CurrPathToTarget
+    {
+        get
+        {
+            if (SelectedIndex < 0 || SelectedIndex > PathsToTargets.Count)
+            {
+                return [];
+            }
+            return PathsToTargets[SelectedIndex];
+        }
+    }
+    public List<Point2D<float>> CurrPathInTarget
+    {
+        get
+        {
+            if (SelectedIndex < 0 || SelectedIndex > PathsInTargets.Count)
+            {
+                return [];
+            }
+            return PathsInTargets[SelectedIndex];
+        }
+    }
+
     public ObservableCollection<string> Indices { get; set; } = [];
     public Converter Converter { get; set; } = DrawableFabric.GetIniConverter();
     public bool ShowPathInTarget { get; set; }
@@ -175,6 +205,7 @@ public class AttemptResultViewModel(NavigationStore navigationStore, DiskContext
         }
     }
 
+    // remove
     public List<IStaticFigure> GetPathAndRose(Canvas canvas)
     {
         if (SelectedIndex == -1)
@@ -196,18 +227,23 @@ public class AttemptResultViewModel(NavigationStore navigationStore, DiskContext
             }
 
             var res = new List<IStaticFigure>();
-            var pathToTarget = new Path(PathsToTargets[SelectedIndex], Converter, Brushes.Green, canvas);
-            var pathInTarget = new Path(PathsInTargets[SelectedIndex], Converter, Brushes.Blue, canvas);
+            //var pathToTarget = new Visual.Impl.Path(PathsToTargets[SelectedIndex], Converter, Brushes.Green, canvas);
+            //var pathInTarget = new Visual.Impl.Path(PathsInTargets[SelectedIndex], Converter, Brushes.Blue, canvas);
+            var c = DrawableFabric.GetIniConverter();
+            var pointsToTarget = new PointedPath(PathsToTargets[SelectedIndex].Select(c.ToWndCoord), Colors.Green, canvas);
+            var pointsInTarget = new PointedPath(PathsInTargets[SelectedIndex].Select(c.ToWndCoord), Colors.Blue, canvas);
 
             Log.Information("Created Path");
 
             if (ShowPathToTarget)
             {
-                res.Add(pathToTarget);
+                //res.Add(pathToTarget);
+                res.Add(pointsToTarget);
             }
             if (ShowPathInTarget)
             {
-                res.Add(pathInTarget);
+                //res.Add(pathInTarget);
+                res.Add(pointsInTarget);
             }
 
             return res;
@@ -248,5 +284,26 @@ public class AttemptResultViewModel(NavigationStore navigationStore, DiskContext
         Log.Information("Created Graph");
 
         return new Graph(dataset, Brushes.LightGreen, canvas, 8);
+    }
+
+    public List<Point2D<float>>? GetConvexHull()
+    {
+        if (SelectedIndex < 0)
+        {
+            return null;
+        }
+
+        var coords = PathsToTargets[SelectedIndex].Concat(PathsInTargets[SelectedIndex]).ToList();
+        var points = new List<PointF>(coords.Count);
+        coords.ForEach(coord => points.Add(coord.ToPointF()));
+        
+        var convexhull = CvInvoke.ConvexHull([.. points], true);
+        var result = new List<Point2D<float>>(convexhull.Length);
+        foreach (var item in convexhull)
+        {
+            result.Add(new Point2D<float>(item.X, item.Y));
+        }
+
+        return result;
     }
 }

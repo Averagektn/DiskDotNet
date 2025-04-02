@@ -137,7 +137,7 @@ public class Circle : IDynamicFigure
         {
             Width = radius * 2,
             Height = radius * 2,
-            Fill = color
+            Fill = color,
         };
 
         Speed = speed;

@@ -106,6 +106,15 @@ namespace Disk.Properties.Langs.AttemptResult {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Full path area.
+        /// </summary>
+        public static string FullPathArea {
+            get {
+                return ResourceManager.GetString("FullPathArea", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Hide cursor.
         /// </summary>
         public static string HideCursor {
@@ -178,11 +187,29 @@ namespace Disk.Properties.Langs.AttemptResult {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Path in target area.
+        /// </summary>
+        public static string PathInTargetArea {
+            get {
+                return ResourceManager.GetString("PathInTargetArea", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to PathToTarget.
         /// </summary>
         public static string PathToTarget {
             get {
                 return ResourceManager.GetString("PathToTarget", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Path to target area.
+        /// </summary>
+        public static string PathToTargetArea {
+            get {
+                return ResourceManager.GetString("PathToTargetArea", resourceCulture);
             }
         }
         
