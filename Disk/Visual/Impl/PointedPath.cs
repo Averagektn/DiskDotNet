@@ -14,10 +14,11 @@ public unsafe class PointedPath : IStaticFigure
     private Color _color;
 
     private readonly List<Point2D<int>> _points;
-    private readonly Image _image;
-    private readonly WriteableBitmap _bitmap;
-    private readonly IntPtr _backBuffer;
-    private readonly int _backBufferStride;
+    private Image _image;
+    private WriteableBitmap _bitmap;
+    private IntPtr _backBuffer;
+    private int _backBufferStride;
+    private Size _lastSize;
 
     public PointedPath(IEnumerable<Point2D<int>> points, Color color, Panel parent)
     {
@@ -28,6 +29,7 @@ public unsafe class PointedPath : IStaticFigure
         _bitmap = new((int)parent.ActualWidth, (int)parent.ActualHeight, dpiX: 96, dpiY: 96, PixelFormats.Pbgra32, null);
         _backBuffer = _bitmap.BackBuffer;
         _backBufferStride = _bitmap.BackBufferStride;
+        _lastSize = parent.RenderSize;
 
         _image = new Image()
         {
@@ -35,23 +37,6 @@ public unsafe class PointedPath : IStaticFigure
             Width = _bitmap.Width,
             Height = _bitmap.Height,
         };
-    }
-
-    public virtual bool Contains(Point2D<int> p)
-    {
-        return false;
-    }
-
-    public virtual void Draw()
-    {
-        ModifyBitmap();
-        _ = Parent.Children.Add(_image);
-        Parent.SizeChanged += Parent_SizeChanged;
-    }
-
-    private void Parent_SizeChanged(object sender, SizeChangedEventArgs e)
-    {
-        Scale();
     }
 
     private void ModifyBitmap()
@@ -109,6 +94,23 @@ public unsafe class PointedPath : IStaticFigure
         }
     }
 
+    public virtual bool Contains(Point2D<int> p)
+    {
+        return false;
+    }
+
+    public virtual void Draw()
+    {
+        ModifyBitmap();
+        _ = Parent.Children.Add(_image);
+        Parent.SizeChanged += Parent_SizeChanged;
+    }
+
+    private void Parent_SizeChanged(object sender, SizeChangedEventArgs e)
+    {
+        Scale();
+    }
+
     public virtual void Remove()
     {
         Parent.Children.Remove(_image);
@@ -118,6 +120,24 @@ public unsafe class PointedPath : IStaticFigure
     public virtual void Scale()
     {
         Clear();
+
+        double xScale = Parent.ActualWidth / _lastSize.Width;
+        double yScale = Parent.ActualHeight / _lastSize.Height;
+        _points.ForEach(p =>
+        {
+            p.X = (int)(p.X * xScale);
+            p.Y = (int)(p.Y * yScale);
+        });
+        _lastSize = Parent.RenderSize;
+
+        _bitmap = new WriteableBitmap((int)Parent.ActualWidth, (int)Parent.ActualHeight, dpiX: 96, dpiY: 96, PixelFormats.Pbgra32,
+            null);
+        _backBuffer = _bitmap.BackBuffer;
+        _backBufferStride = _bitmap.BackBufferStride;
+
+        _image.Source = _bitmap;
+        _image.Width = _bitmap.Width;
+        _image.Height = _bitmap.Height;
         ModifyBitmap();
     }
 }

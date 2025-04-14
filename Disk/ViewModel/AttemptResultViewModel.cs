@@ -230,8 +230,8 @@ public class AttemptResultViewModel(NavigationStore navigationStore, DiskContext
             //var pathToTarget = new Visual.Impl.Path(PathsToTargets[SelectedIndex], Converter, Brushes.Green, canvas);
             //var pathInTarget = new Visual.Impl.Path(PathsInTargets[SelectedIndex], Converter, Brushes.Blue, canvas);
             var c = DrawableFabric.GetIniConverter();
-            var pointsToTarget = new PointedPath(PathsToTargets[SelectedIndex].Select(c.ToWndCoord), Colors.Green, canvas);
-            var pointsInTarget = new PointedPath(PathsInTargets[SelectedIndex].Select(c.ToWndCoord), Colors.Blue, canvas);
+            var pointsToTarget = new PointedPath(PathsToTargets[SelectedIndex].Select(Converter.ToWndCoord), Colors.Green, canvas);
+            var pointsInTarget = new PointedPath(PathsInTargets[SelectedIndex].Select(Converter.ToWndCoord), Colors.Blue, canvas);
 
             Log.Information("Created Path");
 

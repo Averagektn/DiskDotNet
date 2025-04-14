@@ -82,10 +82,10 @@ public partial class AttemptResultView : UserControl
             return;
         }
 
-/*        _pathAndRose.ForEach(p => p.Remove());
+        _pathAndRose.ForEach(p => p.Remove());
         // FIX GRAPH AREA
         _pathAndRose = ViewModel.GetPathAndRose(PathArea);
-        _pathAndRose.ForEach(p => p.Draw());*/
+        _pathAndRose.ForEach(p => p.Draw());
 
         if (_currentIndex == ViewModel.SelectedIndex)
         {
