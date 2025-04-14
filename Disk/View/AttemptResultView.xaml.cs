@@ -22,7 +22,7 @@ public partial class AttemptResultView : UserControl
     private bool _isTargetVisible = true;
     private int _currentIndex = -1;
 
-    private readonly List<IStaticFigure> _pathAndRose = [];
+    private List<IStaticFigure> _pathAndRose = [];
     private readonly Size IniScreenSize = new(Settings.IniScreenWidth, Settings.IniScreenHeight);
     private readonly List<IStaticFigure> _pathToTargetEllipses = [];
     private readonly List<IStaticFigure> _pathInTargetEllipses = [];
@@ -82,10 +82,10 @@ public partial class AttemptResultView : UserControl
             return;
         }
 
-        /*        _pathAndRose.ForEach(p => p.Remove());
-                // FIX GRAPH AREA
-                _pathAndRose = ViewModel.GetPathAndRose(PathArea);
-                _pathAndRose.ForEach(p => p.Draw());*/
+/*        _pathAndRose.ForEach(p => p.Remove());
+        // FIX GRAPH AREA
+        _pathAndRose = ViewModel.GetPathAndRose(PathArea);
+        _pathAndRose.ForEach(p => p.Draw());*/
 
         if (_currentIndex == ViewModel.SelectedIndex)
         {
@@ -116,27 +116,21 @@ public partial class AttemptResultView : UserControl
             var allEmpty = _fullPathEllipses.Count == 0 && _pathInTargetEllipses.Count == 0 && _pathToTargetEllipses.Count == 0;
             if (_isFullPathEllipseVisible || allEmpty)
             {
-                RedrawEllipse(_fullPathEllipses, [.. ViewModel.CurrPathToTarget, .. ViewModel.CurrPathInTarget],
+                RecalculateEllipse(_fullPathEllipses, [.. ViewModel.CurrPathToTarget, .. ViewModel.CurrPathInTarget],
                     Brushes.MediumPurple, Brushes.Purple);
             }
             if (_isPathToTargetEllipseVisible || allEmpty)
             {
-                RedrawEllipse(_pathToTargetEllipses, [.. ViewModel.CurrPathToTarget], Brushes.LawnGreen, Brushes.Green);
+                RecalculateEllipse(_pathToTargetEllipses, [.. ViewModel.CurrPathToTarget], Brushes.LawnGreen, Brushes.Green);
             }
             if (_isPathInTargetEllipseVisible || allEmpty)
             {
-                RedrawEllipse(_pathInTargetEllipses, [.. ViewModel.CurrPathInTarget], Brushes.CadetBlue, Brushes.Blue);
-            }
-            if (allEmpty)
-            {
-                _fullPathEllipses.ForEach(e => e.Remove());
-                _pathToTargetEllipses.ForEach(e => e.Remove());
-                _pathInTargetEllipses.ForEach(e => e.Remove());
+                RecalculateEllipse(_pathInTargetEllipses, [.. ViewModel.CurrPathInTarget], Brushes.CadetBlue, Brushes.Blue);
             }
         }
     }
 
-    private void RedrawEllipse(List<IStaticFigure> ellipseList, List<Point2D<float>> points, Brush fill, Brush bound)
+    private void RecalculateEllipse(List<IStaticFigure> ellipseList, List<Point2D<float>> points, Brush fill, Brush bound)
     {
         ellipseList.ForEach(e => e.Remove());
         ellipseList.Clear();
@@ -145,7 +139,6 @@ public partial class AttemptResultView : UserControl
         var boundingEllipse = CreateBoundingEllipse(points, bound);
 
         ellipseList.AddRange([convexHull, boundingEllipse]);
-        ellipseList.ForEach(e => e.Draw());
     }
 
     private IStaticFigure CreateConvexHull(List<Point2D<float>> points, Brush borderColor, Brush fillColor)
@@ -165,7 +158,6 @@ public partial class AttemptResultView : UserControl
         var converter = DrawableFabric.GetIniConverter();
         var ellipse = new BoundingEllipse([.. points.Select(converter.ToWndCoord)], color, EllipseArea, IniScreenSize);
         ellipse.Scale();
-        ellipse.Draw();
 
         return ellipse;
     }

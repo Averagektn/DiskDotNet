@@ -132,25 +132,25 @@
                 FontSize="25"
                 Margin="10"
                 Content="{x:Static lang:AttemptResultLocalization.FullPathArea}"
-                Checked="HideFullPathEllipse"
-                Unchecked="ShowFullPathEllipse"
-                IsChecked="True"/>
+                Checked="ShowFullPathEllipse"
+                Unchecked="HideFullPathEllipse"
+                IsChecked="False"/>
 
             <CheckBox
                 FontSize="25"
                 Margin="10"
                 Content="{x:Static lang:AttemptResultLocalization.PathInTargetArea}"
-                Checked="HidePathInTargetEllipse"
-                Unchecked="ShowPathInTargetEllipse"
-                IsChecked="True"/>
+                Checked="ShowPathInTargetEllipse"
+                Unchecked="HidePathInTargetEllipse"
+                IsChecked="False"/>
 
             <CheckBox
                 FontSize="25"
                 Margin="10"
                 Content="{x:Static lang:AttemptResultLocalization.PathToTargetArea}"
-                Checked="HidePathToTargetEllipse"
-                Unchecked="ShowPathToTargetEllipse"
-                IsChecked="True"/>
+                Checked="ShowPathToTargetEllipse"
+                Unchecked="HidePathToTargetEllipse"
+                IsChecked="False"/>
 
             <ComboBox   
                 FontSize="25"
