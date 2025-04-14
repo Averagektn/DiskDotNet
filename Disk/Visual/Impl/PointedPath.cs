@@ -9,27 +9,29 @@ namespace Disk.Visual.Impl;
 
 public unsafe class PointedPath : IStaticFigure
 {
+    public Color Color { get; private set; }
+    public int PointRadius { get; protected set; }
+
     protected Panel Parent;
+    protected Size LastSize;
 
-    private Color _color;
-
-    private readonly List<Point2D<int>> _points;
-    private Image _image;
     private WriteableBitmap _bitmap;
     private IntPtr _backBuffer;
     private int _backBufferStride;
-    private Size _lastSize;
 
-    public PointedPath(IEnumerable<Point2D<int>> points, Color color, Panel parent)
+    private readonly List<Point2D<int>> _points;
+    private readonly Image _image;
+
+    public PointedPath(IEnumerable<Point2D<int>> points, Color color, Panel parent, int pointRadius = 2)
     {
         _points = [.. points];
-        _color = color;
+        Color = color;
         Parent = parent;
 
         _bitmap = new((int)parent.ActualWidth, (int)parent.ActualHeight, dpiX: 96, dpiY: 96, PixelFormats.Pbgra32, null);
         _backBuffer = _bitmap.BackBuffer;
         _backBufferStride = _bitmap.BackBufferStride;
-        _lastSize = parent.RenderSize;
+        LastSize = parent.RenderSize;
 
         _image = new Image()
         {
@@ -37,6 +39,8 @@ public unsafe class PointedPath : IStaticFigure
             Width = _bitmap.Width,
             Height = _bitmap.Height,
         };
+
+        PointRadius = pointRadius;
     }
 
     private void ModifyBitmap()
@@ -50,17 +54,51 @@ public unsafe class PointedPath : IStaticFigure
 
         try
         {
-            uint colorValue = (uint)((_color.A << 24) | (_color.R << 16) | (_color.G << 8) | _color.B);
+            uint colorValue = (uint)((Color.A << 24) | (Color.R << 16) | (Color.G << 8) | Color.B);
 
-            for (int i = 0; i < _points.Count; i++)
+            foreach (var center in _points)
             {
-                int x = _points[i].X;
-                int y = _points[i].Y;
+                int cx = center.X;
+                int cy = center.Y;
 
-                if (x >= 0 && x < _bitmap.PixelWidth && y >= 0 && y < _bitmap.PixelHeight)
+                int x = 0;
+                int y = PointRadius;
+                int d = 3 - (2 * PointRadius);
+
+                void DrawHorizontalLine(int x0, int x1, int y)
                 {
-                    uint* pixel = (uint*)(_backBuffer + (y * _backBufferStride) + (x * 4));
-                    *pixel = colorValue;
+                    if (x0 > x1)
+                    {
+                        (x0, x1) = (x1, x0);
+                    }
+
+                    for (int i = x0; i <= x1; i++)
+                    {
+                        if (i >= 0 && i < _bitmap.PixelWidth && y >= 0 && y < _bitmap.PixelHeight)
+                        {
+                            uint* pixel = (uint*)(_backBuffer + (y * _backBufferStride) + (i * 4));
+                            *pixel = colorValue;
+                        }
+                    }
+                }
+
+                while (y >= x)
+                {
+                    DrawHorizontalLine(cx - x, cx + x, cy + y);
+                    DrawHorizontalLine(cx - x, cx + x, cy - y);
+                    DrawHorizontalLine(cx - y, cx + y, cy + x);
+                    DrawHorizontalLine(cx - y, cx + y, cy - x);
+
+                    x++;
+                    if (d > 0)
+                    {
+                        y--;
+                        d = d + (4 * (x - y)) + 10;
+                    }
+                    else
+                    {
+                        d = d + (4 * x) + 6;
+                    }
                 }
             }
 
@@ -121,14 +159,15 @@ public unsafe class PointedPath : IStaticFigure
     {
         Clear();
 
-        double xScale = Parent.ActualWidth / _lastSize.Width;
-        double yScale = Parent.ActualHeight / _lastSize.Height;
+        double xScale = Parent.ActualWidth / LastSize.Width;
+        double yScale = Parent.ActualHeight / LastSize.Height;
         _points.ForEach(p =>
         {
             p.X = (int)(p.X * xScale);
             p.Y = (int)(p.Y * yScale);
         });
-        _lastSize = Parent.RenderSize;
+        LastSize = Parent.RenderSize;
+        PointRadius = (int)Math.Round(PointRadius * (xScale + yScale) / 2);
 
         _bitmap = new WriteableBitmap((int)Parent.ActualWidth, (int)Parent.ActualHeight, dpiX: 96, dpiY: 96, PixelFormats.Pbgra32,
             null);

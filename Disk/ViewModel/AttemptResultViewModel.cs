@@ -8,22 +8,19 @@ using Disk.ViewModel.Common.Commands.Sync;
 using Disk.ViewModel.Common.ViewModels;
 using Disk.Visual.Impl;
 using Disk.Visual.Interface;
-using Emgu.CV.Util;
 using Emgu.CV;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using Serilog;
 using System.Collections.ObjectModel;
+using System.Drawing;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Shapes;
-using VL.Lib.Mathematics;
+using Brushes = System.Windows.Media.Brushes;
 using Localization = Disk.Properties.Langs.AttemptResult.AttemptResultLocalization;
 using Settings = Disk.Properties.Config.Config;
-using System.Drawing;
-using Brushes = System.Windows.Media.Brushes;
 
 namespace Disk.ViewModel;
 
@@ -296,7 +293,7 @@ public class AttemptResultViewModel(NavigationStore navigationStore, DiskContext
         var coords = PathsToTargets[SelectedIndex].Concat(PathsInTargets[SelectedIndex]).ToList();
         var points = new List<PointF>(coords.Count);
         coords.ForEach(coord => points.Add(coord.ToPointF()));
-        
+
         var convexhull = CvInvoke.ConvexHull([.. points], true);
         var result = new List<Point2D<float>>(convexhull.Length);
         foreach (var item in convexhull)

@@ -83,7 +83,6 @@ public partial class AttemptResultView : UserControl
         }
 
         _pathAndRose.ForEach(p => p.Remove());
-        // FIX GRAPH AREA
         _pathAndRose = ViewModel.GetPathAndRose(PathArea);
         _pathAndRose.ForEach(p => p.Draw());
 
