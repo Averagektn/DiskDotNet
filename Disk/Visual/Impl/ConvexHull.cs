@@ -19,7 +19,7 @@ public class ConvexHull : IStaticFigure
     /// <typeparam name="T">Coord type</typeparam>
     /// <param name="points">List of points</param>
     /// <returns>Convex hull</returns>
-    public static List<PointF> GetConvexHull<T>(List<Point2D<T>> points, float percent = 0.95f) where T : IConvertible, new()
+    public static List<PointF> GetConvexHull<T>(List<Point2D<T>> points, float percent = 0.90f) where T : IConvertible, new()
     {
         var centerX = points.Average(p => p.XDbl);
         var centerY = points.Average(p => p.YDbl);
@@ -47,9 +47,10 @@ public class ConvexHull : IStaticFigure
     /// <summary>
     ///     Scaling size
     /// </summary>
-    protected Size CurrSize;
+    protected Size IniSize;
 
     private readonly Polygon _polygon;
+    private List<Point2D<int>> _points;
 
     /// <summary>
     ///     Crates a covex hull based on points list
@@ -66,10 +67,11 @@ public class ConvexHull : IStaticFigure
             Stroke = borderColor,
             StrokeThickness = 2,
             Fill = fillColor,
-            Points = new([.. points.Select(p => p.ToPoint())])
+            Points = [.. GetConvexHull(points).Select(p => new Point(p.X, p.Y))]
         };
+        _points = [.. points];
         Parent = parent;
-        CurrSize = iniSize;
+        IniSize = iniSize;
     }
 
     /// <inheritdoc/>
@@ -116,17 +118,19 @@ public class ConvexHull : IStaticFigure
     /// <inheritdoc/>
     public virtual void Scale()
     {
-        double xScale = Parent.ActualWidth / CurrSize.Width;
-        double yScale = Parent.ActualHeight / CurrSize.Height;
+        double xScale = Parent.ActualWidth / IniSize.Width;
+        double yScale = Parent.ActualHeight / IniSize.Height;
 
-        var points = new List<Point>(_polygon.Points.Count);
-        foreach (var item in _polygon.Points)
+        var a = GetConvexHull(_points.Select(p => new Point2D<int>((int)(p.X * xScale), (int)(p.Y * yScale))).ToList());
+        _polygon.Points.Clear();
+        a.ForEach(p => _polygon.Points.Add(new Point(p.X, p.Y)));
+
+/*        _polygon.Points.Clear();
+        foreach (var item in _points)
         {
             int x = (int)(item.X * xScale);
             int y = (int)(item.Y * yScale);
-            points.Add(new Point(x, y));
-        }
-        _polygon.Points = [.. points];
-        CurrSize = Parent.RenderSize;
+            _polygon.Points.Add(new Point(x, y));
+        }*/
     }
 }

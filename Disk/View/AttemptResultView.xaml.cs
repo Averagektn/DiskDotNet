@@ -4,6 +4,7 @@ using Disk.Service.Implementation;
 using Disk.ViewModel;
 using Disk.Visual.Impl;
 using Disk.Visual.Interface;
+using System;
 using System.Data;
 using System.Windows;
 using System.Windows.Controls;
@@ -110,21 +111,21 @@ public partial class AttemptResultView : UserControl
             _target.Move(ViewModel.TargetCenter);
         }
 
-        if (ViewModel.SelectedIndex >= 0)
+        //if (ViewModel.SelectedIndex >= 0)
         {
             var allEmpty = _fullPathEllipses.Count == 0 && _pathInTargetEllipses.Count == 0 && _pathToTargetEllipses.Count == 0;
-            if (_isFullPathEllipseVisible || allEmpty)
+            if (ViewModel.CurrPathInTarget.Count > 5 && ViewModel.CurrPathToTarget.Count != 5 && (_isFullPathEllipseVisible || allEmpty))
             {
                 RecalculateEllipse(_fullPathEllipses, [.. ViewModel.CurrPathToTarget, .. ViewModel.CurrPathInTarget],
                     Brushes.MediumPurple, Brushes.Purple);
             }
-            if (_isPathToTargetEllipseVisible || allEmpty)
-            {
-                RecalculateEllipse(_pathToTargetEllipses, [.. ViewModel.CurrPathToTarget], Brushes.LawnGreen, Brushes.Green);
-            }
-            if (_isPathInTargetEllipseVisible || allEmpty)
+            if (ViewModel.CurrPathInTarget.Count > 5 && (_isPathInTargetEllipseVisible || allEmpty))
             {
                 RecalculateEllipse(_pathInTargetEllipses, [.. ViewModel.CurrPathInTarget], Brushes.CadetBlue, Brushes.Blue);
+            }
+            if (ViewModel.CurrPathToTarget.Count > 5 && (_isPathToTargetEllipseVisible || allEmpty))
+            {
+                RecalculateEllipse(_pathToTargetEllipses, [.. ViewModel.CurrPathToTarget], Brushes.LawnGreen, Brushes.Green);
             }
         }
     }
@@ -142,12 +143,21 @@ public partial class AttemptResultView : UserControl
 
     private IStaticFigure CreateConvexHull(List<Point2D<float>> points, Brush borderColor, Brush fillColor)
     {
-        var converter = DrawableFabric.GetIniConverter();
-        var hullPoints = ConvexHull.GetConvexHull(points)
-            .Select(p => new Point2D<int>(converter.ToWndCoordX(p.X), converter.ToWndCoordY(p.Y)))
-            .ToList();
-        var ch = new ConvexHull(hullPoints, borderColor, fillColor, EllipseArea, IniScreenSize);
-        ch.Scale();
+        ConvexHull ch;
+        try
+        {
+            var converter = DrawableFabric.GetIniConverter();
+            /*            var hullPoints = ConvexHull.GetConvexHull(points)
+                            .Select(p => new Point2D<int>(converter.ToWndCoordX(p.X), converter.ToWndCoordY(p.Y)))
+                            .ToList();*/
+            ch = new ConvexHull([.. points.Select(converter.ToWndCoord)], borderColor, fillColor, EllipseArea, IniScreenSize);
+            ch.Scale();
+        }
+        // FIX
+        catch (Exception ex)
+        {
+            ch = new ConvexHull([], Brushes.Transparent, Brushes.Transparent, EllipseArea, IniScreenSize);
+        }
 
         return ch;
     }

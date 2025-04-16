@@ -13,7 +13,7 @@ namespace Disk.Visual.Impl;
 public class BoundingEllipse : IStaticFigure
 {
     public static (PointF Center, float RadiusX, float RadiusY, float Angle) GetFillEllipse<T>(List<Point2D<T>> points,
-        float percent = 0.95f) where T : IConvertible, new()
+        float percent = 1) where T : IConvertible, new()
     {
         var dataset = points.ToList();
 
@@ -22,13 +22,15 @@ public class BoundingEllipse : IStaticFigure
             percent = 1;
         }
 
-        var ch = ConvexHull.GetConvexHull(dataset, percent);
+/*        var ch = ConvexHull.GetConvexHull(dataset);
         if (ch.Count < 5)
         {
             ch = [.. dataset.Select(p => p.ToPointF())];
-        }
+        }*/
+        List<PointF> ch = [.. dataset.Select(p => p.ToPointF())];
         using var pointVector = new VectorOfPointF([.. ch]);
-        var ellipse = CvInvoke.FitEllipse(pointVector);
+        var ellipse = CvInvoke.MinAreaRect(pointVector);
+        //var ellipse = CvInvoke.FitEllipse(pointVector);
         if (ellipse.Angle == 0)
         {
             using var newVector = new VectorOfPointF([.. dataset.Select(p => p.ToPointF())]);

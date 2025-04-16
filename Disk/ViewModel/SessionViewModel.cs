@@ -147,7 +147,7 @@ public class SessionViewModel(DiskContext database, IExcelFiller excelFiller, Na
         try
         {
             AttemptResultNavigator.Navigate(this, navigationStore, SelectedAttempt.Id);
-            Application.Current.MainWindow.WindowState = WindowState.Maximized;
+            //Application.Current.MainWindow.WindowState = WindowState.Maximized;
         }
         catch
         {

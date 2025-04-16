@@ -21,6 +21,7 @@ using System.Windows.Media;
 using Brushes = System.Windows.Media.Brushes;
 using Localization = Disk.Properties.Langs.AttemptResult.AttemptResultLocalization;
 using Settings = Disk.Properties.Config.Config;
+using Size = System.Windows.Size;
 
 namespace Disk.ViewModel;
 
@@ -102,7 +103,7 @@ public class AttemptResultViewModel(NavigationStore navigationStore, DiskContext
     {
         get
         {
-            if (SelectedIndex < 0 || SelectedIndex > PathsToTargets.Count)
+            if (SelectedIndex < 0 || SelectedIndex >= PathsToTargets.Count)
             {
                 return [];
             }
@@ -113,7 +114,7 @@ public class AttemptResultViewModel(NavigationStore navigationStore, DiskContext
     {
         get
         {
-            if (SelectedIndex < 0 || SelectedIndex > PathsInTargets.Count)
+            if (SelectedIndex < 0 || SelectedIndex >= PathsInTargets.Count)
             {
                 return [];
             }
@@ -182,17 +183,22 @@ public class AttemptResultViewModel(NavigationStore navigationStore, DiskContext
 
     public ICommand NavigateBackCommand => new Command(_ => navigationStore.Close());
     public ICommand NewItemSelectedCommand => new Command(_ =>
-        Message =
-        $"""
-            {Localization.StandartDeviation} X: {CurrentAttempt.AttemptResult?.DeviationX:F2}
-            {Localization.StandartDeviation} Y: {CurrentAttempt.AttemptResult?.DeviationY:F2}
-            {Localization.MathExp} X: {CurrentAttempt.AttemptResult?.MathExpX:F2}
-            {Localization.MathExp} Y: {CurrentAttempt.AttemptResult?.MathExpY:F2}
-            {Localization.AverageSpeed}: {CurrentAttempt.PathToTargets.ElementAt(SelectedIndex).AverageSpeed:F2}
-            {Localization.ApproachSpeed}: {CurrentAttempt.PathToTargets.ElementAt(SelectedIndex).ApproachSpeed:F2}
-            {Localization.Time}: {CurrentAttempt.PathToTargets.ElementAt(SelectedIndex).Time:F2}
-            {Localization.Accuracy}: {CurrentAttempt.PathInTargets.ElementAt(SelectedIndex).Accuracy:F2}  
-            """);
+    {
+        if (SelectedIndex >= 0 && CurrentAttempt.PathToTargets.Count > SelectedIndex && CurrentAttempt.PathInTargets.Count > SelectedIndex)
+        {
+            Message =
+                $"""
+                    {Localization.StandartDeviation} X: {CurrentAttempt.AttemptResult?.DeviationX:F2}
+                    {Localization.StandartDeviation} Y: {CurrentAttempt.AttemptResult?.DeviationY:F2}
+                    {Localization.MathExp} X: {CurrentAttempt.AttemptResult?.MathExpX:F2}
+                    {Localization.MathExp} Y: {CurrentAttempt.AttemptResult?.MathExpY:F2}
+                    {Localization.AverageSpeed}: {CurrentAttempt.PathToTargets.ElementAt(SelectedIndex).AverageSpeed:F2}
+                    {Localization.ApproachSpeed}: {CurrentAttempt.PathToTargets.ElementAt(SelectedIndex).ApproachSpeed:F2}
+                    {Localization.Time}: {CurrentAttempt.PathToTargets.ElementAt(SelectedIndex).Time:F2}
+                    {Localization.Accuracy}: {CurrentAttempt.PathInTargets.ElementAt(SelectedIndex).Accuracy:F2}  
+                """;
+        }
+    });
 
     public void FillTargetsComboBox()
     {
@@ -227,10 +233,29 @@ public class AttemptResultViewModel(NavigationStore navigationStore, DiskContext
             //var pathToTarget = new Visual.Impl.Path(PathsToTargets[SelectedIndex], Converter, Brushes.Green, canvas);
             //var pathInTarget = new Visual.Impl.Path(PathsInTargets[SelectedIndex], Converter, Brushes.Blue, canvas);
             var c = DrawableFabric.GetIniConverter();
-            var pointsToTarget = new PointedPath(PathsToTargets[SelectedIndex].Select(Converter.ToWndCoord), Colors.Green, canvas);
-            var pointsInTarget = new PointedPath(PathsInTargets[SelectedIndex].Select(Converter.ToWndCoord), Colors.Blue, canvas);
 
-            Log.Information("Created Path");
+            PointedPath pointsToTarget;
+            if (PathsToTargets.Count > SelectedIndex)
+            {
+                pointsToTarget = new PointedPath(PathsToTargets[SelectedIndex].Select(c.ToWndCoord), Colors.Green, canvas, new Size(800, 800));
+                pointsToTarget.Scale();
+            }
+            else
+            {
+                pointsToTarget = new PointedPath([], Colors.Transparent, canvas, new(1, 1));
+            }
+            PointedPath pointsInTarget;
+            if (PathsInTargets.Count > SelectedIndex)
+            {
+                pointsInTarget = new PointedPath(PathsInTargets[SelectedIndex].Select(c.ToWndCoord), Colors.Blue, canvas, new Size(800, 800));
+                pointsInTarget.Scale();
+            }
+            else
+            {
+                pointsInTarget = new PointedPath([], Colors.Transparent, canvas, new(1, 1));
+            }
+
+                Log.Information("Created Path");
 
             if (ShowPathToTarget)
             {
