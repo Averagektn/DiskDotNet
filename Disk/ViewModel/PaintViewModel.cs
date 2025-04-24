@@ -144,7 +144,7 @@ public class PaintViewModel : PopupViewModel
 
     public async Task SaveAttemptResultAsync()
     {
-        if (PathsInTargets.Count != 0)
+        if (FullPath.Count > 0)
         {
             var mx = Calculator2D.MathExp(FullPath);
             var deviation = Calculator2D.StandartDeviation(FullPath);
@@ -160,19 +160,12 @@ public class PaintViewModel : PopupViewModel
             };
 
             _ = await _database.AttemptResults.AddAsync(sres);
+            _ = await _database.SaveChangesAsync();
         }
-        else
-        {
-            _ = _database.Attempts.Remove(CurrentAttempt);
-        }
-        _ = await _database.SaveChangesAsync();
 
         using (var logger = Logger.GetLogger(UsrAngLog))
         {
-            foreach (var point in FullPath)
-            {
-                logger.LogLn(point);
-            }
+            FullPath.ForEach(logger.LogLn);
         }
 
         IsStopEnabled = false;
@@ -199,17 +192,23 @@ public class PaintViewModel : PopupViewModel
 
     public void SwitchToPathInTarget(Point2D<int> userShot)
     {
-        if (PathToTargetStopwatch is null)
-        {
-            return;
-        }
-        PathToTargetStopwatch.Stop();
-
         if (userShot.X != 0 && userShot.Y != 0)
         {
             PathsToTargets[TargetId - 1].Add(Converter.ToAngle_FromWnd(userShot));
         }
         PathsInTargets.Add([]);
+
+        SavePathToTarget(userShot);
+    }
+
+    public void SavePathToTarget(Point2D<int> userShot)
+    {
+        if (PathToTargetStopwatch is null)
+        {
+            return;
+        }
+
+        PathToTargetStopwatch.Stop();
 
         double distance = 0;
         var pathToTarget = PathsToTargets[TargetId - 1];
@@ -248,8 +247,27 @@ public class PaintViewModel : PopupViewModel
             return false;
         }
 
-        var pathInTarget = PathsInTargets[TargetId - 1];
+        SavePathInTarget(target);
+
         PathsToTargets.Add([]);
+
+        target.Reset();
+
+        if (NextTargetCenter is not null)
+        {
+            var wndCenter = Converter.ToWndCoord(NextTargetCenter);
+            target.Move(wndCenter);
+
+            PathToTargetStopwatch.Restart();
+
+            return true;
+        }
+        return false;
+    }
+
+    public void SavePathInTarget(IProgressTarget target)
+    {
+        var pathInTarget = PathsInTargets[TargetId - 1];
 
         var accuracy = (float)pathInTarget.Count(p => target.Contains(Converter.ToWndCoord(p))) / pathInTarget.Count;
 
@@ -266,20 +284,6 @@ public class PaintViewModel : PopupViewModel
             _ = await _database.PathInTargets.AddAsync(pit);
             _ = await _database.SaveChangesAsync();
         });
-
-        var newCenter = NextTargetCenter;
-        target.Reset();
-
-        if (newCenter is not null)
-        {
-            var wndCenter = Converter.ToWndCoord(newCenter);
-            target.Move(wndCenter);
-
-            PathToTargetStopwatch.Restart();
-
-            return true;
-        }
-        return false;
     }
 
     public override void Dispose()

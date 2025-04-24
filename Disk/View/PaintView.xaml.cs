@@ -44,7 +44,6 @@ public partial class PaintView : UserControl
         InitializeComponent();
 
         MoveTimer = new(DispatcherPriority.Send)
-        //MoveTimer = new(DispatcherPriority.Normal)
         {
             Interval = TimeSpan.FromMilliseconds(Settings.MoveTime)
         };
@@ -153,6 +152,7 @@ public partial class PaintView : UserControl
     private void OnLoaded(object sender, RoutedEventArgs e)
     {
         User = DrawableFabric.GetIniUser(Settings.CursorFilePath, PaintArea);
+        User.Move(new Point2DI(-User.Radius, -User.Radius));
         User.OnShot += (p) => ViewModel.FullPath.Add(Converter.ToAngle_FromWnd(p));
 
         var center = ViewModel.NextTargetCenter ?? new(0, 0);
@@ -195,18 +195,19 @@ public partial class PaintView : UserControl
 
     private void OnStopClick(object sender, RoutedEventArgs e)
     {
+        if (ViewModel.IsPathToTarget)
+        {
+            ViewModel.SavePathToTarget(User.Center);
+        }
+        else
+        {
+            ViewModel.SavePathInTarget(Target);
+        }
         StopGame();
 
         _ = Application.Current.Dispatcher.InvokeAsync(async () =>
         {
-            try
-            {
-                await ViewModel.SaveAttemptResultAsync();
-            }
-            catch (Exception ex)
-            {
-                Log.Debug(ex.Message + ex.StackTrace);
-            }
+            await ViewModel.SaveAttemptResultAsync();
         }).Task.ContinueWith(task =>
         {
             if (task.Exception is not null)
