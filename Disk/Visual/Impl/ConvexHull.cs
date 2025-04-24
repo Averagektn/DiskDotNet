@@ -50,7 +50,7 @@ public class ConvexHull : IStaticFigure
     protected Size IniSize;
 
     private readonly Polygon _polygon;
-    private List<Point2D<int>> _points;
+    private readonly List<Point2D<int>> _points;
 
     /// <summary>
     ///     Crates a covex hull based on points list
@@ -125,12 +125,12 @@ public class ConvexHull : IStaticFigure
         _polygon.Points.Clear();
         a.ForEach(p => _polygon.Points.Add(new Point(p.X, p.Y)));
 
-/*        _polygon.Points.Clear();
-        foreach (var item in _points)
-        {
-            int x = (int)(item.X * xScale);
-            int y = (int)(item.Y * yScale);
-            _polygon.Points.Add(new Point(x, y));
-        }*/
+        /*        _polygon.Points.Clear();
+                foreach (var item in _points)
+                {
+                    int x = (int)(item.X * xScale);
+                    int y = (int)(item.Y * yScale);
+                    _polygon.Points.Add(new Point(x, y));
+                }*/
     }
 }

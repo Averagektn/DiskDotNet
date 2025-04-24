@@ -189,14 +189,14 @@ public class AttemptResultViewModel(NavigationStore navigationStore, DiskContext
     public bool IsRepeatEnabled => !IsStopEnabled;
 
     private bool _isStopEnabled;
-    public bool IsStopEnabled 
-    { 
-        get => _isStopEnabled; 
+    public bool IsStopEnabled
+    {
+        get => _isStopEnabled;
         set
         {
-            SetProperty(ref _isStopEnabled, value);
+            _ = SetProperty(ref _isStopEnabled, value);
             OnPropertyChanged(nameof(IsRepeatEnabled));
-        } 
+        }
     }
 
     public ICommand NavigateBackCommand => new Command(_ => navigationStore.Close());
@@ -273,7 +273,7 @@ public class AttemptResultViewModel(NavigationStore navigationStore, DiskContext
                 pointsInTarget = new PointedPath([], Colors.Transparent, canvas, new(1, 1));
             }
 
-                Log.Information("Created Path");
+            Log.Information("Created Path");
 
             if (ShowPathToTarget)
             {

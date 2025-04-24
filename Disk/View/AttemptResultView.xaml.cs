@@ -4,8 +4,6 @@ using Disk.Service.Implementation;
 using Disk.ViewModel;
 using Disk.Visual.Impl;
 using Disk.Visual.Interface;
-using Emgu.CV;
-using System;
 using System.Data;
 using System.Windows;
 using System.Windows.Controls;

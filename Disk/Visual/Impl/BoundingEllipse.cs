@@ -26,11 +26,11 @@ public class BoundingEllipse : IStaticFigure
         using var pointVector = new VectorOfPointF([.. ch]);
         var ellipse = CvInvoke.MinAreaRect(pointVector);
         //var ellipse = CvInvoke.FitEllipse(pointVector);
-/*        if (ellipse.Angle == 0)
-        {
-            using var newVector = new VectorOfPointF([.. dataset.Select(p => p.ToPointF())]);
-            ellipse = CvInvoke.FitEllipse(newVector);
-        }*/
+        /*        if (ellipse.Angle == 0)
+                {
+                    using var newVector = new VectorOfPointF([.. dataset.Select(p => p.ToPointF())]);
+                    ellipse = CvInvoke.FitEllipse(newVector);
+                }*/
 
         return (ellipse.Center, ellipse.Size.Width / 2, ellipse.Size.Height / 2, ellipse.Angle);
     }

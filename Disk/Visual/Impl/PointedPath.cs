@@ -21,7 +21,7 @@ public unsafe class PointedPath : IStaticFigure
     private int _backBufferStride;
 
     private readonly List<Point2D<int>> _iniPoints;
-    private List<Point2D<int>> _points;
+    private readonly List<Point2D<int>> _points;
     private readonly Image _image;
 
     public PointedPath(IEnumerable<Point2D<int>> points, Color color, Panel parent, Size iniSize, int pointRadius = 2)
