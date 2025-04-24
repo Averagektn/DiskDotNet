@@ -30,7 +30,7 @@ public partial class App : Application
 
         Log.Logger = new LoggerConfiguration()
             .MinimumLevel.Information()
-            .WriteTo.File("logs/app.log")
+            .WriteTo.File($"./logs/{DateTime.Now:dd.MM.yyyy HH-mm-ss}.log")
             .CreateLogger();
 
         var services = new ServiceCollection();
@@ -82,12 +82,27 @@ public partial class App : Application
 
         _serviceProvider = services.BuildServiceProvider();
 
+        TaskScheduler.UnobservedTaskException += (sender, args) =>
+        {
+            Log.Fatal("------------------------------------------------------");
+            Log.Fatal($"Thread {Environment.CurrentManagedThreadId}");
+            Log.Fatal(args.Exception.Message);
+            Log.Fatal(args.Exception.StackTrace ?? "Empty stack trace");
+            Log.Fatal(args.Exception.TargetSite?.ToString() ?? "No method found");
+            Log.Fatal("------------------------------------------------------");
+
+            var db = _serviceProvider.GetService<DiskContext>();
+            _ = (db?.SaveChanges());
+            Log.Information("Unhandled exception DB save");
+        };
+
         var db = _serviceProvider.GetService<DiskContext>();
         db?.EnsureDatabaseExists();
     }
 
     protected override void OnStartup(StartupEventArgs e)
     {
+        Log.Information("------------------------------------------------------");
         Log.Information("App start");
 
         MainWindow = _serviceProvider.GetRequiredService<MainWindow>();
