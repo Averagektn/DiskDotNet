@@ -13,24 +13,25 @@ namespace Disk.Visual.Impl;
 public class BoundingEllipse : IStaticFigure
 {
     public static (PointF Center, float RadiusX, float RadiusY, float Angle) GetFillEllipse<T>(List<Point2D<T>> points,
-        float percent = 1) where T : IConvertible, new()
+        float percent = 0.95f) where T : IConvertible, new()
     {
-        var dataset = points.ToList();
+        var centerX = points.Count <= 10 ? points.Average(p => p.XDbl) : 0.0;
+        var centerY = points.Count <= 10 ? points.Average(p => p.YDbl) : 0.0;
+        var center = new Point2D<T>((T)Convert.ChangeType(centerX, typeof(T)), (T)Convert.ChangeType(centerY, typeof(T)));
 
-        if (points.Count < 100 || percent > 1 || percent < 0)
+        if (percent > 1 || percent < 0)
         {
-            percent = 1;
+            percent = 0.95f;
         }
 
-        List<PointF> ch = [.. dataset.Select(p => p.ToPointF())];
+        var dataset = points.OrderBy(p => p.GetDistance(center))
+            .Take((int)(points.Count * percent))
+            .Select(p => p.ToPointF());
+
+        List<PointF> ch = [.. dataset];
         using var pointVector = new VectorOfPointF([.. ch]);
         var ellipse = CvInvoke.MinAreaRect(pointVector);
         //var ellipse = CvInvoke.FitEllipse(pointVector);
-        /*        if (ellipse.Angle == 0)
-                {
-                    using var newVector = new VectorOfPointF([.. dataset.Select(p => p.ToPointF())]);
-                    ellipse = CvInvoke.FitEllipse(newVector);
-                }*/
 
         return (ellipse.Center, ellipse.Size.Width / 2, ellipse.Size.Height / 2, ellipse.Angle);
     }

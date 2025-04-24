@@ -19,11 +19,16 @@ public class ConvexHull : IStaticFigure
     /// <typeparam name="T">Coord type</typeparam>
     /// <param name="points">List of points</param>
     /// <returns>Convex hull</returns>
-    public static List<PointF> GetConvexHull<T>(List<Point2D<T>> points, float percent = 0.90f) where T : IConvertible, new()
+    public static List<PointF> GetConvexHull<T>(List<Point2D<T>> points, float percent = 0.95f) where T : IConvertible, new()
     {
         var centerX = points.Count != 0 ? points.Average(p => p.XDbl) : 0.0;
         var centerY = points.Count != 0 ? points.Average(p => p.YDbl) : 0.0;
         var center = new Point2D<T>((T)Convert.ChangeType(centerX, typeof(T)), (T)Convert.ChangeType(centerY, typeof(T)));
+
+        if (percent > 1 || percent < 0)
+        {
+            percent = 0.95f;
+        }
 
         var data = points
             .OrderBy(p => p.GetDistance(center))
