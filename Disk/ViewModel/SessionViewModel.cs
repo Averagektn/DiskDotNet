@@ -147,7 +147,7 @@ public class SessionViewModel(DiskContext database, IExcelFiller excelFiller, Na
         try
         {
             AttemptResultNavigator.Navigate(this, navigationStore, SelectedAttempt.Id);
-            //Application.Current.MainWindow.WindowState = WindowState.Maximized;
+            Application.Current.MainWindow.WindowState = WindowState.Maximized;
         }
         catch
         {
@@ -157,9 +157,14 @@ public class SessionViewModel(DiskContext database, IExcelFiller excelFiller, Na
 
     public ICommand DeleteAttemptCommand => new AsyncCommand(async _ =>
     {
-        _ = database.Attempts.Remove(SelectedAttempt!);
+        if (SelectedAttempt is null)
+        {
+            return;
+        }
+
+        _ = database.Attempts.Remove(SelectedAttempt);
         _ = await database.SaveChangesAsync();
-        _ = Attempts.Remove(SelectedAttempt!);
+        _ = Attempts.Remove(SelectedAttempt);
         OnPropertyChanged(nameof(Attempts));
         Paths.Clear();
 
