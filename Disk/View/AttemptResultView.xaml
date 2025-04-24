@@ -75,14 +75,15 @@
             Text="IV" 
             FontSize="55" />
 
-        <StackPanel Grid.Column="1">
-            <TextBlock 
+        <ScrollViewer Grid.Column="1">
+            <StackPanel>
+                <TextBlock 
                 FontSize="25" 
                 Text="{Binding Message}" 
                 TextAlignment="Left" 
                 Margin="10"/>
 
-            <RadioButton     
+                <RadioButton     
                 Content="{x:Static lang:AttemptResultLocalization.Diagram}"
                 FontSize="25"
                 GroupName="DataType" 
@@ -90,7 +91,7 @@
                 IsChecked="{Binding IsDiagramChecked}" 
                 Margin="10"/>
 
-            <RadioButton 
+                <RadioButton 
                 Content="{x:Static lang:AttemptResultLocalization.Path}"
                 FontSize="25"
                 GroupName="DataType"
@@ -98,7 +99,7 @@
                 IsChecked="{Binding IsPathChecked}"
                 Margin="10"/>
 
-            <CheckBox 
+                <CheckBox 
                 FontSize="25"
                 Margin="10"
                 Content="{x:Static lang:AttemptResultLocalization.PathToTarget}"
@@ -106,7 +107,7 @@
                 Unchecked="SelectionChanged"
                 IsChecked="{Binding ShowPathToTarget}"/>
 
-            <CheckBox 
+                <CheckBox 
                 FontSize="25"
                 Margin="10"
                 Content="{x:Static lang:AttemptResultLocalization.PathInTarget}"
@@ -114,21 +115,21 @@
                 Unchecked="SelectionChanged"
                 IsChecked="{Binding ShowPathInTarget}"/>
 
-            <CheckBox
+                <CheckBox
                 FontSize="25"
                 Margin="10"
                 Content="{x:Static lang:AttemptResultLocalization.HideTarget}"
                 Checked="HideTarget"
                 Unchecked="ShowTarget"/>
 
-            <CheckBox
+                <CheckBox
                 FontSize="25"
                 Margin="10"
                 Content="{x:Static lang:AttemptResultLocalization.HideCursor}"
                 Checked="HideCursor"
                 Unchecked="ShowCursor"/>
 
-            <CheckBox
+                <CheckBox
                 FontSize="25"
                 Margin="10"
                 Content="{x:Static lang:AttemptResultLocalization.FullPathArea}"
@@ -136,7 +137,7 @@
                 Unchecked="HideFullPathEllipse"
                 IsChecked="False"/>
 
-            <CheckBox
+                <CheckBox
                 FontSize="25"
                 Margin="10"
                 Content="{x:Static lang:AttemptResultLocalization.PathInTargetArea}"
@@ -144,7 +145,7 @@
                 Unchecked="HidePathInTargetEllipse"
                 IsChecked="False"/>
 
-            <CheckBox
+                <CheckBox
                 FontSize="25"
                 Margin="10"
                 Content="{x:Static lang:AttemptResultLocalization.PathToTargetArea}"
@@ -152,39 +153,40 @@
                 Unchecked="HidePathToTargetEllipse"
                 IsChecked="False"/>
 
-            <ComboBox   
+                <ComboBox   
                 FontSize="25"
                 SelectionChanged="SelectionChanged" 
                 SelectedIndex="{Binding SelectedIndex}" 
                 ItemsSource="{Binding Indices}"  
                 Margin="10">
-                <i:Interaction.Triggers>
-                    <i:EventTrigger EventName="SelectionChanged">
-                        <i:InvokeCommandAction Command="{Binding NewItemSelectedCommand}" />
-                    </i:EventTrigger>
-                </i:Interaction.Triggers>
-            </ComboBox>
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="SelectionChanged">
+                            <i:InvokeCommandAction Command="{Binding NewItemSelectedCommand}" />
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                </ComboBox>
 
-            <Button 
+                <Button 
                 Click="ReplyClick"
                 Content="{x:Static lang:AttemptResultLocalization.Reply}"
                 Margin="10"
                 Padding="0 10"/>
 
-            <Button
+                <Button
                 Click="StopTimer"
                 Content="{x:Static lang:AttemptResultLocalization.Stop}"
                 IsEnabled="{Binding IsStopEnabled}"
                 Margin="10"
                 Padding="0 10"/>
 
-            <Button 
+                <Button 
                 Command="{Binding NavigateBackCommand}"
                 Content="{x:Static lang:AttemptResultLocalization.Back}"
                 Margin="10"
                 Padding="0 10"/>
-        </StackPanel>
-        
+            </StackPanel>
+        </ScrollViewer>
+
         <styles:Popup 
             Grid.Row="0"
             HorizontalAlignment="Center"
