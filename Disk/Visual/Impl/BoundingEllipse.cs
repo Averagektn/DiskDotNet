@@ -19,7 +19,7 @@ public class BoundingEllipse : IStaticFigure
         var centerY = points.Count <= 10 ? points.Average(p => p.YDbl) : 0.0;
         var center = new Point2D<T>((T)Convert.ChangeType(centerX, typeof(T)), (T)Convert.ChangeType(centerY, typeof(T)));
 
-        if (percent > 1 || percent < 0)
+        if (percent is > 1 or < 0)
         {
             percent = 0.95f;
         }
