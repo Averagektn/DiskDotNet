@@ -54,14 +54,16 @@ public class AttemptResultViewModel(NavigationStore navigationStore, DiskContext
         {
             _currentAttempt = value;
 
-            TargetCenters = JsonConvert
-                .DeserializeObject<List<Point2D<float>>>(CurrentAttempt.SessionNavigation.MapNavigation.CoordinatesJson)!;
             PathsToTargets = CurrentAttempt.PathToTargets
                 .Select(ptt => JsonConvert.DeserializeObject<List<Point2D<float>>>(ptt.CoordinatesJson)!)
                 .ToList() ?? [];
             PathsInTargets = CurrentAttempt.PathInTargets
                 .Select(pit => JsonConvert.DeserializeObject<List<Point2D<float>>>(pit.CoordinatesJson)!)
                 .ToList() ?? [];
+
+            TargetCenters = [.. JsonConvert
+                .DeserializeObject<List<Point2D<float>>>(CurrentAttempt.SessionNavigation.MapNavigation.CoordinatesJson)!
+                .Take(int.Max(PathsInTargets.Count, PathsToTargets.Count))];
 
             IsPathChecked = true;
             SelectedIndex = 0;
@@ -76,7 +78,7 @@ public class AttemptResultViewModel(NavigationStore navigationStore, DiskContext
     {
         get
         {
-            if (PathsInTargets.Count == 0 || SelectedIndex < 0)
+            if (PathsToTargets.Count == 0 || SelectedIndex < 0)
             {
                 return new(0, 0);
             }
@@ -131,23 +133,29 @@ public class AttemptResultViewModel(NavigationStore navigationStore, DiskContext
     {
         get
         {
-            Point2D<float> lastPoint = null!;
+            var lastPoint = new Point2D<float>(0, 0);
 
             for (int i = SelectedIndex; i < TargetCenters.Count; i++)
             {
-                var ptt = JsonConvert
-                    .DeserializeObject<List<Point2D<float>>>(CurrentAttempt.PathToTargets.ElementAt(i).CoordinatesJson)!;
-                foreach (var point in ptt)
+                if (i < CurrentAttempt.PathToTargets.Count)
                 {
-                    yield return (false, point);
+                    var ptt = JsonConvert
+                        .DeserializeObject<List<Point2D<float>>>(CurrentAttempt.PathToTargets.ElementAt(i).CoordinatesJson)!;
+                    foreach (var point in ptt)
+                    {
+                        yield return (false, point);
+                    }
                 }
 
-                var pit = JsonConvert
-                    .DeserializeObject<List<Point2D<float>>>(CurrentAttempt.PathInTargets.ElementAt(i).CoordinatesJson)!;
-                foreach (var point in pit)
+                if (i < CurrentAttempt.PathInTargets.Count)
                 {
-                    lastPoint = point;
-                    yield return (false, point);
+                    var pit = JsonConvert
+                        .DeserializeObject<List<Point2D<float>>>(CurrentAttempt.PathInTargets.ElementAt(i).CoordinatesJson)!;
+                    foreach (var point in pit)
+                    {
+                        lastPoint = point;
+                        yield return (false, point);
+                    }
                 }
 
                 yield return (true, lastPoint);
@@ -178,8 +186,18 @@ public class AttemptResultViewModel(NavigationStore navigationStore, DiskContext
     private int _selectedIndex = -1;
     public int SelectedIndex { get => _selectedIndex; set => SetProperty(ref _selectedIndex, value); }
 
+    public bool IsRepeatEnabled => !IsStopEnabled;
+
     private bool _isStopEnabled;
-    public bool IsStopEnabled { get => _isStopEnabled; set => SetProperty(ref _isStopEnabled, value); }
+    public bool IsStopEnabled 
+    { 
+        get => _isStopEnabled; 
+        set
+        {
+            SetProperty(ref _isStopEnabled, value);
+            OnPropertyChanged(nameof(IsRepeatEnabled));
+        } 
+    }
 
     public ICommand NavigateBackCommand => new Command(_ => navigationStore.Close());
     public ICommand NewItemSelectedCommand => new Command(_ =>

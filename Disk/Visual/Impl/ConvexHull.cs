@@ -21,8 +21,8 @@ public class ConvexHull : IStaticFigure
     /// <returns>Convex hull</returns>
     public static List<PointF> GetConvexHull<T>(List<Point2D<T>> points, float percent = 0.90f) where T : IConvertible, new()
     {
-        var centerX = points.Average(p => p.XDbl);
-        var centerY = points.Average(p => p.YDbl);
+        var centerX = points.Count != 0 ? points.Average(p => p.XDbl) : 0.0;
+        var centerY = points.Count != 0 ? points.Average(p => p.YDbl) : 0.0;
         var center = new Point2D<T>((T)Convert.ChangeType(centerX, typeof(T)), (T)Convert.ChangeType(centerY, typeof(T)));
 
         var data = points

@@ -4,6 +4,7 @@ using Disk.Service.Implementation;
 using Disk.ViewModel;
 using Disk.Visual.Impl;
 using Disk.Visual.Interface;
+using Emgu.CV;
 using System;
 using System.Data;
 using System.Windows;
@@ -144,17 +145,14 @@ public partial class AttemptResultView : UserControl
     private IStaticFigure CreateConvexHull(List<Point2D<float>> points, Brush borderColor, Brush fillColor)
     {
         ConvexHull ch;
+
         try
         {
             var converter = DrawableFabric.GetIniConverter();
-            /*            var hullPoints = ConvexHull.GetConvexHull(points)
-                            .Select(p => new Point2D<int>(converter.ToWndCoordX(p.X), converter.ToWndCoordY(p.Y)))
-                            .ToList();*/
             ch = new ConvexHull([.. points.Select(converter.ToWndCoord)], borderColor, fillColor, EllipseArea, IniScreenSize);
             ch.Scale();
         }
-        // FIX
-        catch (Exception ex)
+        catch
         {
             ch = new ConvexHull([], Brushes.Transparent, Brushes.Transparent, EllipseArea, IniScreenSize);
         }
@@ -165,8 +163,17 @@ public partial class AttemptResultView : UserControl
     private IStaticFigure CreateBoundingEllipse(List<Point2D<float>> points, Brush color)
     {
         var converter = DrawableFabric.GetIniConverter();
-        var ellipse = new BoundingEllipse([.. points.Select(converter.ToWndCoord)], color, EllipseArea, IniScreenSize);
-        ellipse.Scale();
+        BoundingEllipse ellipse;
+
+        try
+        {
+            ellipse = new BoundingEllipse([.. points.Select(converter.ToWndCoord)], color, EllipseArea, IniScreenSize);
+            ellipse.Scale();
+        }
+        catch
+        {
+            ellipse = new BoundingEllipse([], color, EllipseArea, IniScreenSize);
+        }
 
         return ellipse;
     }

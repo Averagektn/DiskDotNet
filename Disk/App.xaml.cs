@@ -30,7 +30,7 @@ public partial class App : Application
 
         Log.Logger = new LoggerConfiguration()
             .MinimumLevel.Information()
-            .WriteTo.File($"./logs/{DateTime.Now:dd.MM.yyyy HH-mm-ss}.log")
+            .WriteTo.File($"./logs/{DateTime.Now:dd.MM.yyyy}/{DateTime.Now:dd.MM.yyyy HH-mm-ss}.log")
             .CreateLogger();
 
         var services = new ServiceCollection();

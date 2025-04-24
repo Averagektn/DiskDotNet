@@ -22,20 +22,15 @@ public class BoundingEllipse : IStaticFigure
             percent = 1;
         }
 
-/*        var ch = ConvexHull.GetConvexHull(dataset);
-        if (ch.Count < 5)
-        {
-            ch = [.. dataset.Select(p => p.ToPointF())];
-        }*/
         List<PointF> ch = [.. dataset.Select(p => p.ToPointF())];
         using var pointVector = new VectorOfPointF([.. ch]);
         var ellipse = CvInvoke.MinAreaRect(pointVector);
         //var ellipse = CvInvoke.FitEllipse(pointVector);
-        if (ellipse.Angle == 0)
+/*        if (ellipse.Angle == 0)
         {
             using var newVector = new VectorOfPointF([.. dataset.Select(p => p.ToPointF())]);
             ellipse = CvInvoke.FitEllipse(newVector);
-        }
+        }*/
 
         return (ellipse.Center, ellipse.Size.Width / 2, ellipse.Size.Height / 2, ellipse.Angle);
     }
