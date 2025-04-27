@@ -87,6 +87,11 @@ public class ProgressTarget : Target, IProgressTarget
     /// <inheritdoc/>
     public override void Remove()
     {
+        if (!IsDrawn)
+        {
+            return;
+        }
+
         base.Remove();
 
         if (Parent.Children.Contains(Border))
@@ -98,6 +103,11 @@ public class ProgressTarget : Target, IProgressTarget
     /// <inheritdoc/>
     public override void Draw()
     {
+        if (IsDrawn)
+        {
+            return;
+        }
+
         _ = Parent.Children.Add(Border);
 
         base.Draw();

@@ -14,6 +14,12 @@ namespace Disk.Visual.Impl;
 public class Path : IStaticFigure
 {
     /// <summary>
+    ///    Shows if the figure is drawn 
+    ///    Protects from multiple <see cref="Draw"/> calls
+    /// </summary>
+    public bool IsDrawn { get; private set; } = false;
+
+    /// <summary>
     ///     The polyline used to draw the path
     /// </summary>
     private readonly Polyline Polyline;
@@ -69,8 +75,14 @@ public class Path : IStaticFigure
     /// <inheritdoc/>
     public virtual void Draw()
     {
+        if (IsDrawn)
+        {
+            return;
+        }
+
         _ = Parent.Children.Add(Polyline);
         Parent.SizeChanged += Parent_SizeChanged;
+        IsDrawn = true;
     }
 
     private void Parent_SizeChanged(object sender, SizeChangedEventArgs e)
@@ -81,8 +93,14 @@ public class Path : IStaticFigure
     /// <inheritdoc/>
     public virtual void Remove()
     {
+        if (!IsDrawn)
+        {
+            return;
+        }
+
         Parent.Children.Remove(Polyline);
         Parent.SizeChanged -= Parent_SizeChanged;
+        IsDrawn = false;
     }
 
     /// <inheritdoc/>
@@ -92,6 +110,7 @@ public class Path : IStaticFigure
         Points.ForEach(point => Polyline.Points.Add(Converter.ToWndCoord(point).ToPoint()));
     }
 
+    /// <inheritdoc/>
     public bool Contains(Point2D<int> p)
     {
         return false;

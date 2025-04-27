@@ -11,6 +11,9 @@ using Size = System.Windows.Size;
 
 namespace Disk.Visual.Impl;
 
+/// <summary>
+///     Represents a convex hull figure
+/// </summary>
 public class ConvexHull : IStaticFigure
 {
     /// <summary>
@@ -40,9 +43,10 @@ public class ConvexHull : IStaticFigure
     }
 
     /// <summary>
-    ///     Protects from multiple <see cref="Draw"/> calls
+    ///    Shows if the figure is drawn 
+    ///    Protects from multiple <see cref="Draw"/> calls
     /// </summary>
-    public bool IsDrawn { get; private set; }
+    public bool IsDrawn { get; private set; } = false;
 
     /// <summary>
     ///     Container for polygon
@@ -52,7 +56,7 @@ public class ConvexHull : IStaticFigure
     /// <summary>
     ///     Scaling size
     /// </summary>
-    protected Size IniSize;
+    protected readonly Size IniSize;
 
     private readonly Polygon _polygon;
     private readonly List<Point2D<int>> _points;
@@ -82,14 +86,13 @@ public class ConvexHull : IStaticFigure
     /// <inheritdoc/>
     public virtual bool Contains(Point2D<int> p)
     {
-        var geometry = new PathGeometry(
-            [
-                new PathFigure
-                {
-                    StartPoint = _polygon.Points[0],
-                    Segments = [new PolyLineSegment(_polygon.Points, true)]
-                }
-            ]);
+        var path = new PathFigure
+        {
+            StartPoint = _polygon.Points[0],
+            Segments = [new PolyLineSegment(_polygon.Points, true)]
+        };
+
+        var geometry = new PathGeometry([path]);
 
         return geometry.FillContains(p.ToPoint());
     }
@@ -115,6 +118,11 @@ public class ConvexHull : IStaticFigure
     /// <inheritdoc/>
     public virtual void Remove()
     {
+        if (!IsDrawn)
+        {
+            return;
+        }
+
         Parent.Children.Remove(_polygon);
         Parent.SizeChanged -= Parent_SizeChanged;
         IsDrawn = false;
@@ -129,13 +137,5 @@ public class ConvexHull : IStaticFigure
         var a = GetConvexHull(_points.Select(p => new Point2D<int>((int)(p.X * xScale), (int)(p.Y * yScale))).ToList());
         _polygon.Points.Clear();
         a.ForEach(p => _polygon.Points.Add(new Point(p.X, p.Y)));
-
-        /*        _polygon.Points.Clear();
-                foreach (var item in _points)
-                {
-                    int x = (int)(item.X * xScale);
-                    int y = (int)(item.Y * yScale);
-                    _polygon.Points.Add(new Point(x, y));
-                }*/
     }
 }

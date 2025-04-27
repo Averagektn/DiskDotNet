@@ -7,14 +7,41 @@ using System.Windows.Media.Imaging;
 
 namespace Disk.Visual.Impl;
 
+/// <summary>
+///     Represents a pointed path with a list of points, color, and initial size.
+/// </summary>
 public unsafe class PointedPath : IStaticFigure
 {
+    /// <summary>
+    ///    Shows if the figure is drawn 
+    ///    Protects from multiple <see cref="Draw"/> calls
+    /// </summary>
+    public bool IsDrawn { get; private set; } = false;
+
+    /// <summary>
+    ///    The color of the points
+    /// </summary>
     public Color Color { get; private set; }
+
+    /// <summary>
+    ///   The radius of the points
+    /// </summary>
     public int PointRadius { get; protected set; }
+
+    /// <summary>
+    ///     Initial radius of the points for scaling
+    /// </summary>
     protected readonly int IniRadius;
 
-    protected Panel Parent;
-    protected Size IniSize;
+    /// <summary>
+    ///     Drawing area
+    /// </summary>
+    protected readonly Panel Parent;
+
+    /// <summary>
+    ///     The initial size of the drawing area for scaling
+    /// </summary>
+    protected readonly Size IniSize;
 
     private WriteableBitmap _bitmap;
     private IntPtr _backBuffer;
@@ -24,6 +51,14 @@ public unsafe class PointedPath : IStaticFigure
     private readonly List<Point2D<int>> _points;
     private readonly Image _image;
 
+    /// <summary>
+    ///     Initializes a new instance of the <see cref="PointedPath"/> class with the specified points, color, parent panel,
+    /// </summary>
+    /// <param name="points"></param>
+    /// <param name="color"></param>
+    /// <param name="parent"></param>
+    /// <param name="iniSize"></param>
+    /// <param name="pointRadius"></param>
     public PointedPath(IEnumerable<Point2D<int>> points, Color color, Panel parent, Size iniSize, int pointRadius = 2)
     {
         _iniPoints = [.. points];
@@ -114,7 +149,7 @@ public unsafe class PointedPath : IStaticFigure
         }
     }
 
-    public void Clear()
+    private void Clear()
     {
         _bitmap.Lock();
 
@@ -136,16 +171,24 @@ public unsafe class PointedPath : IStaticFigure
         }
     }
 
+    /// <inheritdoc />
     public virtual bool Contains(Point2D<int> p)
     {
         return false;
     }
 
+    /// <inheritdoc />
     public virtual void Draw()
     {
+        if (IsDrawn)
+        {
+            return;
+        }
+
         ModifyBitmap();
         _ = Parent.Children.Add(_image);
         Parent.SizeChanged += Parent_SizeChanged;
+        IsDrawn = true;
     }
 
     private void Parent_SizeChanged(object sender, SizeChangedEventArgs e)
@@ -153,12 +196,20 @@ public unsafe class PointedPath : IStaticFigure
         Scale();
     }
 
+    /// <inheritdoc />
     public virtual void Remove()
     {
+        if (!IsDrawn)
+        {
+            return;
+        }
+
         Parent.Children.Remove(_image);
         Parent.SizeChanged -= Parent_SizeChanged;
+        IsDrawn = false;
     }
 
+    /// <inheritdoc />
     public virtual void Scale()
     {
         Clear();

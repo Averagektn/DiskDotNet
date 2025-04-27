@@ -11,18 +11,18 @@ namespace Disk.Visual.Impl;
 /// </summary>
 public class NumberedTarget : Target
 {
-    private readonly TextBlock _numberText;
-    private readonly TextBox _coordY;
-    private readonly TextBox _coordX;
-    private readonly Converter _converter;
-
-    private float _y;
-    private float _x;
-
     /// <summary>
     ///     Returns x and y coordinates in angles
     /// </summary>
     public Point2D<float> Angles => _converter.ToAngle_FromWnd(Center);
+
+    private float _y;
+    private float _x;
+
+    private readonly TextBlock _numberText;
+    private readonly TextBox _coordY;
+    private readonly TextBox _coordX;
+    private readonly Converter _converter;
 
     /// <inheritdoc/>
     public override Point2D<int> Center
@@ -154,6 +154,11 @@ public class NumberedTarget : Target
     /// <inheritdoc/>
     public override void Draw()
     {
+        if (IsDrawn)
+        {
+            return;
+        }
+
         base.Draw();
 
         _ = Parent.Children.Add(_numberText);
@@ -232,6 +237,11 @@ public class NumberedTarget : Target
     /// <inheritdoc/>
     public override void Remove()
     {
+        if (!IsDrawn)
+        {
+            return;
+        }
+
         base.Remove();
 
         Parent.Children.Remove(_numberText);

@@ -6,12 +6,23 @@ using System.Drawing;
 using System.Windows.Controls;
 using System.Windows.Media;
 using Brush = System.Windows.Media.Brush;
+using PathShape = System.Windows.Shapes.Path;
 using Size = System.Windows.Size;
 
 namespace Disk.Visual.Impl;
 
+/// <summary>
+///     Represents a bounding ellipse with a center point, radius, and initial size
+/// </summary>
 public class BoundingEllipse : IStaticFigure
 {
+    /// <summary>
+    ///     Calculates the bounding ellipse for a set of points
+    /// </summary>
+    /// <typeparam name="T"> Coordinate type </typeparam>
+    /// <param name="points"> Dataset </param>
+    /// <param name="percent"> Cutoff percent </param>
+    /// <returns> Bounding ellipse </returns>
     public static (PointF Center, float RadiusX, float RadiusY, float Angle) GetFillEllipse<T>(List<Point2D<T>> points,
         float percent = 0.95f) where T : IConvertible, new()
     {
@@ -36,17 +47,30 @@ public class BoundingEllipse : IStaticFigure
         return (ellipse.Center, ellipse.Size.Width / 2, ellipse.Size.Height / 2, ellipse.Angle);
     }
 
-    protected Panel Parent;
-    protected readonly Size IniSize;
-
-    private readonly System.Windows.Shapes.Path _bound;
-    private readonly EllipseGeometry _ellipse;
-    private readonly Brush _brush;
-
+    /// <summary>
+    ///    Shows if the figure is drawn 
+    ///    Protects from multiple <see cref="Draw"/> calls
+    /// </summary>
     public bool IsDrawn { get; private set; } = false;
+
+    /// <summary>
+    ///    Ellipse rotation angle
+    /// </summary>
     protected float RotationAngle { get; set; }
 
-    private Point2D<int> _center;
+    /// <summary>
+    ///    Drawing area
+    /// </summary>
+    protected Panel Parent;
+
+    /// <summary>
+    ///    Scaling size
+    /// </summary>
+    protected readonly Size IniSize;
+
+    /// <summary>
+    ///   Gets or sets the center of the ellipse
+    /// </summary>
     protected virtual Point2D<int> Center
     {
         get => _center;
@@ -56,8 +80,11 @@ public class BoundingEllipse : IStaticFigure
             _ellipse.Center = _center.ToPoint();
         }
     }
+    private Point2D<int> _center;
 
-    private int _radiusX;
+    /// <summary>
+    ///   Gets or sets the X radius of the ellipse
+    /// </summary>
     public virtual int RadiusX
     {
         get => _radiusX;
@@ -67,8 +94,11 @@ public class BoundingEllipse : IStaticFigure
             _ellipse.RadiusX = RadiusX;
         }
     }
+    private int _radiusX;
 
-    private int _radiusY;
+    /// <summary>
+    ///    Gets or sets the Y radius of the ellipse
+    /// </summary>
     public virtual int RadiusY
     {
         get => _radiusY;
@@ -78,14 +108,20 @@ public class BoundingEllipse : IStaticFigure
             _ellipse.RadiusY = RadiusY;
         }
     }
-
-    public virtual int Right => Center.X + RadiusX;
-    public virtual int Top => Center.Y - RadiusY;
-    public virtual int Bottom => Center.Y + RadiusY;
-    public virtual int Left => Center.X - RadiusX;
+    private int _radiusY;
 
     private readonly List<Point2D<int>> _points;
+    private readonly PathShape _bound;
+    private readonly EllipseGeometry _ellipse;
+    private readonly Brush _brush;
 
+    /// <summary>
+    ///    Initializes a new instance of the <see cref="BoundingEllipse"/> class
+    /// </summary>
+    /// <param name="points">Dataset</param>
+    /// <param name="boundColor">Bound color</param>
+    /// <param name="parent">Drawing area</param>
+    /// <param name="iniSize">Initial size for scaling</param>
     public BoundingEllipse(List<Point2D<int>> points, Brush boundColor, Panel parent, Size iniSize)
     {
         var (center, radiusX, radiusY, rotationAngle) = GetFillEllipse(points);
@@ -107,7 +143,7 @@ public class BoundingEllipse : IStaticFigure
             RadiusY = RadiusY,
         };
         UpdateTransform();
-        _bound = new System.Windows.Shapes.Path
+        _bound = new PathShape
         {
             Stroke = _brush,
             StrokeThickness = 2,
@@ -115,17 +151,13 @@ public class BoundingEllipse : IStaticFigure
         };
     }
 
-    private void UpdateTransform()
-    {
-        var rotateTransform = new RotateTransform(RotationAngle, Center.X, Center.Y);
-        _ellipse.Transform = rotateTransform;
-    }
-
+    /// <inheritdoc/>
     public virtual bool Contains(Point2D<int> p)
     {
         return _ellipse.FillContains(p.ToPoint());
     }
 
+    /// <inheritdoc/>
     public virtual void Draw()
     {
         if (IsDrawn)
@@ -143,13 +175,26 @@ public class BoundingEllipse : IStaticFigure
         Scale();
     }
 
+    private void UpdateTransform()
+    {
+        var rotateTransform = new RotateTransform(RotationAngle, Center.X, Center.Y);
+        _ellipse.Transform = rotateTransform;
+    }
+
+    /// <inheritdoc/>
     public virtual void Remove()
     {
+        if (!IsDrawn)
+        {
+            return;
+        }
+
         Parent.Children.Remove(_bound);
         IsDrawn = false;
         Parent.SizeChanged -= Parent_SizeChanged;
     }
 
+    /// <inheritdoc/>
     public virtual void Scale()
     {
         double coeffX = Parent.ActualWidth / IniSize.Width;

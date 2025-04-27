@@ -66,9 +66,15 @@ public class Target : User, ITarget
     /// <inheritdoc/>
     public override void Draw()
     {
+        if (IsDrawn)
+        {
+            return;
+        }
+
         Circles.ForEach(circle => circle.Draw());
         Scale();
         Parent.SizeChanged += Parent_SizeChanged;
+        base.Draw();
     }
 
     /// <inheritdoc/>
@@ -114,7 +120,13 @@ public class Target : User, ITarget
     /// <inheritdoc/>
     public override void Remove()
     {
+        if (!IsDrawn)
+        {
+            return;
+        }
+
         Circles.ForEach(circle => circle.Remove());
         Parent.SizeChanged -= Parent_SizeChanged;
+        base.Remove();
     }
 }

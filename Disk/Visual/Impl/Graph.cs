@@ -13,6 +13,21 @@ namespace Disk.Visual.Impl;
 public class Graph : IStaticFigure
 {
     /// <summary>
+    ///     Protects from multiple <see cref="Draw"/> calls
+    /// </summary>
+    public bool IsDrawn { get; private set; } = false;
+
+    /// <summary>
+    ///     The radius of the graph
+    /// </summary>
+    protected int Radius { get; private set; }
+
+    /// <summary>
+    ///     Required for correct positioning
+    /// </summary>
+    protected readonly Panel Parent;
+
+    /// <summary>
     ///     The polygon used to draw the graph
     /// </summary>
     private readonly Polygon Polygon;
@@ -26,16 +41,6 @@ public class Graph : IStaticFigure
     ///     The number of segments in the graph
     /// </summary>
     private readonly int SegmentsNum;
-
-    /// <summary>
-    ///     The radius of the graph
-    /// </summary>
-    protected int Radius;
-
-    /// <summary>
-    ///     Required for correct positioning
-    /// </summary>
-    protected readonly Panel Parent;
 
     /// <summary>
     ///     Initializes a new instance of the <see cref="Graph"/> class
@@ -69,10 +74,16 @@ public class Graph : IStaticFigure
     /// <inheritdoc/>
     public void Draw()
     {
+        if (IsDrawn)
+        {
+            return;
+        }
+
         FillPolygon();
 
         Parent.SizeChanged += Parent_SizeChanged;
         _ = Parent.Children.Add(Polygon);
+        IsDrawn = true;
     }
 
     private void Parent_SizeChanged(object sender, System.Windows.SizeChangedEventArgs e)
@@ -133,10 +144,17 @@ public class Graph : IStaticFigure
     /// <inheritdoc/>
     public void Remove()
     {
+        if (!IsDrawn)
+        {
+            return;
+        }
+
         Parent.Children.Remove(Polygon);
         Parent.SizeChanged -= Parent_SizeChanged;
+        IsDrawn = false;
     }
 
+    /// <inheritdoc/>
     public bool Contains(Point2D<int> p)
     {
         return false;

@@ -12,9 +12,8 @@ namespace Disk.Visual.Impl;
 /// </summary>
 public class Circle : IDynamicFigure
 {
-    private Point2D<int> _center = new();
     /// <summary>
-    ///     <inheritdoc/>
+    ///     <inheritdoc/><br/>
     ///     Center change will force positioning change with
     ///     <see cref="Canvas.SetLeft(System.Windows.UIElement, double)"/> and
     ///     <see cref="Canvas.SetTop(System.Windows.UIElement, double)"/> of all figures
@@ -30,30 +29,22 @@ public class Circle : IDynamicFigure
             Canvas.SetTop(Figure, Top);
         }
     }
+    private Point2D<int> _center = new();
 
-    /// <summary>
-    ///     <inheritdoc/>
-    /// </summary>
+    /// <inheritdoc/>
     public virtual int Right => Center.X + Radius;
 
-    /// <summary>
-    ///     <inheritdoc/>
-    /// </summary>
+    /// <inheritdoc/>
     public virtual int Top => Center.Y - Radius;
 
-    /// <summary>
-    ///     <inheritdoc/>
-    /// </summary>
+    /// <inheritdoc/>
     public virtual int Bottom => Center.Y + Radius;
 
-    /// <summary>
-    ///     <inheritdoc/>
-    /// </summary>
+    /// <inheritdoc/>
     public virtual int Left => Center.X - Radius;
 
-    private int _radius = 0;
     /// <summary>
-    ///     Gets or sets the radius of the circle. 
+    ///     Gets or sets the radius of the circle. <br/>
     ///     Change will force resize
     /// </summary>
     public virtual int Radius
@@ -66,6 +57,7 @@ public class Circle : IDynamicFigure
             Figure.Width = value * 2;
         }
     }
+    private int _radius = 0;
 
     /// <summary>
     ///     Gets or sets the speed of the circle
@@ -73,14 +65,15 @@ public class Circle : IDynamicFigure
     public int Speed { get; protected set; }
 
     /// <summary>
+    ///    Shows if the figure is drawn <br/>
+    ///    Protects from multiple <see cref="Draw"/> calls
+    /// </summary>
+    public bool IsDrawn { get; private set; } = false;
+
+    /// <summary>
     ///     Correction multiplier for diagonal movement
     /// </summary>
     protected const float DiagonalCorrection = 1.41f;
-
-    /// <summary>
-    ///     Figure to be drawn
-    /// </summary>
-    private readonly Ellipse Figure;
 
     /// <summary>
     ///     Initial size for scaling
@@ -96,6 +89,11 @@ public class Circle : IDynamicFigure
     ///     Initial speed to be scaled
     /// </summary>
     private readonly int IniSpeed;
+
+    /// <summary>
+    ///     Figure to be drawn
+    /// </summary>
+    private readonly Ellipse Figure;
 
     /// <summary>
     ///     Initial radius to be scaled
@@ -157,9 +155,15 @@ public class Circle : IDynamicFigure
     /// <inheritdoc/>
     public virtual void Draw()
     {
+        if (IsDrawn)
+        {
+            return;
+        }
+
         Scale();
         _ = Parent.Children.Add(Figure);
         Parent.SizeChanged += Parent_SizeChanged;
+        IsDrawn = true;
     }
 
     /// <summary>
@@ -175,8 +179,14 @@ public class Circle : IDynamicFigure
     /// <inheritdoc/>
     public virtual void Remove()
     {
+        if (!IsDrawn)
+        {
+            return;
+        }
+
         Parent.Children.Remove(Figure);
         Parent.SizeChanged -= Parent_SizeChanged;
+        IsDrawn = false;
     }
 
     /// <inheritdoc/>
