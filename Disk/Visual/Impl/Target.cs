@@ -14,11 +14,6 @@ public class Target : User, ITarget
     /// <inheritdoc/>
     public event Action<int>? OnReceiveShot;
 
-    /// <summary>
-    ///     Gets the radius of smallest target
-    /// </summary>
-    protected virtual int SingleRadius => (int)Math.Round((double)Radius / 5);
-
     /// <inheritdoc/>
     public override int Right => Center.X + Radius;
 
@@ -32,9 +27,14 @@ public class Target : User, ITarget
     public override int Left => Center.X - Radius;
 
     /// <summary>
+    ///     Gets the radius of smallest target
+    /// </summary>
+    protected virtual int SingleRadius => (int)Math.Round((double)Radius / 5);
+
+    /// <summary>
     ///     List of circles representing the concentric rings of the target
     /// </summary>
-    protected readonly List<Circle> Circles;
+    protected List<Circle> Circles;
 
     /// <summary>
     ///     <inheritdoc/>

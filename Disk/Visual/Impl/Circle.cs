@@ -81,29 +81,16 @@ public class Circle : IDynamicFigure
     protected readonly Size IniSize;
 
     /// <summary>
-    ///     Size before parent size is changed
-    /// </summary>
-    protected Size CurrSize;
-
-    /// <summary>
-    ///     Initial speed to be scaled
-    /// </summary>
-    private readonly int IniSpeed;
-
-    /// <summary>
-    ///     Figure to be drawn
-    /// </summary>
-    private readonly Ellipse Figure;
-
-    /// <summary>
-    ///     Initial radius to be scaled
-    /// </summary>
-    private readonly int IniRadius;
-
-    /// <summary>
-    ///     Required for correct positioning
+    ///    Drawing area
     /// </summary>
     protected readonly Canvas Parent;
+
+    private readonly int IniSpeed;
+    private readonly Ellipse Figure;
+    private readonly int IniRadius;
+
+    private double _normalizedX;
+    private double _normalizedY;
 
     /// <summary>
     ///     Initializes a new instance of the Circle class with the specified center, radius, speed, color 
@@ -141,9 +128,12 @@ public class Circle : IDynamicFigure
         Speed = speed;
         _radius = radius;
         _center = center;
+        //_normalizedX = (double)center.X / canvas.ActualWidth;
+        _normalizedX = center.X / iniSize.Width;
+        //_normalizedY = (double)center.Y / canvas.ActualHeight;
+        _normalizedY = center.Y / iniSize.Height;
 
         IniSize = iniSize;
-        CurrSize = iniSize;
     }
 
     /// <inheritdoc/>
@@ -236,6 +226,8 @@ public class Circle : IDynamicFigure
         }
 
         Center = new(Center.X + xSpeed, Center.Y + ySpeed);
+        _normalizedX = Center.X / Parent.ActualWidth;
+        _normalizedY = Center.Y / Parent.ActualHeight;
     }
 
     /// <inheritdoc/>
@@ -249,11 +241,9 @@ public class Circle : IDynamicFigure
 
         Center = new
         (
-            (int)Math.Round(Center.X * (Parent.ActualWidth / CurrSize.Width)),
-            (int)Math.Round(Center.Y * (Parent.ActualHeight / CurrSize.Height))
+            (int)Math.Round(_normalizedX * Parent.ActualWidth),
+            (int)Math.Round(_normalizedY * Parent.ActualHeight)
         );
-
-        CurrSize = Parent.RenderSize;
     }
 
     /// <inheritdoc/>
@@ -262,6 +252,8 @@ public class Circle : IDynamicFigure
         if (center.X <= Parent.ActualWidth && center.Y <= Parent.ActualHeight && center.X > 0 && center.Y > 0)
         {
             Center = center;
+            _normalizedX = Center.X / Parent.ActualWidth;
+            _normalizedY = Center.Y / Parent.ActualHeight;
         }
     }
 }

@@ -26,8 +26,8 @@ public class BoundingEllipse : IStaticFigure
     public static (PointF Center, float RadiusX, float RadiusY, float Angle) GetFillEllipse<T>(List<Point2D<T>> points,
         float percent = 0.95f) where T : IConvertible, new()
     {
-        var centerX = points.Count <= 10 ? points.Average(p => p.XDbl) : 0.0;
-        var centerY = points.Count <= 10 ? points.Average(p => p.YDbl) : 0.0;
+        var centerX = points.Count > 10 ? points.Average(p => p.XDbl) : 0.0;
+        var centerY = points.Count > 10 ? points.Average(p => p.YDbl) : 0.0;
         var center = new Point2D<T>((T)Convert.ChangeType(centerX, typeof(T)), (T)Convert.ChangeType(centerY, typeof(T)));
 
         if (percent is > 1 or < 0)
@@ -35,14 +35,13 @@ public class BoundingEllipse : IStaticFigure
             percent = 0.95f;
         }
 
-        var dataset = points.OrderBy(p => p.GetDistance(center))
+        var dataset = points
+            .OrderBy(p => p.GetDistance(center))
             .Take((int)(points.Count * percent))
             .Select(p => p.ToPointF());
 
-        List<PointF> ch = [.. dataset];
-        using var pointVector = new VectorOfPointF([.. ch]);
+        using var pointVector = new VectorOfPointF([.. dataset]);
         var ellipse = CvInvoke.MinAreaRect(pointVector);
-        //var ellipse = CvInvoke.FitEllipse(pointVector);
 
         return (ellipse.Center, ellipse.Size.Width / 2, ellipse.Size.Height / 2, ellipse.Angle);
     }
@@ -51,7 +50,7 @@ public class BoundingEllipse : IStaticFigure
     ///    Shows if the figure is drawn 
     ///    Protects from multiple <see cref="Draw"/> calls
     /// </summary>
-    public bool IsDrawn { get; private set; } = false;
+    public bool IsDrawn { get; private set; }
 
     /// <summary>
     ///    Ellipse rotation angle
@@ -200,12 +199,13 @@ public class BoundingEllipse : IStaticFigure
         double coeffX = Parent.ActualWidth / IniSize.Width;
         double coeffY = Parent.ActualHeight / IniSize.Height;
 
-        var (center, radiusX, radiusY, rotationAngle) =
-            GetFillEllipse(_points.Select(p => new Point2D<int>((int)(p.X * coeffX), (int)(p.Y * coeffY))).ToList());
+        var scaledPoints = _points.Select(p => new Point2D<int>((int)(p.X * coeffX), (int)(p.Y * coeffY))).ToList();
+        var (center, radiusX, radiusY, rotationAngle) = GetFillEllipse(scaledPoints);
+
         RadiusX = (int)radiusX;
         RadiusY = (int)radiusY;
         RotationAngle = rotationAngle;
-        Center = new((int)center.X, (int)center.Y);
+        Center = new Point2D<int>((int)center.X, (int)center.Y);
         UpdateTransform();
     }
 }

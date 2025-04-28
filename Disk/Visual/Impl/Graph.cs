@@ -1,6 +1,7 @@
 ﻿using Disk.Calculations.Impl;
 using Disk.Data.Impl;
 using Disk.Visual.Interface;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Shapes;
@@ -15,7 +16,7 @@ public class Graph : IStaticFigure
     /// <summary>
     ///     Protects from multiple <see cref="Draw"/> calls
     /// </summary>
-    public bool IsDrawn { get; private set; } = false;
+    public bool IsDrawn { get; private set; }
 
     /// <summary>
     ///     The radius of the graph
@@ -114,9 +115,11 @@ public class Graph : IStaticFigure
         for (var angle = angleStep / 2; angle < 360.0; angle += angleStep, i++)
         {
             var radius = Radius * Frequency.ElementAt(i) / (double)maxFrequency;
-            var point = new PolarPoint<float>(radius, Math.PI * angle / 180);
 
-            Polygon.Points.Add(new((Parent.RenderSize.Width / 2) + point.X, (Parent.RenderSize.Height / 2) - point.Y));
+            var polarPoint = new PolarPoint<float>(radius, Math.PI * angle / 180);
+            var point = new Point((Parent.RenderSize.Width / 2) + polarPoint.X, (Parent.RenderSize.Height / 2) - polarPoint.Y);
+
+            Polygon.Points.Add(point);
         }
     }
 

@@ -172,7 +172,7 @@ public partial class MapCreatorView : UserControl
             radius: Settings.Default.IniTargetRadius * 5,
             parent: PaintArea,
             number: _targets.Count + 1,
-            iniSize: new(IniWidth, IniHeight),
+            iniSize: new Size(IniWidth, IniHeight),
             converter: _converter
         );
     }

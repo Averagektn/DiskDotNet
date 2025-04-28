@@ -16,13 +16,13 @@ public class NumberedTarget : Target
     /// </summary>
     public Point2D<float> Angles => _converter.ToAngle_FromWnd(Center);
 
-    private float _y;
-    private float _x;
-
     private readonly TextBlock _numberText;
     private readonly TextBox _coordY;
     private readonly TextBox _coordX;
     private readonly Converter _converter;
+
+    private float _y;
+    private float _x;
 
     /// <inheritdoc/>
     public override Point2D<int> Center
@@ -115,10 +115,10 @@ public class NumberedTarget : Target
             Canvas.SetTop(_numberText, Top + Radius - (s.NewSize.Height / 2));
         };
 
-        for (int i = 1; i < Circles.Count; i++)
-        {
-            Circles[i] = new Circle(center, SingleRadius * (Circles.Count - i), 0, Brushes.White, parent, iniSize);
-        }
+        Circles = [
+            new(center, SingleRadius * 5, 0, Brushes.Red, parent, iniSize),
+            new(center, SingleRadius * 4, 0, Brushes.White, parent, iniSize)
+        ];
     }
 
     /// <summary>

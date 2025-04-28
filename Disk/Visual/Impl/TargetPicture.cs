@@ -38,13 +38,13 @@ public class TargetPicture(string imageFilePath, Point2D<int> center, Size image
     public event Action<int>? OnReceiveShot;
 
     /// <inheritdoc/>
-    protected readonly double Hp = hp;
-
-    /// <inheritdoc/>
     public double Progress { get; protected set; }
 
     /// <inheritdoc/>
     public bool IsFull => Progress == Hp;
+
+    /// <inheritdoc/>
+    protected readonly double Hp = hp;
 
     /// <inheritdoc/>
     public virtual int ReceiveShot(Point2D<int> shot)

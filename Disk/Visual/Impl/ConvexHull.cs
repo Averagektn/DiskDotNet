@@ -24,8 +24,8 @@ public class ConvexHull : IStaticFigure
     /// <returns>Convex hull</returns>
     public static List<PointF> GetConvexHull<T>(List<Point2D<T>> points, float percent = 0.95f) where T : IConvertible, new()
     {
-        var centerX = points.Count != 0 ? points.Average(p => p.XDbl) : 0.0;
-        var centerY = points.Count != 0 ? points.Average(p => p.YDbl) : 0.0;
+        var centerX = points.Count > 10 ? points.Average(p => p.XDbl) : 0.0;
+        var centerY = points.Count > 10 ? points.Average(p => p.YDbl) : 0.0;
         var center = new Point2D<T>((T)Convert.ChangeType(centerX, typeof(T)), (T)Convert.ChangeType(centerY, typeof(T)));
 
         if (percent is > 1 or < 0)
@@ -131,10 +131,12 @@ public class ConvexHull : IStaticFigure
     /// <inheritdoc/>
     public virtual void Scale()
     {
-        double xScale = Parent.ActualWidth / IniSize.Width;
-        double yScale = Parent.ActualHeight / IniSize.Height;
+        double coeffX = Parent.ActualWidth / IniSize.Width;
+        double coeffY = Parent.ActualHeight / IniSize.Height;
 
-        var a = GetConvexHull(_points.Select(p => new Point2D<int>((int)(p.X * xScale), (int)(p.Y * yScale))).ToList());
+        var scaledPoints = _points.Select(p => new Point2D<int>((int)(p.X * coeffX), (int)(p.Y * coeffY))).ToList();
+        var a = GetConvexHull(scaledPoints);
+
         _polygon.Points.Clear();
         a.ForEach(p => _polygon.Points.Add(new Point(p.X, p.Y)));
     }

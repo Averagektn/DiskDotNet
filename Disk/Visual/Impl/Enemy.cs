@@ -29,6 +29,15 @@ namespace Disk.Visual.Impl;
 public class Enemy(Point2D<int> center, int radius, int speed, Brush color, Canvas parent, Size iniSize) :
     User(center, radius, speed, color, parent, iniSize)
 {
+    private const float TopRightRight = 22.5f;
+    private const float TopRight = 67.5f;
+    private const float TopLeft = 112.5f;
+    private const float TopLeftLeft = 157.5f;
+    private const float BottomLeftLeft = 202.5f;
+    private const float BottomLeft = 247.5f;
+    private const float BottomRight = 292.5f;
+    private const float BottomRightRight = 337.5f;
+
     /// <summary>
     ///     Makes the enemy follow the specified target point.
     /// </summary>
@@ -41,10 +50,10 @@ public class Enemy(Point2D<int> center, int radius, int speed, Brush color, Canv
 
         if (!Contains(target))
         {
-            bool moveRight = IsBetween(direction, 292.5f, 67.5f);
-            bool moveTop = IsBetween(direction, 22.5f, 157.5f);
-            bool moveLeft = IsBetween(direction, 112.5f, 247.5f);
-            bool moveBottom = IsBetween(direction, 202.5f, 337.5f);
+            bool moveRight = IsBetween(direction, BottomRight, TopRight);
+            bool moveTop = IsBetween(direction, TopRightRight, TopLeftLeft);
+            bool moveLeft = IsBetween(direction, TopLeft, BottomLeft);
+            bool moveBottom = IsBetween(direction, BottomLeftLeft, BottomRightRight);
 
             Move(moveTop, moveRight, moveBottom, moveLeft);
         }

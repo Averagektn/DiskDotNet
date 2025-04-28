@@ -17,7 +17,12 @@ public class Path : IStaticFigure
     ///    Shows if the figure is drawn 
     ///    Protects from multiple <see cref="Draw"/> calls
     /// </summary>
-    public bool IsDrawn { get; private set; } = false;
+    public bool IsDrawn { get; private set; }
+
+    /// <summary>
+    ///     Required for correct positioning
+    /// </summary>
+    protected readonly Panel Parent;
 
     /// <summary>
     ///     The polyline used to draw the path
@@ -33,11 +38,6 @@ public class Path : IStaticFigure
     ///     The converter for coordinate transformations
     /// </summary>
     private readonly Converter Converter;
-
-    /// <summary>
-    ///     Required for correct positioning
-    /// </summary>
-    protected readonly Panel Parent;
 
     /// <summary>
     ///     Initializes a new instance of the <see cref="Path"/> class
