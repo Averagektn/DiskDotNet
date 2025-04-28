@@ -26,7 +26,6 @@ public partial class App : Application
     private App()
     {
         Thread.CurrentThread.CurrentUICulture = new CultureInfo(Config.Default.Language);
-        RenderOptions.ProcessRenderMode = RenderMode.SoftwareOnly;
 
         Log.Logger = new LoggerConfiguration()
             .MinimumLevel.Information()
