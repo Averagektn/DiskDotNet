@@ -14,182 +14,199 @@
              d:DesignWidth="800">
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*" Name="PaintWidth"/>
+            <ColumnDefinition Width="*" />
             <ColumnDefinition Width="auto"/>
         </Grid.ColumnDefinitions>
 
-        <Image 
-            Panel.ZIndex="-10"
-            Grid.Column="0"
-            HorizontalAlignment="Center"
-            VerticalAlignment="Center"
-            Source="/Properties/feet_projection.png" />
+        <Grid Grid.ColumnSpan="2" x:Name="PaintGrid">
+            <Rectangle x:Name="DimOverlay"
+               Fill="Gray"
+               Opacity="0.5"
+               Visibility="Hidden"
+               Panel.ZIndex="100"/>
 
-        <Line  
-            Panel.ZIndex="-1"
-            Grid.Column="0"
-            X1="0" Y1="0" X2="0" 
-            Y2="{Binding ActualHeight, RelativeSource={RelativeSource AncestorType=Grid}}"   
-            Stroke="Black" StrokeThickness="2" 
-            HorizontalAlignment="Center" />
+            <Image 
+                Panel.ZIndex="-10"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                Source="/Properties/feet_projection.png" />
 
-        <Line 
-            Panel.ZIndex="-1"
-            Grid.Column="0"
-            X1="0" Y1="0" 
-            X2="{Binding ActualWidth, RelativeSource={RelativeSource AncestorType=Grid}}" 
-            Y2="0" Stroke="Black" StrokeThickness="2" 
-            VerticalAlignment="Center" />
+            <Line  
+                Panel.ZIndex="-1"
+                X1="0" Y1="0" X2="0" 
+                Y2="{Binding ActualHeight, RelativeSource={RelativeSource AncestorType=Grid}}"   
+                Stroke="Black" StrokeThickness="2" 
+                HorizontalAlignment="Center" />
+            <Line 
+                Panel.ZIndex="-1"
+                X1="0" Y1="0" 
+                X2="{Binding ActualWidth, RelativeSource={RelativeSource AncestorType=Grid}}" 
+                Y2="0" Stroke="Black" StrokeThickness="2" 
+                VerticalAlignment="Center" />
 
-        <Canvas Name="PathArea" Panel.ZIndex="2" Grid.Column="0"/>
-        <Canvas Name="PaintArea" Panel.ZIndex="1" Grid.Column="0"/>
-        <Canvas Name="EllipseArea" Panel.ZIndex="0" Grid.Column="0"/>
-        <Canvas Name="GraphArea" Panel.ZIndex="-2" Grid.Column="0"/>
-        
-        <TextBlock 
-            Grid.Column="0" 
-            Margin="10" 
-            HorizontalAlignment="Right" 
-            VerticalAlignment="Top"    
-            Text="I" 
-            FontSize="55" />
-        <TextBlock 
-            Grid.Column="0"
-            Margin="10" 
-            HorizontalAlignment="Left" 
-            VerticalAlignment="Top"
-            Text="II" 
-            FontSize="55" />
-        <TextBlock 
-            Grid.Column="0" 
-            Margin="10" 
-            HorizontalAlignment="Left" 
-            VerticalAlignment="Bottom"    
-            Text="III" 
-            FontSize="55" />
-        <TextBlock 
-            Grid.Column="0" 
-            Margin="10" 
-            HorizontalAlignment="Right" 
-            VerticalAlignment="Bottom"    
-            Text="IV" 
-            FontSize="55" />
+            <Canvas Name="PathArea" Panel.ZIndex="2" />
+            <Canvas Name="PaintArea" Panel.ZIndex="1" />
+            <Canvas Name="EllipseArea" Panel.ZIndex="0" />
+            <Canvas Name="GraphArea" Panel.ZIndex="-2" />
 
-        <ScrollViewer Grid.Column="1">
-            <StackPanel>
-                <TextBlock 
-                    FontSize="25" 
-                    Text="{Binding Message}" 
-                    TextAlignment="Left" 
-                    Margin="10"/>
+            <TextBlock 
+                Margin="10" 
+                HorizontalAlignment="Right" 
+                VerticalAlignment="Top"    
+                Text="I" 
+                FontSize="55" />
+            <TextBlock 
+                Margin="10" 
+                HorizontalAlignment="Left" 
+                VerticalAlignment="Top"
+                Text="II" 
+                FontSize="55" />
+            <TextBlock 
+                Margin="10" 
+                HorizontalAlignment="Left" 
+                VerticalAlignment="Bottom"    
+                Text="III" 
+                FontSize="55" />
+            <TextBlock 
+                Margin="10" 
+                HorizontalAlignment="Right" 
+                VerticalAlignment="Bottom"    
+                Text="IV" 
+                FontSize="55" />
+        </Grid>
 
-                <RadioButton     
-                    Content="{x:Static lang:AttemptResultLocalization.Diagram}"
-                    FontSize="25"
-                    GroupName="DataType" 
-                    Checked="SelectionChanged"
-                    IsChecked="{Binding IsDiagramChecked}" 
-                    Margin="10"/>
+        <Border
+            x:Name="Sidebar"
+            Grid.Column="1"
+            Background="White"
+            MouseLeave="Sidebar_MouseLeave">
+            <Border.RenderTransform>
+                <TranslateTransform x:Name="SidebarTransform" />
+            </Border.RenderTransform>
+            <ScrollViewer>
+                <StackPanel>
+                    <TextBlock 
+                        FontSize="25" 
+                        Text="{Binding Message}" 
+                        TextAlignment="Left" 
+                        Margin="10"/>
 
-                <RadioButton 
-                    Content="{x:Static lang:AttemptResultLocalization.Path}"
-                    FontSize="25"
-                    GroupName="DataType"
-                    Checked="SelectionChanged"
-                    IsChecked="{Binding IsPathChecked}"
-                    Margin="10"/>
+                    <RadioButton     
+                        Content="{x:Static lang:AttemptResultLocalization.Diagram}"
+                        FontSize="25"
+                        GroupName="DataType" 
+                        Checked="SelectionChanged"
+                        IsChecked="{Binding IsDiagramChecked}" 
+                        Margin="10"/>
 
-                <CheckBox 
-                    FontSize="25"
-                    Margin="10"
-                    Content="{x:Static lang:AttemptResultLocalization.PathToTarget}"
-                    Checked="SelectionChanged"
-                    Unchecked="SelectionChanged"
-                    IsChecked="{Binding ShowPathToTarget}"/>
+                    <RadioButton 
+                        Content="{x:Static lang:AttemptResultLocalization.Path}"
+                        FontSize="25"
+                        GroupName="DataType"
+                        Checked="SelectionChanged"
+                        IsChecked="{Binding IsPathChecked}"
+                        Margin="10"/>
 
-                <CheckBox 
-                    FontSize="25"
-                    Margin="10"
-                    Content="{x:Static lang:AttemptResultLocalization.PathInTarget}"
-                    Checked="SelectionChanged"
-                    Unchecked="SelectionChanged"
-                    IsChecked="{Binding ShowPathInTarget}"/>
+                    <CheckBox 
+                        FontSize="25"
+                        Margin="10"
+                        Content="{x:Static lang:AttemptResultLocalization.PathToTarget}"
+                        Checked="SelectionChanged"
+                        Unchecked="SelectionChanged"
+                        IsChecked="{Binding ShowPathToTarget}"/>
 
-                <CheckBox
-                    FontSize="25"
-                    Margin="10"
-                    Content="{x:Static lang:AttemptResultLocalization.HideTarget}"
-                    Checked="HideTarget"
-                    Unchecked="ShowTarget"/>
+                    <CheckBox 
+                        FontSize="25"
+                        Margin="10"
+                        Content="{x:Static lang:AttemptResultLocalization.PathInTarget}"
+                        Checked="SelectionChanged"
+                        Unchecked="SelectionChanged"
+                        IsChecked="{Binding ShowPathInTarget}"/>
 
-                <CheckBox
-                    FontSize="25"
-                    Margin="10"
-                    Content="{x:Static lang:AttemptResultLocalization.HideCursor}"
-                    Checked="HideCursor"
-                    Unchecked="ShowCursor"/>
+                    <CheckBox
+                        FontSize="25"
+                        Margin="10"
+                        Content="{x:Static lang:AttemptResultLocalization.HideTarget}"
+                        Checked="HideTarget"
+                        Unchecked="ShowTarget"/>
 
-                <CheckBox
-                    FontSize="25"
-                    Margin="10"
-                    Content="{x:Static lang:AttemptResultLocalization.FullPathArea}"
-                    Checked="ShowFullPathEllipse"
-                    Unchecked="HideFullPathEllipse"
-                    IsChecked="False"/>
+                    <CheckBox
+                        FontSize="25"
+                        Margin="10"
+                        Content="{x:Static lang:AttemptResultLocalization.HideCursor}"
+                        Checked="HideCursor"
+                        Unchecked="ShowCursor"/>
 
-                <CheckBox
-                    FontSize="25"
-                    Margin="10"
-                    Content="{x:Static lang:AttemptResultLocalization.PathInTargetArea}"
-                    Checked="ShowPathInTargetEllipse"
-                    Unchecked="HidePathInTargetEllipse"
-                    IsChecked="False"/>
+                    <CheckBox
+                        FontSize="25"
+                        Margin="10"
+                        Content="{x:Static lang:AttemptResultLocalization.FullPathArea}"
+                        Checked="ShowFullPathEllipse"
+                        Unchecked="HideFullPathEllipse"
+                        IsChecked="False"/>
 
-                <CheckBox
-                    FontSize="25"
-                    Margin="10"
-                    Content="{x:Static lang:AttemptResultLocalization.PathToTargetArea}"
-                    Checked="ShowPathToTargetEllipse"
-                    Unchecked="HidePathToTargetEllipse"
-                    IsChecked="False"/>
+                    <CheckBox
+                        FontSize="25"
+                        Margin="10"
+                        Content="{x:Static lang:AttemptResultLocalization.PathInTargetArea}"
+                        Checked="ShowPathInTargetEllipse"
+                        Unchecked="HidePathInTargetEllipse"
+                        IsChecked="False"/>
 
-                <ComboBox   
-                    FontSize="25"
-                    SelectionChanged="SelectionChanged" 
-                    SelectedIndex="{Binding SelectedIndex}" 
-                    ItemsSource="{Binding Indices}"  
-                    Margin="10">
-                    <i:Interaction.Triggers>
-                        <i:EventTrigger EventName="SelectionChanged">
-                            <i:InvokeCommandAction Command="{Binding NewItemSelectedCommand}" />
-                        </i:EventTrigger>
-                    </i:Interaction.Triggers>
-                </ComboBox>
+                    <CheckBox
+                        FontSize="25"
+                        Margin="10"
+                        Content="{x:Static lang:AttemptResultLocalization.PathToTargetArea}"
+                        Checked="ShowPathToTargetEllipse"
+                        Unchecked="HidePathToTargetEllipse"
+                        IsChecked="False"/>
 
-                <Button 
-                    Click="ReplyClick"
-                    IsEnabled="{Binding IsRepeatEnabled}"
-                    Content="{x:Static lang:AttemptResultLocalization.Reply}"
-                    Margin="10"
-                    Padding="0 10"/>
+                    <ComboBox   
+                        FontSize="25"
+                        SelectionChanged="SelectionChanged" 
+                        SelectedIndex="{Binding SelectedIndex}" 
+                        ItemsSource="{Binding Indices}"  
+                        Margin="10">
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="SelectionChanged">
+                                <i:InvokeCommandAction Command="{Binding NewItemSelectedCommand}" />
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+                    </ComboBox>
 
-                <Button
-                    Click="StopReply"
-                    Content="{x:Static lang:AttemptResultLocalization.Stop}"
-                    IsEnabled="{Binding IsStopEnabled}"
-                    Margin="10"
-                    Padding="0 10"/>
+                    <Button 
+                        Click="ReplyClick"
+                        IsEnabled="{Binding IsRepeatEnabled}"
+                        Content="{x:Static lang:AttemptResultLocalization.Reply}"
+                        Margin="10"
+                        Padding="0 10"/>
 
-                <Button 
-                    Command="{Binding NavigateBackCommand}"
-                    Content="{x:Static lang:AttemptResultLocalization.Back}"
-                    Margin="10"
-                    Padding="0 10"/>
-            </StackPanel>
-        </ScrollViewer>
+                    <Button
+                        Click="StopReply"
+                        Content="{x:Static lang:AttemptResultLocalization.Stop}"
+                        IsEnabled="{Binding IsStopEnabled}"
+                        Margin="10"
+                        Padding="0 10"/>
+
+                    <Button 
+                        Command="{Binding NavigateBackCommand}"
+                        Content="{x:Static lang:AttemptResultLocalization.Back}"
+                        Margin="10"
+                        Padding="0 10"/>
+                </StackPanel>
+            </ScrollViewer>
+        </Border>
+
+        <Border
+            x:Name="MouseDetectionArea"
+            Grid.Column="1"
+            Width="10"
+            Background="#4bb342"
+            HorizontalAlignment="Right"
+            MouseEnter="MouseDetectionArea_MouseEnter" />
 
         <styles:Popup 
-            Grid.Row="0"
+            Grid.ColumnSpan="2"
             HorizontalAlignment="Center"
             VerticalAlignment="Center"
             PopupMessage="{Binding PopupMessage}" 
