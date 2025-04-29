@@ -22,12 +22,12 @@ namespace Disk.Visual.Impl;
 ///     The color of the user
 /// </param>
 /// <param name="parent">
-///     Canvas, containing all figures
+///     Panel, containing all figures
 /// </param>
 /// <param name="iniSize">
 ///     The initial size of the user
 /// </param>
-public class User(Point2D<int> center, int radius, int speed, Brush color, Canvas parent, Size iniSize) :
+public class User(Point2D<int> center, int radius, int speed, Brush color, Panel parent, Size iniSize) :
     Circle(center, radius, speed, color, parent, iniSize), IUser
 {
     /// <inheritdoc/>

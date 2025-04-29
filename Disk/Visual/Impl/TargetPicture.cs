@@ -24,12 +24,12 @@ namespace Disk.Visual.Impl;
 ///     Initial size of the image
 /// </param>
 /// <param name="parent">
-///     Canvas, containing all figures
+///     Panel, containing all figures
 /// </param>
 /// <param name="iniSize">
 ///     The initial size of the target
 /// </param>
-public class TargetPicture(string imageFilePath, Point2D<int> center, Size imageSize, Canvas parent, Size iniSize, double hp)
+public class TargetPicture(string imageFilePath, Point2D<int> center, Size imageSize, Panel parent, Size iniSize, double hp)
     : UserPicture(imageFilePath, center, 0, imageSize, parent, iniSize), IProgressTarget
 {
     /// <summary>

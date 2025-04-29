@@ -22,7 +22,7 @@ public static class DrawableFabric
     private static float YAngleSize => Settings.YMaxAngle * 2;
     private static int TargetHp => Settings.TargetHp;
 
-    public static User GetIniUser(string userImagePath, Canvas parent)
+    public static User GetIniUser(string userImagePath, Panel parent)
     {
         if (File.Exists(userImagePath))
         {
@@ -47,7 +47,7 @@ public static class DrawableFabric
         );
     }
 
-    public static IProgressTarget GetIniProgressTarget(string targetImagePath, Point2D<int> center, Canvas parent)
+    public static IProgressTarget GetIniProgressTarget(string targetImagePath, Point2D<int> center, Panel parent)
     {
         if (File.Exists(targetImagePath))
         {

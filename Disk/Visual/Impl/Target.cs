@@ -46,12 +46,12 @@ public class Target : User, ITarget
     ///     The radius of the target
     /// </param>
     /// <param name="parent">
-    ///     Canvas, containing all figures
+    ///     Panel, containing all figures
     /// </param>
     /// <param name="iniSize">
     ///     The initial size of the target
     /// </param>
-    public Target(Point2D<int> center, int radius, Canvas parent, Size iniSize) :
+    public Target(Point2D<int> center, int radius, Panel parent, Size iniSize) :
         base(center, radius, 0, Brushes.Transparent, parent, iniSize)
     {
         Circles = [
@@ -89,6 +89,7 @@ public class Target : User, ITarget
     public override void Move(Point2D<int> center)
     {
         base.Move(center);
+
         Circles.ForEach(circle => circle.Move(Center));
     }
 
@@ -127,6 +128,7 @@ public class Target : User, ITarget
 
         Circles.ForEach(circle => circle.Remove());
         Parent.SizeChanged -= Parent_SizeChanged;
+
         base.Remove();
     }
 }

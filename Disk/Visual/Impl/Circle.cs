@@ -1,5 +1,6 @@
 ﻿using Disk.Data.Impl;
 using Disk.Visual.Interface;
+using Serilog;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Shapes;
@@ -14,9 +15,7 @@ public class Circle : IDynamicFigure
 {
     /// <summary>
     ///     <inheritdoc/><br/>
-    ///     Center change will force positioning change with
-    ///     <see cref="Canvas.SetLeft(System.Windows.UIElement, double)"/> and
-    ///     <see cref="Canvas.SetTop(System.Windows.UIElement, double)"/> of all figures
+    ///     Center change will force positioning change 
     /// </summary>
     public virtual Point2D<int> Center
     {
@@ -25,10 +24,11 @@ public class Circle : IDynamicFigure
         {
             _center = value;
 
-            Canvas.SetLeft(Figure, Left);
-            Canvas.SetTop(Figure, Top);
+            _transform.X = Left;
+            _transform.Y = Top;
         }
     }
+    private readonly TranslateTransform _transform = new();
     private Point2D<int> _center = new();
 
     /// <inheritdoc/>
@@ -53,6 +53,7 @@ public class Circle : IDynamicFigure
         protected set
         {
             _radius = value;
+
             Figure.Height = value * 2;
             Figure.Width = value * 2;
         }
@@ -83,7 +84,7 @@ public class Circle : IDynamicFigure
     /// <summary>
     ///    Drawing area
     /// </summary>
-    protected readonly Canvas Parent;
+    protected readonly Panel Parent;
 
     private readonly int IniSpeed;
     private readonly Ellipse Figure;
@@ -111,12 +112,12 @@ public class Circle : IDynamicFigure
     /// <param name="iniSize">
     ///     The initial size of the circle
     /// </param>
-    public Circle(Point2D<int> center, int radius, int speed, Brush color, Canvas canvas, Size iniSize)
+    public Circle(Point2D<int> center, int radius, int speed, Brush color, Panel parent, Size iniSize)
     {
         IniRadius = radius;
         IniSpeed = speed;
 
-        Parent = canvas;
+        Parent = parent;
 
         Figure = new()
         {
@@ -125,12 +126,12 @@ public class Circle : IDynamicFigure
             Fill = color,
         };
 
+        Figure.RenderTransform = _transform;
+
         Speed = speed;
         _radius = radius;
         _center = center;
-        //_normalizedX = (double)center.X / canvas.ActualWidth;
         _normalizedX = center.X / iniSize.Width;
-        //_normalizedY = (double)center.Y / canvas.ActualHeight;
         _normalizedY = center.Y / iniSize.Height;
 
         IniSize = iniSize;
@@ -226,6 +227,7 @@ public class Circle : IDynamicFigure
         }
 
         Center = new(Center.X + xSpeed, Center.Y + ySpeed);
+
         _normalizedX = Center.X / Parent.ActualWidth;
         _normalizedY = Center.Y / Parent.ActualHeight;
     }
@@ -252,6 +254,7 @@ public class Circle : IDynamicFigure
         if (center.X <= Parent.ActualWidth && center.Y <= Parent.ActualHeight && center.X > 0 && center.Y > 0)
         {
             Center = center;
+
             _normalizedX = Center.X / Parent.ActualWidth;
             _normalizedY = Center.Y / Parent.ActualHeight;
         }

@@ -19,10 +19,11 @@ public class UserPicture : User
         {
             base.Center = value;
 
-            Canvas.SetLeft(Image, Left);
-            Canvas.SetTop(Image, Top);
+            _imageTransform.X = Left;
+            _imageTransform.Y = Top;
         }
     }
+    private readonly TranslateTransform _imageTransform = new();
 
     /// <inheritdoc/>
     public override int Right => (int)(Center.X + (Image.Width / 2));
@@ -62,12 +63,12 @@ public class UserPicture : User
     ///     Initial size of the image
     /// </param>
     /// <param name="parent">
-    ///     Canvas, containing all figures
+    ///     Panel, containing all figures
     /// </param>
     /// <param name="iniSize">
     ///     The initial size of the target
     /// </param>
-    public UserPicture(string filePath, Point2D<int> center, int speed, Size imageSize, Canvas parent, Size iniSize)
+    public UserPicture(string filePath, Point2D<int> center, int speed, Size imageSize, Panel parent, Size iniSize)
         : base(center, radius: (int)Math.Min(imageSize.Width / 2, imageSize.Height / 2), speed, Brushes.Transparent,
             parent, iniSize)
     {
@@ -77,6 +78,7 @@ public class UserPicture : User
             Source = new BitmapImage(new Uri(filePath, UriKind.RelativeOrAbsolute)),
             Width = imageSize.Width,
             Height = imageSize.Height,
+            RenderTransform = _imageTransform,
         };
     }
 

@@ -227,7 +227,7 @@ public class AttemptResultViewModel(NavigationStore navigationStore, DiskContext
     }
 
     // remove
-    public List<IStaticFigure> GetPathAndRose(Canvas canvas)
+    public List<IStaticFigure> GetPathAndRose(Panel parent)
     {
         if (SelectedIndex == -1)
         {
@@ -236,7 +236,7 @@ public class AttemptResultViewModel(NavigationStore navigationStore, DiskContext
 
         if (IsDiagramChecked)
         {
-            return [GetGraph(canvas)];
+            return [GetGraph(parent)];
         }
         else if (IsPathChecked)
         {
@@ -248,29 +248,29 @@ public class AttemptResultViewModel(NavigationStore navigationStore, DiskContext
             }
 
             var res = new List<IStaticFigure>();
-            //var pathToTarget = new Visual.Impl.Path(PathsToTargets[SelectedIndex], Converter, Brushes.Green, canvas);
-            //var pathInTarget = new Visual.Impl.Path(PathsInTargets[SelectedIndex], Converter, Brushes.Blue, canvas);
+            //var pathToTarget = new Visual.Impl.Path(PathsToTargets[SelectedIndex], Converter, Brushes.Green, parent);
+            //var pathInTarget = new Visual.Impl.Path(PathsInTargets[SelectedIndex], Converter, Brushes.Blue, parent);
             var c = DrawableFabric.GetIniConverter();
 
             PointedPath pointsToTarget;
             if (PathsToTargets.Count > SelectedIndex)
             {
-                pointsToTarget = new PointedPath(PathsToTargets[SelectedIndex].Select(c.ToWndCoord), Colors.Green, canvas, new Size(800, 800));
+                pointsToTarget = new PointedPath(PathsToTargets[SelectedIndex].Select(c.ToWndCoord), Colors.Green, parent, new Size(800, 800));
                 pointsToTarget.Scale();
             }
             else
             {
-                pointsToTarget = new PointedPath([], Colors.Transparent, canvas, new(1, 1));
+                pointsToTarget = new PointedPath([], Colors.Transparent, parent, new(1, 1));
             }
             PointedPath pointsInTarget;
             if (PathsInTargets.Count > SelectedIndex)
             {
-                pointsInTarget = new PointedPath(PathsInTargets[SelectedIndex].Select(c.ToWndCoord), Colors.Blue, canvas, new Size(800, 800));
+                pointsInTarget = new PointedPath(PathsInTargets[SelectedIndex].Select(c.ToWndCoord), Colors.Blue, parent, new Size(800, 800));
                 pointsInTarget.Scale();
             }
             else
             {
-                pointsInTarget = new PointedPath([], Colors.Transparent, canvas, new(1, 1));
+                pointsInTarget = new PointedPath([], Colors.Transparent, parent, new(1, 1));
             }
 
             Log.Information("Created Path");
@@ -292,20 +292,20 @@ public class AttemptResultViewModel(NavigationStore navigationStore, DiskContext
         return [];
     }
 
-    private Graph GetGraph(Canvas canvas)
+    private Graph GetGraph(Panel parent)
     {
         if (PathsInTargets.Count <= SelectedIndex || PathsInTargets[SelectedIndex].Count == 0)
         {
             _ = Application.Current.Dispatcher.InvokeAsync(async () =>
                 await ShowPopup(header: "", message: Localization.NoContentForDiagramError));
-            return new Graph([], Brushes.LightGreen, canvas, 8);
+            return new Graph([], Brushes.LightGreen, parent, 8);
         }
 
         var target = new ProgressTarget
         (
             center: new(0, 0),
             radius: CurrentAttempt.TargetRadius,
-            parent: canvas,
+            parent: parent,
             hp: 0,
             iniSize: new(Settings.IniScreenWidth, Settings.IniScreenHeight)
         );
@@ -323,7 +323,7 @@ public class AttemptResultViewModel(NavigationStore navigationStore, DiskContext
 
         Log.Information("Created Graph");
 
-        return new Graph(dataset, Brushes.LightGreen, canvas, 8);
+        return new Graph(dataset, Brushes.LightGreen, parent, 8);
     }
 
     public List<Point2D<float>>? GetConvexHull()

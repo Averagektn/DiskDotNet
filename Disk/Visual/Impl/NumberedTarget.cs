@@ -16,14 +16,6 @@ public class NumberedTarget : Target
     /// </summary>
     public Point2D<float> Angles => _converter.ToAngle_FromWnd(Center);
 
-    private readonly TextBlock _numberText;
-    private readonly TextBox _coordY;
-    private readonly TextBox _coordX;
-    private readonly Converter _converter;
-
-    private float _y;
-    private float _x;
-
     /// <inheritdoc/>
     public override Point2D<int> Center
     {
@@ -32,16 +24,27 @@ public class NumberedTarget : Target
         {
             base.Center = value;
 
-            Canvas.SetLeft(_numberText, Left + Radius - (_numberText.ActualWidth / 2));
-            Canvas.SetTop(_numberText, Top + Radius - (_numberText.ActualHeight / 2));
+            _numberTextTranform.X = Left + Radius - (_numberText.ActualWidth / 2);
+            _numberTextTranform.Y = Top + Radius - (_numberText.ActualHeight / 2);
 
-            Canvas.SetLeft(_coordY, Left + Radius - (_coordY.ActualWidth / 2));
-            Canvas.SetTop(_coordY, Top - 2 - _coordY.ActualHeight);
+            _coordXTranform.X = Right + 2;
+            _coordXTranform.Y = Top + Radius - (_coordX.ActualHeight / 2);
 
-            Canvas.SetLeft(_coordX, Right + 2);
-            Canvas.SetTop(_coordX, Top + Radius - (_coordX.ActualHeight / 2));
+            _coordYTranform.X = Left + Radius - (_coordY.ActualWidth / 2);
+            _coordYTranform.Y = Top - 2 - _coordY.ActualHeight;
         }
     }
+    private readonly TranslateTransform _numberTextTranform = new();
+    private readonly TranslateTransform _coordYTranform = new();
+    private readonly TranslateTransform _coordXTranform = new();
+
+    private readonly TextBlock _numberText;
+    private readonly TextBox _coordY;
+    private readonly TextBox _coordX;
+    private readonly Converter _converter;
+
+    private float _y;
+    private float _x;
 
     /// <summary>
     ///     Represents a target with a center point, radius, and initial size. Uses numbers to show order
@@ -53,7 +56,7 @@ public class NumberedTarget : Target
     ///     The radius of the target
     /// </param>
     /// <param name="parent">
-    ///     Canvas, containing all figures
+    ///     Panel, containing all figures
     /// </param>
     /// <param name="number">
     ///     Initial number to be drawn
@@ -64,7 +67,7 @@ public class NumberedTarget : Target
     /// <param name="converter">
     ///     Conversion between window and angle coordinates
     /// </param>
-    public NumberedTarget(Point2D<int> center, int radius, Canvas parent, int number, Size iniSize, Converter converter)
+    public NumberedTarget(Point2D<int> center, int radius, Panel parent, int number, Size iniSize, Converter converter)
         : base(center, radius, parent, iniSize)
     {
         _converter = converter;
@@ -94,6 +97,7 @@ public class NumberedTarget : Target
             MinWidth = Radius,
         };
         _coordY.LostFocus += (_, _) => OnLostKeyboardFocus(_coordY, ref _y);
+        _coordY.RenderTransform = _coordYTranform;
 
         _coordX = new TextBox()
         {
@@ -103,6 +107,7 @@ public class NumberedTarget : Target
             MinWidth = Radius,
         };
         _coordX.LostFocus += (_, _) => OnLostKeyboardFocus(_coordX, ref _x);
+        _coordX.RenderTransform = _coordXTranform;
 
         _numberText = new TextBlock()
         {
@@ -111,9 +116,10 @@ public class NumberedTarget : Target
         };
         _numberText.SizeChanged += (_, s) =>
         {
-            Canvas.SetLeft(_numberText, Left + Radius - (s.NewSize.Width / 2));
-            Canvas.SetTop(_numberText, Top + Radius - (s.NewSize.Height / 2));
+            _numberTextTranform.X = Left + Radius - (s.NewSize.Width / 2);
+            _numberTextTranform.Y = Top + Radius - (s.NewSize.Height / 2);
         };
+        _numberText.RenderTransform = _numberTextTranform;
 
         Circles = [
             new(center, SingleRadius * 5, 0, Brushes.Red, parent, iniSize),
@@ -181,6 +187,7 @@ public class NumberedTarget : Target
         base.Move(center);
 
         var point = _converter.ToAngle_FromWnd(center);
+
         _coordX.Text = $"{point.X:f1}";
         _coordY.Text = $"{point.Y:f1}";
 
@@ -195,32 +202,32 @@ public class NumberedTarget : Target
         // X coord right
         if (Right + _coordX.ActualWidth > Parent.ActualWidth)
         {
-            Canvas.SetLeft(_coordX, Left - 2 - _coordX.ActualWidth);
+            _coordXTranform.X = Left - 2 - _coordX.ActualWidth;
         }
         // X coord bottom
         if (Center.Y + (_coordX.ActualHeight / 2) > Parent.ActualHeight)
         {
-            Canvas.SetTop(_coordX, Parent.ActualHeight - 2 - _coordX.ActualHeight);
+            _coordXTranform.Y = Top - 2 - _coordX.ActualHeight;
         }
         // X coord top
         if (Center.Y - (_coordX.ActualHeight / 2) < 0)
         {
-            Canvas.SetTop(_coordX, 2);
+            _coordXTranform.Y = 2;
         }
         // Y coord left
         if (Center.X - (_coordY.ActualWidth / 2) < 0)
         {
-            Canvas.SetLeft(_coordY, 2);
+            _coordYTranform.X = 2;
         }
         // Y coord right
         if (Center.X + (_coordY.ActualWidth / 2) > Parent.ActualWidth)
         {
-            Canvas.SetLeft(_coordY, Parent.ActualWidth - 2 - _coordY.ActualWidth);
+            _coordYTranform.X = Parent.ActualWidth - 2 - _coordY.ActualWidth;
         }
         // Y coord top
         if (Top - _coordY.ActualWidth < 0)
         {
-            Canvas.SetTop(_coordY, Bottom + 2);
+            _coordYTranform.Y = Bottom + 2;
         }
     }
 

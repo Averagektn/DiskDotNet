@@ -26,10 +26,11 @@ public class ProgressTarget : Target, IProgressTarget
         {
             base.Center = value;
 
-            Canvas.SetLeft(Border, Left);
-            Canvas.SetTop(Border, Top);
+            _borderTransform.X = Left;
+            _borderTransform.Y = Top;
         }
     }
+    private readonly TranslateTransform _borderTransform = new();
 
     /// <inheritdoc/>
     protected override int SingleRadius => (int)Math.Round((double)Radius / 6);
@@ -49,7 +50,7 @@ public class ProgressTarget : Target, IProgressTarget
     ///     The radius of the target
     /// </param>
     /// <param name="parent">
-    ///     Canvas, containing all figures
+    ///     Panel, containing all figures
     /// </param>
     /// <param name="hp">
     ///     <see cref="RadialProgressBar"/> maximum value
@@ -57,7 +58,7 @@ public class ProgressTarget : Target, IProgressTarget
     /// <param name="iniSize">
     ///     The initial size of the target
     /// </param>
-    public ProgressTarget(Point2D<int> center, int radius, Canvas parent, int hp, Size iniSize)
+    public ProgressTarget(Point2D<int> center, int radius, Panel parent, int hp, Size iniSize)
         : base(center, radius, parent, iniSize)
     {
         Border = new()
@@ -66,6 +67,7 @@ public class ProgressTarget : Target, IProgressTarget
             Foreground = Brushes.Blue,
             Width = radius * 2,
             Height = radius * 2,
+            RenderTransform = _borderTransform,
         };
     }
 
