@@ -15,25 +15,26 @@ namespace Disk.View;
 
 public partial class AttemptResultView : UserControl
 {
-    private DispatcherTimer? MoveTimer;
     private IUser? _user;
     private ITarget? _target;
-    private bool _isCursorVisible = true;
-    private bool _isTargetVisible = true;
     private int _currentIndex = -1;
 
     private List<IStaticFigure> _pathAndRose = [];
-    private readonly Size IniScreenSize = new(Settings.IniScreenWidth, Settings.IniScreenHeight);
     private readonly List<IStaticFigure> _pathToTargetEllipses = [];
     private readonly List<IStaticFigure> _pathInTargetEllipses = [];
     private readonly List<IStaticFigure> _fullPathEllipses = [];
+    private readonly Size _iniScreenSize = new(_settings.IniScreenWidth, _settings.IniScreenHeight);
 
-    private static readonly Settings Settings = Settings.Default;
+    private static readonly Settings _settings = Settings.Default;
+
+    private int _selectedIndex;
+    private IEnumerator<(bool IsNewTarget, Point2D<float> Point)>? _enumerator;
+    private Point2D<int>? _replyCenter;
+    private DispatcherTimer? _coordTimer;
 
     private AttemptResultViewModel? ViewModel => DataContext as AttemptResultViewModel;
     private Size PaintPanelSize => PaintArea.RenderSize;
     private Converter? Converter => ViewModel?.Converter;
-
 
     private bool _isReply;
     private bool IsReply
@@ -53,26 +54,36 @@ public partial class AttemptResultView : UserControl
     {
         InitializeComponent();
 
-        SizeChanged += OnSizeChanged;
+        SizeChanged += (_, _) => Converter?.Scale(PaintPanelSize);
 
-        Loaded += OnSizeChanged;
         Loaded += SelectionChanged;
-        Loaded += OnLoad;
 
-        Unloaded += StopTimer;
+        Unloaded += StopReply;
+        CompositionTarget.Rendering += OnRender;
     }
 
-    private void OnLoad(object sender, RoutedEventArgs e)
+    private void OnRender(object? sender, EventArgs e)
     {
-        if (ViewModel is null)
+        if (!IsReply || ViewModel is null || _user is null || _target is null)
         {
             return;
         }
-    }
 
-    private void OnSizeChanged(object sender, RoutedEventArgs e)
-    {
-        Converter?.Scale(PaintPanelSize);
+        // _enumerator is always not null. See ReplyClick method
+        if (_replyCenter is not null && IsReply)
+        {
+            _user.Move(_replyCenter);
+
+            if (_enumerator!.Current.IsNewTarget && ++_selectedIndex < ViewModel.TargetCenters.Count)
+            {
+                _target.Move(ViewModel.Converter.ToWndCoord(ViewModel.TargetCenters[_selectedIndex]));
+                ViewModel.SelectedIndex = _selectedIndex;
+            }
+        }
+        else
+        {
+            IsReply = false;
+        }
     }
 
     private void SelectionChanged(object sender, RoutedEventArgs e)
@@ -110,22 +121,19 @@ public partial class AttemptResultView : UserControl
             _target.Move(ViewModel.TargetCenter);
         }
 
-        //if (ViewModel.SelectedIndex >= 0)
+        var allEmpty = _fullPathEllipses.Count == 0 && _pathInTargetEllipses.Count == 0 && _pathToTargetEllipses.Count == 0;
+        if (ViewModel.CurrPathInTarget.Count > 5 && ViewModel.CurrPathToTarget.Count != 5 && (_isFullPathEllipseVisible || allEmpty))
         {
-            var allEmpty = _fullPathEllipses.Count == 0 && _pathInTargetEllipses.Count == 0 && _pathToTargetEllipses.Count == 0;
-            if (ViewModel.CurrPathInTarget.Count > 5 && ViewModel.CurrPathToTarget.Count != 5 && (_isFullPathEllipseVisible || allEmpty))
-            {
-                RecalculateEllipse(_fullPathEllipses, [.. ViewModel.CurrPathToTarget, .. ViewModel.CurrPathInTarget],
-                    Brushes.MediumPurple, Brushes.Purple);
-            }
-            if (ViewModel.CurrPathInTarget.Count > 5 && (_isPathInTargetEllipseVisible || allEmpty))
-            {
-                RecalculateEllipse(_pathInTargetEllipses, [.. ViewModel.CurrPathInTarget], Brushes.CadetBlue, Brushes.Blue);
-            }
-            if (ViewModel.CurrPathToTarget.Count > 5 && (_isPathToTargetEllipseVisible || allEmpty))
-            {
-                RecalculateEllipse(_pathToTargetEllipses, [.. ViewModel.CurrPathToTarget], Brushes.LawnGreen, Brushes.Green);
-            }
+            RecalculateEllipse(_fullPathEllipses, [.. ViewModel.CurrPathToTarget, .. ViewModel.CurrPathInTarget],
+                Brushes.MediumPurple, Brushes.Purple);
+        }
+        if (ViewModel.CurrPathInTarget.Count > 5 && (_isPathInTargetEllipseVisible || allEmpty))
+        {
+            RecalculateEllipse(_pathInTargetEllipses, [.. ViewModel.CurrPathInTarget], Brushes.CadetBlue, Brushes.Blue);
+        }
+        if (ViewModel.CurrPathToTarget.Count > 5 && (_isPathToTargetEllipseVisible || allEmpty))
+        {
+            RecalculateEllipse(_pathToTargetEllipses, [.. ViewModel.CurrPathToTarget], Brushes.LawnGreen, Brushes.Green);
         }
     }
 
@@ -147,12 +155,12 @@ public partial class AttemptResultView : UserControl
         try
         {
             var converter = DrawableFabric.GetIniConverter();
-            ch = new ConvexHull([.. points.Select(converter.ToWndCoord)], borderColor, fillColor, EllipseArea, IniScreenSize);
+            ch = new ConvexHull([.. points.Select(converter.ToWndCoord)], borderColor, fillColor, EllipseArea, _iniScreenSize);
             ch.Scale();
         }
         catch
         {
-            ch = new ConvexHull([], Brushes.Transparent, Brushes.Transparent, EllipseArea, IniScreenSize);
+            ch = new ConvexHull([], Brushes.Transparent, Brushes.Transparent, EllipseArea, _iniScreenSize);
         }
 
         return ch;
@@ -165,15 +173,55 @@ public partial class AttemptResultView : UserControl
 
         try
         {
-            ellipse = new BoundingEllipse([.. points.Select(converter.ToWndCoord)], color, EllipseArea, IniScreenSize);
+            ellipse = new BoundingEllipse([.. points.Select(converter.ToWndCoord)], color, EllipseArea, _iniScreenSize);
             ellipse.Scale();
         }
         catch
         {
-            ellipse = new BoundingEllipse([], color, EllipseArea, IniScreenSize);
+            ellipse = new BoundingEllipse([], color, EllipseArea, _iniScreenSize);
         }
 
         return ellipse;
+    }
+
+    private void StopReply(object sender, RoutedEventArgs e)
+    {
+        IsReply = false;
+        _coordTimer?.Stop();
+    }
+
+    private void ReplyClick(object sender, RoutedEventArgs e)
+    {
+        if (ViewModel is null)
+        {
+            return;
+        }
+
+        _coordTimer = new(DispatcherPriority.Normal)
+        {
+            Interval = TimeSpan.FromMilliseconds(ViewModel.CurrentAttempt.SamplingInterval)
+        };
+        _coordTimer.Tick += (_, _) =>
+        {
+            if (ViewModel is null)
+            {
+                return;
+            }
+
+            if (_enumerator!.MoveNext())
+            {
+                _replyCenter = ViewModel.Converter.ToWndCoord(_enumerator.Current.Point);
+            }
+            else
+            {
+                _replyCenter = null;
+            }
+        };
+
+        _selectedIndex = ViewModel.SelectedIndex;
+        _enumerator = ViewModel.FullPath.GetEnumerator();
+        IsReply = true;
+        _coordTimer.Start();
     }
 
     private bool _isPathToTargetEllipseVisible = false;
@@ -189,7 +237,6 @@ public partial class AttemptResultView : UserControl
             _isPathToTargetEllipseVisible = true;
         }
     }
-
     public void HidePathToTargetEllipse(object sender, RoutedEventArgs e)
     {
         if (_isPathToTargetEllipseVisible)
@@ -212,7 +259,6 @@ public partial class AttemptResultView : UserControl
             _isPathInTargetEllipseVisible = true;
         }
     }
-
     public void HidePathInTargetEllipse(object sender, RoutedEventArgs e)
     {
         if (_isPathInTargetEllipseVisible)
@@ -235,7 +281,6 @@ public partial class AttemptResultView : UserControl
             _isFullPathEllipseVisible = true;
         }
     }
-
     public void HideFullPathEllipse(object sender, RoutedEventArgs e)
     {
         if (_isFullPathEllipseVisible)
@@ -245,6 +290,7 @@ public partial class AttemptResultView : UserControl
         }
     }
 
+    private bool _isCursorVisible = true;
     private void ShowCursor(object sender, RoutedEventArgs e)
     {
         if (!_isCursorVisible)
@@ -253,7 +299,6 @@ public partial class AttemptResultView : UserControl
             _user?.Draw();
         }
     }
-
     private void HideCursor(object sender, RoutedEventArgs e)
     {
         if (_isCursorVisible)
@@ -263,6 +308,7 @@ public partial class AttemptResultView : UserControl
         }
     }
 
+    private bool _isTargetVisible = true;
     private void ShowTarget(object sender, RoutedEventArgs e)
     {
         if (!_isTargetVisible)
@@ -271,58 +317,12 @@ public partial class AttemptResultView : UserControl
             _target?.Draw();
         }
     }
-
     private void HideTarget(object sender, RoutedEventArgs e)
     {
         if (_isTargetVisible)
         {
             _isTargetVisible = false;
             _target?.Remove();
-        }
-    }
-
-    private void ReplyClick(object sender, RoutedEventArgs e)
-    {
-        if (ViewModel is null || _user is null || _target is null)
-        {
-            return;
-        }
-
-        IsReply = true;
-
-        var selectedIndex = ViewModel.SelectedIndex;
-        var enumerator = ViewModel.FullPath.GetEnumerator();
-        MoveTimer = new DispatcherTimer(DispatcherPriority.Normal)
-        {
-            Interval = TimeSpan.FromMilliseconds(ViewModel.CurrentAttempt.SamplingInterval)
-        };
-        MoveTimer.Tick += (_, _) =>
-        {
-            if (enumerator.MoveNext() && IsReply)
-            {
-                _user.Move(ViewModel.Converter.ToWndCoord(enumerator.Current.Point));
-
-                if (enumerator.Current.IsNewTarget && ++selectedIndex < ViewModel.TargetCenters.Count)
-                {
-                    _target.Move(ViewModel.Converter.ToWndCoord(ViewModel.TargetCenters[selectedIndex]));
-                    ViewModel.SelectedIndex = selectedIndex;
-                }
-            }
-            else
-            {
-                StopTimer(sender, e);
-            }
-        };
-
-        MoveTimer.Start();
-    }
-
-    private void StopTimer(object sender, RoutedEventArgs e)
-    {
-        if (MoveTimer is not null && MoveTimer.IsEnabled)
-        {
-            IsReply = false;
-            MoveTimer.Stop();
         }
     }
 }

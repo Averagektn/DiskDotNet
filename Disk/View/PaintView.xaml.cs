@@ -5,6 +5,7 @@ using Disk.Visual.Interface;
 using Serilog;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
 using System.Windows.Threading;
 using Point2DF = Disk.Data.Impl.Point2D<float>;
 using Point2DI = Disk.Data.Impl.Point2D<int>;
@@ -14,9 +15,7 @@ namespace Disk.View.PaintWindow;
 
 public partial class PaintView : UserControl
 {
-
     private readonly DispatcherTimer ShotTimer;
-    private readonly DispatcherTimer MoveTimer;
 
     private Size PaintPanelSize => PaintRect.RenderSize;
 
@@ -43,12 +42,6 @@ public partial class PaintView : UserControl
     {
         InitializeComponent();
 
-        MoveTimer = new(DispatcherPriority.Send)
-        {
-            Interval = TimeSpan.FromMilliseconds(Settings.MoveTime)
-        };
-        MoveTimer.Tick += MoveTimerElapsed;
-
         ShotTimer = new(DispatcherPriority.Normal)
         {
             Interval = TimeSpan.FromMilliseconds(Settings.ShotTime)
@@ -58,6 +51,36 @@ public partial class PaintView : UserControl
         Unloaded += (_, _) => StopGame();
         PaintArea.Loaded += OnLoaded;
         PaintArea.SizeChanged += OnSizeChanged;
+
+        CompositionTarget.Rendering += OnRender;
+    }
+
+    private void OnRender(object? sender, EventArgs e)
+    {
+        if (ShiftedWndPos is not null)
+        {
+            if (AllowedArea.FillContains(ShiftedWndPos.ToPoint()))
+            {
+                User.Move(ShiftedWndPos);
+            }
+            else
+            {
+                var center = new Point2DI((int)AllowedArea.Bounds.Width / 2, (int)AllowedArea.Bounds.Height / 2);
+                var radiusX = AllowedArea.Bounds.Width / 2;
+                var radiusY = AllowedArea.Bounds.Height / 2;
+
+                double normalizedX = (ShiftedWndPos.X - center.X) / radiusX;
+                double normalizedY = (ShiftedWndPos.Y - center.Y) / radiusY;
+
+                double length = Math.Sqrt((normalizedX * normalizedX) + (normalizedY * normalizedY));
+
+                double scale = 1 / length;
+                int nearestX = (int)(center.X + (normalizedX * radiusX * scale));
+                int nearestY = (int)(center.Y + (normalizedY * radiusY * scale));
+
+                User.Move(new(nearestX, nearestY));
+            }
+        }
     }
 
     private List<Point2DI> GetMultipleShots()
@@ -121,38 +144,9 @@ public partial class PaintView : UserControl
         }
     }
 
-    private void MoveTimerElapsed(object? sender, EventArgs e)
-    {
-        if (ShiftedWndPos is not null)
-        {
-            if (AllowedArea.FillContains(ShiftedWndPos.ToPoint()))
-            {
-                User.Move(ShiftedWndPos);
-            }
-            else
-            {
-                var center = new Point2DI((int)AllowedArea.Bounds.Width / 2, (int)AllowedArea.Bounds.Height / 2);
-                var radiusX = AllowedArea.Bounds.Width / 2;
-                var radiusY = AllowedArea.Bounds.Height / 2;
-
-                double normalizedX = (ShiftedWndPos.X - center.X) / radiusX;
-                double normalizedY = (ShiftedWndPos.Y - center.Y) / radiusY;
-
-                double length = Math.Sqrt((normalizedX * normalizedX) + (normalizedY * normalizedY));
-
-                double scale = 1 / length;
-                int nearestX = (int)(center.X + (normalizedX * radiusX * scale));
-                int nearestY = (int)(center.Y + (normalizedY * radiusY * scale));
-
-                User.Move(new(nearestX, nearestY));
-            }
-        }
-    }
-
     private void OnLoaded(object sender, RoutedEventArgs e)
     {
         User = DrawableFabric.GetIniUser(Settings.CursorFilePath, PaintArea);
-        User.Move(new Point2DI(-User.Radius, -User.Radius));
         User.OnShot += (p) => ViewModel.FullPath.Add(Converter.ToAngle_FromWnd(p));
 
         var center = ViewModel.NextTargetCenter ?? new(0, 0);
@@ -168,7 +162,6 @@ public partial class PaintView : UserControl
             Target.Draw();
             User.Draw();
 
-            MoveTimer.Start();
             ShotTimer.Start();
         }
     }
@@ -180,7 +173,6 @@ public partial class PaintView : UserControl
 
         User.ClearOnShot();
 
-        MoveTimer.Stop();
         ShotTimer.Stop();
     }
 

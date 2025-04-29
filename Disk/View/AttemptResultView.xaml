@@ -174,7 +174,7 @@
                     Padding="0 10"/>
 
                 <Button
-                    Click="StopTimer"
+                    Click="StopReply"
                     Content="{x:Static lang:AttemptResultLocalization.Stop}"
                     IsEnabled="{Binding IsStopEnabled}"
                     Margin="10"
