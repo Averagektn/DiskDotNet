@@ -17,7 +17,19 @@ public class SessionsListViewModel(DiskContext database, NavigationStore navigat
     private const int SessionsPerPage = 15;
     private int _currPage;
 
-    public Visibility MapVisibility => SelectedSession is null ? Visibility.Hidden : Visibility.Visible;
+    private bool _isMapVisible;
+    public bool IsMapVisible { get => HoveredSession is not null; set => SetProperty(ref _isMapVisible, value); }
+
+    private Session? _hoveredSession = null;
+    public Session? HoveredSession
+    {
+        get => _hoveredSession;
+        set
+        {
+            _ = SetProperty(ref _hoveredSession, value);
+            OnPropertyChanged(nameof(IsMapVisible));
+        }
+    }
 
     private Session? _selectedSession = null;
     public Session? SelectedSession
@@ -26,7 +38,6 @@ public class SessionsListViewModel(DiskContext database, NavigationStore navigat
         set
         {
             _ = SetProperty(ref _selectedSession, value);
-            OnPropertyChanged(nameof(MapVisibility));
         }
     }
 
@@ -79,6 +90,14 @@ public class SessionsListViewModel(DiskContext database, NavigationStore navigat
             return (int)Math.Ceiling((double)sessionsCount / SessionsPerPage);
         }
     }
+
+    public ICommand TableRowEnterCommand => new Command(elem =>
+    {
+        if (elem is Session s)
+        {
+            _ = MessageBox.Show(s.MapNavigation.Name);
+        }
+    });
 
     public ICommand ConfigureSessionCommand => new Command(_ =>
         ConfigureSessionNavigator.NavigateWithBar(this, navigationStore, Patient));

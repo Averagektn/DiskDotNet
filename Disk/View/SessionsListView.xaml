@@ -13,139 +13,151 @@
              d:DesignWidth="800">
 
     <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="auto"/>
+        </Grid.ColumnDefinitions>
+        
         <Grid.RowDefinitions>
-            <RowDefinition Height="2*"/>
-            <RowDefinition Height="1*"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
 
-        <Grid Grid.Column="1">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="auto"/>
-            </Grid.ColumnDefinitions>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="auto"/>
-                <RowDefinition Height="auto"/>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="auto"/>
-            </Grid.RowDefinitions>
-
-            <StackPanel Orientation="Horizontal">
-                <TextBlock 
-                    Grid.Column="0" 
-                    HorizontalAlignment="Left" 
-                    VerticalAlignment="Center"
-                    FontSize="25" 
-                    Text="{x:Static lang:SessionsListLocalization.SessionsHeader}" 
-                    Margin="10"/>
-                
-                <TextBlock 
-                    HorizontalAlignment="Left" 
-                    VerticalAlignment="Center"
-                    Text="{Binding Patient}" 
-                    Margin="10" 
-                    FontSize="25"/>
-            </StackPanel>
-
-            <Button
+        <StackPanel Orientation="Horizontal">
+            <TextBlock 
+                Grid.Column="0" 
+                HorizontalAlignment="Left" 
                 VerticalAlignment="Center"
+                FontSize="25" 
+                Text="{x:Static lang:SessionsListLocalization.SessionsHeader}" 
+                Margin="10"/>
+
+            <TextBlock 
+                HorizontalAlignment="Left" 
+                VerticalAlignment="Center"
+                Text="{Binding Patient}" 
+                Margin="10" 
+                FontSize="25"/>
+        </StackPanel>
+
+        <Button
+            VerticalAlignment="Center"
+            HorizontalAlignment="Right"
+            Margin="10"
+            Grid.Column="1"
+            Content="{x:Static lang:SessionsListLocalization.StartAppoiment}"  
+            Command="{Binding ConfigureSessionCommand}"/>
+
+        <DockPanel Grid.Row="1" Grid.ColumnSpan="2">
+            <Button 
                 HorizontalAlignment="Right"
+                VerticalAlignment="Center"
+                Content="{x:Static lang:SessionsListLocalization.Cancel}" 
+                DockPanel.Dock="Right"
                 Margin="10"
-                Grid.Column="1"
-                Content="{x:Static lang:SessionsListLocalization.StartAppoiment}"  
-                Command="{Binding ConfigureSessionCommand}"/>
+                Command="{Binding CancelDateCommand}"/>
 
-            <DockPanel Grid.Row="1" Grid.ColumnSpan="2">
-                <Button 
-                    HorizontalAlignment="Right"
-                    VerticalAlignment="Center"
-                    Content="{x:Static lang:SessionsListLocalization.Cancel}" 
-                    DockPanel.Dock="Right"
-                    Margin="10"
-                    Command="{Binding CancelDateCommand}"/>
-
-                <DatePicker 
-                    DockPanel.Dock="Left"
-                    HorizontalAlignment="Stretch"
-                    Margin="5"
-                    FontSize="25"
-                    Grid.Row="1" 
-                    Grid.ColumnSpan="2"
-                    SelectedDateFormat="Short"
-                    SelectedDate="{Binding SelectedDate}">
-                </DatePicker>
-            </DockPanel>
-
-            <DataGrid
-                x:Name="SessionsDataGrid"
+            <DatePicker 
+                DockPanel.Dock="Left"
+                HorizontalAlignment="Stretch"
+                Margin="5"
                 FontSize="25"
-                Grid.Row="2"
+                Grid.Row="1" 
                 Grid.ColumnSpan="2"
-                Margin="5 0"
-                SelectionMode="Single"
-                ItemsSource="{Binding Sessions}" 
-                AutoGenerateColumns="False" 
-                SelectedItem="{Binding SelectedSession}" 
-                IsReadOnly="True">
-                <DataGrid.InputBindings>
-                    <KeyBinding Key="Enter" Command="{Binding ToSessionCommand}"/>
-                </DataGrid.InputBindings>
-                <DataGrid.Columns>
-                    <DataGridTemplateColumn Width="auto" Header="{x:Static lang:SessionsListLocalization.Date}">
-                        <DataGridTemplateColumn.CellTemplate>
-                            <DataTemplate>
-                                <TextBlock Text="{Binding Date}" ToolTip="{Binding MapNavigation.Description}"/>
-                            </DataTemplate>
-                        </DataGridTemplateColumn.CellTemplate>
-                    </DataGridTemplateColumn>
-                    <DataGridTemplateColumn Width="*" Header="{x:Static lang:SessionsListLocalization.MapName}">
-                        <DataGridTemplateColumn.CellTemplate>
-                            <DataTemplate>
-                                <TextBlock Text="{Binding MapNavigation.Name}" ToolTip="{Binding MapNavigation.Description}"/>
-                            </DataTemplate>
-                        </DataGridTemplateColumn.CellTemplate>
-                    </DataGridTemplateColumn>
-                </DataGrid.Columns>
-                <i:Interaction.Triggers>
-                    <i:EventTrigger EventName="MouseDoubleClick">
-                        <i:InvokeCommandAction Command="{Binding ToSessionCommand}" />
-                    </i:EventTrigger>
-                </i:Interaction.Triggers>
-                <DataGrid.ContextMenu>
-                    <ContextMenu FontSize="20">
-                        <MenuItem 
-                            Header="{x:Static lang:SessionsListLocalization.Delete}" 
-                            Command="{Binding DeleteSessionCommand}" 
-                            CommandParameter="{Binding SelectedSession}" />
-                    </ContextMenu>
-                </DataGrid.ContextMenu>
-            </DataGrid>
-            <DockPanel 
-                Grid.Row="3" 
-                Grid.ColumnSpan="2"
-                LastChildFill="False">
+                SelectedDateFormat="Short"
+                SelectedDate="{Binding SelectedDate}">
+            </DatePicker>
+        </DockPanel>
 
-                <Button 
-                    DockPanel.Dock="Left"
-                    Margin="15"
-                    Padding="50 0"
-                    Content="{x:Static lang:SessionsListLocalization.Prev}"
-                    IsEnabled="{Binding IsPreviousEnabled}"
-                    Command="{Binding PrevPageCommand}"/>
+        <DataGrid
+            x:Name="SessionsDataGrid"
+            FontSize="25"
+            Grid.Row="2"
+            Grid.ColumnSpan="2"
+            Margin="5 0"
+            SelectionMode="Single"
+            ItemsSource="{Binding Sessions}" 
+            AutoGenerateColumns="False" 
+            SelectedItem="{Binding SelectedSession}" 
+            IsReadOnly="True">
 
-                <Button 
-                    DockPanel.Dock="Right"
-                    Margin="15"
-                    Padding="50 0"
-                    Content="{x:Static lang:SessionsListLocalization.Next}"
-                    IsEnabled="{Binding IsNextEnabled}"
-                    Command="{Binding NextPageCommand}"/>
-            </DockPanel>
-        </Grid>
+            <DataGrid.InputBindings>
+                <KeyBinding Key="Enter" Command="{Binding ToSessionCommand}"/>
+            </DataGrid.InputBindings>
 
-        <local:MapPreviewView 
-            Visibility="{Binding MapVisibility}"
-            Grid.Row="1" 
-            Map="{Binding SelectedSession.MapNavigation}"/>
+            <DataGrid.Columns>
+                <DataGridTemplateColumn Width="auto" Header="{x:Static lang:SessionsListLocalization.Date}">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Date}" ToolTip="{Binding MapNavigation.Description}"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                
+                <DataGridTemplateColumn Width="*" Header="{x:Static lang:SessionsListLocalization.MapName}">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding MapNavigation.Name}" ToolTip="{Binding MapNavigation.Description}"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+            </DataGrid.Columns>
+
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="MouseDoubleClick">
+                    <i:InvokeCommandAction Command="{Binding ToSessionCommand}" />
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
+
+            <DataGrid.ContextMenu>
+                <ContextMenu FontSize="20">
+                    <MenuItem 
+                        Header="{x:Static lang:SessionsListLocalization.Delete}" 
+                        Command="{Binding DeleteSessionCommand}" 
+                        CommandParameter="{Binding SelectedSession}" />
+                </ContextMenu>
+            </DataGrid.ContextMenu>
+
+            <DataGrid.RowStyle>
+                <Style TargetType="DataGridRow">
+                    <EventSetter Event="MouseEnter" Handler="DataGridRow_MouseEnter"/>
+                    <EventSetter Event="MouseLeave" Handler="DataGridRow_MouseLeave"/>
+                </Style>
+            </DataGrid.RowStyle>
+        </DataGrid>
+
+        <Popup IsOpen="{Binding IsMapVisible}" Placement="Mouse" Width="800" Height="800">
+            <local:MapPreviewView 
+                Background="White"
+                Visibility="Visible"
+                Grid.Row="1" 
+                Map="{Binding HoveredSession.MapNavigation}"
+                MouseEnter="MapPreviewView_MouseEnter"
+                MouseLeave="MapPreviewView_MouseLeave"/>
+        </Popup>
+
+        <DockPanel 
+            Grid.Row="3" 
+            Grid.ColumnSpan="2"            
+            LastChildFill="False">
+
+            <Button 
+                DockPanel.Dock="Left"
+                Margin="15"
+                Padding="50 0"
+                Content="{x:Static lang:SessionsListLocalization.Prev}"
+                IsEnabled="{Binding IsPreviousEnabled}"                
+                Command="{Binding PrevPageCommand}"/>
+
+            <Button 
+                DockPanel.Dock="Right"
+                Margin="15"
+                Padding="50 0"
+                Content="{x:Static lang:SessionsListLocalization.Next}"
+                IsEnabled="{Binding IsNextEnabled}"
+                Command="{Binding NextPageCommand}"/>
+        </DockPanel>
     </Grid>
 </UserControl>

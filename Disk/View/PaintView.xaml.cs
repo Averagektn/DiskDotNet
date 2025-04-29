@@ -34,10 +34,10 @@ public partial class PaintView : UserControl
     {
         get
         {
-/*            if (ViewModel is null)
-            {
-                return null;
-            }*/
+            /*            if (ViewModel is null)
+                        {
+                            return null;
+                        }*/
 
             if (ViewModel.CurrentPos is null)
             {
