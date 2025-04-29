@@ -238,7 +238,15 @@ public class NumberedTarget : Target
     {
         var numSize = _numberText.Text.Length;
         var fontSize = (double)((Radius * 2) - (SingleRadius * 2)) / numSize;
-        _numberText.FontSize = fontSize;
+
+        if (fontSize < 1)
+        {
+            _numberText.FontSize = 1;
+        }
+        else
+        {
+            _numberText.FontSize = fontSize;
+        }
     }
 
     /// <inheritdoc/>
