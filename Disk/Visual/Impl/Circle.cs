@@ -1,6 +1,5 @@
 ﻿using Disk.Data.Impl;
 using Disk.Visual.Interface;
-using Serilog;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Shapes;
@@ -124,9 +123,8 @@ public class Circle : IDynamicFigure
             Width = radius * 2,
             Height = radius * 2,
             Fill = color,
+            RenderTransform = _transform
         };
-
-        Figure.RenderTransform = _transform;
 
         Speed = speed;
         _radius = radius;

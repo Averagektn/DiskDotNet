@@ -10,8 +10,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Serilog;
 using System.Globalization;
 using System.Windows;
-using System.Windows.Interop;
-using System.Windows.Media;
 using System.Windows.Threading;
 
 namespace Disk;
