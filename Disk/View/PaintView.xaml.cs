@@ -32,10 +32,22 @@ public partial class PaintView : UserControl
 
     private Point2DI? ShiftedWndPos
     {
-        get => ViewModel.CurrentPos is null
-            ? User.Center
-            : Converter.ToWndCoord(
-                new Point2DF(ViewModel.CurrentPos.X - Settings.XAngleShift, ViewModel.CurrentPos.Y - Settings.YAngleShift));
+        get
+        {
+/*            if (ViewModel is null)
+            {
+                return null;
+            }*/
+
+            if (ViewModel.CurrentPos is null)
+            {
+                return User.Center;
+            }
+            else
+            {
+                return Converter.ToWndCoord(new Point2DF(ViewModel.CurrentPos.X - Settings.XAngleShift, ViewModel.CurrentPos.Y - Settings.YAngleShift));
+            }
+        }
     }
 
     public PaintView()
@@ -168,12 +180,13 @@ public partial class PaintView : UserControl
 
     private void StopGame()
     {
+        ShotTimer.Stop();
+        CompositionTarget.Rendering -= OnRender;
+
         Target.Remove();
         User.Remove();
 
         User.ClearOnShot();
-
-        ShotTimer.Stop();
     }
 
     private void OnSizeChanged(object sender, RoutedEventArgs e)

@@ -186,8 +186,9 @@ public partial class AttemptResultView : UserControl
 
     private void StopReply(object sender, RoutedEventArgs e)
     {
-        IsReply = false;
         _coordTimer?.Stop();
+        CompositionTarget.Rendering -= OnRender;
+        IsReply = false;
     }
 
     private void ReplyClick(object sender, RoutedEventArgs e)
