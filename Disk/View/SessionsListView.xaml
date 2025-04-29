@@ -128,7 +128,12 @@
             </DataGrid.RowStyle>
         </DataGrid>
 
-        <Popup IsOpen="{Binding IsMapVisible}" Placement="Mouse" Width="800" Height="800">
+        <Popup x:Name="MapPopup"
+               IsOpen="{Binding IsMapVisible}"
+               Placement="Absolute"
+               Width="400" 
+               Height="400">
+            
             <local:MapPreviewView 
                 Background="White"
                 Visibility="Visible"

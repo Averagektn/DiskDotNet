@@ -1,7 +1,9 @@
 ﻿using Disk.Entities;
 using Disk.ViewModel;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media;
 using System.Windows.Threading;
 
 namespace Disk.View;
@@ -38,9 +40,43 @@ public partial class SessionsListView : UserControl
         if (sender is DataGridRow row && row.DataContext is Session session && ViewModel.HoveredSession != session)
         {
             ViewModel.HoveredSession = session;
+            if (SavedRow is not null)
+            {
+                SavedRow.Background = Brushes.White;
+            }
+            SavedRow = row;
+            row.Background = Brushes.LightCyan;
+
+            _ = Dispatcher.BeginInvoke(() =>
+            {
+                var rowScreenPos = row.PointToScreen(new Point(0, 0));
+                var screenHeight = SystemParameters.PrimaryScreenHeight;
+                var screenWidth = SystemParameters.PrimaryScreenWidth;
+                double popupHeight = MapPopup.Height;
+                double popupWidth = MapPopup.Width;
+
+                if (screenWidth - rowScreenPos.X - row.ActualWidth > popupWidth)
+                {
+                    MapPopup.HorizontalOffset = rowScreenPos.X + row.ActualWidth;
+                }
+                else
+                {
+                    MapPopup.HorizontalOffset = screenWidth - popupWidth;
+                }
+
+                if (screenHeight - rowScreenPos.Y - (row.ActualHeight * 2) > popupHeight)
+                {
+                    MapPopup.VerticalOffset = rowScreenPos.Y;
+                }
+                else
+                {
+                    MapPopup.VerticalOffset = rowScreenPos.Y - popupHeight;
+                }
+            }, DispatcherPriority.Loaded);
         }
     }
 
+    private DataGridRow? SavedRow;
     private void DataGridRow_MouseLeave(object sender, MouseEventArgs e)
     {
         if (_isMouseOverMapPreview)
@@ -63,6 +99,10 @@ public partial class SessionsListView : UserControl
         if (!_isMouseOverRow && ViewModel is not null)
         {
             ViewModel.HoveredSession = null;
+            if (SavedRow is not null)
+            {
+                SavedRow.Background = Brushes.White;
+            }
         }
     }
 
