@@ -40,7 +40,7 @@ public class ModalNavigationStore(Func<Type, ObserverViewModel> getViewModel) : 
             Log.Information($"Closing {currVm.GetType()}");
 
             currVm.BeforeNavigation();
-            ViewModels.Pop();
+            _ = ViewModels.Pop();
             if (ViewModels.TryPeek(out var modalVm))
             {
                 modalVm.Refresh();

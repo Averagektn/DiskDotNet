@@ -32,24 +32,35 @@ public class NavigationStore(Func<Type, ObserverViewModel> getViewModel) : INavi
 
     public void SetViewModel<TViewModel>(Action<TViewModel> parametrizeViewModel) where TViewModel : class
     {
+        if (ViewModels.TryPeek(out var oldVm))
+        {
+            oldVm.BeforeNavigation();
+        }
+
         var viewModel = getViewModel.Invoke(typeof(TViewModel));
         parametrizeViewModel((viewModel as TViewModel)!);
         viewModel.Refresh();
         ViewModels.Push(viewModel);
-
         Log.Information($"Created ViewModel {viewModel.GetType()}");
-
         OnCurrentViewModelChanged();
+
+        oldVm?.AfterNavigation();
     }
 
     public void SetViewModel<TViewModel>()
     {
+        if (ViewModels.TryPeek(out var oldVm))
+        {
+            oldVm.BeforeNavigation();
+        }
+
         var viewModel = getViewModel.Invoke(typeof(TViewModel));
-        viewModel.Refresh();
+        //viewModel.Refresh();
         ViewModels.Push(viewModel);
         Log.Information($"Created ViewModel {viewModel.GetType()}");
-
         OnCurrentViewModelChanged();
+
+        oldVm?.AfterNavigation();
     }
 
     public void Close()
@@ -60,15 +71,16 @@ public class NavigationStore(Func<Type, ObserverViewModel> getViewModel) : INavi
             Log.Information($"Closing {currVm.GetType()}");
 
             currVm.BeforeNavigation();
-            ViewModels.Pop();
+            _ = ViewModels.Pop();
             if (ViewModels.TryPeek(out var vm))
             {
                 vm.Refresh();
             }
-            currVm.AfterNavigation();
-            currVm.Dispose();
 
             OnCurrentViewModelChanged();
+
+            currVm.AfterNavigation();
+            currVm.Dispose();
         }
     }
 

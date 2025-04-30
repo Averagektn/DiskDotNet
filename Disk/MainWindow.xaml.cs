@@ -8,7 +8,7 @@ namespace Disk;
 
 public partial class MainWindow : Window
 {
-    private MainViewModel ViewModel => (DataContext as MainViewModel)!;
+    private MainViewModel? ViewModel => DataContext as MainViewModel;
 
     public MainWindow()
     {
@@ -39,7 +39,7 @@ public partial class MainWindow : Window
     {
         if (e.Key == Key.Back)
         {
-            ViewModel.Close();
+            ViewModel?.Close();
             e.Handled = true;
         }
     }
