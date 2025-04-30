@@ -293,7 +293,7 @@ public class SettingsViewModel(ModalNavigationStore modalNavigationStore) : Popu
         var cursorPathChanged = CursorFilePath != Settings.CursorFilePath;
         var targetPathChanged = TargetFilePath != Settings.TargetFilePath;
         var moveTimeChanged = MoveTime != Calculator.RoundToNearest(value: 1000 / Settings.MoveTime, nearest: 5).ToString();
-        var shotTimeChanged = ShotTime != Calculator.RoundToNearest(value: 1000 / Settings.MoveTime, nearest: 5).ToString();
+        var shotTimeChanged = ShotTime != Calculator.RoundToNearest(value: 1000 / Settings.ShotTime, nearest: 5).ToString();
         var targetRadiusChanged = TargetRadius != Settings.IniTargetRadius.ToString();
         var userRadiusChanged = UserRadius != Settings.IniUserRadius.ToString();
         var targetTtlChanged = TargetTtl != Calculator.RoundToNearest(value: 1000 * Settings.TargetHp / (1000 / Settings.ShotTime),

@@ -60,4 +60,18 @@ public class NavigationBarLayoutViewModel(NavigationStore navigationStore) : Obs
 
         CurrentViewModel?.Dispose();
     }
+
+    public override void BeforeNavigation()
+    {
+        base.BeforeNavigation();
+
+        CurrentViewModel?.BeforeNavigation();
+    }
+
+    public override void AfterNavigation()
+    {
+        base.AfterNavigation();
+
+        CurrentViewModel?.AfterNavigation();
+    }
 }
