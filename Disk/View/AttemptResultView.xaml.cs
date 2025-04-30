@@ -16,21 +16,25 @@ namespace Disk.View;
 
 public partial class AttemptResultView : UserControl
 {
+    private AttemptResultViewModel? ViewModel => DataContext as AttemptResultViewModel;
+    private Size PaintPanelSize => PaintArea.RenderSize;
+    private Converter? Converter => ViewModel?.Converter;
+
     private IUser? _user;
     private ITarget? _target;
     private int _currentIndex = -1;
 
-    private List<IStaticFigure> _pathAndRose = [];
+    private IStaticFigure? _pathToTarget;
+    private IStaticFigure? _pathInTarget;
+    private IStaticFigure? _diagram;
+
     private readonly List<IStaticFigure> _pathToTargetEllipses = [];
     private readonly List<IStaticFigure> _pathInTargetEllipses = [];
     private readonly List<IStaticFigure> _fullPathEllipses = [];
+
     private readonly Size _iniScreenSize = new(_settings.IniScreenWidth, _settings.IniScreenHeight);
 
     private static readonly Settings _settings = Settings.Default;
-
-    private AttemptResultViewModel? ViewModel => DataContext as AttemptResultViewModel;
-    private Size PaintPanelSize => PaintArea.RenderSize;
-    private Converter? Converter => ViewModel?.Converter;
 
     private bool _isReply;
     private bool IsReply
@@ -59,7 +63,6 @@ public partial class AttemptResultView : UserControl
         CompositionTarget.Rendering += OnRender;
     }
 
-
     private void SelectionChanged(object sender, RoutedEventArgs e)
     {
         if (ViewModel is null || Converter is null)
@@ -67,9 +70,16 @@ public partial class AttemptResultView : UserControl
             return;
         }
 
-        _pathAndRose.ForEach(p => p.Remove());
-        _pathAndRose = ViewModel.GetPathAndRose(PathArea);
-        _pathAndRose.ForEach(p => p.Draw());
+        _diagram?.Remove();
+        _pathToTarget?.Remove();
+        _pathInTarget?.Remove();
+
+        _diagram = ViewModel.GetGraph(GraphArea);
+        (_pathToTarget, _pathInTarget) = ViewModel.GetPath(PathArea);
+
+        _diagram?.Draw();
+        _pathToTarget?.Draw();
+        _pathInTarget?.Draw();
 
         if (_currentIndex == ViewModel.SelectedIndex)
         {
@@ -111,6 +121,7 @@ public partial class AttemptResultView : UserControl
         }
     }
 
+    #region Ellipse and ConvexHull creation
     private void RecalculateEllipse(List<IStaticFigure> ellipseList, List<Point2D<float>> points, Brush fill, Brush bound)
     {
         ellipseList.ForEach(e => e.Remove());
@@ -122,7 +133,6 @@ public partial class AttemptResultView : UserControl
         ellipseList.AddRange([convexHull, boundingEllipse]);
     }
 
-    #region Ellipse and ConvexHull creation
     private IStaticFigure CreateConvexHull(List<Point2D<float>> points, Brush borderColor, Brush fillColor)
     {
         ConvexHull ch;

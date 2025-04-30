@@ -7,11 +7,9 @@ using Disk.Stores;
 using Disk.ViewModel.Common.Commands.Sync;
 using Disk.ViewModel.Common.ViewModels;
 using Disk.Visual.Impl;
-using Disk.Visual.Interface;
 using Emgu.CV;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
-using Serilog;
 using System.Collections.ObjectModel;
 using System.Drawing;
 using System.Windows;
@@ -226,79 +224,51 @@ public class AttemptResultViewModel(NavigationStore navigationStore, DiskContext
         }
     }
 
-    // remove
-    public List<IStaticFigure> GetPathAndRose(Panel parent)
+    public (PointedPath? PathToTarget, PointedPath? PathInTarget) GetPath(Panel parent)
     {
-        if (SelectedIndex == -1)
+        if (SelectedIndex == -1 || !IsPathChecked)
         {
-            return [];
+            return (null, null);
+        }
+        if (PathsToTargets.Count <= SelectedIndex || PathsToTargets[SelectedIndex].Count == 0)
+        {
+            _ = Application.Current.Dispatcher.InvokeAsync(async () =>
+                await ShowPopup(header: "", message: Localization.NoContentForPathError));
+
+            return (null, null);
         }
 
-        if (IsDiagramChecked)
+        var c = DrawableFabric.GetIniConverter();
+
+        PointedPath? pointsToTarget = null;
+        if (PathsToTargets.Count > SelectedIndex && ShowPathToTarget)
         {
-            return [GetGraph(parent)];
-        }
-        else if (IsPathChecked)
-        {
-            if (PathsToTargets.Count <= SelectedIndex || PathsToTargets[SelectedIndex].Count == 0)
-            {
-                _ = Application.Current.Dispatcher.InvokeAsync(async () =>
-                    await ShowPopup(header: "", message: Localization.NoContentForPathError));
-                return [];
-            }
-
-            var res = new List<IStaticFigure>();
-            //var pathToTarget = new Visual.Impl.Path(PathsToTargets[SelectedIndex], Converter, Brushes.Green, parent);
-            //var pathInTarget = new Visual.Impl.Path(PathsInTargets[SelectedIndex], Converter, Brushes.Blue, parent);
-            var c = DrawableFabric.GetIniConverter();
-
-            PointedPath pointsToTarget;
-            if (PathsToTargets.Count > SelectedIndex)
-            {
-                pointsToTarget = new PointedPath(PathsToTargets[SelectedIndex].Select(c.ToWndCoord), Colors.Green, parent, new Size(800, 800));
-                pointsToTarget.Scale();
-            }
-            else
-            {
-                pointsToTarget = new PointedPath([], Colors.Transparent, parent, new(1, 1));
-            }
-            PointedPath pointsInTarget;
-            if (PathsInTargets.Count > SelectedIndex)
-            {
-                pointsInTarget = new PointedPath(PathsInTargets[SelectedIndex].Select(c.ToWndCoord), Colors.Blue, parent, new Size(800, 800));
-                pointsInTarget.Scale();
-            }
-            else
-            {
-                pointsInTarget = new PointedPath([], Colors.Transparent, parent, new(1, 1));
-            }
-
-            Log.Information("Created Path");
-
-            if (ShowPathToTarget)
-            {
-                //res.Add(pathToTarget);
-                res.Add(pointsToTarget);
-            }
-            if (ShowPathInTarget)
-            {
-                //res.Add(pathInTarget);
-                res.Add(pointsInTarget);
-            }
-
-            return res;
+            pointsToTarget = new PointedPath(PathsToTargets[SelectedIndex].Select(c.ToWndCoord), Colors.Green, parent, new Size(800, 800));
+            pointsToTarget.Scale();
         }
 
-        return [];
+        PointedPath? pointsInTarget = null;
+        if (PathsInTargets.Count > SelectedIndex && ShowPathInTarget)
+        {
+            pointsInTarget = new PointedPath(PathsInTargets[SelectedIndex].Select(c.ToWndCoord), Colors.Blue, parent, new Size(800, 800));
+            pointsInTarget.Scale();
+        }
+
+        return (pointsToTarget, pointsInTarget);
     }
 
-    private Graph GetGraph(Panel parent)
+    public Graph? GetGraph(Panel parent)
     {
+        if (SelectedIndex == -1 || !IsDiagramChecked)
+        {
+            return null;
+        }
+
         if (PathsInTargets.Count <= SelectedIndex || PathsInTargets[SelectedIndex].Count == 0)
         {
             _ = Application.Current.Dispatcher.InvokeAsync(async () =>
                 await ShowPopup(header: "", message: Localization.NoContentForDiagramError));
-            return new Graph([], Brushes.LightGreen, parent, 8);
+            return null;
         }
 
         var target = new ProgressTarget
@@ -320,8 +290,6 @@ public class AttemptResultViewModel(NavigationStore navigationStore, DiskContext
             // Cutoff points in target
             //.Where(p => Math.Abs(p.X) > angRadius && Math.Abs(p.Y) > angRadius)
             .ToList();
-
-        Log.Information("Created Graph");
 
         return new Graph(dataset, Brushes.LightGreen, parent, 8);
     }
