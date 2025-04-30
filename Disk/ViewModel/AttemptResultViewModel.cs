@@ -7,6 +7,7 @@ using Disk.Stores;
 using Disk.ViewModel.Common.Commands.Sync;
 using Disk.ViewModel.Common.ViewModels;
 using Disk.Visual.Impl;
+using Disk.Visual.Interface;
 using Emgu.CV;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
@@ -224,12 +225,13 @@ public class AttemptResultViewModel(NavigationStore navigationStore, DiskContext
         }
     }
 
-    public (PointedPath? PathToTarget, PointedPath? PathInTarget) GetPath(Panel parent)
+    public (IStaticFigure? PathToTarget, IStaticFigure? PathInTarget) GetPath(Panel parent)
     {
         if (SelectedIndex == -1 || !IsPathChecked)
         {
             return (null, null);
         }
+
         if (PathsToTargets.Count <= SelectedIndex || PathsToTargets[SelectedIndex].Count == 0)
         {
             _ = Application.Current.Dispatcher.InvokeAsync(async () =>
@@ -240,24 +242,24 @@ public class AttemptResultViewModel(NavigationStore navigationStore, DiskContext
 
         var c = DrawableFabric.GetIniConverter();
 
-        PointedPath? pointsToTarget = null;
+        IStaticFigure? pointsToTarget = null;
         if (PathsToTargets.Count > SelectedIndex && ShowPathToTarget)
         {
-            pointsToTarget = new PointedPath(PathsToTargets[SelectedIndex].Select(c.ToWndCoord), Colors.Green, parent, new Size(800, 800));
+            pointsToTarget = new Path(PathsToTargets[SelectedIndex].Select(c.ToWndCoord), Brushes.Green, parent, new Size(800, 800));
             pointsToTarget.Scale();
         }
 
-        PointedPath? pointsInTarget = null;
+        IStaticFigure? pointsInTarget = null;
         if (PathsInTargets.Count > SelectedIndex && ShowPathInTarget)
         {
-            pointsInTarget = new PointedPath(PathsInTargets[SelectedIndex].Select(c.ToWndCoord), Colors.Blue, parent, new Size(800, 800));
+            pointsInTarget = new Path(PathsInTargets[SelectedIndex].Select(c.ToWndCoord), Brushes.Blue, parent, new Size(800, 800));
             pointsInTarget.Scale();
         }
 
         return (pointsToTarget, pointsInTarget);
     }
 
-    public Graph? GetGraph(Panel parent)
+    public IStaticFigure? GetGraph(Panel parent)
     {
         if (SelectedIndex == -1 || !IsDiagramChecked)
         {

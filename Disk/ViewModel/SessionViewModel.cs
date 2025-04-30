@@ -104,8 +104,12 @@ public class SessionViewModel(DiskContext database, IExcelFiller excelFiller, Na
                     {
                         _ = await database.AddAsync(attempt);
                         _ = await database.SaveChangesAsync();
-                        PaintNavigator.Navigate(this, navigationStore, attempt.Id);
+
+                        // Do not change the order of these lines. It causes a bug in the PaintView. Target is displayed in center
                         Application.Current.MainWindow.WindowState = WindowState.Maximized;
+                        PaintNavigator.Navigate(this, navigationStore, attempt.Id);
+                        //
+
                         Log.Information("Created session");
                     }
                     catch (Exception ex)
