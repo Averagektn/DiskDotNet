@@ -184,5 +184,6 @@ public class SessionsListViewModel(DiskContext database, NavigationStore navigat
 
         _ = Application.Current.Dispatcher.InvokeAsync(UpdateSessionsAsync);
         SelectedSession = null;
+        HoveredSession = null;
     }
 }
