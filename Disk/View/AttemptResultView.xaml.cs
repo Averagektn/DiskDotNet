@@ -185,10 +185,6 @@ public partial class AttemptResultView : UserControl
                 ViewModel.SelectedIndex = _selectedIndex;
             }
         }
-        else
-        {
-            IsReply = false;
-        }
     }
 
 
@@ -205,6 +201,10 @@ public partial class AttemptResultView : UserControl
         {
             return;
         }
+
+        _selectedIndex = ViewModel.SelectedIndex;
+        _enumerator = ViewModel.FullPath.GetEnumerator();
+        IsReply = true;
 
         _coordTimer = new(DispatcherPriority.Normal)
         {
@@ -223,13 +223,11 @@ public partial class AttemptResultView : UserControl
             }
             else
             {
+                IsReply = false;
                 _replyCenter = null;
             }
         };
 
-        _selectedIndex = ViewModel.SelectedIndex;
-        _enumerator = ViewModel.FullPath.GetEnumerator();
-        IsReply = true;
         _coordTimer.Start();
     }
     #endregion
