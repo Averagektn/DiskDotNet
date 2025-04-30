@@ -174,16 +174,9 @@ public partial class AttemptResultView : UserControl
             return;
         }
 
-        // _enumerator is always not null. See ReplyClick method
-        if (_replyCenter is not null && IsReply)
+        if (_replyCenter is not null)
         {
             _user.Move(_replyCenter);
-
-            if (_enumerator!.Current.IsNewTarget && ++_selectedIndex < ViewModel.TargetCenters.Count)
-            {
-                _target.Move(ViewModel.Converter.ToWndCoord(ViewModel.TargetCenters[_selectedIndex]));
-                ViewModel.SelectedIndex = _selectedIndex;
-            }
         }
     }
 
@@ -217,9 +210,14 @@ public partial class AttemptResultView : UserControl
                 return;
             }
 
-            if (_enumerator!.MoveNext())
+            if (_enumerator.MoveNext())
             {
                 _replyCenter = ViewModel.Converter.ToWndCoord(_enumerator.Current.Point);
+                if (_enumerator.Current.IsNewTarget && ++_selectedIndex < ViewModel.TargetCenters.Count)
+                {
+                    _target?.Move(ViewModel.Converter.ToWndCoord(ViewModel.TargetCenters[_selectedIndex]));
+                    ViewModel.SelectedIndex = _selectedIndex;
+                }
             }
             else
             {
