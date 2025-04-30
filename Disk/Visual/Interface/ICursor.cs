@@ -3,9 +3,9 @@
 namespace Disk.Visual.Interface;
 
 /// <summary>
-///     User or cursor
+///     Cursor
 /// </summary>
-public interface IUser : IDynamicFigure, IRoundedFigure
+public interface ICursor : IDynamicFigure, IRoundedFigure
 {
     /// <summary>
     ///     After shot actions

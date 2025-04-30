@@ -34,7 +34,6 @@ public class SessionViewModel(DiskContext database, IExcelFiller excelFiller, Na
     public static string TargetImageName => Path.GetFileName(TargetImagePath);
     public static string TargetImagePath => Settings.TargetFilePath;
     public static int ShotFrequency => 1000 / Settings.ShotTime;
-    public static int MoveFrequency => 1000 / Settings.MoveTime;
     public static int TargetLifespan => 1000 * Settings.TargetHp / ShotFrequency;
     private static Settings Settings => Settings.Default;
 
@@ -75,7 +74,6 @@ public class SessionViewModel(DiskContext database, IExcelFiller excelFiller, Na
                     {Localization.CursorImagePath}: {CursorImageName}
                     {Localization.TargetImagePath}: {TargetImageName}
                     {Localization.ShotTime}: {Calculator.RoundToNearest(ShotFrequency, nearest: 5)}
-                    {Localization.MoveTime}: {Calculator.RoundToNearest(MoveFrequency, nearest: 5)}
                     {Localization.TargetHp}: {Calculator.RoundToNearest(TargetLifespan, nearest: 100)}
                 """,
             afterConfirm: () =>
@@ -89,11 +87,11 @@ public class SessionViewModel(DiskContext database, IExcelFiller excelFiller, Na
                 var attempt = new Attempt()
                 {
                     Session = Session.Id,
-                    CursorRadius = Settings.IniUserRadius,
+                    CursorRadius = Settings.IniCursorRadius,
                     DateTime = now.ToString("dd.MM.yyyy HH:mm"),
                     MaxXAngle = Settings.XMaxAngle,
                     MaxYAngle = Settings.YMaxAngle,
-                    TargetRadius = Settings.IniUserRadius,
+                    TargetRadius = Settings.IniCursorRadius,
                     LogFilePath = logPath,
                     SamplingInterval = Settings.Default.ShotTime,
                 };

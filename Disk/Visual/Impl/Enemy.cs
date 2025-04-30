@@ -27,7 +27,7 @@ namespace Disk.Visual.Impl;
 ///     The initial size of the enemy
 /// </param>
 public class Enemy(Point2D<int> center, int radius, int speed, Brush color, Panel parent, Size iniSize) :
-    User(center, radius, speed, color, parent, iniSize)
+    Cursor(center, radius, speed, color, parent, iniSize)
 {
     private const float TopRightRight = 22.5f;
     private const float TopRight = 67.5f;

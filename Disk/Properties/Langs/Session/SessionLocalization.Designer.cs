@@ -106,6 +106,15 @@ namespace Disk.Properties.Langs.Session {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Cursor radius.
+        /// </summary>
+        public static string CursorRadius {
+            get {
+                return ResourceManager.GetString("CursorRadius", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Date/Time.
         /// </summary>
         public static string DateTime {
@@ -273,15 +282,6 @@ namespace Disk.Properties.Langs.Session {
         public static string Time {
             get {
                 return ResourceManager.GetString("Time", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Cursor radius.
-        /// </summary>
-        public static string UserRadius {
-            get {
-                return ResourceManager.GetString("UserRadius", resourceCulture);
             }
         }
     }

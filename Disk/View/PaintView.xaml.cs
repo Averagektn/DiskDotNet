@@ -19,7 +19,7 @@ public partial class PaintView : UserControl
 
     private Size PaintPanelSize => PaintRect.RenderSize;
 
-    private IUser User = null!;
+    private ICursor PaintCursor = null!;
     private IProgressTarget Target = null!;
 
     private Converter? Converter => ViewModel?.Converter;
@@ -36,7 +36,7 @@ public partial class PaintView : UserControl
         {
             if (ViewModel?.CurrentPos is null)
             {
-                return User.Center;
+                return PaintCursor.Center;
             }
             else
             {
@@ -70,7 +70,7 @@ public partial class PaintView : UserControl
         {
             if (AllowedArea.FillContains(ShiftedWndPos.ToPoint()))
             {
-                User.Move(ShiftedWndPos);
+                PaintCursor.Move(ShiftedWndPos);
             }
             else
             {
@@ -87,17 +87,17 @@ public partial class PaintView : UserControl
                 int nearestX = (int)(center.X + (normalizedX * radiusX * scale));
                 int nearestY = (int)(center.Y + (normalizedY * radiusY * scale));
 
-                User.Move(new(nearestX, nearestY));
+                PaintCursor.Move(new(nearestX, nearestY));
             }
         }
     }
 
     private List<Point2DI> GetMultipleShots()
     {
-        var shot = User.Shot();
+        var shot = PaintCursor.Shot();
         /*        int x = shot.X;
                 int y = shot.Y;
-                int halfRadius = User.Radius / 2;
+                int halfRadius = Cursor.Radius / 2;
                 double sqrt2 = Math.Sqrt(2);*/
 
         return [shot];
@@ -117,7 +117,7 @@ public partial class PaintView : UserControl
 
         var shots = GetMultipleShots();
 
-        var shot = User.Center;
+        var shot = PaintCursor.Center;
         int shotScore = 0;
         for (int i = 0; i < shots.Count && shotScore == 0; i++)
         {
@@ -165,8 +165,8 @@ public partial class PaintView : UserControl
             return;
         }
 
-        User = DrawableFabric.GetIniUser(Settings.CursorFilePath, PaintArea);
-        User.OnShot += (p) => ViewModel.FullPath.Add(Converter.ToAngle_FromWnd(p));
+        PaintCursor = DrawableFabric.GetIniCursor(Settings.CursorFilePath, PaintArea);
+        PaintCursor.OnShot += (p) => ViewModel.FullPath.Add(Converter.ToAngle_FromWnd(p));
 
         var center = ViewModel.NextTargetCenter ?? new(0, 0);
         var converter = DrawableFabric.GetIniConverter();
@@ -187,7 +187,7 @@ public partial class PaintView : UserControl
             ViewModel.StartReceiving();
 
             Target.Draw();
-            User.Draw();
+            PaintCursor.Draw();
 
             ShotTimer.Start();
         }
@@ -199,9 +199,9 @@ public partial class PaintView : UserControl
         CompositionTarget.Rendering -= OnRender;
 
         Target.Remove();
-        User.Remove();
+        PaintCursor.Remove();
 
-        User.ClearOnShot();
+        PaintCursor.ClearOnShot();
     }
 
     private void OnSizeChanged(object sender, RoutedEventArgs e)

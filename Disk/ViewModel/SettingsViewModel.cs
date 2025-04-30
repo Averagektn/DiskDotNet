@@ -44,31 +44,6 @@ public class SettingsViewModel(ModalNavigationStore modalNavigationStore) : Popu
     }
 
     // Convert ms to hz
-    private int _moveTime = Calculator.RoundToNearest(value: 1000 / Settings.MoveTime, nearest: 5);
-    public string MoveTime
-    {
-        get => _moveTime.ToString();
-        set
-        {
-            Log.Information("Settings: Invalid move time");
-            if (int.TryParse(value, out var res) || _moveTime >= 1000 || _moveTime <= 1)
-            {
-                _ = SetProperty(ref _moveTime, res);
-            }
-            else
-            {
-                _areValidSettings = false;
-                _ = SetProperty(ref _moveTime, Settings.MoveTime);
-                _ = Application.Current.Dispatcher.InvokeAsync(async () =>
-                {
-                    await ShowPopup(header: Localization.InvalidMoveTime, message: Localization.InvalidMoveTime);
-                    _areValidSettings = true;
-                });
-            }
-        }
-    }
-
-    // Convert ms to hz
     private int _shotTime = Calculator.RoundToNearest(value: 1000 / Settings.ShotTime, nearest: 5);
     public string ShotTime
     {
@@ -93,24 +68,24 @@ public class SettingsViewModel(ModalNavigationStore modalNavigationStore) : Popu
         }
     }
 
-    private int _userRadius = Settings.IniUserRadius;
-    public string UserRadius
+    private int _cursorRadius = Settings.IniCursorRadius;
+    public string CursorRadius
     {
-        get => _userRadius.ToString();
+        get => _cursorRadius.ToString();
         set
         {
             if (int.TryParse(value, out var res) || res < 1 || res > 15)
             {
-                _ = SetProperty(ref _userRadius, res);
+                _ = SetProperty(ref _cursorRadius, res);
             }
             else
             {
-                Log.Information("Settings: Invalid user radius");
+                Log.Information("Settings: Invalid cursor radius");
                 _areValidSettings = false;
-                _ = SetProperty(ref _userRadius, Settings.IniUserRadius);
+                _ = SetProperty(ref _cursorRadius, Settings.IniCursorRadius);
                 _ = Application.Current.Dispatcher.InvokeAsync(async () =>
                 {
-                    await ShowPopup(header: Localization.InvalidUserRadius, message: Localization.InvalidUserRadius);
+                    await ShowPopup(header: Localization.InvalidCursorRadius, message: Localization.InvalidCursorRadius);
                     _areValidSettings = true;
                 });
             }
@@ -276,11 +251,10 @@ public class SettingsViewModel(ModalNavigationStore modalNavigationStore) : Popu
         CursorFilePath = Settings.CursorFilePath;
         TargetFilePath = Settings.TargetFilePath;
 
-        MoveTime = Calculator.RoundToNearest(value: 1000 / Settings.MoveTime, nearest: 5).ToString();
         ShotTime = Calculator.RoundToNearest(value: 1000 / Settings.ShotTime, nearest: 5).ToString();
 
         TargetRadius = Settings.IniTargetRadius.ToString();
-        UserRadius = Settings.IniUserRadius.ToString();
+        CursorRadius = Settings.IniCursorRadius.ToString();
 
         TargetTtl = Calculator.RoundToNearest(value: 1000 * Settings.TargetHp / (1000 / Settings.ShotTime), nearest: 100).ToString();
     }
@@ -292,15 +266,14 @@ public class SettingsViewModel(ModalNavigationStore modalNavigationStore) : Popu
         var ipChanged = Ip != Settings.IP;
         var cursorPathChanged = CursorFilePath != Settings.CursorFilePath;
         var targetPathChanged = TargetFilePath != Settings.TargetFilePath;
-        var moveTimeChanged = MoveTime != Calculator.RoundToNearest(value: 1000 / Settings.MoveTime, nearest: 5).ToString();
         var shotTimeChanged = ShotTime != Calculator.RoundToNearest(value: 1000 / Settings.ShotTime, nearest: 5).ToString();
         var targetRadiusChanged = TargetRadius != Settings.IniTargetRadius.ToString();
-        var userRadiusChanged = UserRadius != Settings.IniUserRadius.ToString();
+        var cursorRadiusChanged = CursorRadius != Settings.IniCursorRadius.ToString();
         var targetTtlChanged = TargetTtl != Calculator.RoundToNearest(value: 1000 * Settings.TargetHp / (1000 / Settings.ShotTime),
             nearest: 100).ToString();
 
-        if (ipChanged || cursorPathChanged || targetPathChanged || moveTimeChanged || shotTimeChanged || targetRadiusChanged ||
-            userRadiusChanged || targetTtlChanged || targetTtlChanged)
+        if (ipChanged || cursorPathChanged || targetPathChanged || shotTimeChanged || targetRadiusChanged || cursorRadiusChanged 
+            || targetTtlChanged || targetTtlChanged)
         {
             if (modalNavigationStore.CurrentViewModel is not QuestionViewModel)
             {
@@ -316,10 +289,9 @@ public class SettingsViewModel(ModalNavigationStore modalNavigationStore) : Popu
         Settings.IP = _ip;
 
         // Convert hz to ms
-        Settings.MoveTime = 1000 / _moveTime;
         Settings.ShotTime = 1000 / _shotTime;
 
-        Settings.IniUserRadius = _userRadius;
+        Settings.IniCursorRadius = _cursorRadius;
         Settings.IniTargetRadius = _targetRadius;
 
         // convert ms to int hp

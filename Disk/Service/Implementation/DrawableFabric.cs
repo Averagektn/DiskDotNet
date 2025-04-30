@@ -16,32 +16,32 @@ public static class DrawableFabric
     private static Size ScreenIniSize => new(Settings.IniScreenWidth, Settings.IniScreenHeight);
     private static int ScreenIniCenterX => (int)ScreenIniSize.Width / 2;
     private static int ScreenIniCenterY => (int)ScreenIniSize.Height / 2;
-    private static Brush UserBrush =>
-        new SolidColorBrush(Color.FromRgb(Settings.UserColor.R, Settings.UserColor.G, Settings.UserColor.B));
+    private static Brush CursorBrush =>
+        new SolidColorBrush(Color.FromRgb(Settings.CursorColor.R, Settings.CursorColor.G, Settings.CursorColor.B));
     private static float XAngleSize => Settings.XMaxAngle * 2;
     private static float YAngleSize => Settings.YMaxAngle * 2;
     private static int TargetHp => Settings.TargetHp;
 
-    public static User GetIniUser(string userImagePath, Panel parent)
+    public static Cursor GetIniCursor(string cursorImagePath, Panel parent)
     {
-        if (File.Exists(userImagePath))
+        if (File.Exists(cursorImagePath))
         {
-            return new UserPicture
+            return new CursorPicture
             (
-                filePath: userImagePath,
+                filePath: cursorImagePath,
                 center: new(ScreenIniCenterX, ScreenIniCenterY),
                 speed: 0,
-                imageSize: new(Settings.IniUserRadius * 10, Settings.IniUserRadius * 10),
+                imageSize: new(Settings.IniCursorRadius * 10, Settings.IniCursorRadius * 10),
                 parent,
                 iniSize: ScreenIniSize
             );
         }
-        return new User
+        return new Cursor
         (
             center: new(ScreenIniCenterX, ScreenIniCenterY),
-            radius: Settings.IniUserRadius * 5,
+            radius: Settings.IniCursorRadius * 5,
             speed: 0,
-            color: UserBrush,
+            color: CursorBrush,
             parent,
             iniSize: ScreenIniSize
         );

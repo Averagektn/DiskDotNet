@@ -151,7 +151,7 @@ namespace Disk.Properties.Langs.ExcelFiller {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Mathematial expectation.
+        ///   Looks up a localized string similar to Mathematical expectation.
         /// </summary>
         internal static string MathExp {
             get {

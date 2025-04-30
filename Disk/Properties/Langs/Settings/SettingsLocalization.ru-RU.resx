@@ -138,7 +138,7 @@
   <data name="InvalidTargetRadius" xml:space="preserve">
     <value>Размер мишени должен быть в диапазоне от 1 до 15</value>
   </data>
-  <data name="InvalidUserRadius" xml:space="preserve">
+  <data name="InvalidCursorRadius" xml:space="preserve">
     <value>Размер курсора должен быть в диапазоне от 1 до 15</value>
   </data>
   <data name="Ip" xml:space="preserve">
@@ -165,7 +165,7 @@
   <data name="TargetRadius" xml:space="preserve">
     <value>Размер мишени</value>
   </data>
-  <data name="UserRadius" xml:space="preserve">
+  <data name="CursorRadius" xml:space="preserve">
     <value>Размер курсора</value>
   </data>
   <data name="CursorImagePathTip" xml:space="preserve">

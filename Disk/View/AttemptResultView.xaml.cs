@@ -20,7 +20,7 @@ public partial class AttemptResultView : UserControl
     private Size PaintPanelSize => PaintArea.RenderSize;
     private Converter? Converter => ViewModel?.Converter;
 
-    private IUser? _user;
+    private ICursor? _cursor;
     private ITarget? _target;
     private int _currentIndex = -1;
 
@@ -88,8 +88,8 @@ public partial class AttemptResultView : UserControl
         _currentIndex = ViewModel.SelectedIndex;
 
         _target?.Remove();
-        _user?.Remove();
-        _user ??= DrawableFabric.GetIniUser(string.Empty, PaintArea);
+        _cursor?.Remove();
+        _cursor ??= DrawableFabric.GetIniCursor(string.Empty, PaintArea);
         _target ??= DrawableFabric.GetIniProgressTarget(string.Empty, new(0, 0), PaintArea);
         if (_isTargetVisible)
         {
@@ -97,11 +97,11 @@ public partial class AttemptResultView : UserControl
         }
         if (_isCursorVisible)
         {
-            _user.Draw();
+            _cursor.Draw();
         }
         if (!IsReply)
         {
-            _user.Move(ViewModel.UserCenter);
+            _cursor.Move(ViewModel.CursorCenter);
             _target.Move(ViewModel.TargetCenter);
         }
 
@@ -179,14 +179,14 @@ public partial class AttemptResultView : UserControl
 
     private void OnRender(object? sender, EventArgs e)
     {
-        if (!IsReply || ViewModel is null || _user is null || _target is null)
+        if (!IsReply || ViewModel is null || _cursor is null || _target is null)
         {
             return;
         }
 
         if (_replyCenter is not null)
         {
-            _user.Move(_replyCenter);
+            _cursor.Move(_replyCenter);
         }
     }
 
@@ -325,7 +325,7 @@ public partial class AttemptResultView : UserControl
         if (!_isCursorVisible)
         {
             _isCursorVisible = true;
-            _user?.Draw();
+            _cursor?.Draw();
         }
     }
 
@@ -334,7 +334,7 @@ public partial class AttemptResultView : UserControl
         if (_isCursorVisible)
         {
             _isCursorVisible = false;
-            _user?.Remove();
+            _cursor?.Remove();
         }
     }
     #endregion

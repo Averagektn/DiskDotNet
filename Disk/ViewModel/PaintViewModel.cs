@@ -105,7 +105,7 @@ public class PaintViewModel : PopupViewModel
 
     public PaintViewModel(NavigationStore navigationStore, DiskContext database)
     {
-        _diskNetworkThread = new(ReceiveUserPos)
+        _diskNetworkThread = new(ReceivePatientPosition)
         {
             Priority = ThreadPriority.Highest
         };
@@ -123,7 +123,7 @@ public class PaintViewModel : PopupViewModel
         _pathToTargetStopwatch = Stopwatch.StartNew();
     }
 
-    private void ReceiveUserPos()
+    private void ReceivePatientPosition()
     {
         try
         {

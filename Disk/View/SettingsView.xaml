@@ -65,58 +65,7 @@
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
 
-            <StackPanel Grid.Column="0" HorizontalAlignment="Stretch" VerticalAlignment="Center">
-                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                    <TextBlock 
-                        HorizontalAlignment="Center"
-                        FontSize="20" 
-                        Text="{x:Static lang:SettingsLocalization.MoveTime}"/>
-
-                    <Button 
-                        Padding="0"
-                        Width="40" 
-                        Height="30" 
-                        Background="Transparent">
-                        <Button.ToolTip>
-                            <ToolTip FontSize="20" Foreground="DarkBlue">
-                                <TextBlock Text="{x:Static lang:SettingsLocalization.HzTip}"/>
-                            </ToolTip>
-                        </Button.ToolTip>
-                        <Button.Content>
-                            <Grid>
-                                <Ellipse Width="20" Height="20" Fill="LightGray"/>
-                                <TextBlock 
-                                    Text="?" 
-                                    FontSize="20" 
-                                    HorizontalAlignment="Center" 
-                                    VerticalAlignment="Center" 
-                                    Foreground="Black"/>
-                            </Grid>
-                        </Button.Content>
-                    </Button>
-                </StackPanel>
-
-                <StackPanel Margin="10">
-                    <Slider
-                        Minimum="10"
-                        Maximum="100"
-                        Value="{Binding MoveTime}"
-                        TickFrequency="5"
-                        IsSnapToTickEnabled="True"
-                        FontSize="20"
-                        HorizontalContentAlignment="Center"
-                        AutoToolTipPlacement="TopLeft"
-                        AutoToolTipPrecision="0"/>
-
-                    <TextBlock
-                        HorizontalAlignment="Center"
-                        Text="{Binding MoveTime}"
-                        FontSize="20"
-                        Margin="10 0 0 0" />
-                </StackPanel>
-            </StackPanel>
-
-            <StackPanel Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Center">
+            <StackPanel Grid.ColumnSpan="2" HorizontalAlignment="Stretch" VerticalAlignment="Center">
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                     <TextBlock 
                         HorizontalAlignment="Center"
@@ -152,6 +101,7 @@
                         Maximum="100" 
                         Value="{Binding ShotTime}"
                         TickFrequency="5" 
+                        Margin="200 10 200 0"
                         IsSnapToTickEnabled="True" 
                         FontSize="20" 
                         HorizontalContentAlignment="Center" 
@@ -181,7 +131,8 @@
                 FontSize="20" 
                 HorizontalContentAlignment="Center" 
                 Margin="200 10 200 0"
-                AutoToolTipPlacement="TopLeft" AutoToolTipPrecision="0" />
+                AutoToolTipPlacement="TopLeft" 
+                AutoToolTipPrecision="0" />
             <TextBlock
                 Text="{Binding TargetTtl}"
                 FontSize="20" 
@@ -199,14 +150,14 @@
                 <TextBlock 
                     HorizontalAlignment="Center"
                     FontSize="20" 
-                    Text="{x:Static lang:SettingsLocalization.UserRadius}"/>
+                    Text="{x:Static lang:SettingsLocalization.CursorRadius}"/>
 
                 <StackPanel Margin="10">
                     <Slider 
-                        x:Name="UserRadiusSlider"
+                        x:Name="CursorRadiusSlider"
                         Minimum="3" 
                         Maximum="15" 
-                        Value="{Binding UserRadius}"
+                        Value="{Binding CursorRadius}"
                         TickFrequency="1" 
                         IsSnapToTickEnabled="True" 
                         FontSize="20" 
@@ -215,7 +166,7 @@
                         AutoToolTipPrecision="0" />
                     
                     <TextBlock
-                        Text="{Binding UserRadius}"
+                        Text="{Binding CursorRadius}"
                         FontSize="20" 
                         HorizontalAlignment="Center" 
                         Margin="10 0 0 0"/>
@@ -301,7 +252,7 @@
                 <TextBox
                     IsReadOnly="True"
                     BorderThickness="0"
-                    x:Name="UserFilePath"
+                    x:Name="CursorFilePath"
                     Text="{Binding CursorFilePath}"
                     Grid.Column="1"
                     FontSize="20" 

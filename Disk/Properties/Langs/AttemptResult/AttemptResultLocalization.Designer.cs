@@ -97,7 +97,7 @@ namespace Disk.Properties.Langs.AttemptResult {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Diagram.
+        ///   Looks up a localized string similar to Frequencies diagram.
         /// </summary>
         public static string Diagram {
             get {

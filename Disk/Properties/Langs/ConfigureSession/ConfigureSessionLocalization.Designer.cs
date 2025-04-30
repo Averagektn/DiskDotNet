@@ -106,7 +106,7 @@ namespace Disk.Properties.Langs.ConfigureSession {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This map is already user in other researches.
+        ///   Looks up a localized string similar to This map is already used in other researches.
         /// </summary>
         public static string MapIsInUseError {
             get {

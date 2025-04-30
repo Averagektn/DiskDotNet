@@ -174,7 +174,7 @@
   <data name="TargetRadius" xml:space="preserve">
     <value>Размер мишени</value>
   </data>
-  <data name="UserRadius" xml:space="preserve">
+  <data name="CursorRadius" xml:space="preserve">
     <value>Размер курсора</value>
   </data>
   <data name="ShotTime" xml:space="preserve">

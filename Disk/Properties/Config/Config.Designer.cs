@@ -71,18 +71,6 @@ namespace Disk.Properties.Config {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("20")]
-        public int MoveTime {
-            get {
-                return ((int)(this["MoveTime"]));
-            }
-            set {
-                this["MoveTime"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("20")]
         public int ShotTime {
             get {
                 return ((int)(this["ShotTime"]));
@@ -95,12 +83,12 @@ namespace Disk.Properties.Config {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("5")]
-        public int IniUserRadius {
+        public int IniCursorRadius {
             get {
-                return ((int)(this["IniUserRadius"]));
+                return ((int)(this["IniCursorRadius"]));
             }
             set {
-                this["IniUserRadius"] = value;
+                this["IniCursorRadius"] = value;
             }
         }
         
@@ -137,12 +125,12 @@ namespace Disk.Properties.Config {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("DarkGreen")]
-        public global::System.Drawing.Color UserColor {
+        public global::System.Drawing.Color CursorColor {
             get {
-                return ((global::System.Drawing.Color)(this["UserColor"]));
+                return ((global::System.Drawing.Color)(this["CursorColor"]));
             }
             set {
-                this["UserColor"] = value;
+                this["CursorColor"] = value;
             }
         }
         

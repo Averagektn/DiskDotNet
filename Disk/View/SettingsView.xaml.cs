@@ -10,36 +10,36 @@ namespace Disk.View;
 
 public partial class SettingsView : UserControl
 {
-    private IUser? _user;
+    private ICursor? _cursor;
     private ITarget? _target;
 
     private string TargetFilePathText => TargetFilePath.Text;
     private int TargetRadius => (int)TargetRadiusSlider.Value;
-    private string UserFilePathText => UserFilePath.Text;
-    private int UserRadius => (int)UserRadiusSlider.Value;
+    private string CursorFilePathText => CursorFilePath.Text;
+    private int CursorRadius => (int)CursorRadiusSlider.Value;
 
     public SettingsView()
     {
         InitializeComponent();
 
-        UserRadiusSlider.ValueChanged += (_, _) => DrawUser();
-        UserFilePath.TextChanged += (_, _) => DrawUser();
+        CursorRadiusSlider.ValueChanged += (_, _) => DrawCursor();
+        CursorFilePath.TextChanged += (_, _) => DrawCursor();
 
         TargetRadiusSlider.ValueChanged += (_, _) => DrawTarget();
         TargetFilePath.TextChanged += (_, _) => DrawTarget();
 
         SizeChanged += (_, _) =>
         {
-            DrawUser();
+            DrawCursor();
             DrawTarget();
         };
     }
 
     private void DrawTarget()
     {
-        double userColumnWidth = PaintGrid.ColumnDefinitions[0].ActualWidth;
+        double cursorColumnWidth = PaintGrid.ColumnDefinitions[0].ActualWidth;
         double targetColumnWidth = PaintGrid.ColumnDefinitions[1].ActualWidth;
-        double centerX = (targetColumnWidth / 2) + userColumnWidth;
+        double centerX = (targetColumnWidth / 2) + cursorColumnWidth;
         double centerY = PaintGrid.ActualHeight / 2;
         var targetCenter = PaintGrid.TransformToAncestor(MainGrid).Transform(new Point(centerX, centerY));
         var screenIniSize = new Size(Settings.Default.IniScreenWidth, Settings.Default.IniScreenHeight);
@@ -66,29 +66,29 @@ public partial class SettingsView : UserControl
         _target.Move(new((int)targetCenter.X, (int)targetCenter.Y));
     }
 
-    private void DrawUser()
+    private void DrawCursor()
     {
-        double userColumnWidth = PaintGrid.ColumnDefinitions[0].ActualWidth;
-        double centerX = userColumnWidth / 2;
+        double cursorColumnWidth = PaintGrid.ColumnDefinitions[0].ActualWidth;
+        double centerX = cursorColumnWidth / 2;
         double centerY = PaintGrid.ActualHeight / 2;
-        var userCenter = PaintGrid.TransformToAncestor(MainGrid).Transform(new Point(centerX, centerY));
+        var cursorCenter = PaintGrid.TransformToAncestor(MainGrid).Transform(new Point(centerX, centerY));
         var screenIniSize = new Size(Settings.Default.IniScreenWidth, Settings.Default.IniScreenHeight);
 
-        _user?.Remove();
-        if (File.Exists(UserFilePathText))
+        _cursor?.Remove();
+        if (File.Exists(CursorFilePathText))
         {
-            _user = new UserPicture(UserFilePathText, new(0, 0), 0, new(UserRadius * 10, UserRadius * 10), PaintArea, screenIniSize);
+            _cursor = new CursorPicture(CursorFilePathText, new(0, 0), 0, new(CursorRadius * 10, CursorRadius * 10), PaintArea, screenIniSize);
         }
         else
         {
-            var r = Settings.Default.UserColor.R;
-            var g = Settings.Default.UserColor.G;
-            var b = Settings.Default.UserColor.B;
-            var userBrush = new SolidColorBrush(Color.FromRgb(r, g, b));
-            _user = new User(new(0, 0), UserRadius * 5, 0, userBrush, PaintArea, screenIniSize);
+            var r = Settings.Default.CursorColor.R;
+            var g = Settings.Default.CursorColor.G;
+            var b = Settings.Default.CursorColor.B;
+            var cursorBrush = new SolidColorBrush(Color.FromRgb(r, g, b));
+            _cursor = new Cursor(new(0, 0), CursorRadius * 5, 0, cursorBrush, PaintArea, screenIniSize);
         }
 
-        _user.Draw();
-        _user.Move(new((int)userCenter.X, (int)userCenter.Y));
+        _cursor.Draw();
+        _cursor.Move(new((int)cursorCenter.X, (int)cursorCenter.Y));
     }
 }

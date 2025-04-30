@@ -6,7 +6,7 @@ using System.Windows.Controls;
 namespace Disk.Visual.Impl;
 
 /// <summary>
-///     Same as <see cref="UserPicture"/>, but can receive shots
+///     Same as <see cref="CursorPicture"/>, but can receive shots
 /// </summary>
 /// <remarks>
 ///     <inheritdoc/>
@@ -30,7 +30,7 @@ namespace Disk.Visual.Impl;
 ///     The initial size of the target
 /// </param>
 public class TargetPicture(string imageFilePath, Point2D<int> center, Size imageSize, Panel parent, Size iniSize, double hp)
-    : UserPicture(imageFilePath, center, 0, imageSize, parent, iniSize), IProgressTarget
+    : CursorPicture(imageFilePath, center, 0, imageSize, parent, iniSize), IProgressTarget
 {
     /// <summary>
     ///     Invoked on <see cref="ReceiveShot(Point2D{int})"/> method call

@@ -174,7 +174,7 @@
   <data name="TargetRadius" xml:space="preserve">
     <value>Target radius</value>
   </data>
-  <data name="UserRadius" xml:space="preserve">
+  <data name="CursorRadius" xml:space="preserve">
     <value>Cursor radius</value>
   </data>
   <data name="ShotTime" xml:space="preserve">

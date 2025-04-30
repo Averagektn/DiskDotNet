@@ -7,9 +7,10 @@ using System.Windows.Media.Imaging;
 namespace Disk.Visual.Impl;
 
 /// <summary>
-///     User or cursor, containing image
+///     
+/// or cursor, containing image
 /// </summary>
-public class UserPicture : User
+public class CursorPicture : Cursor
 {
     /// <inheritdoc/>
     public override Point2D<int> Center
@@ -48,7 +49,7 @@ public class UserPicture : User
     protected readonly Size IniImageSize;
 
     /// <summary>
-    ///     User or cursor, containing image
+    ///     Cursor, containing image
     /// </summary>
     /// <param name="filePath">
     ///     Path to image
@@ -68,7 +69,7 @@ public class UserPicture : User
     /// <param name="iniSize">
     ///     The initial size of the target
     /// </param>
-    public UserPicture(string filePath, Point2D<int> center, int speed, Size imageSize, Panel parent, Size iniSize)
+    public CursorPicture(string filePath, Point2D<int> center, int speed, Size imageSize, Panel parent, Size iniSize)
         : base(center, radius: (int)Math.Min(imageSize.Width / 2, imageSize.Height / 2), speed, Brushes.Transparent,
             parent, iniSize)
     {

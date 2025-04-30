@@ -145,7 +145,7 @@
     <value>Map</value>
   </data>
   <data name="MathExp" xml:space="preserve">
-    <value>Mathematial expectation</value>
+    <value>Mathematical expectation</value>
   </data>
   <data name="MaxAngle" xml:space="preserve">
     <value>Maximum tilt angle of the complex</value>

@@ -66,14 +66,14 @@ public class AttemptResultViewModel(NavigationStore navigationStore, DiskContext
 
             IsPathChecked = true;
             SelectedIndex = 0;
-            OnPropertyChanged(nameof(UserCenter));
+            OnPropertyChanged(nameof(CursorCenter));
             OnPropertyChanged(nameof(TargetCenter));
 
             NewItemSelectedCommand.Execute(null);
         }
     }
 
-    public Point2D<int> UserCenter
+    public Point2D<int> CursorCenter
     {
         get
         {

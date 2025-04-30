@@ -9,7 +9,7 @@ namespace Disk.Visual.Impl;
 /// <summary>
 ///     Represents a target with a center point, radius, and initial size
 /// </summary>
-public class Target : User, ITarget
+public class Target : Cursor, ITarget
 {
     /// <inheritdoc/>
     public event Action<int>? OnReceiveShot;

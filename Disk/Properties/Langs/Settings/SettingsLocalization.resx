@@ -138,8 +138,8 @@
   <data name="InvalidTargetRadius" xml:space="preserve">
     <value>Target radius must be in rage of 1 to 15</value>
   </data>
-  <data name="InvalidUserRadius" xml:space="preserve">
-    <value>User radius must be in range of 1 to 15</value>
+  <data name="InvalidCursorRadius" xml:space="preserve">
+    <value>Cursor radius must be in range of 1 to 15</value>
   </data>
   <data name="Ip" xml:space="preserve">
     <value>IP</value>
@@ -165,7 +165,7 @@
   <data name="TargetRadius" xml:space="preserve">
     <value>Target radius</value>
   </data>
-  <data name="UserRadius" xml:space="preserve">
+  <data name="CursorRadius" xml:space="preserve">
     <value>Cursor radius</value>
   </data>
   <data name="CursorImagePathTip" xml:space="preserve">

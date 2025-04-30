@@ -88,11 +88,29 @@ namespace Disk.Properties.Langs.Settings {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Cursor radius.
+        /// </summary>
+        public static string CursorRadius {
+            get {
+                return ResourceManager.GetString("CursorRadius", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Increasing the frequency can lead to desynchronization. The recommended value is 50 Hz .
         /// </summary>
         public static string HzTip {
             get {
                 return ResourceManager.GetString("HzTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cursor radius must be in range of 1 to 15.
+        /// </summary>
+        public static string InvalidCursorRadius {
+            get {
+                return ResourceManager.GetString("InvalidCursorRadius", resourceCulture);
             }
         }
         
@@ -138,15 +156,6 @@ namespace Disk.Properties.Langs.Settings {
         public static string InvalidTargetRadius {
             get {
                 return ResourceManager.GetString("InvalidTargetRadius", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to User radius must be in range of 1 to 15.
-        /// </summary>
-        public static string InvalidUserRadius {
-            get {
-                return ResourceManager.GetString("InvalidUserRadius", resourceCulture);
             }
         }
         
@@ -237,15 +246,6 @@ namespace Disk.Properties.Langs.Settings {
         public static string UnsavedSettings {
             get {
                 return ResourceManager.GetString("UnsavedSettings", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Cursor radius.
-        /// </summary>
-        public static string UserRadius {
-            get {
-                return ResourceManager.GetString("UserRadius", resourceCulture);
             }
         }
     }

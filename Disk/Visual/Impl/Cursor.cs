@@ -7,28 +7,28 @@ using System.Windows.Media;
 namespace Disk.Visual.Impl;
 
 /// <summary>
-///     Represents a user with a center point, radius, speed, color, and initial size
+///     Represents a cursor with a center point, radius, speed, color, and initial size
 /// </summary>
 /// <param name="center">
-///     The center point of the user
+///     The center point of the cursor
 /// </param>
 /// <param name="radius">
-///     The radius of the user
+///     The radius of the cursor
 /// </param>
 /// <param name="speed">
-///     The speed of the user
+///     The speed of the cursor
 /// </param>
 /// <param name="color">
-///     The color of the user
+///     The color of the cursor
 /// </param>
 /// <param name="parent">
 ///     Panel, containing all figures
 /// </param>
 /// <param name="iniSize">
-///     The initial size of the user
+///     The initial size of the cursor
 /// </param>
-public class User(Point2D<int> center, int radius, int speed, Brush color, Panel parent, Size iniSize) :
-    Circle(center, radius, speed, color, parent, iniSize), IUser
+public class Cursor(Point2D<int> center, int radius, int speed, Brush color, Panel parent, Size iniSize) :
+    Circle(center, radius, speed, color, parent, iniSize), ICursor
 {
     /// <inheritdoc/>
     public event Action<Point2D<int>>? OnShot;
