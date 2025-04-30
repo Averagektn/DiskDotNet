@@ -1,5 +1,4 @@
-﻿using Disk.Calculations.Impl.Converters;
-using Disk.Data.Impl;
+﻿using Disk.Data.Impl;
 using Disk.Visual.Interface;
 using System.Windows;
 using System.Windows.Controls;
@@ -25,19 +24,16 @@ public class Path : IStaticFigure
     protected readonly Panel Parent;
 
     /// <summary>
+    ///    The size of the drawing area
+    /// </summary>
+    protected readonly Size IniSize;
+
+    /// <summary>
     ///     The polyline used to draw the path
     /// </summary>
-    private readonly Polyline Polyline;
+    private readonly Polyline _polyline;
 
-    /// <summary>
-    ///     The list of points in the path
-    /// </summary>
-    private readonly List<Point2D<float>> Points = [];
-
-    /// <summary>
-    ///     The converter for coordinate transformations
-    /// </summary>
-    private readonly Converter Converter;
+    private readonly List<Point2D<int>> _iniPoints;
 
     /// <summary>
     ///     Initializes a new instance of the <see cref="Path"/> class
@@ -54,22 +50,20 @@ public class Path : IStaticFigure
     /// <param name="color">
     ///     The color of the path
     /// </param>
-    public Path(IEnumerable<Point2D<float>> points, Converter converter, Brush color, Panel parent)
+    public Path(IEnumerable<Point2D<int>> points, Brush color, Panel parent, Size iniSize)
     {
-        Converter = converter;
+        _iniPoints = [.. points];
         Parent = parent;
 
-        Polyline = new Polyline()
+        _polyline = new Polyline()
         {
             Stroke = color,
             StrokeThickness = 2
         };
 
-        foreach (var point in points)
-        {
-            Polyline.Points.Add(Converter.ToWndCoord(point).ToPoint());
-            Points.Add(point);
-        }
+        _iniPoints.ForEach(point => _polyline.Points.Add(point.ToPoint()));
+
+        IniSize = iniSize;
     }
 
     /// <inheritdoc/>
@@ -80,7 +74,7 @@ public class Path : IStaticFigure
             return;
         }
 
-        _ = Parent.Children.Add(Polyline);
+        _ = Parent.Children.Add(_polyline);
         Parent.SizeChanged += Parent_SizeChanged;
         IsDrawn = true;
     }
@@ -98,7 +92,7 @@ public class Path : IStaticFigure
             return;
         }
 
-        Parent.Children.Remove(Polyline);
+        Parent.Children.Remove(_polyline);
         Parent.SizeChanged -= Parent_SizeChanged;
         IsDrawn = false;
     }
@@ -106,8 +100,11 @@ public class Path : IStaticFigure
     /// <inheritdoc/>
     public virtual void Scale()
     {
-        Polyline.Points.Clear();
-        Points.ForEach(point => Polyline.Points.Add(Converter.ToWndCoord(point).ToPoint()));
+        var xScale = Parent.ActualWidth / IniSize.Width;
+        var yScale = Parent.ActualHeight / IniSize.Height;
+
+        _polyline.Points.Clear();
+        _iniPoints.ForEach(point => _polyline.Points.Add(new Point(point.X * xScale, point.Y * yScale)));
     }
 
     /// <inheritdoc/>
