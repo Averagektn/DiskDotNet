@@ -105,6 +105,7 @@ public class SessionViewModel(DiskContext database, IExcelFiller excelFiller, Na
                         _ = await database.AddAsync(attempt);
                         _ = await database.SaveChangesAsync();
                         PaintNavigator.Navigate(this, navigationStore, attempt.Id);
+                        Application.Current.MainWindow.WindowState = WindowState.Maximized;
                         Log.Information("Created session");
                     }
                     catch (Exception ex)
