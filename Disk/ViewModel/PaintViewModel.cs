@@ -52,28 +52,33 @@ public class PaintViewModel : PopupViewModel
     }
 
     // Scale
-    public Converter Converter { get; set; }
+    public Converter Converter { get; private set; }
 
     // Get only
-    public Point2D<float>? NextTargetCenter => TargetCenters.Count <= TargetId ? null : TargetCenters[TargetId++];
+    public Point2D<float>? NextTargetCenter => TargetCenters.Count <= TargetId ? null : TargetCenters[TargetId];
     private static Settings Settings => Settings.Default;
     private string UsrAngLog => $"{CurrentAttempt.LogFilePath}{FilePath.DirectorySeparatorChar}{Settings.UserLogFileName}";
-    public bool IsPathToTarget => PathToTargetStopwatch?.IsRunning ?? false;
+    public bool IsPathToTarget => _pathToTargetStopwatch?.IsRunning ?? false;
 
     // Disposable
-    private readonly Thread DiskNetworkThread;
+    private readonly Thread _diskNetworkThread;
 
     // Attempts datasets
-    public List<Point2D<float>> TargetCenters { get; set; } = [];
+    public List<Point2D<float>> TargetCenters { get; private set; } = [];
 
-    public List<Point2D<float>> FullPath = [];
-    public List<List<Point2D<float>>> PathsToTargets = [[]];
-    public List<List<Point2D<float>>> PathsInTargets = [];
+    public readonly List<Point2D<float>> FullPath = [];
+    public readonly List<List<Point2D<float>>> PathsToTargets = [[]];
+    public readonly List<List<Point2D<float>>> PathsInTargets = [];
 
     // Changing
-    public Point3D<float>? CurrentPos;
-    public bool IsGame = true;
-    public int TargetId { get; set; }
+    public Point3D<float>? CurrentPos { get; private set; }
+    public bool IsGame { get; private set; } = true;
+    public int TargetId { get; private set; }
+    public int PttLastSavedId { get; private set; } = -1;
+    public int PitLastSavedId { get; private set; } = -1;
+    public int HitsCount { get; set; }
+    public int ShotsCount { get; set; }
+
 
     private int _score;
     public int Score
@@ -86,8 +91,7 @@ public class PaintViewModel : PopupViewModel
         }
     }
 
-    private Stopwatch? PathToTargetStopwatch;
-    private bool connectionFailed;
+    private Stopwatch? _pathToTargetStopwatch;
 
     // binding
     public string ScoreString => $"{Localization.Score}: {Score}";
@@ -101,7 +105,7 @@ public class PaintViewModel : PopupViewModel
 
     public PaintViewModel(NavigationStore navigationStore, DiskContext database)
     {
-        DiskNetworkThread = new(ReceiveUserPos)
+        _diskNetworkThread = new(ReceiveUserPos)
         {
             Priority = ThreadPriority.Highest
         };
@@ -112,10 +116,11 @@ public class PaintViewModel : PopupViewModel
         _database = database;
     }
 
+    #region Data receiveing
     public void StartReceiving()
     {
-        DiskNetworkThread.Start();
-        PathToTargetStopwatch = Stopwatch.StartNew();
+        _diskNetworkThread.Start();
+        _pathToTargetStopwatch = Stopwatch.StartNew();
     }
 
     private void ReceiveUserPos()
@@ -131,16 +136,18 @@ public class PaintViewModel : PopupViewModel
         }
         catch (Exception ex)
         {
-            connectionFailed = true;
-
             _ = Application.Current.Dispatcher.InvokeAsync(async () =>
             {
                 Log.Error($"{ex.Message} \n\n\n {ex.StackTrace}");
-                await ShowPopup(header: Localization.ConnectionLost, message: "");
-                await SaveAttemptResultAsync();
+
+                StopRecord();
+                var popupTask = ShowPopup(header: Localization.ConnectionLost, message: "");
+                var showResultTask = ShowResultAsync();
+                await Task.WhenAll(popupTask, showResultTask);
             });
         }
     }
+    #endregion
 
     public async Task SaveAttemptResultAsync()
     {
@@ -161,64 +168,68 @@ public class PaintViewModel : PopupViewModel
 
             _ = await _database.AttemptResults.AddAsync(sres);
             _ = await _database.SaveChangesAsync();
+
+            FullPath.Clear();
         }
 
-        using (var logger = Logger.GetLogger(UsrAngLog))
-        {
-            FullPath.ForEach(logger.LogLn);
-        }
+        using var logger = Logger.GetLogger(UsrAngLog);
+        FullPath.ForEach(logger.LogLn);
+    }
 
+    public void StopRecord()
+    {
         IsStopEnabled = false;
         IsGame = false;
-        DiskNetworkThread.Join();
-
-        if (connectionFailed)
+        if (_diskNetworkThread.IsAlive)
         {
-            IniNavigationStore.Close();
-        }
-        else
-        {
-            try
-            {
-                AttemptResultNavigator.NavigateAndClose(this, _navigationStore, CurrentAttempt.Id);
-            }
-            catch (Exception ex)
-            {
-                await ShowPopup(header: Localization.ErrorCaption, message: Localization.SaveError);
-                Log.Error($"{ex.Message} \n\n\n {ex.StackTrace}");
-            }
+            _diskNetworkThread.Join();
         }
     }
 
-    public void SwitchToPathInTarget(Point2D<int> userShot)
+    public async Task ShowResultAsync()
     {
-        if (userShot.X != 0 && userShot.Y != 0)
+        try
         {
-            PathsToTargets[TargetId - 1].Add(Converter.ToAngle_FromWnd(userShot));
+            AttemptResultNavigator.NavigateAndClose(this, _navigationStore, CurrentAttempt.Id);
         }
+        catch (Exception ex)
+        {
+            await ShowPopup(header: Localization.ErrorCaption, message: Localization.SaveError);
+            Log.Error($"{ex.Message} \n\n\n {ex.StackTrace}");
+        }
+    }
+
+    #region Path to target
+    public void SwitchToPathInTarget()
+    {
         PathsInTargets.Add([]);
 
-        SavePathToTarget(userShot);
+        SavePathToTarget();
     }
 
-    public void SavePathToTarget(Point2D<int> userShot)
+    public void SavePathToTarget()
     {
-        if (PathToTargetStopwatch is null)
+        if (_pathToTargetStopwatch is null)
         {
             return;
         }
 
-        PathToTargetStopwatch.Stop();
+        _pathToTargetStopwatch.Stop();
 
         double distance = 0;
-        var pathToTarget = PathsToTargets[TargetId - 1];
+        var pathToTarget = PathsToTargets[TargetId];
         for (int i = 1; i < pathToTarget.Count; i++)
         {
             distance += pathToTarget[i - 1].GetDistance(pathToTarget[i]);
         }
 
-        var touchPoint = Converter.ToAngle_FromWnd(userShot);
-        var time = PathToTargetStopwatch.Elapsed.TotalSeconds;
+        if (pathToTarget.Count == 0)
+        {
+            pathToTarget.Add(CurrentPos?.To2D() ?? new Point2D<float>());
+        }
+        var touchPoint = pathToTarget[^1];
+
+        var time = _pathToTargetStopwatch.Elapsed.TotalSeconds;
         var avgSpeed = distance / time;
         var approachSpeed = pathToTarget[0].GetDistance(touchPoint) / time;
 
@@ -227,8 +238,8 @@ public class PaintViewModel : PopupViewModel
             Distance = distance,
             AverageSpeed = avgSpeed,
             ApproachSpeed = approachSpeed,
-            CoordinatesJson = JsonConvert.SerializeObject(PathsToTargets[TargetId - 1]),
-            TargetNum = TargetId - 1,
+            CoordinatesJson = JsonConvert.SerializeObject(PathsToTargets[TargetId]),
+            TargetNum = TargetId,
             Attempt = CurrentAttempt.Id,
             Time = time
         };
@@ -237,45 +248,53 @@ public class PaintViewModel : PopupViewModel
         {
             _ = await _database.PathToTargets.AddAsync(ptt);
             _ = await _database.SaveChangesAsync();
+            PttLastSavedId++;
         });
     }
+    #endregion
 
+    #region Path in target
     public bool SwitchToPathToTarget(IProgressTarget target)
     {
-        if (PathToTargetStopwatch is null)
+        if (_pathToTargetStopwatch is null)
         {
             return false;
         }
 
-        SavePathInTarget(target);
+        SavePathInTarget();
 
         PathsToTargets.Add([]);
 
         target.Reset();
 
+        TargetId++;
         if (NextTargetCenter is not null)
         {
             var wndCenter = Converter.ToWndCoord(NextTargetCenter);
             target.Move(wndCenter);
 
-            PathToTargetStopwatch.Restart();
+            _pathToTargetStopwatch.Restart();
 
             return true;
         }
         return false;
     }
 
-    public void SavePathInTarget(IProgressTarget target)
+    public void SavePathInTarget()
     {
-        var pathInTarget = PathsInTargets[TargetId - 1];
+        var pathInTarget = PathsInTargets[TargetId];
+        float accuracy = 0;
 
-        var accuracy = (float)pathInTarget.Count(p => target.Contains(Converter.ToWndCoord(p))) / pathInTarget.Count;
+        if (ShotsCount > 0)
+        {
+            accuracy = (float)HitsCount / ShotsCount;
+        }
 
         var pit = new PathInTarget()
         {
             CoordinatesJson = JsonConvert.SerializeObject(pathInTarget),
             Attempt = CurrentAttempt.Id,
-            TargetId = TargetId - 1,
+            TargetId = TargetId,
             Accuracy = accuracy
         };
 
@@ -283,18 +302,29 @@ public class PaintViewModel : PopupViewModel
         {
             _ = await _database.PathInTargets.AddAsync(pit);
             _ = await _database.SaveChangesAsync();
+            PitLastSavedId++;
         });
     }
+    #endregion
 
+    // Save attempt result and last path
+    // Last path is saved in case of 'backspace' button os recording stop
     public override void Dispose()
     {
         base.Dispose();
         GC.SuppressFinalize(this);
 
-        IsGame = false;
-        if (DiskNetworkThread.IsAlive)
+        StopRecord();
+
+        if (PttLastSavedId + 1 != TargetCenters.Count && PttLastSavedId < TargetId && IsPathToTarget)
         {
-            DiskNetworkThread.Join();
+            SavePathToTarget();
         }
+        else if (PitLastSavedId + 1 != TargetCenters.Count && PitLastSavedId < TargetId && !IsPathToTarget)
+        {
+            SavePathInTarget();
+        }
+
+        SaveAttemptResultAsync().Wait();
     }
 }

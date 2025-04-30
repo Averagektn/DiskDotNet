@@ -22,8 +22,8 @@ public partial class PaintView : UserControl
     private IUser User = null!;
     private IProgressTarget Target = null!;
 
-    private Converter Converter => ViewModel.Converter;
-    private PaintViewModel ViewModel => (PaintViewModel)DataContext;
+    private Converter? Converter => ViewModel?.Converter;
+    private PaintViewModel? ViewModel => DataContext as PaintViewModel;
 
     private int PaintPanelCenterX => (int)PaintPanelSize.Width / 2;
     private int PaintPanelCenterY => (int)PaintPanelSize.Height / 2;
@@ -34,18 +34,15 @@ public partial class PaintView : UserControl
     {
         get
         {
-            /*            if (ViewModel is null)
-                        {
-                            return null;
-                        }*/
-
-            if (ViewModel.CurrentPos is null)
+            if (ViewModel?.CurrentPos is null)
             {
                 return User.Center;
             }
             else
             {
-                return Converter.ToWndCoord(new Point2DF(ViewModel.CurrentPos.X - Settings.XAngleShift, ViewModel.CurrentPos.Y - Settings.YAngleShift));
+                var angleShiftedPoint = new Point2DF(ViewModel.CurrentPos.X - Settings.XAngleShift, ViewModel.CurrentPos.Y - Settings.YAngleShift);
+
+                return Converter?.ToWndCoord(angleShiftedPoint);
             }
         }
     }
@@ -60,9 +57,9 @@ public partial class PaintView : UserControl
         };
         ShotTimer.Tick += ShotTimerElapsed;
 
-        Unloaded += (_, _) => StopGame();
         PaintArea.Loaded += OnLoaded;
         PaintArea.SizeChanged += OnSizeChanged;
+        PaintArea.Unloaded += (_, _) => StopGame();
 
         CompositionTarget.Rendering += OnRender;
     }
@@ -98,21 +95,26 @@ public partial class PaintView : UserControl
     private List<Point2DI> GetMultipleShots()
     {
         var shot = User.Shot();
-        //_ = shot.X;
-        //_ = shot.Y;
-        //_ = User.Radius / 2;
-        //_ = Math.Sqrt(2);
+        /*        int x = shot.X;
+                int y = shot.Y;
+                int halfRadius = User.Radius / 2;
+                double sqrt2 = Math.Sqrt(2);*/
 
         return [shot];
         /*        return [new(x - halfRadius, y), new(x + halfRadius, y), new(x, y - halfRadius), new(x, y + halfRadius),
-                        new((int)(x - (halfRadius / sqrt2)), (int)(y - (halfRadius / sqrt2))),
-                        new((int)(x + (halfRadius / sqrt2)), (int)(y - (halfRadius / sqrt2))),
-                        new((int)(x - (halfRadius / sqrt2)), (int)(y + (halfRadius / sqrt2))),
-                        new((int)(x + (halfRadius / sqrt2)), (int)(y + (halfRadius / sqrt2)))];*/
+                                new((int)(x - (halfRadius / sqrt2)), (int)(y - (halfRadius / sqrt2))),
+                                new((int)(x + (halfRadius / sqrt2)), (int)(y - (halfRadius / sqrt2))),
+                                new((int)(x - (halfRadius / sqrt2)), (int)(y + (halfRadius / sqrt2))),
+                                new((int)(x + (halfRadius / sqrt2)), (int)(y + (halfRadius / sqrt2)))];*/
     }
 
     private void ShotTimerElapsed(object? sender, EventArgs e)
     {
+        if (ViewModel is null || Converter is null || !ViewModel.IsGame)
+        {
+            return;
+        }
+
         var shots = GetMultipleShots();
 
         var shot = User.Center;
@@ -128,7 +130,7 @@ public partial class PaintView : UserControl
         bool isPathInTargetStarts = shotScore != 0 && ViewModel.IsPathToTarget;
         if (isPathInTargetStarts)
         {
-            ViewModel.SwitchToPathInTarget(shot);
+            ViewModel.SwitchToPathInTarget();
         }
 
         //bool isValidShot = angleShot.X != 0 && angleShot.Y != 0;
@@ -137,11 +139,11 @@ public partial class PaintView : UserControl
         {
             if (isPathInTarget)
             {
-                ViewModel.PathsInTargets[ViewModel.TargetId - 1].Add(angleShot);
+                ViewModel.PathsInTargets[ViewModel.TargetId].Add(angleShot);
             }
             else
             {
-                ViewModel.PathsToTargets[ViewModel.TargetId - 1].Add(angleShot);
+                ViewModel.PathsToTargets[ViewModel.TargetId].Add(angleShot);
             }
         }
 
@@ -151,13 +153,18 @@ public partial class PaintView : UserControl
         {
             if (!ViewModel.SwitchToPathToTarget(Target))
             {
-                OnStopClick(this, new());
+                OnStopClick(sender, e);
             }
         }
     }
 
     private void OnLoaded(object sender, RoutedEventArgs e)
     {
+        if (ViewModel is null || Converter is null)
+        {
+            return;
+        }
+
         User = DrawableFabric.GetIniUser(Settings.CursorFilePath, PaintArea);
         User.OnShot += (p) => ViewModel.FullPath.Add(Converter.ToAngle_FromWnd(p));
 
@@ -165,7 +172,15 @@ public partial class PaintView : UserControl
         var converter = DrawableFabric.GetIniConverter();
         var wndCenter = converter.ToWndCoord(center);
         Target = DrawableFabric.GetIniProgressTarget(Settings.TargetFilePath, wndCenter, PaintArea);
-        Target.OnReceiveShot += shot => ViewModel.Score += shot;
+        Target.OnReceiveShot += shot =>
+        {
+            ViewModel.Score += shot;
+            ViewModel.ShotsCount++;
+            if (shot != 0)
+            {
+                ViewModel.HitsCount++;
+            }
+        };
 
         if (ViewModel.IsGame)
         {
@@ -191,6 +206,11 @@ public partial class PaintView : UserControl
 
     private void OnSizeChanged(object sender, RoutedEventArgs e)
     {
+        if (Converter is null)
+        {
+            return;
+        }
+
         AllowedArea.RadiusX = PaintPanelCenterX;
         AllowedArea.RadiusY = PaintPanelCenterY;
         AllowedArea.Center = new(PaintPanelCenterX, PaintPanelCenterY);
@@ -198,21 +218,19 @@ public partial class PaintView : UserControl
         Converter.Scale(new((int)PaintArea.ActualWidth, (int)PaintArea.ActualHeight));
     }
 
-    private void OnStopClick(object sender, RoutedEventArgs e)
+    private void OnStopClick(object? sender, EventArgs e)
     {
-        if (ViewModel.IsPathToTarget)
+        if (ViewModel is null)
         {
-            ViewModel.SavePathToTarget(User.Center);
+            return;
         }
-        else
-        {
-            ViewModel.SavePathInTarget(Target);
-        }
+
         StopGame();
 
         _ = Application.Current.Dispatcher.InvokeAsync(async () =>
         {
-            await ViewModel.SaveAttemptResultAsync();
+            ViewModel.StopRecord();
+            await ViewModel.ShowResultAsync();
         }).Task.ContinueWith(task =>
         {
             if (task.Exception is not null)
