@@ -33,15 +33,15 @@ public class AttemptResultViewModel(NavigationStore navigationStore, DiskContext
         set
         {
             _attemptId = value;
-            _ = Application.Current.Dispatcher.InvokeAsync(async () =>
-                CurrentAttempt = await database.Attempts
-                    .Where(s => s.Id == value)
-                    .Include(s => s.SessionNavigation)
-                    .Include(s => s.SessionNavigation.MapNavigation)
-                    .Include(s => s.PathToTargets)
-                    .Include(s => s.PathInTargets)
-                    .Include(s => s.AttemptResult)
-                    .FirstAsync());
+
+            CurrentAttempt = database.Attempts
+                .Where(s => s.Id == value)
+                .Include(s => s.SessionNavigation)
+                .Include(s => s.SessionNavigation.MapNavigation)
+                .Include(s => s.PathToTargets)
+                .Include(s => s.PathInTargets)
+                .Include(s => s.AttemptResult)
+                .First();
         }
     }
 

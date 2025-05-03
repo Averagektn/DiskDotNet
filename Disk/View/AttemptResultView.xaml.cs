@@ -78,6 +78,8 @@ public partial class AttemptResultView : UserControl
         _cursor = DrawableFabric.GetIniCursor(string.Empty, PaintArea);
         _target = DrawableFabric.GetIniProgressTarget(string.Empty, new(0, 0), PaintArea);
 
+        _target.Move(ViewModel.TargetCenter);
+
         _target.Draw();
         _cursor.Draw();
     }
