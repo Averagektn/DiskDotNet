@@ -178,7 +178,7 @@ namespace Disk.Properties.Langs.AttemptResult {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to PathInTarget.
+        ///   Looks up a localized string similar to Path in target.
         /// </summary>
         public static string PathInTarget {
             get {

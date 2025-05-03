@@ -35,6 +35,7 @@ public partial class AttemptResultView : UserControl
     private readonly Size _iniScreenSize = new(_settings.IniScreenWidth, _settings.IniScreenHeight);
 
     private static readonly Settings _settings = Settings.Default;
+    private DispatcherTimer? _coordTimer;
 
     private bool _isReply;
     private bool IsReply
@@ -43,6 +44,11 @@ public partial class AttemptResultView : UserControl
         set
         {
             _isReply = value;
+            if (!value)
+            {
+                _coordTimer?.Stop();
+            }
+            FastForwardSlider.IsEnabled = !value;
             if (ViewModel is not null)
             {
                 ViewModel.IsStopEnabled = value;
@@ -56,16 +62,30 @@ public partial class AttemptResultView : UserControl
 
         SizeChanged += (_, _) => Converter?.Scale(PaintPanelSize);
 
-        Loaded += SelectionChanged;
+        Loaded += AttemptResultView_Loaded;
         Loaded += (_, _) => SidebarTransform.X = Sidebar.ActualWidth + 100;
 
         Unloaded += StopReply;
-        CompositionTarget.Rendering += OnRender;
     }
 
+    private void AttemptResultView_Loaded(object sender, RoutedEventArgs e)
+    {
+        if (ViewModel is null)
+        {
+            return;
+        }
+
+        _cursor = DrawableFabric.GetIniCursor(string.Empty, PaintArea);
+        _target = DrawableFabric.GetIniProgressTarget(string.Empty, new(0, 0), PaintArea);
+
+        _target.Draw();
+        _cursor.Draw();
+    }
+
+    private bool _isRenderAdded = false;
     private void SelectionChanged(object sender, RoutedEventArgs e)
     {
-        if (ViewModel is null || Converter is null)
+        if (ViewModel is null)
         {
             return;
         }
@@ -77,9 +97,18 @@ public partial class AttemptResultView : UserControl
         _diagram = ViewModel.GetGraph(GraphArea);
         (_pathToTarget, _pathInTarget) = ViewModel.GetPath(PathArea);
 
-        _diagram?.Draw();
-        _pathToTarget?.Draw();
-        _pathInTarget?.Draw();
+        if (DiagramCheckBox.IsChecked ?? false)
+        {
+            _diagram?.Draw();
+        }
+        if (PathToTargetCheckBox.IsChecked ?? false)
+        {
+            _pathToTarget?.Draw();
+        }
+        if (PathInTargetCheckBox.IsChecked ?? false)
+        {
+            _pathInTarget?.Draw();
+        }
 
         if (_currentIndex == ViewModel.SelectedIndex)
         {
@@ -87,37 +116,39 @@ public partial class AttemptResultView : UserControl
         }
         _currentIndex = ViewModel.SelectedIndex;
 
-        _target?.Remove();
-        _cursor?.Remove();
-        _cursor ??= DrawableFabric.GetIniCursor(string.Empty, PaintArea);
-        _target ??= DrawableFabric.GetIniProgressTarget(string.Empty, new(0, 0), PaintArea);
-        if (_isTargetVisible)
-        {
-            _target.Draw();
-        }
-        if (_isCursorVisible)
-        {
-            _cursor.Draw();
-        }
-        if (!IsReply)
-        {
-            _cursor.Move(ViewModel.CursorCenter);
-            _target.Move(ViewModel.TargetCenter);
-        }
+        _target?.Move(ViewModel.TargetCenter);
 
-        var allEmpty = _fullPathEllipses.Count == 0 && _pathInTargetEllipses.Count == 0 && _pathToTargetEllipses.Count == 0;
-        if (ViewModel.CurrPathInTarget.Count > 5 && ViewModel.CurrPathToTarget.Count != 5 && (_isFullPathEllipseVisible || allEmpty))
+        const int MinEllipsePointsCount = 10;
+        if (ViewModel.CurrPathInTarget.Count > MinEllipsePointsCount && ViewModel.CurrPathToTarget.Count > MinEllipsePointsCount)
         {
             RecalculateEllipse(_fullPathEllipses, [.. ViewModel.CurrPathToTarget, .. ViewModel.CurrPathInTarget],
                 Brushes.MediumPurple, Brushes.Purple);
+            if (FullPathEllipseCheckBox.IsChecked ?? false)
+            {
+                _fullPathEllipses.ForEach(e => e.Draw());
+            }
         }
-        if (ViewModel.CurrPathInTarget.Count > 5 && (_isPathInTargetEllipseVisible || allEmpty))
+        if (ViewModel.CurrPathInTarget.Count > MinEllipsePointsCount)
         {
             RecalculateEllipse(_pathInTargetEllipses, [.. ViewModel.CurrPathInTarget], Brushes.CadetBlue, Brushes.Blue);
+            if (PathInTargetEllipseCheckBox.IsChecked ?? false)
+            {
+                _fullPathEllipses.ForEach(e => e.Draw());
+            }
         }
-        if (ViewModel.CurrPathToTarget.Count > 5 && (_isPathToTargetEllipseVisible || allEmpty))
+        if (ViewModel.CurrPathToTarget.Count > MinEllipsePointsCount)
         {
             RecalculateEllipse(_pathToTargetEllipses, [.. ViewModel.CurrPathToTarget], Brushes.LawnGreen, Brushes.Green);
+            if (PathToTargetEllipseCheckBox.IsChecked ?? false)
+            {
+                _fullPathEllipses.ForEach(e => e.Draw());
+            }
+        }
+
+        if (!_isRenderAdded)
+        {
+            CompositionTarget.Rendering += OnRender;
+            _isRenderAdded = true;
         }
     }
 
@@ -172,28 +203,21 @@ public partial class AttemptResultView : UserControl
 
     #region Reply
 
-    private int _selectedIndex;
-    private IEnumerator<(bool IsNewTarget, Point2D<float> Point)>? _enumerator;
-    private Point2D<int>? _replyCenter;
-    private DispatcherTimer? _coordTimer;
+    private IEnumerator<Point2D<float>>? _enumerator;
 
     private void OnRender(object? sender, EventArgs e)
     {
-        if (!IsReply || ViewModel is null || _cursor is null || _target is null)
+        if (ViewModel is null || _cursor is null || _cursor.Center == ViewModel.CursorCenter)
         {
             return;
         }
 
-        if (_replyCenter is not null)
-        {
-            _cursor.Move(_replyCenter);
-        }
+        _cursor.Move(ViewModel.CursorCenter);
     }
 
 
     private void StopReply(object sender, RoutedEventArgs e)
     {
-        _coordTimer?.Stop();
         CompositionTarget.Rendering -= OnRender;
         IsReply = false;
     }
@@ -205,9 +229,7 @@ public partial class AttemptResultView : UserControl
             return;
         }
 
-        _selectedIndex = ViewModel.SelectedIndex;
         _enumerator = ViewModel.FullPath.GetEnumerator();
-        IsReply = true;
 
         _coordTimer = new(DispatcherPriority.Normal)
         {
@@ -215,25 +237,7 @@ public partial class AttemptResultView : UserControl
         };
         _coordTimer.Tick += (_, _) =>
         {
-            if (ViewModel is null)
-            {
-                return;
-            }
-
-            if (_enumerator.MoveNext())
-            {
-                _replyCenter = ViewModel.Converter.ToWndCoord(_enumerator.Current.Point);
-                if (_enumerator.Current.IsNewTarget && ++_selectedIndex < ViewModel.TargetCenters.Count)
-                {
-                    _target?.Move(ViewModel.Converter.ToWndCoord(ViewModel.TargetCenters[_selectedIndex]));
-                    ViewModel.SelectedIndex = _selectedIndex;
-                }
-            }
-            else
-            {
-                IsReply = false;
-                _replyCenter = null;
-            }
+            IsReply = _enumerator.MoveNext();
         };
 
         _coordTimer.Start();
@@ -241,129 +245,100 @@ public partial class AttemptResultView : UserControl
     #endregion
 
     #region Showing and hiding elements
-    #region Path to target ellipse
-    private bool _isPathToTargetEllipseVisible = false;
 
+    #region Path to target ellipse
     public void ShowPathToTargetEllipse(object sender, RoutedEventArgs e)
     {
-        if (!_isPathToTargetEllipseVisible)
-        {
-            _pathToTargetEllipses.ForEach(e =>
-            {
-                e.Scale();
-                e.Draw();
-            });
-            _isPathToTargetEllipseVisible = true;
-        }
+        _pathToTargetEllipses.ForEach(e => e.Draw());
     }
-
     public void HidePathToTargetEllipse(object sender, RoutedEventArgs e)
     {
-        if (_isPathToTargetEllipseVisible)
-        {
-            _pathToTargetEllipses.ForEach(e => e.Remove());
-            _isPathToTargetEllipseVisible = false;
-        }
+        _pathToTargetEllipses.ForEach(e => e.Remove());
     }
     #endregion
 
     #region Path in target ellipse
-    private bool _isPathInTargetEllipseVisible = false;
-
     public void ShowPathInTargetEllipse(object sender, RoutedEventArgs e)
     {
-        if (!_isPathInTargetEllipseVisible)
-        {
-            _pathInTargetEllipses.ForEach(e =>
-            {
-                e.Scale();
-                e.Draw();
-            });
-            _isPathInTargetEllipseVisible = true;
-        }
+        _pathInTargetEllipses.ForEach(e => e.Draw());
     }
     public void HidePathInTargetEllipse(object sender, RoutedEventArgs e)
     {
-        if (_isPathInTargetEllipseVisible)
-        {
-            _pathInTargetEllipses.ForEach(e => e.Remove());
-            _isPathInTargetEllipseVisible = false;
-        }
+        _pathInTargetEllipses.ForEach(e => e.Remove());
     }
     #endregion
 
     #region Full path ellipse
-    private bool _isFullPathEllipseVisible = false;
-
     public void ShowFullPathEllipse(object sender, RoutedEventArgs e)
     {
-        if (!_isFullPathEllipseVisible)
-        {
-            _fullPathEllipses.ForEach(e =>
-            {
-                e.Scale();
-                e.Draw();
-            });
-            _isFullPathEllipseVisible = true;
-        }
+        _fullPathEllipses.ForEach(e => e.Draw());
     }
     public void HideFullPathEllipse(object sender, RoutedEventArgs e)
     {
-        if (_isFullPathEllipseVisible)
-        {
-            _fullPathEllipses.ForEach(e => e.Remove());
-            _isFullPathEllipseVisible = false;
-        }
+        _fullPathEllipses.ForEach(e => e.Remove());
     }
     #endregion
 
     #region Cursor
-    private bool _isCursorVisible = true;
-
     private void ShowCursor(object sender, RoutedEventArgs e)
     {
-        if (!_isCursorVisible)
-        {
-            _isCursorVisible = true;
-            _cursor?.Draw();
-        }
+        _cursor?.Draw();
     }
-
     private void HideCursor(object sender, RoutedEventArgs e)
     {
-        if (_isCursorVisible)
-        {
-            _isCursorVisible = false;
-            _cursor?.Remove();
-        }
+        _cursor?.Remove();
     }
     #endregion
 
     #region Target
-    private bool _isTargetVisible = true;
-
     private void ShowTarget(object sender, RoutedEventArgs e)
     {
-        if (!_isTargetVisible)
-        {
-            _isTargetVisible = true;
-            _target?.Draw();
-        }
+        _target?.Draw();
     }
-
     private void HideTarget(object sender, RoutedEventArgs e)
     {
-        if (_isTargetVisible)
-        {
-            _isTargetVisible = false;
-            _target?.Remove();
-        }
+        _target?.Remove();
     }
     #endregion
+
+    #region Diagram
+    private void DiagramCheckBox_Checked(object sender, RoutedEventArgs e)
+    {
+        _diagram?.Draw();
+    }
+    private void DiagramCheckBox_Unchecked(object sender, RoutedEventArgs e)
+    {
+        _diagram?.Remove();
+    }
+    #endregion
+
+    #region Path to target
+    private void PathToTargetCheckbox_Checked(object sender, RoutedEventArgs e)
+    {
+        _pathToTarget?.Draw();
+    }
+    private void PathToTargetCheckbox_Unchecked(object sender, RoutedEventArgs e)
+    {
+        _pathToTarget?.Remove();
+    }
+    #endregion
+
+    #region Path in target
+    private void PathInTargetCheckbox_Checked(object sender, RoutedEventArgs e)
+    {
+        _pathInTarget?.Draw();
+    }
+    private void PathInTargetCheckbox_Unchecked(object sender, RoutedEventArgs e)
+    {
+        _pathInTarget?.Remove();
+    }
+    #endregion
+
     #endregion
 
     #region Sidebar animations
     private Brush _detectionAreaColor = Brushes.Transparent;
+
     private void MouseDetectionArea_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
     {
         _detectionAreaColor = MouseDetectionArea.Background;

@@ -145,7 +145,7 @@
     <value>Path</value>
   </data>
   <data name="PathInTarget" xml:space="preserve">
-    <value>PathInTarget</value>
+    <value>Path in target</value>
   </data>
   <data name="PathToTarget" xml:space="preserve">
     <value>PathToTarget</value>

@@ -50,7 +50,7 @@
             <Canvas Name="GraphArea" Panel.ZIndex="-2" />
 
             <TextBlock 
-                Margin="10" 
+                Margin="10 10 20 10" 
                 HorizontalAlignment="Right" 
                 VerticalAlignment="Top"    
                 Text="I" 
@@ -61,18 +61,44 @@
                 VerticalAlignment="Top"
                 Text="II" 
                 FontSize="55" />
-            <TextBlock 
-                Margin="10" 
-                HorizontalAlignment="Left" 
-                VerticalAlignment="Bottom"    
-                Text="III" 
-                FontSize="55" />
-            <TextBlock 
-                Margin="10" 
-                HorizontalAlignment="Right" 
-                VerticalAlignment="Bottom"    
-                Text="IV" 
-                FontSize="55" />
+
+
+            <Grid VerticalAlignment="Bottom" Margin="0 0 20 0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="auto" />
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="auto"/>
+                </Grid.ColumnDefinitions>
+                
+                <TextBlock 
+                    Grid.Column="0"
+                    Margin="10" 
+                    HorizontalAlignment="Left" 
+                    Text="III" 
+                    FontSize="55" />
+                
+                <Slider 
+                    Grid.Column="1"
+                    x:Name="FastForwardSlider"
+                    Margin="10"
+                    VerticalAlignment="Bottom"
+                    Value="{Binding CurrentPointId}" 
+                    Maximum="{Binding PointsCount}"/>
+                    
+                <TextBlock 
+                    Grid.Column="2"
+                    Margin="10" 
+                    HorizontalAlignment="Right" 
+                    Text="IV" 
+                    FontSize="55" />
+            </Grid>
+
+            <Border
+                x:Name="MouseDetectionArea"
+                Width="10"
+                Background="#4bb342"
+                HorizontalAlignment="Right"
+                MouseEnter="MouseDetectionArea_MouseEnter" />
         </Grid>
 
         <Border
@@ -91,53 +117,53 @@
                         TextAlignment="Left" 
                         Margin="10"/>
 
-                    <RadioButton     
+                    <CheckBox     
+                        x:Name="DiagramCheckBox"
                         Content="{x:Static lang:AttemptResultLocalization.Diagram}"
                         FontSize="25"
-                        GroupName="DataType" 
-                        Checked="SelectionChanged"
-                        IsChecked="{Binding IsDiagramChecked}" 
-                        Margin="10"/>
-
-                    <RadioButton 
-                        Content="{x:Static lang:AttemptResultLocalization.Path}"
-                        FontSize="25"
-                        GroupName="DataType"
-                        Checked="SelectionChanged"
-                        IsChecked="{Binding IsPathChecked}"
-                        Margin="10"/>
+                        Checked="DiagramCheckBox_Checked"
+                        Unchecked="DiagramCheckBox_Unchecked"
+                        Margin="10"
+                        IsChecked="False"/>
 
                     <CheckBox 
+                        x:Name="PathToTargetCheckBox"
                         FontSize="25"
                         Margin="10"
                         Content="{x:Static lang:AttemptResultLocalization.PathToTarget}"
-                        Checked="SelectionChanged"
-                        Unchecked="SelectionChanged"
-                        IsChecked="{Binding ShowPathToTarget}"/>
+                        Checked="PathToTargetCheckbox_Checked"
+                        Unchecked="PathToTargetCheckbox_Unchecked"
+                        IsChecked="False"/>
 
                     <CheckBox 
+                        x:Name="PathInTargetCheckBox"
                         FontSize="25"
                         Margin="10"
                         Content="{x:Static lang:AttemptResultLocalization.PathInTarget}"
-                        Checked="SelectionChanged"
-                        Unchecked="SelectionChanged"
-                        IsChecked="{Binding ShowPathInTarget}"/>
+                        Checked="PathInTargetCheckbox_Checked"
+                        Unchecked="PathInTargetCheckbox_Unchecked"
+                        IsChecked="False"/>
 
                     <CheckBox
+                        x:Name="HideTargetCheckBox"
                         FontSize="25"
                         Margin="10"
                         Content="{x:Static lang:AttemptResultLocalization.HideTarget}"
                         Checked="HideTarget"
-                        Unchecked="ShowTarget"/>
+                        Unchecked="ShowTarget"
+                        IsChecked="False"/>
 
                     <CheckBox
+                        x:Name="HideCursorCheckBox"
                         FontSize="25"
                         Margin="10"
                         Content="{x:Static lang:AttemptResultLocalization.HideCursor}"
                         Checked="HideCursor"
-                        Unchecked="ShowCursor"/>
+                        Unchecked="ShowCursor"
+                        IsChecked="False"/>
 
                     <CheckBox
+                        x:Name="FullPathEllipseCheckBox"
                         FontSize="25"
                         Margin="10"
                         Content="{x:Static lang:AttemptResultLocalization.FullPathArea}"
@@ -146,14 +172,7 @@
                         IsChecked="False"/>
 
                     <CheckBox
-                        FontSize="25"
-                        Margin="10"
-                        Content="{x:Static lang:AttemptResultLocalization.PathInTargetArea}"
-                        Checked="ShowPathInTargetEllipse"
-                        Unchecked="HidePathInTargetEllipse"
-                        IsChecked="False"/>
-
-                    <CheckBox
+                        x:Name="PathToTargetEllipseCheckBox"
                         FontSize="25"
                         Margin="10"
                         Content="{x:Static lang:AttemptResultLocalization.PathToTargetArea}"
@@ -161,7 +180,17 @@
                         Unchecked="HidePathToTargetEllipse"
                         IsChecked="False"/>
 
+                    <CheckBox
+                        x:Name="PathInTargetEllipseCheckBox"
+                        FontSize="25"
+                        Margin="10"
+                        Content="{x:Static lang:AttemptResultLocalization.PathInTargetArea}"
+                        Checked="ShowPathInTargetEllipse"
+                        Unchecked="HidePathInTargetEllipse"
+                        IsChecked="False"/>
+
                     <ComboBox   
+                        x:Name="TargetComboBox"
                         FontSize="25"
                         SelectionChanged="SelectionChanged" 
                         SelectedIndex="{Binding SelectedIndex}" 
@@ -196,14 +225,6 @@
                 </StackPanel>
             </ScrollViewer>
         </Border>
-
-        <Border
-            x:Name="MouseDetectionArea"
-            Grid.Column="1"
-            Width="10"
-            Background="#4bb342"
-            HorizontalAlignment="Right"
-            MouseEnter="MouseDetectionArea_MouseEnter" />
 
         <styles:Popup 
             Grid.ColumnSpan="2"

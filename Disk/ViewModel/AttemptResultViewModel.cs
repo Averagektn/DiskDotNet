@@ -60,11 +60,12 @@ public class AttemptResultViewModel(NavigationStore navigationStore, DiskContext
                 .Select(pit => JsonConvert.DeserializeObject<List<Point2D<float>>>(pit.CoordinatesJson)!)
                 .ToList() ?? [];
 
+            PointsCount = PathsToTargets.Sum(p => p.Count) + PathsInTargets.Sum(p => p.Count);
+
             TargetCenters = [.. JsonConvert
                 .DeserializeObject<List<Point2D<float>>>(CurrentAttempt.SessionNavigation.MapNavigation.CoordinatesJson)!
                 .Take(int.Max(PathsInTargets.Count, PathsToTargets.Count))];
 
-            IsPathChecked = true;
             SelectedIndex = 0;
             OnPropertyChanged(nameof(CursorCenter));
             OnPropertyChanged(nameof(TargetCenter));
@@ -73,15 +74,78 @@ public class AttemptResultViewModel(NavigationStore navigationStore, DiskContext
         }
     }
 
+    private int _currentPointId;
+    public int CurrentPointId
+    {
+        get => _currentPointId;
+        set
+        {
+            if (value >= PointsCount)
+            {
+                return;
+            }
+
+            _ = SetProperty(ref _currentPointId, value);
+
+            int newIndex = 0;
+            int newPointId = value;
+            bool isPathToTarget = true;
+
+            while (newPointId >= 0)
+            {
+                if (isPathToTarget)
+                {
+                    newPointId -= PathsToTargets[newIndex].Count;
+                    isPathToTarget = false;
+                }
+                else
+                {
+                    newPointId -= PathsInTargets[newIndex].Count;
+                    isPathToTarget = true;
+                    if (newPointId >= 0)
+                    {
+                        newIndex++;
+                    }
+                }
+            }
+
+            IsPathToTarget = !isPathToTarget;
+
+            if (IsPathToTarget)
+            {
+                SelectedPathPointId = newPointId + PathsToTargets[newIndex].Count;
+            }
+            else
+            {
+                SelectedPathPointId = newPointId + PathsInTargets[newIndex].Count;
+            }
+
+            SelectedIndex = newIndex;
+        }
+    }
+
+    private int _selectedPathPointId;
+    public int SelectedPathPointId
+    {
+        get => _selectedPathPointId;
+        set
+        {
+            _ = SetProperty(ref _selectedPathPointId, value);
+        }
+    }
+
+    private int _pointsCount;
+    public int PointsCount { get => _pointsCount; set => SetProperty(ref _pointsCount, value); }
+
     public Point2D<int> CursorCenter
     {
         get
         {
-            if (PathsToTargets.Count == 0 || SelectedIndex < 0)
+            if (IsPathToTarget)
             {
-                return new(0, 0);
+                return Converter.ToWndCoord(CurrPathToTarget[SelectedPathPointId]);
             }
-            return Converter.ToWndCoord(PathsToTargets[SelectedIndex][0]);
+            return Converter.ToWndCoord(CurrPathInTarget[SelectedPathPointId]);
         }
     }
     public Point2D<int> TargetCenter
@@ -125,39 +189,26 @@ public class AttemptResultViewModel(NavigationStore navigationStore, DiskContext
 
     public ObservableCollection<string> Indices { get; set; } = [];
     public Converter Converter { get; set; } = DrawableFabric.GetIniConverter();
-    public bool ShowPathInTarget { get; set; }
-    public bool ShowPathToTarget { get; set; }
+    public bool IsPathToTarget { get; private set; }
 
-    public IEnumerable<(bool IsNewTarget, Point2D<float> Point)> FullPath
+    public IEnumerable<Point2D<float>> FullPath
     {
         get
         {
-            var lastPoint = new Point2D<float>(0, 0);
+            bool isLastPoint = false;
 
-            for (int i = SelectedIndex; i < TargetCenters.Count; i++)
+            while (!isLastPoint)
             {
-                if (i < CurrentAttempt.PathToTargets.Count)
+                if (IsPathToTarget)
                 {
-                    var ptt = JsonConvert
-                        .DeserializeObject<List<Point2D<float>>>(CurrentAttempt.PathToTargets.ElementAt(i).CoordinatesJson)!;
-                    foreach (var point in ptt)
-                    {
-                        yield return (false, point);
-                    }
+                    yield return CurrPathToTarget[SelectedPathPointId];
                 }
-
-                if (i < CurrentAttempt.PathInTargets.Count)
+                else
                 {
-                    var pit = JsonConvert
-                        .DeserializeObject<List<Point2D<float>>>(CurrentAttempt.PathInTargets.ElementAt(i).CoordinatesJson)!;
-                    foreach (var point in pit)
-                    {
-                        lastPoint = point;
-                        yield return (false, point);
-                    }
+                    yield return CurrPathInTarget[SelectedPathPointId];
                 }
-
-                yield return (true, lastPoint);
+                CurrentPointId++;
+                isLastPoint = CurrentPointId == PointsCount - 1;
             }
         }
     }
@@ -175,12 +226,6 @@ public class AttemptResultViewModel(NavigationStore navigationStore, DiskContext
 
     private string _message = string.Empty;
     public string Message { get => _message; set => SetProperty(ref _message, value); }
-
-    private bool _isDiagramChecked = false;
-    public bool IsDiagramChecked { get => _isDiagramChecked; set => SetProperty(ref _isDiagramChecked, value); }
-
-    private bool _isPathChecked = false;
-    public bool IsPathChecked { get => _isPathChecked; set => SetProperty(ref _isPathChecked, value); }
 
     private int _selectedIndex = -1;
     public int SelectedIndex { get => _selectedIndex; set => SetProperty(ref _selectedIndex, value); }
@@ -203,6 +248,10 @@ public class AttemptResultViewModel(NavigationStore navigationStore, DiskContext
     {
         if (SelectedIndex >= 0 && CurrentAttempt.PathToTargets.Count > SelectedIndex && CurrentAttempt.PathInTargets.Count > SelectedIndex)
         {
+            int pathToTargetPointsCount = PathsToTargets.Take(SelectedIndex).Sum(p => p.Count);
+            int pathInTargetPointsCount = PathsInTargets.Take(SelectedIndex).Sum(p => p.Count);
+            CurrentPointId = pathToTargetPointsCount + pathInTargetPointsCount;
+
             Message =
                 $"""
                     {Localization.StandartDeviation} X: {CurrentAttempt.AttemptResult?.DeviationX:F2}
@@ -227,7 +276,7 @@ public class AttemptResultViewModel(NavigationStore navigationStore, DiskContext
 
     public (IStaticFigure? PathToTarget, IStaticFigure? PathInTarget) GetPath(Panel parent)
     {
-        if (SelectedIndex == -1 || !IsPathChecked)
+        if (SelectedIndex == -1)
         {
             return (null, null);
         }
@@ -241,27 +290,20 @@ public class AttemptResultViewModel(NavigationStore navigationStore, DiskContext
         }
 
         var c = DrawableFabric.GetIniConverter();
+        var iniSize = new Size(Settings.IniScreenWidth, Settings.IniScreenHeight);
 
-        IStaticFigure? pointsToTarget = null;
-        if (PathsToTargets.Count > SelectedIndex && ShowPathToTarget)
-        {
-            pointsToTarget = new Path(PathsToTargets[SelectedIndex].Select(c.ToWndCoord), Brushes.Green, parent, new Size(800, 800));
-            pointsToTarget.Scale();
-        }
+        IStaticFigure pointsToTarget = new PointedPath(CurrPathToTarget.Select(c.ToWndCoord), Colors.Green, parent, iniSize);
+        pointsToTarget.Scale();
 
-        IStaticFigure? pointsInTarget = null;
-        if (PathsInTargets.Count > SelectedIndex && ShowPathInTarget)
-        {
-            pointsInTarget = new Path(PathsInTargets[SelectedIndex].Select(c.ToWndCoord), Brushes.Blue, parent, new Size(800, 800));
-            pointsInTarget.Scale();
-        }
+        IStaticFigure pointsInTarget = new PointedPath(CurrPathInTarget.Select(c.ToWndCoord), Colors.Blue, parent, iniSize);
+        pointsInTarget.Scale();
 
         return (pointsToTarget, pointsInTarget);
     }
 
     public IStaticFigure? GetGraph(Panel parent)
     {
-        if (SelectedIndex == -1 || !IsDiagramChecked)
+        if (SelectedIndex == -1)
         {
             return null;
         }

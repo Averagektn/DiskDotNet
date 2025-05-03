@@ -145,10 +145,10 @@
     <value>Путь</value>
   </data>
   <data name="PathInTarget" xml:space="preserve">
-    <value>Путь в цели</value>
+    <value>Путь в мишени</value>
   </data>
   <data name="PathToTarget" xml:space="preserve">
-    <value>Путь к цели</value>
+    <value>Путь к мишени</value>
   </data>
   <data name="Accuracy" xml:space="preserve">
     <value>Точность</value>

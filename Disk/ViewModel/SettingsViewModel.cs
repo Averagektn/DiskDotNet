@@ -272,7 +272,7 @@ public class SettingsViewModel(ModalNavigationStore modalNavigationStore) : Popu
         var targetTtlChanged = TargetTtl != Calculator.RoundToNearest(value: 1000 * Settings.TargetHp / (1000 / Settings.ShotTime),
             nearest: 100).ToString();
 
-        if (ipChanged || cursorPathChanged || targetPathChanged || shotTimeChanged || targetRadiusChanged || cursorRadiusChanged 
+        if (ipChanged || cursorPathChanged || targetPathChanged || shotTimeChanged || targetRadiusChanged || cursorRadiusChanged
             || targetTtlChanged || targetTtlChanged)
         {
             if (modalNavigationStore.CurrentViewModel is not QuestionViewModel)
