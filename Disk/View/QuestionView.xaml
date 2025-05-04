@@ -25,6 +25,7 @@
             FontSize="25"
             Text="{Binding Message}"
             Margin="15"
+            TextAlignment="Left"
             HorizontalAlignment="Left"/>
 
         <Button 
