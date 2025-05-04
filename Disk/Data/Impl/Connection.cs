@@ -140,7 +140,6 @@ public class Connection : IDataSource<float>, IDisposable
         else if (Socket.Available < Size * 2)
         {
             Task.Delay(1).Wait();
-            //Thread.Sleep(2);
         }
 
         return _coords[_currPacket++];

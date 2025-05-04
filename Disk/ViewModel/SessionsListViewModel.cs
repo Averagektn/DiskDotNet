@@ -50,17 +50,8 @@ public class SessionsListViewModel(DiskContext database, NavigationStore navigat
         {
             _patient = value;
 
-            _ = Application.Current.Dispatcher.InvokeAsync(async () =>
-            {
-                await UpdateSessionsAsync();
-                IsNextEnabled = _currPage < TotalPages - 1;
-            }).Task.ContinueWith(e =>
-            {
-                if (e.Exception is not null)
-                {
-                    Log.Error($"{e.Exception.Message} \n {e.Exception.StackTrace}");
-                }
-            });
+            UpdateSessionsAsync().Wait();
+            IsNextEnabled = _currPage < TotalPages - 1;
         }
     }
 

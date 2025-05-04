@@ -13,6 +13,7 @@ using Newtonsoft.Json;
 using Serilog;
 using System.Diagnostics;
 using System.Net;
+using System.Threading;
 using System.Windows;
 using FilePath = System.IO.Path;
 using Localization = Disk.Properties.Langs.PaintWindow.PaintWindowLocalization;
@@ -29,23 +30,13 @@ public class PaintViewModel : PopupViewModel
         set
         {
             _attemptId = value;
-            _ = Application.Current.Dispatcher.InvokeAsync(async () =>
-            {
-                CurrentAttempt = await _database.Attempts
-                    .Where(s => s.Id == value)
-                    .Include(s => s.SessionNavigation)
-                    .Include(s => s.SessionNavigation.MapNavigation)
-                    .FirstAsync();
-            }).Task.ContinueWith(e =>
-            {
-                if (e.Exception is not null)
-                {
-                    Log.Error($"{e.Exception.Message} \n {e.Exception.StackTrace}");
-                }
-            });
+            CurrentAttempt = _database.Attempts
+                .Where(s => s.Id == value)
+                .Include(s => s.SessionNavigation)
+                .Include(s => s.SessionNavigation.MapNavigation)
+                .First();
         }
     }
-
 
     private Attempt _currentAttempt = null!;
     public Attempt CurrentAttempt
@@ -63,13 +54,13 @@ public class PaintViewModel : PopupViewModel
     public Converter Converter { get; private set; }
 
     // Get only
-    public Point2D<float>? NextTargetCenter => TargetCenters.Count <= TargetId ? null : TargetCenters[TargetId];
+    public Point2D<int>? TargetCenter => TargetCenters.Count <= TargetId ? null : Converter.ToWndCoord(TargetCenters[TargetId]);
     private static Settings Settings => Settings.Default;
     private string UsrAngLog => $"{CurrentAttempt.LogFilePath}{FilePath.DirectorySeparatorChar}{Settings.UserLogFileName}";
     public bool IsPathToTarget => _pathToTargetStopwatch?.IsRunning ?? false;
 
     // Disposable
-    private readonly Thread _diskNetworkThread;
+    private Thread _diskNetworkThread;
 
     // Attempts datasets
     public List<Point2D<float>> TargetCenters { get; private set; } = [];
@@ -80,7 +71,7 @@ public class PaintViewModel : PopupViewModel
 
     // Changing
     public Point3D<float>? CurrentPos { get; private set; }
-    public bool IsGame { get; private set; } = true;
+    public bool IsGame { get; private set; } = false;
     public int TargetId { get; private set; }
     public int PttLastSavedId { get; private set; } = -1;
     public int PitLastSavedId { get; private set; } = -1;
@@ -109,9 +100,10 @@ public class PaintViewModel : PopupViewModel
 
     // DI
     private readonly NavigationStore _navigationStore;
+    private readonly ModalNavigationStore _modalNavigationStore;
     private readonly DiskContext _database;
 
-    public PaintViewModel(NavigationStore navigationStore, DiskContext database)
+    public PaintViewModel(NavigationStore navigationStore, DiskContext database, ModalNavigationStore modalNavigationStore)
     {
         _diskNetworkThread = new(ReceivePatientPosition)
         {
@@ -120,6 +112,7 @@ public class PaintViewModel : PopupViewModel
 
         Converter = DrawableFabric.GetIniConverter();
 
+        _modalNavigationStore = modalNavigationStore;
         _navigationStore = navigationStore;
         _database = database;
     }
@@ -137,6 +130,8 @@ public class PaintViewModel : PopupViewModel
         {
             using var con = Connection.GetConnection(IPAddress.Parse(Settings.IP), Settings.Port);
 
+            IsGame = true;
+            IsStopEnabled = true;
             while (IsGame)
             {
                 CurrentPos = con.GetXYZ();
@@ -144,22 +139,41 @@ public class PaintViewModel : PopupViewModel
         }
         catch (Exception ex)
         {
-            _ = Application.Current.Dispatcher.InvokeAsync(async () =>
-            {
-                Log.Error($"{ex.Message} \n\n\n {ex.StackTrace}");
+            IsGame = false;
+            IsStopEnabled = false;
+            Log.Error($"{ex.Message} \n\n\n {ex.StackTrace}");
 
-                StopRecord();
-                var popupTask = ShowPopup(header: Localization.ConnectionLost, message: "");
-                var showResultTask = ShowResultAsync();
-                await Task.WhenAll(popupTask, showResultTask);
-            }).Task.ContinueWith(e =>
-            {
-                if (e.Exception is not null)
+            QuestionNavigator.Navigate(this, _modalNavigationStore, 
+                message: $"{Settings.IP}: {Localization.ConnectionLost} \n {Localization.TryAgainQuestion}", 
+                afterConfirm: () => 
                 {
-                    Log.Error($"{e.Exception.Message} \n {e.Exception.StackTrace}");
-                }
-            });
-            ;
+                    Application.Current.Dispatcher.Invoke(() =>
+                    {
+                        if (_diskNetworkThread.IsAlive)
+                        {
+                            _diskNetworkThread.Join(); 
+                        }
+                        _diskNetworkThread = new(ReceivePatientPosition)
+                        {
+                            Priority = ThreadPriority.Highest
+                        };
+                        _diskNetworkThread.Start();
+                    });
+                },
+                afterCancel: () =>
+                {
+                    _ = Application.Current.Dispatcher.InvokeAsync(async () =>
+                    {
+                        StopRecord();
+                        await ShowResultAsync();
+                    }).Task.ContinueWith(e =>
+                    {
+                        if (e.Exception is not null)
+                        {
+                            Log.Error($"{e.Exception.Message} \n {e.Exception.StackTrace}");
+                        }
+                    });
+                });
         }
     }
     #endregion
@@ -184,11 +198,18 @@ public class PaintViewModel : PopupViewModel
             _ = await _database.AttemptResults.AddAsync(sres);
             _ = await _database.SaveChangesAsync();
 
+            using (var logger = Logger.GetLogger(UsrAngLog))
+            {
+                FullPath.ForEach(logger.LogLn);
+            }
+
             FullPath.Clear();
         }
-
-        using var logger = Logger.GetLogger(UsrAngLog);
-        FullPath.ForEach(logger.LogLn);
+        else
+        {
+            _database.Attempts.Remove(CurrentAttempt);
+            _database.SaveChanges();
+        }
     }
 
     public void StopRecord()
@@ -209,6 +230,7 @@ public class PaintViewModel : PopupViewModel
         }
         catch (Exception ex)
         {
+            // this exceptions is OK if path is empty
             await ShowPopup(header: Localization.ErrorCaption, message: Localization.SaveError);
             Log.Error($"{ex.Message} \n\n\n {ex.StackTrace}");
         }
@@ -224,7 +246,7 @@ public class PaintViewModel : PopupViewModel
 
     public void SavePathToTarget()
     {
-        if (_pathToTargetStopwatch is null)
+        if (_pathToTargetStopwatch is null || PathsToTargets[TargetId].Count == 0)
         {
             return;
         }
@@ -290,9 +312,9 @@ public class PaintViewModel : PopupViewModel
         target.Reset();
 
         TargetId++;
-        if (NextTargetCenter is not null)
+        if (TargetCenter is not null)
         {
-            var wndCenter = Converter.ToWndCoord(NextTargetCenter);
+            var wndCenter = Converter.ToWndCoord(TargetCenter);
             target.Move(wndCenter);
 
             _pathToTargetStopwatch.Restart();
@@ -304,6 +326,8 @@ public class PaintViewModel : PopupViewModel
 
     public void SavePathInTarget()
     {
+        if (PathsInTargets[TargetId].Count == 0) return;
+
         var pathInTarget = PathsInTargets[TargetId];
         float accuracy = 0;
 

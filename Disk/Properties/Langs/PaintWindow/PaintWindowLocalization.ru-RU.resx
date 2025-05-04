@@ -144,4 +144,7 @@
   <data name="Stop" xml:space="preserve">
     <value>Остановить</value>
   </data>
+  <data name="TryAgainQuestion" xml:space="preserve">
+    <value>Попробовать снова?</value>
+  </data>
 </root>

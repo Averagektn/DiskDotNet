@@ -43,14 +43,7 @@ public class SessionViewModel(DiskContext database, IExcelFiller excelFiller, Na
         set
         {
             _ = SetProperty(ref _session, value);
-            _ = Application.Current.Dispatcher.InvokeAsync(UpdateAsync)
-                .Task.ContinueWith(e =>
-                {
-                    if (e.Exception is not null)
-                    {
-                        Log.Error($"{e.Exception.Message} \n {e.Exception.StackTrace}");
-                    }
-                });
+            UpdateAsync().Wait();
         }
     }
 

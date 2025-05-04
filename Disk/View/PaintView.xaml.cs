@@ -133,28 +133,20 @@ public partial class PaintView : UserControl
             ViewModel.SwitchToPathInTarget();
         }
 
-        //bool isValidShot = angleShot.X != 0 && angleShot.Y != 0;
-        bool isPathInTarget = !ViewModel.IsPathToTarget;
-        //if (isValidShot)
+        if (ViewModel.IsPathToTarget)
         {
-            if (isPathInTarget)
-            {
-                ViewModel.PathsInTargets[ViewModel.TargetId].Add(angleShot);
-            }
-            else
-            {
-                ViewModel.PathsToTargets[ViewModel.TargetId].Add(angleShot);
-            }
+            ViewModel.PathsToTargets[ViewModel.TargetId].Add(angleShot);
+        }
+        else
+        {
+            ViewModel.PathsInTargets[ViewModel.TargetId].Add(angleShot);
         }
 
         // ptt
         bool isPathToTargetStarts = Target.IsFull;
-        if (isPathToTargetStarts)
+        if (isPathToTargetStarts && !ViewModel.SwitchToPathToTarget(Target))
         {
-            if (!ViewModel.SwitchToPathToTarget(Target))
-            {
-                OnStopClick(sender, e);
-            }
+            OnStopClick(sender, e);
         }
     }
 
@@ -168,10 +160,7 @@ public partial class PaintView : UserControl
         PaintCursor = DrawableFabric.GetIniCursor(Settings.CursorFilePath, PaintArea);
         PaintCursor.OnShot += (p) => ViewModel.FullPath.Add(Converter.ToAngle_FromWnd(p));
 
-        var center = ViewModel.NextTargetCenter ?? new(0, 0);
-        var converter = DrawableFabric.GetIniConverter();
-        var wndCenter = converter.ToWndCoord(center);
-        Target = DrawableFabric.GetIniProgressTarget(Settings.TargetFilePath, wndCenter, PaintArea);
+        Target = DrawableFabric.GetIniProgressTarget(Settings.TargetFilePath, new(0, 0), PaintArea);
         Target.OnReceiveShot += shot =>
         {
             ViewModel.Score += shot;
@@ -182,15 +171,15 @@ public partial class PaintView : UserControl
             }
         };
 
-        if (ViewModel.IsGame)
-        {
-            ViewModel.StartReceiving();
+        var center = ViewModel.TargetCenter ?? new(0, 0);
+        Target.Move(center);
 
-            Target.Draw();
-            PaintCursor.Draw();
+        ViewModel.StartReceiving();
 
-            ShotTimer.Start();
-        }
+        Target.Draw();
+        PaintCursor.Draw();
+
+        ShotTimer.Start();
     }
 
     private void StopGame()

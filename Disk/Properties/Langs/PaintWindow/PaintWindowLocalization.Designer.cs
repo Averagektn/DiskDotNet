@@ -140,5 +140,14 @@ namespace Disk.Properties.Langs.PaintWindow {
                 return ResourceManager.GetString("Stop", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Would you like to try again?.
+        /// </summary>
+        public static string TryAgainQuestion {
+            get {
+                return ResourceManager.GetString("TryAgainQuestion", resourceCulture);
+            }
+        }
     }
 }
