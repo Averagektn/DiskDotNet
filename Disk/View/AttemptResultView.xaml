@@ -95,6 +95,7 @@
             <Border
                 x:Name="MouseDetectionArea"
                 Width="10"
+                Panel.ZIndex="100"
                 Background="#4bb342"
                 HorizontalAlignment="Right"
                 MouseEnter="MouseDetectionArea_MouseEnter" />
