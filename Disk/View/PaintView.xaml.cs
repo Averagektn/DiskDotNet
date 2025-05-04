@@ -235,7 +235,7 @@ public partial class PaintView : UserControl
         {
             if (task.Exception is not null)
             {
-                Log.Fatal($"{task.Exception.Message} \n {task.Exception.StackTrace}");
+                Log.Error($"{task.Exception.Message} \n {task.Exception.StackTrace}");
             }
         });
     }

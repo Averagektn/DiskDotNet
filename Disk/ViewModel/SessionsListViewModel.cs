@@ -6,6 +6,7 @@ using Disk.ViewModel.Common.Commands.Async;
 using Disk.ViewModel.Common.Commands.Sync;
 using Disk.ViewModel.Common.ViewModels;
 using Microsoft.EntityFrameworkCore;
+using Serilog;
 using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Input;
@@ -53,6 +54,12 @@ public class SessionsListViewModel(DiskContext database, NavigationStore navigat
             {
                 await UpdateSessionsAsync();
                 IsNextEnabled = _currPage < TotalPages - 1;
+            }).Task.ContinueWith(e =>
+            {
+                if (e.Exception is not null)
+                {
+                    Log.Error($"{e.Exception.Message} \n {e.Exception.StackTrace}");
+                }
             });
         }
     }
@@ -71,7 +78,13 @@ public class SessionsListViewModel(DiskContext database, NavigationStore navigat
         set
         {
             _ = SetProperty(ref _selectedDate, value);
-            _ = Application.Current.Dispatcher.InvokeAsync(UpdateSessionsAsync);
+            _ = Application.Current.Dispatcher.InvokeAsync(UpdateSessionsAsync).Task.ContinueWith(e =>
+            {
+                if (e.Exception is not null)
+                {
+                    Log.Error($"{e.Exception.Message} \n {e.Exception.StackTrace}");
+                }
+            });
         }
     }
 
@@ -182,7 +195,14 @@ public class SessionsListViewModel(DiskContext database, NavigationStore navigat
     {
         base.Refresh();
 
-        _ = Application.Current.Dispatcher.InvokeAsync(UpdateSessionsAsync);
+        _ = Application.Current.Dispatcher.InvokeAsync(UpdateSessionsAsync).Task.ContinueWith(e =>
+        {
+            if (e.Exception is not null)
+            {
+                Log.Error($"{e.Exception.Message} \n {e.Exception.StackTrace}");
+            }
+        });
+
         SelectedSession = null;
         HoveredSession = null;
     }

@@ -53,11 +53,25 @@ public class EditPatientViewModel(IPatientService patientService, ModalNavigatio
                         _ = await _database.SaveChangesAsync();
                         IniNavigationStore.Close();
                         Log.Information("Patient updated");
+                    }).Task.ContinueWith(e =>
+                    {
+                        if (e.Exception is not null)
+                        {
+                            Log.Error($"{e.Exception.Message} \n {e.Exception.StackTrace}");
+                        }
                     });
                 },
                 beforeCancel: () =>
                     _ = Application.Current.Dispatcher.InvokeAsync(async () =>
-                        await _database.Entry(Patient).ReloadAsync()));
+                        {
+                            await _database.Entry(Patient).ReloadAsync();
+                        }).Task.ContinueWith(e =>
+                        {
+                            if (e.Exception is not null)
+                            {
+                                Log.Error($"{e.Exception.Message} \n {e.Exception.StackTrace}");
+                            }
+                        }));
         }
         catch (InvalidNameException ex)
         {

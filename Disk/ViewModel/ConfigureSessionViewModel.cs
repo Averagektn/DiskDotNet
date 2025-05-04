@@ -103,6 +103,13 @@ public class ConfigureSessionViewModel : PopupViewModel
     {
         base.Refresh();
 
-        _ = Application.Current.Dispatcher.InvokeAsync(UpdateMapsAsync);
+        _ = Application.Current.Dispatcher.InvokeAsync(UpdateMapsAsync)
+            .Task.ContinueWith(e =>
+            {
+                if (e.Exception is not null)
+                {
+                    Log.Error($"{e.Exception.Message} \n {e.Exception.StackTrace}");
+                }
+            });
     }
 }

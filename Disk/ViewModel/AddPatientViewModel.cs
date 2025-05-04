@@ -101,6 +101,12 @@ public class AddPatientViewModel(IPatientService patientService, ModalNavigation
                         _ = await database.SaveChangesAsync();
                         IniNavigationStore.Close();
                         Log.Information("Patinent added");
+                    }).Task.ContinueWith(e =>
+                    {
+                        if (e.Exception is not null)
+                        {
+                            Log.Error($"{e.Exception.Message} \n {e.Exception.StackTrace}");
+                        }
                     });
                 });
         }

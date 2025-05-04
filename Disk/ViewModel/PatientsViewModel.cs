@@ -42,7 +42,13 @@ public class PatientsViewModel : ObserverViewModel
         set
         {
             _ = SetProperty(ref _pageNum, value);
-            _ = Application.Current.Dispatcher.InvokeAsync(GetPagedPatientsAsync);
+            _ = Application.Current.Dispatcher.InvokeAsync(GetPagedPatientsAsync).Task.ContinueWith(e =>
+            {
+                if (e.Exception is not null)
+                {
+                    Log.Error($"{e.Exception.Message} \n {e.Exception.StackTrace}");
+                }
+            });
         }
     }
 
@@ -169,7 +175,14 @@ public class PatientsViewModel : ObserverViewModel
     {
         base.Refresh();
 
-        _ = Application.Current.Dispatcher.InvokeAsync(GetPagedPatientsAsync);
+        _ = Application.Current.Dispatcher.InvokeAsync(GetPagedPatientsAsync).Task.ContinueWith(e =>
+        {
+            if (e.Exception is not null)
+            {
+                Log.Error($"{e.Exception.Message} \n {e.Exception.StackTrace}");
+            }
+        });
+
         SelectedPatient = null;
     }
 }

@@ -43,7 +43,14 @@ public class SessionViewModel(DiskContext database, IExcelFiller excelFiller, Na
         set
         {
             _ = SetProperty(ref _session, value);
-            _ = Application.Current.Dispatcher.InvokeAsync(UpdateAsync);
+            _ = Application.Current.Dispatcher.InvokeAsync(UpdateAsync)
+                .Task.ContinueWith(e =>
+                {
+                    if (e.Exception is not null)
+                    {
+                        Log.Error($"{e.Exception.Message} \n {e.Exception.StackTrace}");
+                    }
+                });
         }
     }
 
@@ -98,21 +105,21 @@ public class SessionViewModel(DiskContext database, IExcelFiller excelFiller, Na
 
                 _ = Application.Current.Dispatcher.InvokeAsync(async () =>
                 {
-                    try
-                    {
-                        _ = await database.AddAsync(attempt);
-                        _ = await database.SaveChangesAsync();
+                    _ = await database.AddAsync(attempt);
+                    _ = await database.SaveChangesAsync();
 
-                        // Do not change the order of these lines. It causes a bug in the PaintView. Target is displayed in center
-                        Application.Current.MainWindow.WindowState = WindowState.Maximized;
-                        PaintNavigator.Navigate(this, navigationStore, attempt.Id);
-                        //
+                    // Do not change the order of these lines. It causes a bug in the PaintView. Target is displayed in center
+                    Application.Current.MainWindow.WindowState = WindowState.Maximized;
+                    PaintNavigator.Navigate(this, navigationStore, attempt.Id);
+                    //
 
-                        Log.Information("Created session");
-                    }
-                    catch (Exception ex)
+                    Log.Information("Created session");
+                }).Task.ContinueWith(e =>
+                {
+                    if (e.Exception is not null)
                     {
-                        Log.Error(ex, "Failed to create session");
+                        Log.Error("Failed to create session");
+                        Log.Error($"{e.Exception.Message} \n {e.Exception.StackTrace}");
                     }
                 });
             }));
@@ -192,7 +199,14 @@ public class SessionViewModel(DiskContext database, IExcelFiller excelFiller, Na
     {
         base.Refresh();
 
-        _ = Application.Current.Dispatcher.InvokeAsync(UpdateAsync);
+        _ = Application.Current.Dispatcher.InvokeAsync(UpdateAsync)
+            .Task.ContinueWith(e =>
+            {
+                if (e.Exception is not null)
+                {
+                    Log.Error($"{e.Exception.Message} \n {e.Exception.StackTrace}");
+                }
+            });
     }
 
     public class MergedPaths(PathToTarget pathToTarget, PathInTarget pathInTarget)

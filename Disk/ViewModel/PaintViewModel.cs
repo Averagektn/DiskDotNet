@@ -30,11 +30,19 @@ public class PaintViewModel : PopupViewModel
         {
             _attemptId = value;
             _ = Application.Current.Dispatcher.InvokeAsync(async () =>
+            {
                 CurrentAttempt = await _database.Attempts
                     .Where(s => s.Id == value)
                     .Include(s => s.SessionNavigation)
                     .Include(s => s.SessionNavigation.MapNavigation)
-                    .FirstAsync());
+                    .FirstAsync();
+            }).Task.ContinueWith(e =>
+            {
+                if (e.Exception is not null)
+                {
+                    Log.Error($"{e.Exception.Message} \n {e.Exception.StackTrace}");
+                }
+            });
         }
     }
 
@@ -144,7 +152,14 @@ public class PaintViewModel : PopupViewModel
                 var popupTask = ShowPopup(header: Localization.ConnectionLost, message: "");
                 var showResultTask = ShowResultAsync();
                 await Task.WhenAll(popupTask, showResultTask);
+            }).Task.ContinueWith(e =>
+            {
+                if (e.Exception is not null)
+                {
+                    Log.Error($"{e.Exception.Message} \n {e.Exception.StackTrace}");
+                }
             });
+            ;
         }
     }
     #endregion
@@ -249,7 +264,14 @@ public class PaintViewModel : PopupViewModel
             _ = await _database.PathToTargets.AddAsync(ptt);
             _ = await _database.SaveChangesAsync();
             PttLastSavedId++;
+        }).Task.ContinueWith(e =>
+        {
+            if (e.Exception is not null)
+            {
+                Log.Error($"{e.Exception.Message} \n {e.Exception.StackTrace}");
+            }
         });
+        ;
     }
     #endregion
 
@@ -303,7 +325,14 @@ public class PaintViewModel : PopupViewModel
             _ = await _database.PathInTargets.AddAsync(pit);
             _ = await _database.SaveChangesAsync();
             PitLastSavedId++;
+        }).Task.ContinueWith(e =>
+        {
+            if (e.Exception is not null)
+            {
+                Log.Error($"{e.Exception.Message} \n {e.Exception.StackTrace}");
+            }
         });
+        ;
     }
     #endregion
 
