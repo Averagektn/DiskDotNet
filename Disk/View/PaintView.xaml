@@ -54,13 +54,13 @@
             Grid.ColumnSpan="2"
             Grid.Row="1"
             Margin="10"
-            Content="Aboba"
+            Padding="20 10"
+            Content="{x:Static lang:PaintWindowLocalization.Start}"
             Command="{Binding AdaptationCommand}"
             Panel.ZIndex="100"
             Visibility="{Binding AdaptationButtonVisibility}"
             HorizontalAlignment="Center"
-            VerticalAlignment="Top"
-            Width="200"/>
+            VerticalAlignment="Top"/>
 
         <TextBlock 
             Grid.Row="1" 
