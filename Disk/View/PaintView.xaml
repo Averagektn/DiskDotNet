@@ -7,7 +7,8 @@
              xmlns:local="clr-namespace:Disk.View.PaintWindow" 
              xmlns:viewmodel="clr-namespace:Disk.ViewModel" 
              d:DataContext="{d:DesignInstance Type=viewmodel:PaintViewModel}"
-             xmlns:i="http://schemas.microsoft.com/xaml/behaviors" xmlns:styles="clr-namespace:Disk.Style"
+             xmlns:i="http://schemas.microsoft.com/xaml/behaviors" 
+             xmlns:styles="clr-namespace:Disk.Style"
              mc:Ignorable="d" 
              d:DesignHeight="800" 
              d:DesignWidth="800">
@@ -47,6 +48,19 @@
             VerticalAlignment="Top"
             Text="{x:Static lang:PaintWindowLocalization.LeftFoot}" 
             FontSize="55" />
+
+        <Button 
+            x:Name="AdaptationButton"
+            Grid.ColumnSpan="2"
+            Grid.Row="1"
+            Margin="10"
+            Content="Aboba"
+            Command="{Binding AdaptationCommand}"
+            Panel.ZIndex="100"
+            Visibility="{Binding AdaptationButtonVisibility}"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Top"
+            Width="200"/>
 
         <TextBlock 
             Grid.Row="1" 

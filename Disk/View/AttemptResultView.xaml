@@ -62,7 +62,6 @@
                 Text="II" 
                 FontSize="55" />
 
-
             <Grid VerticalAlignment="Bottom" Margin="0 0 20 0">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="auto" />

@@ -6,6 +6,7 @@ using Disk.Entities;
 using Disk.Navigators;
 using Disk.Service.Implementation;
 using Disk.Stores;
+using Disk.ViewModel.Common.Commands.Sync;
 using Disk.ViewModel.Common.ViewModels;
 using Disk.Visual.Interface;
 using Microsoft.EntityFrameworkCore;
@@ -15,6 +16,7 @@ using System.Diagnostics;
 using System.Net;
 using System.Threading;
 using System.Windows;
+using System.Windows.Input;
 using FilePath = System.IO.Path;
 using Localization = Disk.Properties.Langs.PaintWindow.PaintWindowLocalization;
 using Settings = Disk.Properties.Config.Config;
@@ -50,34 +52,49 @@ public class PaintViewModel : PopupViewModel
         }
     }
 
-    // Scale
+    #region Scale
     public Converter Converter { get; private set; }
+    #endregion
 
-    // Get only
+    #region Get only
     public Point2D<int>? TargetCenter => TargetCenters.Count <= TargetId ? null : Converter.ToWndCoord(TargetCenters[TargetId]);
     private static Settings Settings => Settings.Default;
     private string UsrAngLog => $"{CurrentAttempt.LogFilePath}{FilePath.DirectorySeparatorChar}{Settings.UserLogFileName}";
     public bool IsPathToTarget => _pathToTargetStopwatch?.IsRunning ?? false;
+    #endregion
 
-    // Disposable
+    #region Disposable
     private Thread _diskNetworkThread;
+    #endregion
 
-    // Attempts datasets
+    #region Attempts datasets
     public List<Point2D<float>> TargetCenters { get; private set; } = [];
 
     public readonly List<Point2D<float>> FullPath = [];
     public readonly List<List<Point2D<float>>> PathsToTargets = [[]];
     public readonly List<List<Point2D<float>>> PathsInTargets = [];
+    #endregion
 
-    // Changing
+    #region Changing
     public Point3D<float>? CurrentPos { get; private set; }
-    public bool IsGame { get; private set; } = false;
+    public Visibility AdaptationButtonVisibility => IsGame ? Visibility.Collapsed : Visibility.Visible;
+    public bool IsReceivingData { get; private set; } = false;
     public int TargetId { get; private set; }
     public int PttLastSavedId { get; private set; } = -1;
     public int PitLastSavedId { get; private set; } = -1;
     public int HitsCount { get; set; }
     public int ShotsCount { get; set; }
 
+    private bool _isGame = false;
+    public bool IsGame
+    {
+        get => _isGame;
+        private set
+        {
+            _ = SetProperty(ref _isGame, value);
+            OnPropertyChanged(nameof(AdaptationButtonVisibility));
+        }
+    }
 
     private int _score;
     public int Score
@@ -91,17 +108,23 @@ public class PaintViewModel : PopupViewModel
     }
 
     private Stopwatch? _pathToTargetStopwatch;
+    #endregion
 
-    // binding
+    #region Binding
     public string ScoreString => $"{Localization.Score}: {Score}";
-
     private bool _isStopEnabled = true;
     public bool IsStopEnabled { get => _isStopEnabled; set => SetProperty(ref _isStopEnabled, value); }
+    #endregion
 
-    // DI
+    #region DI
     private readonly NavigationStore _navigationStore;
     private readonly ModalNavigationStore _modalNavigationStore;
     private readonly DiskContext _database;
+    #endregion
+
+    #region Commands
+    public ICommand AdaptationCommand => new Command(_ => IsGame = true);
+    #endregion
 
     public PaintViewModel(NavigationStore navigationStore, DiskContext database, ModalNavigationStore modalNavigationStore)
     {
@@ -130,15 +153,15 @@ public class PaintViewModel : PopupViewModel
         {
             using var con = Connection.GetConnection(IPAddress.Parse(Settings.IP), Settings.Port);
 
-            IsGame = true;
-            IsStopEnabled = true;
-            while (IsGame)
+            IsReceivingData = true;
+            while (IsReceivingData)
             {
                 CurrentPos = con.GetXYZ();
             }
         }
         catch (Exception ex)
         {
+            IsReceivingData = false;
             IsGame = false;
             IsStopEnabled = false;
             Log.Error($"{ex.Message} \n\n\n {ex.StackTrace}");
@@ -215,6 +238,7 @@ public class PaintViewModel : PopupViewModel
     public void StopRecord()
     {
         IsStopEnabled = false;
+        IsReceivingData = false;
         IsGame = false;
         if (_diskNetworkThread.IsAlive)
         {
@@ -314,8 +338,7 @@ public class PaintViewModel : PopupViewModel
         TargetId++;
         if (TargetCenter is not null)
         {
-            var wndCenter = Converter.ToWndCoord(TargetCenter);
-            target.Move(wndCenter);
+            target.Move(TargetCenter);
 
             _pathToTargetStopwatch.Restart();
 
