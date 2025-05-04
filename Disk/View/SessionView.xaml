@@ -203,25 +203,29 @@
 
             <DataGrid.Columns>
                 <DataGridTextColumn 
-                    Width="1*" 
+                    Width="2*" 
                     Header="{x:Static lang:SessionLocalization.TargetNum}" 
                     Binding="{Binding PathToTarget.TargetNumInc}" />
                 <DataGridTextColumn 
-                    Width="1*" 
+                    Width="2*" 
                     Header="{x:Static lang:SessionLocalization.AverageSpeed}" 
                     Binding="{Binding PathToTarget.AverageSpeed, StringFormat=N1}" />
                 <DataGridTextColumn 
-                    Width="1*" 
+                    Width="3*" 
                     Header="{x:Static lang:SessionLocalization.ApproachSpeed}" 
                     Binding="{Binding PathToTarget.ApproachSpeed, StringFormat=N1}" />
                 <DataGridTextColumn 
-                    Width="1*" 
+                    Width="2*" 
                     Header="{x:Static lang:SessionLocalization.Time}" 
                     Binding="{Binding PathToTarget.Time, StringFormat=N1}" />
                 <DataGridTextColumn 
-                    Width="1*" 
+                    Width="2*" 
                     Header="{x:Static lang:SessionLocalization.Accuracy}" 
                     Binding="{Binding PathInTarget.Accuracy, StringFormat=N1}" />
+                <DataGridTextColumn 
+                    Width="2*" 
+                    Header="{x:Static lang:SessionLocalization.EllipseArea}" 
+                    Binding="{Binding PathInTarget.EllipseArea, StringFormat=N1}" />
             </DataGrid.Columns>
         </DataGrid>
 

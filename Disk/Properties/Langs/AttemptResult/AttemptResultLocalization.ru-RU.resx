@@ -186,4 +186,10 @@
   <data name="PathInTargetArea" xml:space="preserve">
     <value>Площадь пути в мишени</value>
   </data>
+  <data name="ConvexHullArea" xml:space="preserve">
+    <value>Площадь замкнутой фигуры</value>
+  </data>
+  <data name="EllipseArea" xml:space="preserve">
+    <value>Площадь эллипса</value>
+  </data>
 </root>

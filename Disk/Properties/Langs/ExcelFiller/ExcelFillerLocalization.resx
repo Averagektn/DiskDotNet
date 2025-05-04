@@ -174,4 +174,13 @@
   <data name="Time" xml:space="preserve">
     <value>Time</value>
   </data>
+  <data name="EllipseArea" xml:space="preserve">
+    <value>Ellipse area</value>
+  </data>
+  <data name="ConvexHullArea" xml:space="preserve">
+    <value>Сonvex hull area</value>
+  </data>
+  <data name="FullPath" xml:space="preserve">
+    <value>Full path</value>
+  </data>
 </root>

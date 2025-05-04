@@ -97,6 +97,15 @@ namespace Disk.Properties.Langs.Session {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Convex hull area.
+        /// </summary>
+        public static string ConvexHullArea {
+            get {
+                return ResourceManager.GetString("ConvexHullArea", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Cursor image path.
         /// </summary>
         public static string CursorImagePath {
@@ -138,6 +147,15 @@ namespace Disk.Properties.Langs.Session {
         public static string Deviation {
             get {
                 return ResourceManager.GetString("Deviation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ellipse area.
+        /// </summary>
+        public static string EllipseArea {
+            get {
+                return ResourceManager.GetString("EllipseArea", resourceCulture);
             }
         }
         

@@ -16,6 +16,23 @@ namespace Disk.Visual.Impl;
 /// </summary>
 public class ConvexHull : IStaticFigure
 {
+    public static double GetArea<T>(List<Point2D<T>> points, float percent = 0.95f) where T : IConvertible, new()
+    {
+        var convexHullPoints = GetConvexHull(points, percent);
+
+        int n = points.Count;
+        double convexHullArea = 0;
+        for (int i = 0; i < n; i++)
+        {
+            int j = (i + 1) % n;
+            convexHullArea += convexHullPoints[i].X * convexHullPoints[j].Y;
+            convexHullArea -= convexHullPoints[i].Y * convexHullPoints[j].X;
+        }
+        convexHullArea /= 2.0;
+
+        return convexHullArea;
+    }
+
     /// <summary>
     ///     Returns convex hull. OpenCV wrapper
     /// </summary>

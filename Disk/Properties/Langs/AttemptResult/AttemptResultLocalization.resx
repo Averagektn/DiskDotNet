@@ -186,4 +186,10 @@
   <data name="PathInTargetArea" xml:space="preserve">
     <value>Path in target area</value>
   </data>
+  <data name="ConvexHullArea" xml:space="preserve">
+    <value>Convex hull area</value>
+  </data>
+  <data name="EllipseArea" xml:space="preserve">
+    <value>Ellipse area</value>
+  </data>
 </root>

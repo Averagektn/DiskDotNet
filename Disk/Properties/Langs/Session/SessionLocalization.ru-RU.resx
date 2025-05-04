@@ -192,4 +192,10 @@
   <data name="Angles" xml:space="preserve">
     <value>Максимальные углы наклона (X;Y)</value>
   </data>
+  <data name="ConvexHullArea" xml:space="preserve">
+    <value>Площадь замкнутой фигуры</value>
+  </data>
+  <data name="EllipseArea" xml:space="preserve">
+    <value>Плошадь эллипса</value>
+  </data>
 </root>

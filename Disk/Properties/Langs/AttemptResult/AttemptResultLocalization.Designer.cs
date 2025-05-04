@@ -97,11 +97,29 @@ namespace Disk.Properties.Langs.AttemptResult {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Convex hull area.
+        /// </summary>
+        public static string ConvexHullArea {
+            get {
+                return ResourceManager.GetString("ConvexHullArea", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Frequencies diagram.
         /// </summary>
         public static string Diagram {
             get {
                 return ResourceManager.GetString("Diagram", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ellipse area.
+        /// </summary>
+        public static string EllipseArea {
+            get {
+                return ResourceManager.GetString("EllipseArea", resourceCulture);
             }
         }
         

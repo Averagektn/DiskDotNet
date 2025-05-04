@@ -88,6 +88,15 @@ namespace Disk.Properties.Langs.ExcelFiller {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Сonvex hull area.
+        /// </summary>
+        internal static string ConvexHullArea {
+            get {
+                return ResourceManager.GetString("ConvexHullArea", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Cursor radius.
         /// </summary>
         internal static string CursorRadius {
@@ -115,6 +124,15 @@ namespace Disk.Properties.Langs.ExcelFiller {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Ellipse area.
+        /// </summary>
+        internal static string EllipseArea {
+            get {
+                return ResourceManager.GetString("EllipseArea", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Export to Excel.
         /// </summary>
         internal static string ExportToExcel {
@@ -138,6 +156,15 @@ namespace Disk.Properties.Langs.ExcelFiller {
         internal static string FrontRightFoot {
             get {
                 return ResourceManager.GetString("FrontRightFoot", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Full path.
+        /// </summary>
+        internal static string FullPath {
+            get {
+                return ResourceManager.GetString("FullPath", resourceCulture);
             }
         }
         

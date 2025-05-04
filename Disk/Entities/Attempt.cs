@@ -4,9 +4,9 @@ public partial class Attempt
 {
     public long Id { get; set; }
 
-    public float MaxXAngle { get; set; }
+    public double MaxXAngle { get; set; }
 
-    public float MaxYAngle { get; set; }
+    public double MaxYAngle { get; set; }
 
     public int CursorRadius { get; set; }
 

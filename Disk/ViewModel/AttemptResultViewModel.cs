@@ -262,6 +262,8 @@ public class AttemptResultViewModel(NavigationStore navigationStore, DiskContext
                     {Localization.ApproachSpeed}: {CurrentAttempt.PathToTargets.ElementAt(SelectedIndex).ApproachSpeed:F2}
                     {Localization.Time}: {CurrentAttempt.PathToTargets.ElementAt(SelectedIndex).Time:F2}
                     {Localization.Accuracy}: {CurrentAttempt.PathInTargets.ElementAt(SelectedIndex).Accuracy:F2}  
+                    {Localization.ConvexHullArea}: {CurrentAttempt.PathInTargets.ElementAt(SelectedIndex).ConvexHullArea:F2}
+                    {Localization.EllipseArea}: {CurrentAttempt.PathInTargets.ElementAt(SelectedIndex).EllipseArea:F2}
                 """;
         }
     });

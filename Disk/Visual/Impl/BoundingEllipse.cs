@@ -17,6 +17,20 @@ namespace Disk.Visual.Impl;
 public class BoundingEllipse : IStaticFigure
 {
     /// <summary>
+    ///   Calculates the area of the bounding ellipse for a set of points
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="points"></param>
+    /// <param name="percent"></param>
+    /// <returns></returns>
+    public static double GetArea<T>(List<Point2D<T>> points, float percent = 0.95f) where T : IConvertible, new()
+    {
+        var (_, radiusX, radiusY, _) = GetFillEllipse(points, percent);
+
+        return Math.PI * radiusX * radiusY;
+    }
+
+    /// <summary>
     ///     Calculates the bounding ellipse for a set of points
     /// </summary>
     /// <typeparam name="T"> Coordinate type </typeparam>

@@ -2,6 +2,7 @@
 using Disk.Db.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -9,9 +10,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Disk.Migrations
 {
     [DbContext(typeof(DiskContext))]
-    partial class DiskContextModelSnapshot : ModelSnapshot
+    [Migration("20250504165501_EllipseConvexHullAreas")]
+    partial class EllipseConvexHullAreas
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "9.0.4");
@@ -61,7 +64,7 @@ namespace Disk.Migrations
 
                     b.HasIndex("Session");
 
-                    b.HasIndex(new[] { "LogFilePath" }, "IX_UNQ_Attempt_log_file_path")
+                    b.HasIndex(new[] { "LogFilePath" }, "IX_UNQ_attempt_att_log_file_path")
                         .IsUnique();
 
                     b.ToTable("attempt", (string)null);
@@ -116,9 +119,7 @@ namespace Disk.Migrations
                         .HasColumnName("map_created_at_date_time");
 
                     b.Property<string>("Description")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT")
-                        .HasDefaultValue("")
                         .HasColumnName("map_description");
 
                     b.Property<string>("Name")
@@ -129,7 +130,7 @@ namespace Disk.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex(new[] { "Name" }, "IX_UNQ_Map_name")
+                    b.HasIndex(new[] { "Name" }, "IX_UNQ_map_map_name")
                         .IsUnique();
 
                     b.ToTable("map", (string)null);
@@ -271,7 +272,7 @@ namespace Disk.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex(new[] { "Name", "Surname", "Patronymic" }, "IX_Patient_name_surname_patronymic");
+                    b.HasIndex(new[] { "Name", "Surname", "Patronymic" }, "IX_nsp");
 
                     b.ToTable("patient", (string)null);
                 });

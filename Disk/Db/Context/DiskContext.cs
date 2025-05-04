@@ -1,6 +1,7 @@
 ﻿using Disk.Entities;
 using Disk.Properties.Config;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage;
 using Serilog;
 using System.IO;
 
@@ -72,13 +73,13 @@ public partial class DiskContext : DbContext
         {
             _ = entity.ToTable("map");
 
-            _ = entity.HasIndex(e => e.Name, "IX_UNQ_map_map_name").IsUnique();
+            _ = entity.HasIndex(e => e.Name, "IX_UNQ_Map_name").IsUnique();
 
             _ = entity.Property(e => e.Id).HasColumnName("map_id");
             _ = entity.Property(e => e.CoordinatesJson).HasColumnName("map_coordinates_json");
             _ = entity.Property(e => e.CreatedAtDateTime).HasColumnName("map_created_at_date_time");
             _ = entity.Property(e => e.Name).UseCollation("NOCASE").HasColumnName("map_name");
-            _ = entity.Property(e => e.Description).HasColumnName("map_description");
+            _ = entity.Property(e => e.Description).HasColumnName("map_description").HasDefaultValue("");
         });
 
         _ = modelBuilder.Entity<PathInTarget>(entity =>
@@ -91,6 +92,10 @@ public partial class DiskContext : DbContext
             _ = entity.Property(e => e.TargetId).HasColumnName("pit_target_id");
             _ = entity.Property(e => e.CoordinatesJson).HasColumnName("pit_coordinates_json");
             _ = entity.Property(e => e.Accuracy).HasColumnName("pit_accuracy");
+            _ = entity.Property(e => e.EllipseArea).HasColumnName("pit_ellipse_area").HasDefaultValue(0.0);
+            _ = entity.Property(e => e.ConvexHullArea).HasColumnName("pit_convex_hull_area").HasDefaultValue(0.0);
+            _ = entity.Property(e => e.FullPathEllipseArea).HasColumnName("pit_full_path_ellipse_area").HasDefaultValue(0.0);
+            _ = entity.Property(e => e.FullPathConvexHullArea).HasColumnName("pit_full_path_convex_hull_area").HasDefaultValue(0.0);
 
             _ = entity.HasOne(d => d.AttemptNavigation).WithMany(p => p.PathInTargets)
                 .HasForeignKey(d => d.Attempt)
@@ -110,6 +115,8 @@ public partial class DiskContext : DbContext
             _ = entity.Property(e => e.ApproachSpeed).HasColumnName("ptt_approach_speed");
             _ = entity.Property(e => e.CoordinatesJson).HasColumnName("ptt_coordinates_json");
             _ = entity.Property(e => e.Time).HasColumnName("ptt_time");
+            _ = entity.Property(e => e.EllipseArea).HasColumnName("pit_ellipse_area").HasDefaultValue(0.0);
+            _ = entity.Property(e => e.ConvexHullArea).HasColumnName("pit_convex_hull_area").HasDefaultValue(0.0);
 
             _ = entity.HasOne(d => d.AttemptNavigation).WithMany(p => p.PathToTargets)
                 .HasForeignKey(d => d.Attempt)
@@ -122,7 +129,7 @@ public partial class DiskContext : DbContext
 
             _ = entity.ToTable("patient");
 
-            _ = entity.HasIndex(e => new { e.Name, e.Surname, e.Patronymic }, "IX_nsp");
+            _ = entity.HasIndex(e => new { e.Name, e.Surname, e.Patronymic }, "IX_Patient_name_surname_patronymic");
 
             _ = entity.Property(e => e.Id).HasColumnName("pat_id");
             _ = entity.Property(e => e.DateOfBirth).HasColumnName("pat_date_of_birth");
@@ -148,7 +155,7 @@ public partial class DiskContext : DbContext
 
             _ = entity.ToTable("attempt");
 
-            _ = entity.HasIndex(e => e.LogFilePath, "IX_UNQ_attempt_att_log_file_path").IsUnique();
+            _ = entity.HasIndex(e => e.LogFilePath, "IX_UNQ_Attempt_log_file_path").IsUnique();
 
             _ = entity.Property(e => e.Id).HasColumnName("att_id");
             _ = entity.Property(e => e.Session).HasColumnName("att_session");

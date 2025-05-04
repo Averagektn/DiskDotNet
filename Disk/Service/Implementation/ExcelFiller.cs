@@ -2,6 +2,7 @@
 using Disk.Data.Impl;
 using Disk.Entities;
 using Disk.Service.Interface;
+using DocumentFormat.OpenXml.Wordprocessing;
 using Microsoft.Win32;
 using Newtonsoft.Json;
 using Serilog;
@@ -76,12 +77,22 @@ public class ExcelFiller : IExcelFiller
                 SetFloatCell(worksheet, 5, 7, attempt.TargetRadius);
             }
 
-            worksheet.Cell(7, 1).Value = Localization.TargetNum;
-            worksheet.Cell(7, 2).Value = Localization.Time;
-            worksheet.Cell(7, 3).Value = Localization.ApproachSpeed;
-            worksheet.Cell(7, 4).Value = Localization.AverageSpeed;
+            worksheet.Cell(8, 1).Value = Localization.TargetNum;
+            worksheet.Cell(8, 2).Value = Localization.Time;
+            worksheet.Cell(8, 3).Value = Localization.ApproachSpeed;
+            worksheet.Cell(8, 4).Value = Localization.AverageSpeed;
 
-            const int pathCol = 9;
+            worksheet.Range(7, 5, 7, 7).Merge().Value = Localization.EllipseArea;
+            worksheet.Cell(8, 5).Value = Localization.PathToTarget;
+            worksheet.Cell(8, 6).Value = Localization.PathInTarget;
+            worksheet.Cell(8, 7).Value = Localization.FullPath;
+
+            worksheet.Range(7, 8, 7, 10).Merge().Value = Localization.ConvexHullArea;
+            worksheet.Cell(8, 8).Value = Localization.PathToTarget;
+            worksheet.Cell(8, 9).Value = Localization.PathInTarget;
+            worksheet.Cell(8, 10).Value = Localization.FullPath;
+
+            const int pathCol = 12;
 
             FillPtts(worksheet, attempt, pathCol, map);
             FillPits(worksheet, attempt, pathCol + ColsPerPath, map);
@@ -90,9 +101,10 @@ public class ExcelFiller : IExcelFiller
                 {
                     worksheet.Range(firstCellRow: 1, firstCellColumn: 1, lastCellRow: 1, lastCellColumn: 2),
                     worksheet.Range(firstCellRow: 4, firstCellColumn: 1, lastCellRow: 4, lastCellColumn: 7),
-                    worksheet.Range(firstCellRow: 7, firstCellColumn: 1, lastCellRow: 7, lastCellColumn: 4),
+                    worksheet.Range(firstCellRow: 7, firstCellColumn: 5, lastCellRow: 7, lastCellColumn: 10),
+                    worksheet.Range(firstCellRow: 8, firstCellColumn: 1, lastCellRow: 8, lastCellColumn: 10),
                     worksheet.Range(firstCellRow: 1, firstCellColumn: pathCol, lastCellRow: 2,
-                        lastCellColumn: (ColsPerPath * (attempt.PathToTargets.Count + attempt.PathInTargets.Count + 1)) - 2),
+                        lastCellColumn: (ColsPerPath * (attempt.PathToTargets.Count + attempt.PathInTargets.Count + 1)) + 3),
                 }
             .ForEach(header =>
             {
@@ -100,10 +112,10 @@ public class ExcelFiller : IExcelFiller
                 header.Style.Fill.BackgroundColor = XLColor.LightGray;
             });
             worksheet.Range(firstCellRow: 3, firstCellColumn: pathCol, lastCellRow: 2,
-                lastCellColumn: (ColsPerPath * (attempt.PathToTargets.Count + attempt.PathInTargets.Count + 1)) - 2)
+                lastCellColumn: (ColsPerPath * (attempt.PathToTargets.Count + attempt.PathInTargets.Count + 1)) + 3)
                 .Style.Fill.BackgroundColor = XLColor.LightSlateGray;
             worksheet.Range(firstCellRow: 3, firstCellColumn: pathCol, lastCellRow: 2,
-                lastCellColumn: (ColsPerPath * (attempt.PathToTargets.Count + attempt.PathInTargets.Count + 1)) - 2)
+                lastCellColumn: (ColsPerPath * (attempt.PathToTargets.Count + attempt.PathInTargets.Count + 1)) + 3)
                 .Style.Font.Bold = true;
 
             _ = worksheet
@@ -117,13 +129,15 @@ public class ExcelFiller : IExcelFiller
         var ptts = attempt.PathToTargets;
         var mapCenters = JsonConvert.DeserializeObject<List<Point2D<float>>>(map.CoordinatesJson)!;
 
-        int pttRow = 8;
+        int pttRow = 9;
         foreach (var ptt in ptts)
         {
             worksheet.Cell(pttRow, 1).Value = ptt.TargetNum + 1;
             SetFloatCell(worksheet, pttRow, 2, (float)ptt.Time);
             SetFloatCell(worksheet, pttRow, 3, (float)ptt.ApproachSpeed);
             SetFloatCell(worksheet, pttRow, 4, (float)ptt.AverageSpeed);
+            SetFloatCell(worksheet, pttRow, 5, (float)ptt.EllipseArea);
+            SetFloatCell(worksheet, pttRow, 8, (float)ptt.ConvexHullArea);
             pttRow++;
 
             var pathList = JsonConvert.DeserializeObject<List<Point2D<float>>>(ptt.CoordinatesJson)!;
@@ -140,14 +154,21 @@ public class ExcelFiller : IExcelFiller
         var pits = attempt.PathInTargets;
         var mapCenters = JsonConvert.DeserializeObject<List<Point2D<float>>>(map.CoordinatesJson)!;
 
+        int pitRow = 9;
         foreach (var pit in pits)
         {
             var pathList = JsonConvert.DeserializeObject<List<Point2D<float>>>(pit.CoordinatesJson)!;
 
+            SetFloatCell(worksheet, pitRow, 6, (float)pit.EllipseArea);
+            SetFloatCell(worksheet, pitRow, 7, (float)pit.FullPathEllipseArea);
+            SetFloatCell(worksheet, pitRow, 9, (float)pit.ConvexHullArea);
+            SetFloatCell(worksheet, pitRow, 10, (float)pit.FullPathConvexHullArea);
+            pitRow++;
+
             worksheet.Cell(1, pathCol).Value = Localization.PathInTarget;
             worksheet.Cell(4, pathCol).Value = Localization.Accuracy;
             worksheet.Cell(5, pathCol).Style.NumberFormat.Format = "0.00";
-            worksheet.Cell(5, pathCol++).Value = float.Round(pit.Accuracy, 3);
+            worksheet.Cell(5, pathCol++).Value = double.Round(pit.Accuracy, 3);
             FillPath(worksheet, pathCol, mapCenters, pathList, pit.TargetId);
 
             pathCol += (ColsPerPath * 2) - 1;

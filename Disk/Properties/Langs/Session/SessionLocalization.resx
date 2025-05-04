@@ -192,4 +192,10 @@
   <data name="Angles" xml:space="preserve">
     <value>Max angles (X, Y}</value>
   </data>
+  <data name="ConvexHullArea" xml:space="preserve">
+    <value>Convex hull area</value>
+  </data>
+  <data name="EllipseArea" xml:space="preserve">
+    <value>Ellipse area</value>
+  </data>
 </root>

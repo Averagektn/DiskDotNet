@@ -8,6 +8,7 @@ using Disk.Service.Implementation;
 using Disk.Stores;
 using Disk.ViewModel.Common.Commands.Sync;
 using Disk.ViewModel.Common.ViewModels;
+using Disk.Visual.Impl;
 using Disk.Visual.Interface;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
@@ -293,11 +294,23 @@ public class PaintViewModel : PopupViewModel
         var avgSpeed = distance / time;
         var approachSpeed = pathToTarget[0].GetDistance(touchPoint) / time;
 
+        const int minEllipsePoints = 10;
+
+        double ellipseArea = 0.0;
+        double convexHullArea = 0.0;
+        if (pathToTarget.Count > minEllipsePoints)
+        {
+            ellipseArea = BoundingEllipse.GetArea(pathToTarget);
+            convexHullArea = ConvexHull.GetArea(pathToTarget);
+        }
+
         var ptt = new PathToTarget()
         {
             Distance = distance,
             AverageSpeed = avgSpeed,
             ApproachSpeed = approachSpeed,
+            EllipseArea = ellipseArea,
+            ConvexHullArea = convexHullArea,
             CoordinatesJson = JsonConvert.SerializeObject(PathsToTargets[TargetId]),
             TargetNum = TargetId,
             Attempt = CurrentAttempt.Id,
@@ -361,10 +374,30 @@ public class PaintViewModel : PopupViewModel
             accuracy = (float)HitsCount / ShotsCount;
         }
 
+        const int minEllipsePoints = 10;
+
+        double ellipseArea = 0.0;
+        double convexHullArea = 0.0;
+        if (pathInTarget.Count > minEllipsePoints)
+        {
+            ellipseArea = BoundingEllipse.GetArea(pathInTarget);
+            convexHullArea = ConvexHull.GetArea(pathInTarget);
+        }
+
+        double fullPathEllipseArea = 0.0;
+        double fullPathConvexHullArea = 0.0;
+        if (pathInTarget.Count + PathsToTargets[TargetId].Count > minEllipsePoints)
+        {
+            fullPathEllipseArea = BoundingEllipse.GetArea([.. pathInTarget, .. PathsToTargets[TargetId]]);
+            fullPathConvexHullArea = ConvexHull.GetArea([.. pathInTarget, .. PathsToTargets[TargetId]]);
+        }
+
         var pit = new PathInTarget()
         {
             CoordinatesJson = JsonConvert.SerializeObject(pathInTarget),
             Attempt = CurrentAttempt.Id,
+            EllipseArea = ellipseArea,
+            ConvexHullArea = convexHullArea,
             TargetId = TargetId,
             Accuracy = accuracy
         };
