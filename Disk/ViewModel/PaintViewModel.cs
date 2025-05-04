@@ -14,7 +14,6 @@ using Newtonsoft.Json;
 using Serilog;
 using System.Diagnostics;
 using System.Net;
-using System.Threading;
 using System.Windows;
 using System.Windows.Input;
 using FilePath = System.IO.Path;
@@ -166,15 +165,15 @@ public class PaintViewModel : PopupViewModel
             IsStopEnabled = false;
             Log.Error($"{ex.Message} \n\n\n {ex.StackTrace}");
 
-            QuestionNavigator.Navigate(this, _modalNavigationStore, 
-                message: $"{Settings.IP}: {Localization.ConnectionLost} \n {Localization.TryAgainQuestion}", 
-                afterConfirm: () => 
+            QuestionNavigator.Navigate(this, _modalNavigationStore,
+                message: $"{Settings.IP}: {Localization.ConnectionLost} \n {Localization.TryAgainQuestion}",
+                afterConfirm: () =>
                 {
                     Application.Current.Dispatcher.Invoke(() =>
                     {
                         if (_diskNetworkThread.IsAlive)
                         {
-                            _diskNetworkThread.Join(); 
+                            _diskNetworkThread.Join();
                         }
                         _diskNetworkThread = new(ReceivePatientPosition)
                         {
@@ -230,8 +229,8 @@ public class PaintViewModel : PopupViewModel
         }
         else
         {
-            _database.Attempts.Remove(CurrentAttempt);
-            _database.SaveChanges();
+            _ = _database.Attempts.Remove(CurrentAttempt);
+            _ = _database.SaveChanges();
         }
     }
 
@@ -349,7 +348,10 @@ public class PaintViewModel : PopupViewModel
 
     public void SavePathInTarget()
     {
-        if (PathsInTargets[TargetId].Count == 0) return;
+        if (PathsInTargets[TargetId].Count == 0)
+        {
+            return;
+        }
 
         var pathInTarget = PathsInTargets[TargetId];
         float accuracy = 0;
