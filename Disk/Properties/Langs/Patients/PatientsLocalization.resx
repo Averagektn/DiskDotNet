@@ -126,6 +126,9 @@
   <data name="Delete" xml:space="preserve">
     <value>Delete</value>
   </data>
+  <data name="DeletePatientQuestion" xml:space="preserve">
+    <value>Are you sure that you want to delete patient</value>
+  </data>
   <data name="HomePhone" xml:space="preserve">
     <value>Home phone</value>
   </data>

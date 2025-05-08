@@ -1,6 +1,7 @@
 ﻿using Disk.Db.Context;
 using Disk.Entities;
 using Disk.Navigators;
+using Disk.Properties.Langs.Patients;
 using Disk.Stores;
 using Disk.ViewModel.Common.Commands.Async;
 using Disk.ViewModel.Common.Commands.Sync;
@@ -107,30 +108,46 @@ public class PatientsViewModel : ObserverViewModel
 
     public ICommand AddPatientCommand => new Command(_ => AddPatientNavigator.Navigate(this, _modalNavigationStore));
 
-    public ICommand DeletePatientCommand => new AsyncCommand(async _ =>
+    public ICommand DeletePatientCommand => new Command(_ =>
     {
         if (SelectedPatient is null)
         {
             return;
         }
 
-        _ = _database.Patients.Remove(SelectedPatient);
-        _ = await _database.SaveChangesAsync();
-        _ = SortedPatients.Remove(SelectedPatient);
-
-        if (SortedPatients.Count == 0 && PageNum > 1)
+        string question = 
+            $"{PatientsLocalization.DeletePatientQuestion} " +
+            $"{SelectedPatient.Surname} " +
+            $"{SelectedPatient.Name} " +
+            $"{SelectedPatient.Patronymic}";
+        QuestionNavigator.Navigate(this, _modalNavigationStore, question, beforeConfirm: async () =>
         {
-            PageNum--;
-        }
-        else
-        {
-            await GetPagedPatientsAsync();
-        }
+            try
+            {
+                _ = _database.Patients.Remove(SelectedPatient);
+                _ = await _database.SaveChangesAsync();
+                _ = SortedPatients.Remove(SelectedPatient);
+                SelectedPatient = null;
 
-        IsPrevEnabled = PageNum > 1;
-        IsNextEnabled = PageNum < TotalPages;
+                if (SortedPatients.Count == 0 && PageNum > 1)
+                {
+                    PageNum--;
+                }
+                else
+                {
+                    await GetPagedPatientsAsync();
+                }
 
-        SearchText = string.Empty;
+                IsPrevEnabled = PageNum > 1;
+                IsNextEnabled = PageNum < TotalPages;
+
+                SearchText = string.Empty;
+            }
+            catch (Exception ex)
+            {
+                Log.Fatal($"Async exception: {ex.Message} \n {ex.StackTrace}");
+            }
+        });
     });
 
     public ICommand UpdatePatientCommand => new Command(_ =>
@@ -182,7 +199,5 @@ public class PatientsViewModel : ObserverViewModel
                 Log.Error($"{e.Exception.Message} \n {e.Exception.StackTrace}");
             }
         });
-
-        SelectedPatient = null;
     }
 }

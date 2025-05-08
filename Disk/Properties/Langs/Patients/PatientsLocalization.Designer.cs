@@ -88,6 +88,15 @@ namespace Disk.Properties.Langs.Patients {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Are you sure that you want to delete patient.
+        /// </summary>
+        public static string DeletePatientQuestion {
+            get {
+                return ResourceManager.GetString("DeletePatientQuestion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Home phone.
         /// </summary>
         public static string HomePhone {
