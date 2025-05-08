@@ -20,7 +20,7 @@ public class ConvexHull : IStaticFigure
     {
         var convexHullPoints = GetConvexHull(points, percent);
 
-        int n = points.Count;
+        int n = convexHullPoints.Count;
         double convexHullArea = 0;
         for (int i = 0; i < n; i++)
         {
