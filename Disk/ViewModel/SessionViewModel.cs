@@ -47,6 +47,12 @@ public class SessionViewModel(DiskContext database, IExcelFiller excelFiller, Na
         }
     }
 
+    private Visibility _pathToTargetGridVisibility = Visibility.Visible;
+    public Visibility PathToTargetGridVisibility { get => _pathToTargetGridVisibility; set => SetProperty(ref _pathToTargetGridVisibility, value); }
+
+    private Visibility _pathInTargetGridVisibility = Visibility.Hidden;
+    public Visibility PathInTargetGridVisibility { get => _pathInTargetGridVisibility; set => SetProperty(ref _pathInTargetGridVisibility, value); }
+
     private ObservableCollection<Attempt> _attempts = [];
     public ObservableCollection<Attempt> Attempts
     {
@@ -58,11 +64,7 @@ public class SessionViewModel(DiskContext database, IExcelFiller excelFiller, Na
     public ObservableCollection<MergedPaths> Paths
     {
         get => _paths;
-        set
-        {
-            _ = SetProperty(ref _paths, value);
-            OnPropertyChanged(nameof(Paths));
-        }
+        set => SetProperty(ref _paths, value);
     }
 
     public ICommand StartAttemptCommand => new Command(_ =>
@@ -116,6 +118,24 @@ public class SessionViewModel(DiskContext database, IExcelFiller excelFiller, Na
                     }
                 });
             }));
+
+    public void UpdateAttemptResult(AttemptResult attemptResult)
+    {
+        _ = database.Update(attemptResult);
+        _ = database.SaveChanges();
+    }
+
+    public ICommand PathToTargetSelectedCommand => new Command(_ =>
+    {
+        PathToTargetGridVisibility = Visibility.Visible;
+        PathInTargetGridVisibility = Visibility.Hidden;
+    });
+
+    public ICommand PathInTargetSelectedCommand => new Command(_ =>
+    {
+        PathInTargetGridVisibility = Visibility.Visible;
+        PathToTargetGridVisibility = Visibility.Hidden;
+    });
 
     public ICommand AttemptSelectedCommand => new Command(_ =>
     {

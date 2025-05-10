@@ -55,7 +55,7 @@
                 FontSize="20" 
                 HorizontalAlignment="Stretch"
                 TextAlignment="Center" 
-                Margin="200 10"
+                Margin="200 5"
                 BorderThickness="0 0 0 1"/>
         </StackPanel>
 
@@ -95,7 +95,7 @@
                     </Button>
                 </StackPanel>
 
-                <StackPanel Margin="10">
+                <StackPanel>
                     <Slider 
                         Minimum="10" 
                         Maximum="100" 
@@ -123,8 +123,8 @@
                 Text="{x:Static lang:SettingsLocalization.TargetHp}"/>
 
             <Slider 
-                Minimum="500" 
-                Maximum="5000" 
+                Minimum="100" 
+                Maximum="10000" 
                 Value="{Binding TargetTtl}"
                 TickFrequency="100" 
                 IsSnapToTickEnabled="True" 
@@ -183,7 +183,7 @@
                     <Slider 
                         x:Name="TargetRadiusSlider"
                         Minimum="3" 
-                        Maximum="15" 
+                        Maximum="17" 
                         Value="{Binding TargetRadius}"
                         TickFrequency="1" 
                         IsSnapToTickEnabled="True" 
@@ -348,7 +348,7 @@
             </Grid>
         </StackPanel>
 
-        <Grid Grid.Row="6" x:Name="PaintGrid">
+        <Grid Grid.Row="6" x:Name="PaintGrid" Panel.ZIndex="100">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>

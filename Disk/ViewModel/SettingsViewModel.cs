@@ -98,7 +98,7 @@ public class SettingsViewModel(ModalNavigationStore modalNavigationStore) : Popu
         get => _targetRadius.ToString();
         set
         {
-            if (int.TryParse(value, out var res) || _targetRadius < 1 || _targetRadius > 15)
+            if (int.TryParse(value, out var res) || _targetRadius < 3 || _targetRadius > 17)
             {
                 _ = SetProperty(ref _targetRadius, res);
             }

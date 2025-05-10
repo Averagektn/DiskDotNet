@@ -2,6 +2,7 @@
 using Disk.Db.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -9,9 +10,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Disk.Migrations
 {
     [DbContext(typeof(DiskContext))]
-    partial class DiskContextModelSnapshot : ModelSnapshot
+    [Migration("20250508140818_MathexpDeviationRebase")]
+    partial class MathexpDeviationRebase
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "9.0.4");
@@ -72,13 +75,6 @@ namespace Disk.Migrations
                     b.Property<long>("Id")
                         .HasColumnType("INTEGER")
                         .HasColumnName("ares_id");
-
-                    b.Property<string>("Note")
-                        .IsRequired()
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("TEXT")
-                        .HasDefaultValue("")
-                        .HasColumnName("ares_note");
 
                     b.Property<long>("Score")
                         .HasColumnType("INTEGER")
@@ -192,7 +188,7 @@ namespace Disk.Migrations
                         .HasColumnType("INTEGER")
                         .HasColumnName("ptt_attempt");
 
-                    b.Property<long>("TargetId")
+                    b.Property<long>("TargetNum")
                         .HasColumnType("INTEGER")
                         .HasColumnName("ptt_target_id");
 
@@ -217,7 +213,7 @@ namespace Disk.Migrations
                         .HasColumnType("REAL")
                         .HasColumnName("ptt_time");
 
-                    b.HasKey("Attempt", "TargetId");
+                    b.HasKey("Attempt", "TargetNum");
 
                     b.ToTable("path_to_target", (string)null);
                 });

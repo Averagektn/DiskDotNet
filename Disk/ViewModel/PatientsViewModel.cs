@@ -115,7 +115,7 @@ public class PatientsViewModel : ObserverViewModel
             return;
         }
 
-        string question = 
+        string question =
             $"{PatientsLocalization.DeletePatientQuestion} " +
             $"{SelectedPatient.Surname} " +
             $"{SelectedPatient.Name} " +

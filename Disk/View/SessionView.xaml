@@ -22,10 +22,10 @@
 
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="1*"/>
-            <RowDefinition Height="7*"/>
-            <RowDefinition Height="6*"/>
-            <RowDefinition Height="2*"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
@@ -41,24 +41,40 @@
             IsPopupOpen="{Binding IsShowPopup}" 
             PopupHeader="{Binding PopupHeader}"/>
 
-        <TextBlock 
-            Grid.Row="0" 
-            Grid.ColumnSpan="2"
-            Margin="5" 
-            FontSize="25" 
-            Text="{Binding Patient}"/>
+        <Grid Grid.Row="0" Grid.ColumnSpan="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            
+            <TextBlock 
+                Grid.Column="0" 
+                Margin="5" 
+                FontSize="25" 
+                Text="{Binding Patient}"/>
+
+            
+            <RadioButton Command="{Binding PathToTargetSelectedCommand}" HorizontalAlignment="Center" Grid.Column="1" 
+                         FontSize="25" Content="{x:Static lang:SessionLocalization.PathToTarget}" IsChecked="True"/>
+            <RadioButton Command="{Binding PathInTargetSelectedCommand}" HorizontalAlignment="Center" Grid.Column="2" 
+                         FontSize="25" Content="{x:Static lang:SessionLocalization.PathInTarget}"/>
+        </Grid>
 
         <DataGrid 
             HorizontalAlignment="Center"
             HorizontalContentAlignment="Center"
             x:Name="SessionsDataGrid"
+            CellEditEnding="SessionsDataGrid_CellEditEnding"
+            MouseDoubleClick="SessionsDataGrid_MouseDoubleClick"
             FontSize="25"
             Grid.Row="1" 
             SelectionMode="Single"
             Grid.ColumnSpan="2"
             ScrollViewer.VerticalScrollBarVisibility="Auto" 
             ItemsSource="{Binding Attempts}" 
-            IsReadOnly="True"
+            IsReadOnly="False"
+            CanUserAddRows="False"
             AutoGenerateColumns="False"
             SelectedItem="{Binding SelectedAttempt}">
             <DataGrid.InputBindings>
@@ -66,12 +82,71 @@
             </DataGrid.InputBindings>
             <DataGrid.Columns>
                 <DataGridTextColumn 
-                    Width="1*" 
+                    Width="2*" 
+                    IsReadOnly="True"
                     Header="{x:Static lang:SessionLocalization.DateTime}"  
                     Binding="{Binding DateTime}"
-                    ElementStyle="{StaticResource CentredCell}">
-                </DataGridTextColumn>
-                <DataGridTemplateColumn Width="1*" x:Name="DeviationCol">
+                    ElementStyle="{StaticResource CentredCell}"/>
+
+                <DataGridTextColumn 
+                    CanUserSort="False"
+                    IsReadOnly="True"
+                    Width="1*" 
+                    Header="{x:Static lang:SessionLocalization.Score}" 
+                    Binding="{Binding AttemptResult.Score}" 
+                    ElementStyle="{StaticResource CentredCell}"/>
+
+                <DataGridTextColumn 
+                    CanUserSort="False"
+                    IsReadOnly="False"
+                    Width="4*" 
+                    Header="Note" 
+                    Binding="{Binding AttemptResult.Note, UpdateSourceTrigger=PropertyChanged}" 
+                    ElementStyle="{StaticResource CentredCell}" />
+            </DataGrid.Columns>
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="SelectionChanged">
+                    <i:InvokeCommandAction Command="{Binding AttemptSelectedCommand}" />
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
+            <DataGrid.ContextMenu>
+                <ContextMenu FontSize="20">
+                    <MenuItem 
+                        Header="{x:Static lang:SessionLocalization.Delete}" 
+                        Command="{Binding DeleteAttemptCommand}" 
+                        CommandParameter="{Binding SelectedAttempt}" />
+                </ContextMenu>
+            </DataGrid.ContextMenu>
+        </DataGrid>
+
+        <DataGrid 
+            Visibility="{Binding PathInTargetGridVisibility}"
+            Grid.Row="2" 
+            FontSize="25"
+            SelectionMode="Single"
+            IsReadOnly="True" 
+            Grid.ColumnSpan="2"
+            ItemsSource="{Binding Paths}" 
+            AutoGenerateColumns="False" 
+            ScrollViewer.VerticalScrollBarVisibility="Auto">
+            <DataGrid.Columns>
+                <DataGridTextColumn 
+                    Width="2*" 
+                    Header="{x:Static lang:SessionLocalization.TargetNum}" 
+                    Binding="{Binding PathInTarget.TargetIdInc}" />
+                <DataGridTextColumn 
+                    Width="3*" 
+                    Header="{x:Static lang:SessionLocalization.Accuracy}" 
+                    Binding="{Binding PathInTarget.Accuracy, StringFormat=N1}" />
+                <DataGridTextColumn 
+                    Width="3*" 
+                    Header="{x:Static lang:SessionLocalization.EllipseArea}" 
+                    Binding="{Binding PathInTarget.EllipseArea, StringFormat=N1}" />
+                <DataGridTextColumn 
+                    Width="3*" 
+                    Header="{x:Static lang:SessionLocalization.ConvexHullArea}" 
+                    Binding="{Binding PathInTarget.ConvexHullArea, StringFormat=N1}" />
+                <DataGridTemplateColumn Width="3*" x:Name="DeviationCol">
                     <DataGridTemplateColumn.Header>
                         <Grid Width="{Binding ElementName=DeviationCol, Path=ActualWidth}" >
                             <Grid.RowDefinitions>
@@ -86,6 +161,7 @@
                                 TextAlignment="Center" 
                                 Grid.Row="0" 
                                 Grid.ColumnSpan="2" 
+                                TextWrapping="WrapWithOverflow"
                                 Text="{x:Static lang:SessionLocalization.Deviation}" />
                             <TextBlock 
                                 Grid.Row="1"
@@ -108,17 +184,17 @@
                                 </Grid.ColumnDefinitions>
                                 <TextBlock 
                                     TextAlignment="Center"
-                                    Text="{Binding AttemptResult.DeviationX, StringFormat=N1}" 
+                                    Text="{Binding PathInTarget.DeviationX, StringFormat=N1}" 
                                     Grid.Column="0"/>
                                 <TextBlock 
                                     TextAlignment="Center"
-                                    Text="{Binding AttemptResult.DeviationY, StringFormat=N1}" 
+                                    Text="{Binding PathInTarget.DeviationY, StringFormat=N1}" 
                                     Grid.Column="1"/>
                             </Grid>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
-                <DataGridTemplateColumn Width="1*" x:Name="MathExpCol">
+                <DataGridTemplateColumn Width="3*" x:Name="MathExpCol">
                     <DataGridTemplateColumn.Header>
                         <Grid Width="{Binding ElementName=MathExpCol, Path=ActualWidth}">
                             <Grid.ColumnDefinitions>
@@ -133,6 +209,7 @@
                                 TextAlignment="Center"
                                 Grid.Row="0"
                                 Grid.ColumnSpan="2"
+                                TextWrapping="WrapWithOverflow"
                                 Text="{x:Static lang:SessionLocalization.MathExp}"
                                 HorizontalAlignment="Center"/>
                             <TextBlock 
@@ -156,42 +233,21 @@
                                 </Grid.ColumnDefinitions>
                                 <TextBlock 
                                     TextAlignment="Center"
-                                    Text="{Binding AttemptResult.MathExpX, StringFormat=N1}" 
+                                    Text="{Binding PathInTarget.MathExpX, StringFormat=N1}" 
                                     Grid.Column="0"/>
                                 <TextBlock 
                                     TextAlignment="Center"
-                                    Text="{Binding AttemptResult.MathExpY, StringFormat=N1}" 
+                                    Text="{Binding PathInTarget.MathExpY, StringFormat=N1}" 
                                     Grid.Column="1"/>
                             </Grid>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
-                <DataGridTextColumn 
-                    CanUserSort="False"
-                    Width="1*" 
-                    Header="{x:Static lang:SessionLocalization.Score}" 
-                    Binding="{Binding AttemptResult.Score}" 
-                    ElementStyle="{StaticResource CentredCell}"/>
             </DataGrid.Columns>
-            <i:Interaction.Triggers>
-                <i:EventTrigger EventName="SelectionChanged">
-                    <i:InvokeCommandAction Command="{Binding AttemptSelectedCommand}" />
-                </i:EventTrigger>
-                <i:EventTrigger EventName="MouseDoubleClick">
-                    <i:InvokeCommandAction Command="{Binding ShowAttemptCommand}" />
-                </i:EventTrigger>
-            </i:Interaction.Triggers>
-            <DataGrid.ContextMenu>
-                <ContextMenu FontSize="20">
-                    <MenuItem 
-                        Header="{x:Static lang:SessionLocalization.Delete}" 
-                        Command="{Binding DeleteAttemptCommand}" 
-                        CommandParameter="{Binding SelectedAttempt}" />
-                </ContextMenu>
-            </DataGrid.ContextMenu>
         </DataGrid>
-
+        
         <DataGrid 
+            Visibility="{Binding PathToTargetGridVisibility}"
             Grid.Row="2" 
             FontSize="25"
             SelectionMode="Single"
@@ -205,7 +261,7 @@
                 <DataGridTextColumn 
                     Width="2*" 
                     Header="{x:Static lang:SessionLocalization.TargetNum}" 
-                    Binding="{Binding PathToTarget.TargetNumInc}" />
+                    Binding="{Binding PathToTarget.TargetIdInc}" />
                 <DataGridTextColumn 
                     Width="2*" 
                     Header="{x:Static lang:SessionLocalization.AverageSpeed}" 
@@ -220,12 +276,8 @@
                     Binding="{Binding PathToTarget.Time, StringFormat=N1}" />
                 <DataGridTextColumn 
                     Width="2*" 
-                    Header="{x:Static lang:SessionLocalization.Accuracy}" 
-                    Binding="{Binding PathInTarget.Accuracy, StringFormat=N1}" />
-                <DataGridTextColumn 
-                    Width="2*" 
-                    Header="{x:Static lang:SessionLocalization.EllipseArea}" 
-                    Binding="{Binding PathInTarget.EllipseArea, StringFormat=N1}" />
+                    Header="{x:Static lang:SessionLocalization.Distance}" 
+                    Binding="{Binding PathToTarget.Distance, StringFormat=N1}" />
             </DataGrid.Columns>
         </DataGrid>
 

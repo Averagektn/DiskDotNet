@@ -1,7 +1,6 @@
 ﻿using Disk.Entities;
 using Disk.Properties.Config;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Storage;
 using Serilog;
 using System.IO;
 
@@ -94,8 +93,10 @@ public partial class DiskContext : DbContext
             _ = entity.Property(e => e.Accuracy).HasColumnName("pit_accuracy");
             _ = entity.Property(e => e.EllipseArea).HasColumnName("pit_ellipse_area").HasDefaultValue(0.0);
             _ = entity.Property(e => e.ConvexHullArea).HasColumnName("pit_convex_hull_area").HasDefaultValue(0.0);
-            _ = entity.Property(e => e.FullPathEllipseArea).HasColumnName("pit_full_path_ellipse_area").HasDefaultValue(0.0);
-            _ = entity.Property(e => e.FullPathConvexHullArea).HasColumnName("pit_full_path_convex_hull_area").HasDefaultValue(0.0);
+            _ = entity.Property(e => e.DeviationX).HasColumnName("pit_deviation_x").HasDefaultValue(0.0);
+            _ = entity.Property(e => e.DeviationY).HasColumnName("pit_deviation_y").HasDefaultValue(0.0);
+            _ = entity.Property(e => e.MathExpX).HasColumnName("pit_math_exp_x").HasDefaultValue(0.0);
+            _ = entity.Property(e => e.MathExpY).HasColumnName("pit_math_exp_y").HasDefaultValue(0.0);
 
             _ = entity.HasOne(d => d.AttemptNavigation).WithMany(p => p.PathInTargets)
                 .HasForeignKey(d => d.Attempt)
@@ -104,19 +105,17 @@ public partial class DiskContext : DbContext
 
         _ = modelBuilder.Entity<PathToTarget>(entity =>
         {
-            _ = entity.HasKey(e => new { e.Attempt, e.TargetNum });
+            _ = entity.HasKey(e => new { e.Attempt, e.TargetId });
 
             _ = entity.ToTable("path_to_target");
 
             _ = entity.Property(e => e.Attempt).HasColumnName("ptt_attempt");
-            _ = entity.Property(e => e.TargetNum).HasColumnName("ptt_target_id");
+            _ = entity.Property(e => e.TargetId).HasColumnName("ptt_target_id");
             _ = entity.Property(e => e.Distance).HasColumnName("ptt_distance");
             _ = entity.Property(e => e.AverageSpeed).HasColumnName("ptt_average_speed");
             _ = entity.Property(e => e.ApproachSpeed).HasColumnName("ptt_approach_speed");
             _ = entity.Property(e => e.CoordinatesJson).HasColumnName("ptt_coordinates_json");
             _ = entity.Property(e => e.Time).HasColumnName("ptt_time");
-            _ = entity.Property(e => e.EllipseArea).HasColumnName("pit_ellipse_area").HasDefaultValue(0.0);
-            _ = entity.Property(e => e.ConvexHullArea).HasColumnName("pit_convex_hull_area").HasDefaultValue(0.0);
 
             _ = entity.HasOne(d => d.AttemptNavigation).WithMany(p => p.PathToTargets)
                 .HasForeignKey(d => d.Attempt)
@@ -181,11 +180,8 @@ public partial class DiskContext : DbContext
             _ = entity.Property(e => e.Id)
                 .ValueGeneratedNever()
                 .HasColumnName("ares_id");
-            _ = entity.Property(e => e.DeviationX).HasColumnName("ares_deviation_x");
-            _ = entity.Property(e => e.DeviationY).HasColumnName("ares_deviation_y");
-            _ = entity.Property(e => e.MathExpX).HasColumnName("ares_shift_x");
-            _ = entity.Property(e => e.MathExpY).HasColumnName("ares_shift_y");
             _ = entity.Property(e => e.Score).HasColumnName("ares_score");
+            _ = entity.Property(e => e.Note).HasColumnName("ares_note").HasDefaultValue("");
 
             _ = entity.HasOne(d => d.Attempt).WithOne(p => p.AttemptResult)
                 .HasForeignKey<AttemptResult>(d => d.Id)

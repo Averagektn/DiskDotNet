@@ -4,8 +4,8 @@ public partial class PathToTarget
 {
     public long Attempt { get; set; }
 
-    public long TargetNum { get; set; }
-    public long TargetNumInc => TargetNum + 1;
+    public long TargetId { get; set; }
+    public long TargetIdInc => TargetId + 1;
 
     public string CoordinatesJson { get; set; } = null!;
 
@@ -15,9 +15,6 @@ public partial class PathToTarget
     public double ApproachSpeed { get; set; }
 
     public double Time { get; set; }
-
-    public double EllipseArea { get; set; }
-    public double ConvexHullArea { get; set; }
 
     public virtual Attempt AttemptNavigation { get; set; } = null!;
 }

@@ -151,6 +151,15 @@ namespace Disk.Properties.Langs.Session {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Distance.
+        /// </summary>
+        public static string Distance {
+            get {
+                return ResourceManager.GetString("Distance", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Ellipse area.
         /// </summary>
         public static string EllipseArea {
@@ -219,6 +228,24 @@ namespace Disk.Properties.Langs.Session {
         public static string NoContentError {
             get {
                 return ResourceManager.GetString("NoContentError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Path in target.
+        /// </summary>
+        public static string PathInTarget {
+            get {
+                return ResourceManager.GetString("PathInTarget", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Path to target.
+        /// </summary>
+        public static string PathToTarget {
+            get {
+                return ResourceManager.GetString("PathToTarget", resourceCulture);
             }
         }
         

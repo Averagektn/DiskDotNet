@@ -205,16 +205,9 @@ public class PaintViewModel : PopupViewModel
     {
         if (FullPath.Count > 0)
         {
-            var mx = Calculator2D.MathExp(FullPath);
-            var deviation = Calculator2D.StandartDeviation(FullPath);
-
             var sres = new AttemptResult()
             {
                 Id = CurrentAttempt.Id,
-                MathExpX = mx.XDbl,
-                MathExpY = mx.YDbl,
-                DeviationX = deviation.XDbl,
-                DeviationY = deviation.YDbl,
                 Score = Score,
             };
 
@@ -294,25 +287,13 @@ public class PaintViewModel : PopupViewModel
         var avgSpeed = distance / time;
         var approachSpeed = pathToTarget[0].GetDistance(touchPoint) / time;
 
-        const int minEllipsePoints = 10;
-
-        double ellipseArea = 0.0;
-        double convexHullArea = 0.0;
-        if (pathToTarget.Count > minEllipsePoints)
-        {
-            ellipseArea = BoundingEllipse.GetArea(pathToTarget);
-            convexHullArea = ConvexHull.GetArea(pathToTarget);
-        }
-
         var ptt = new PathToTarget()
         {
             Distance = distance,
             AverageSpeed = avgSpeed,
             ApproachSpeed = approachSpeed,
-            EllipseArea = ellipseArea,
-            ConvexHullArea = convexHullArea,
             CoordinatesJson = JsonConvert.SerializeObject(PathsToTargets[TargetId]),
-            TargetNum = TargetId,
+            TargetId = TargetId,
             Attempt = CurrentAttempt.Id,
             Time = time
         };
@@ -384,18 +365,17 @@ public class PaintViewModel : PopupViewModel
             convexHullArea = ConvexHull.GetArea(pathInTarget);
         }
 
-        double fullPathEllipseArea = 0.0;
-        double fullPathConvexHullArea = 0.0;
-        if (pathInTarget.Count + PathsToTargets[TargetId].Count > minEllipsePoints)
-        {
-            fullPathEllipseArea = BoundingEllipse.GetArea([.. pathInTarget, .. PathsToTargets[TargetId]]);
-            fullPathConvexHullArea = ConvexHull.GetArea([.. pathInTarget, .. PathsToTargets[TargetId]]);
-        }
+        var mx = Calculator2D.MathExp(pathInTarget);
+        var deviation = Calculator2D.StandartDeviation(pathInTarget);
 
         var pit = new PathInTarget()
         {
             CoordinatesJson = JsonConvert.SerializeObject(pathInTarget),
             Attempt = CurrentAttempt.Id,
+            MathExpX = mx.X,
+            MathExpY = mx.Y,
+            DeviationX = deviation.X,
+            DeviationY = deviation.Y,
             EllipseArea = ellipseArea,
             ConvexHullArea = convexHullArea,
             TargetId = TargetId,

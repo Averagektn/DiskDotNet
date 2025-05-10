@@ -124,6 +124,15 @@ namespace Disk.Properties.Langs.ExcelFiller {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Distance.
+        /// </summary>
+        internal static string Distance {
+            get {
+                return ResourceManager.GetString("Distance", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Ellipse area.
         /// </summary>
         internal static string EllipseArea {
@@ -192,6 +201,15 @@ namespace Disk.Properties.Langs.ExcelFiller {
         internal static string MaxAngle {
             get {
                 return ResourceManager.GetString("MaxAngle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Note.
+        /// </summary>
+        internal static string Note {
+            get {
+                return ResourceManager.GetString("Note", resourceCulture);
             }
         }
         

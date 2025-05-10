@@ -2,7 +2,6 @@
 using Disk.Data.Impl;
 using Disk.Entities;
 using Disk.Service.Interface;
-using DocumentFormat.OpenXml.Wordprocessing;
 using Microsoft.Win32;
 using Newtonsoft.Json;
 using Serilog;
@@ -40,7 +39,6 @@ public class ExcelFiller : IExcelFiller
             catch (Exception ex)
             {
                 Log.Error($"Error saving excel file {ex}");
-                throw;
             }
         }
     }
@@ -52,47 +50,51 @@ public class ExcelFiller : IExcelFiller
             var worksheet = workbook.Worksheets.Add();
 
             worksheet.Cell(1, 1).Value = Localization.DateTime;
-            worksheet.Cell(1, 2).Value = Localization.Map;
-
             worksheet.Cell(2, 1).Value = attempt.DateTime;
+
+            worksheet.Cell(1, 2).Value = Localization.Map;
             worksheet.Cell(2, 2).Value = map.Name;
 
-            worksheet.Cell(4, 1).Value = $"{Localization.Deviation} X";
-            worksheet.Cell(4, 2).Value = $"{Localization.Deviation} Y";
-            worksheet.Cell(4, 3).Value = $"{Localization.MathExp} X";
-            worksheet.Cell(4, 4).Value = $"{Localization.MathExp} Y";
-            worksheet.Cell(4, 5).Value = $"{Localization.MaxAngle} (X;Y)";
-            worksheet.Cell(4, 6).Value = $"{Localization.CursorRadius}";
-            worksheet.Cell(4, 7).Value = $"{Localization.TargetRadius}";
+            worksheet.Range(4, 1, 4, 2).Merge().Value = Localization.MaxAngle;
+            worksheet.Cell(5, 1).Value = "X";
+            worksheet.Cell(5, 2).Value = "Y";
+            worksheet.Cell(5, 3).Value = Localization.CursorRadius;
+            worksheet.Cell(5, 4).Value = Localization.TargetRadius;
+            worksheet.Cell(5, 5).Value = Localization.Note;
 
             var sres = attempt.AttemptResult;
             if (sres is not null)
             {
-                SetFloatCell(worksheet, 5, 1, (float)sres.DeviationX);
-                SetFloatCell(worksheet, 5, 2, (float)sres.DeviationY);
-                SetFloatCell(worksheet, 5, 3, (float)sres.MathExpX);
-                SetFloatCell(worksheet, 5, 4, (float)sres.MathExpY);
-                worksheet.Cell(5, 5).Value = $"{attempt.MaxXAngle:f2}; {attempt.MaxYAngle:f2}";
-                SetFloatCell(worksheet, 5, 6, attempt.CursorRadius);
-                SetFloatCell(worksheet, 5, 7, attempt.TargetRadius);
+                SetFloatCell(worksheet, 6, 1, (float)attempt.MaxXAngle);
+                SetFloatCell(worksheet, 6, 2, (float)attempt.MaxYAngle);
+                SetFloatCell(worksheet, 6, 3, attempt.CursorRadius);
+                SetFloatCell(worksheet, 6, 4, attempt.TargetRadius);
+                worksheet.Cell(6, 5).Value = sres.Note;
             }
 
-            worksheet.Cell(8, 1).Value = Localization.TargetNum;
-            worksheet.Cell(8, 2).Value = Localization.Time;
-            worksheet.Cell(8, 3).Value = Localization.ApproachSpeed;
-            worksheet.Cell(8, 4).Value = Localization.AverageSpeed;
+            worksheet.Cell(9, 1).Value = Localization.TargetNum;
+            worksheet.Cell(9, 2).Value = Localization.Time;
+            worksheet.Cell(9, 3).Value = Localization.ApproachSpeed;
+            worksheet.Cell(9, 4).Value = Localization.AverageSpeed;
+            worksheet.Cell(9, 5).Value = Localization.Distance;
 
-            worksheet.Range(7, 5, 7, 7).Merge().Value = Localization.EllipseArea;
-            worksheet.Cell(8, 5).Value = Localization.PathToTarget;
-            worksheet.Cell(8, 6).Value = Localization.PathInTarget;
-            worksheet.Cell(8, 7).Value = Localization.FullPath;
+            worksheet.Cell(8, 6).Value = Localization.EllipseArea;
+            worksheet.Cell(9, 6).Value = Localization.PathInTarget;
 
-            worksheet.Range(7, 8, 7, 10).Merge().Value = Localization.ConvexHullArea;
-            worksheet.Cell(8, 8).Value = Localization.PathToTarget;
-            worksheet.Cell(8, 9).Value = Localization.PathInTarget;
-            worksheet.Cell(8, 10).Value = Localization.FullPath;
+            worksheet.Cell(8, 7).Value = Localization.ConvexHullArea;
+            worksheet.Cell(9, 7).Value = Localization.PathInTarget;
 
-            const int pathCol = 12;
+            worksheet.Range(8, 8, 8, 9).Merge().Value = Localization.MathExp;
+            worksheet.Cell(9, 8).Value = "X";
+            worksheet.Cell(9, 9).Value = "Y";
+
+            worksheet.Range(8, 10, 8, 11).Merge().Value = Localization.Deviation;
+            worksheet.Cell(9, 10).Value = "X";
+            worksheet.Cell(9, 11).Value = "Y";
+
+            worksheet.Cell(9, 12).Value = Localization.Accuracy;
+
+            const int pathCol = 14;
 
             FillPtts(worksheet, attempt, pathCol, map);
             FillPits(worksheet, attempt, pathCol + ColsPerPath, map);
@@ -100,9 +102,10 @@ public class ExcelFiller : IExcelFiller
             new List<IXLRange>()
                 {
                     worksheet.Range(firstCellRow: 1, firstCellColumn: 1, lastCellRow: 1, lastCellColumn: 2),
-                    worksheet.Range(firstCellRow: 4, firstCellColumn: 1, lastCellRow: 4, lastCellColumn: 7),
-                    worksheet.Range(firstCellRow: 7, firstCellColumn: 5, lastCellRow: 7, lastCellColumn: 10),
-                    worksheet.Range(firstCellRow: 8, firstCellColumn: 1, lastCellRow: 8, lastCellColumn: 10),
+                    worksheet.Range(firstCellRow: 4, firstCellColumn: 1, lastCellRow: 4, lastCellColumn: 2),
+                    worksheet.Range(firstCellRow: 5, firstCellColumn: 1, lastCellRow: 5, lastCellColumn: 5),
+                    worksheet.Range(firstCellRow: 8, firstCellColumn: 6, lastCellRow: 8, lastCellColumn: 11),
+                    worksheet.Range(firstCellRow: 9, firstCellColumn: 1, lastCellRow: 9, lastCellColumn: 12),
                     worksheet.Range(firstCellRow: 1, firstCellColumn: pathCol, lastCellRow: 2,
                         lastCellColumn: (ColsPerPath * (attempt.PathToTargets.Count + attempt.PathInTargets.Count + 1)) + 3),
                 }
@@ -129,21 +132,21 @@ public class ExcelFiller : IExcelFiller
         var ptts = attempt.PathToTargets;
         var mapCenters = JsonConvert.DeserializeObject<List<Point2D<float>>>(map.CoordinatesJson)!;
 
-        int pttRow = 9;
+        int pttRow = 10;
         foreach (var ptt in ptts)
         {
-            worksheet.Cell(pttRow, 1).Value = ptt.TargetNum + 1;
+            worksheet.Cell(pttRow, 1).Value = ptt.TargetId + 1;
             SetFloatCell(worksheet, pttRow, 2, (float)ptt.Time);
             SetFloatCell(worksheet, pttRow, 3, (float)ptt.ApproachSpeed);
             SetFloatCell(worksheet, pttRow, 4, (float)ptt.AverageSpeed);
-            SetFloatCell(worksheet, pttRow, 5, (float)ptt.EllipseArea);
-            SetFloatCell(worksheet, pttRow, 8, (float)ptt.ConvexHullArea);
+            SetFloatCell(worksheet, pttRow, 5, (float)ptt.Distance);
             pttRow++;
 
             var pathList = JsonConvert.DeserializeObject<List<Point2D<float>>>(ptt.CoordinatesJson)!;
 
-            worksheet.Cell(1, pathCol++).Value = $"{Localization.PathToTarget}";
-            FillPath(worksheet, pathCol, mapCenters, pathList, ptt.TargetNum);
+            worksheet.Cell(1, pathCol).Value = $"{Localization.PathToTarget}";
+            pathCol++;
+            FillPath(worksheet, pathCol, mapCenters, pathList, ptt.TargetId);
 
             pathCol += (ColsPerPath * 2) - 1;
         }
@@ -154,21 +157,26 @@ public class ExcelFiller : IExcelFiller
         var pits = attempt.PathInTargets;
         var mapCenters = JsonConvert.DeserializeObject<List<Point2D<float>>>(map.CoordinatesJson)!;
 
-        int pitRow = 9;
+        int pitRow = 10;
         foreach (var pit in pits)
         {
             var pathList = JsonConvert.DeserializeObject<List<Point2D<float>>>(pit.CoordinatesJson)!;
 
             SetFloatCell(worksheet, pitRow, 6, (float)pit.EllipseArea);
-            SetFloatCell(worksheet, pitRow, 7, (float)pit.FullPathEllipseArea);
-            SetFloatCell(worksheet, pitRow, 9, (float)pit.ConvexHullArea);
-            SetFloatCell(worksheet, pitRow, 10, (float)pit.FullPathConvexHullArea);
+            SetFloatCell(worksheet, pitRow, 7, (float)pit.ConvexHullArea);
+            SetFloatCell(worksheet, pitRow, 8, (float)pit.MathExpX);
+            SetFloatCell(worksheet, pitRow, 9, (float)pit.MathExpY);
+            SetFloatCell(worksheet, pitRow, 10, (float)pit.DeviationX);
+            SetFloatCell(worksheet, pitRow, 11, (float)pit.DeviationY);
+            SetFloatCell(worksheet, pitRow, 12, (float)pit.Accuracy);
             pitRow++;
 
             worksheet.Cell(1, pathCol).Value = Localization.PathInTarget;
             worksheet.Cell(4, pathCol).Value = Localization.Accuracy;
             worksheet.Cell(5, pathCol).Style.NumberFormat.Format = "0.00";
-            worksheet.Cell(5, pathCol++).Value = double.Round(pit.Accuracy, 3);
+            worksheet.Cell(5, pathCol).Value = double.Round(pit.Accuracy, 3);
+            pathCol++;
+
             FillPath(worksheet, pathCol, mapCenters, pathList, pit.TargetId);
 
             pathCol += (ColsPerPath * 2) - 1;

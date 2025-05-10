@@ -18,6 +18,7 @@ public partial class MapPreviewView : UserControl
             typeof(MapPreviewView),
             new PropertyMetadata(null, OnMapChanged)
         );
+
     public Map? Map
     {
         get => (Map?)GetValue(MapProperty);
@@ -32,7 +33,7 @@ public partial class MapPreviewView : UserControl
 
     private Converter? _converter;
     private readonly List<NumberedTarget> _targets = [];
-    private static readonly Converter IniConverter = new(IniWidth, IniHeight, AngleWidth, AngleHeight);
+    private readonly Converter IniConverter;
     private static int IniWidth => Settings.Default.IniScreenWidth;
     private static int IniHeight => Settings.Default.IniScreenHeight;
     private static float AngleWidth => Settings.Default.XMaxAngle * 2;
@@ -42,6 +43,7 @@ public partial class MapPreviewView : UserControl
     {
         InitializeComponent();
 
+        IniConverter = new(IniWidth, IniHeight, AngleWidth, AngleHeight);
         PaintArea.SizeChanged += OnPaintAreaSizeChanged;
     }
 

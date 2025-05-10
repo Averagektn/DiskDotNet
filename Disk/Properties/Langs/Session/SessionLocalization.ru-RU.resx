@@ -198,4 +198,13 @@
   <data name="EllipseArea" xml:space="preserve">
     <value>Плошадь эллипса</value>
   </data>
+  <data name="PathToTarget" xml:space="preserve">
+    <value>Путь к мишени</value>
+  </data>
+  <data name="PathInTarget" xml:space="preserve">
+    <value>Путь в мишени</value>
+  </data>
+  <data name="Distance" xml:space="preserve">
+    <value>Расстояние</value>
+  </data>
 </root>

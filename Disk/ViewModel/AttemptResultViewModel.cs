@@ -252,18 +252,25 @@ public class AttemptResultViewModel(NavigationStore navigationStore, DiskContext
             int pathInTargetPointsCount = PathsInTargets.Take(SelectedIndex).Sum(p => p.Count);
             CurrentPointId = pathToTargetPointsCount + pathInTargetPointsCount;
 
+            var currentPathToTarget = CurrentAttempt.PathToTargets.ElementAt(SelectedIndex);
+            var currentPathInTarget = CurrentAttempt.PathInTargets.ElementAt(SelectedIndex);
+
             Message =
                 $"""
-                    {Localization.StandartDeviation} X: {CurrentAttempt.AttemptResult?.DeviationX:F2}
-                    {Localization.StandartDeviation} Y: {CurrentAttempt.AttemptResult?.DeviationY:F2}
-                    {Localization.MathExp} X: {CurrentAttempt.AttemptResult?.MathExpX:F2}
-                    {Localization.MathExp} Y: {CurrentAttempt.AttemptResult?.MathExpY:F2}
-                    {Localization.AverageSpeed}: {CurrentAttempt.PathToTargets.ElementAt(SelectedIndex).AverageSpeed:F2}
-                    {Localization.ApproachSpeed}: {CurrentAttempt.PathToTargets.ElementAt(SelectedIndex).ApproachSpeed:F2}
-                    {Localization.Time}: {CurrentAttempt.PathToTargets.ElementAt(SelectedIndex).Time:F2}
-                    {Localization.Accuracy}: {CurrentAttempt.PathInTargets.ElementAt(SelectedIndex).Accuracy:F2}  
-                    {Localization.ConvexHullArea}: {CurrentAttempt.PathInTargets.ElementAt(SelectedIndex).ConvexHullArea:F2}
-                    {Localization.EllipseArea}: {CurrentAttempt.PathInTargets.ElementAt(SelectedIndex).EllipseArea:F2}
+                    {Localization.Time}: {currentPathToTarget.Time:F2}
+                    {Localization.AverageSpeed}: {currentPathToTarget.AverageSpeed:F2}
+                    {Localization.ApproachSpeed}: {currentPathToTarget.ApproachSpeed:F2}
+
+                    {Localization.MathExp} X: {currentPathInTarget.MathExpX:F2}
+                    {Localization.MathExp} Y: {currentPathInTarget.MathExpY:F2}
+
+                    {Localization.StandartDeviation} X: {currentPathInTarget.DeviationX:F2}
+                    {Localization.StandartDeviation} Y: {currentPathInTarget.DeviationY:F2}
+
+                    {Localization.ConvexHullArea}: {currentPathInTarget.ConvexHullArea:F2}
+                    {Localization.EllipseArea}: {currentPathInTarget.EllipseArea:F2}
+
+                    {Localization.Accuracy}: {currentPathInTarget.Accuracy:F2}  
                 """;
         }
     });
