@@ -207,4 +207,7 @@
   <data name="Distance" xml:space="preserve">
     <value>Расстояние</value>
   </data>
+  <data name="Note" xml:space="preserve">
+    <value>Примечание</value>
+  </data>
 </root>

@@ -82,16 +82,33 @@
             </DataGrid.InputBindings>
             <DataGrid.Columns>
                 <DataGridTextColumn 
-                    Width="2*" 
+                    Width="auto" 
+                    CanUserSort="False"
                     IsReadOnly="True"
                     Header="{x:Static lang:SessionLocalization.DateTime}"  
                     Binding="{Binding DateTime}"
                     ElementStyle="{StaticResource CentredCell}"/>
 
                 <DataGridTextColumn 
-                    CanUserSort="False"
+                    CanUserSort="True"
                     IsReadOnly="True"
-                    Width="1*" 
+                    Width="2*" 
+                    Header="{x:Static lang:SessionLocalization.CursorRadius}" 
+                    Binding="{Binding CursorRadius}" 
+                    ElementStyle="{StaticResource CentredCell}"/>
+
+                <DataGridTextColumn 
+                    CanUserSort="True"
+                    IsReadOnly="True"
+                    Width="2*" 
+                    Header="{x:Static lang:SessionLocalization.TargetRadius}" 
+                    Binding="{Binding TargetRadius}" 
+                    ElementStyle="{StaticResource CentredCell}"/>
+
+                <DataGridTextColumn 
+                    CanUserSort="True"
+                    IsReadOnly="True"
+                    Width="auto" 
                     Header="{x:Static lang:SessionLocalization.Score}" 
                     Binding="{Binding AttemptResult.Score}" 
                     ElementStyle="{StaticResource CentredCell}"/>
@@ -99,8 +116,8 @@
                 <DataGridTextColumn 
                     CanUserSort="False"
                     IsReadOnly="False"
-                    Width="4*" 
-                    Header="Note" 
+                    Width="5*" 
+                    Header="{x:Static lang:SessionLocalization.Note}" 
                     Binding="{Binding AttemptResult.Note, UpdateSourceTrigger=PropertyChanged}" 
                     ElementStyle="{StaticResource CentredCell}" />
             </DataGrid.Columns>

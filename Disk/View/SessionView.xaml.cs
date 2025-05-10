@@ -50,7 +50,7 @@ public partial class SessionView : UserControl
 
         int columnIndex = cell.Column.DisplayIndex;
 
-        const int NoteColumnIndex = 2;
+        const int NoteColumnIndex = 4;
         if (columnIndex != NoteColumnIndex)
         {
             _viewModel?.ShowAttemptCommand.Execute(null);
