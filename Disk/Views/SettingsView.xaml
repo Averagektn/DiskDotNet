@@ -1,0 +1,382 @@
+﻿<UserControl x:Class="Disk.Views.SettingsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Disk.Views" 
+             xmlns:viewmodel="clr-namespace:Disk.ViewModels"
+             xmlns:lang="clr-namespace:Disk.Properties.Langs.Settings"
+             xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+             d:DataContext="{d:DesignInstance Type=viewmodel:SettingsViewModel}"
+             mc:Ignorable="d" 
+             xmlns:styles="clr-namespace:Disk.Style"
+             d:DesignHeight="800" 
+             d:DesignWidth="800">
+    
+    <Grid x:Name="MainGrid">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
+
+        <Canvas Grid.RowSpan="8" x:Name="PaintArea"/>
+
+        <Menu 
+            Height="35" 
+            FontSize="20" 
+            VerticalAlignment="Top" 
+            HorizontalAlignment="Left">
+            <MenuItem 
+                Header="{x:Static lang:SettingsLocalization.Language}">
+                <MenuItem 
+                    Header="English" 
+                    Command="{Binding ChangeLanguageCommand}" 
+                    CommandParameter="en-US"/>
+                <MenuItem 
+                    Header="Русский" 
+                    Command="{Binding ChangeLanguageCommand}" 
+                    CommandParameter="ru-RU"/>
+            </MenuItem>
+        </Menu>
+
+        <StackPanel Grid.Row="0" HorizontalAlignment="Stretch" VerticalAlignment="Center">
+            <TextBlock
+                HorizontalAlignment="Center"
+                FontSize="20"  
+                Text="{x:Static lang:SettingsLocalization.Ip}"/>
+            <TextBox 
+                Text="{Binding Ip}" 
+                FontSize="20" 
+                HorizontalAlignment="Stretch"
+                TextAlignment="Center" 
+                Margin="200 5"
+                BorderThickness="0 0 0 1"/>
+        </StackPanel>
+
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <StackPanel Grid.ColumnSpan="2" HorizontalAlignment="Stretch" VerticalAlignment="Center">
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                    <TextBlock 
+                        HorizontalAlignment="Center"
+                        FontSize="20" 
+                        Text="{x:Static lang:SettingsLocalization.ShotTime}"/>
+                    <Button 
+                        Padding="0"
+                        Width="40" 
+                        Height="30" 
+                        Background="Transparent">
+                        <Button.ToolTip>
+                            <ToolTip FontSize="20" Foreground="DarkBlue">
+                                <TextBlock Text="{x:Static lang:SettingsLocalization.HzTip}"/>
+                            </ToolTip>
+                        </Button.ToolTip>
+                        <Button.Content>
+                            <Grid>
+                                <Ellipse Width="20" Height="20" Fill="LightGray"/>
+                                <TextBlock 
+                                    Text="?" 
+                                    FontSize="20" 
+                                    HorizontalAlignment="Center" 
+                                    VerticalAlignment="Center" 
+                                    Foreground="Black"/>
+                            </Grid>
+                        </Button.Content>
+                    </Button>
+                </StackPanel>
+
+                <StackPanel>
+                    <Slider 
+                        Minimum="10" 
+                        Maximum="100" 
+                        Value="{Binding ShotTime}"
+                        TickFrequency="5" 
+                        Margin="200 10 200 0"
+                        IsSnapToTickEnabled="True" 
+                        FontSize="20" 
+                        HorizontalContentAlignment="Center" 
+                        AutoToolTipPlacement="TopLeft" AutoToolTipPrecision="0" />
+
+                    <TextBlock
+                        HorizontalAlignment="Center"
+                        Text="{Binding ShotTime}"
+                        FontSize="20" 
+                        Margin="10 0 0 0"/>
+                </StackPanel>
+            </StackPanel>
+        </Grid>
+
+        <StackPanel Grid.Row="2" HorizontalAlignment="Stretch" VerticalAlignment="Center">
+            <TextBlock 
+                HorizontalAlignment="Center"
+                FontSize="20" 
+                Text="{x:Static lang:SettingsLocalization.TargetHp}"/>
+
+            <Slider 
+                Minimum="100" 
+                Maximum="10000" 
+                Value="{Binding TargetTtl}"
+                TickFrequency="100" 
+                IsSnapToTickEnabled="True" 
+                FontSize="20" 
+                HorizontalContentAlignment="Center" 
+                Margin="200 10 200 0"
+                AutoToolTipPlacement="TopLeft" 
+                AutoToolTipPrecision="0" />
+            <TextBlock
+                Text="{Binding TargetTtl}"
+                FontSize="20" 
+                HorizontalAlignment="Center" 
+                Margin="200 0"/>
+        </StackPanel>
+
+        <Grid Grid.Row="3">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <StackPanel Grid.Column="0" HorizontalAlignment="Stretch" VerticalAlignment="Center">
+                <TextBlock 
+                    HorizontalAlignment="Center"
+                    FontSize="20" 
+                    Text="{x:Static lang:SettingsLocalization.CursorRadius}"/>
+
+                <StackPanel Margin="10">
+                    <Slider 
+                        x:Name="CursorRadiusSlider"
+                        Minimum="3" 
+                        Maximum="15" 
+                        Value="{Binding CursorRadius}"
+                        TickFrequency="1" 
+                        IsSnapToTickEnabled="True" 
+                        FontSize="20" 
+                        HorizontalContentAlignment="Center" 
+                        AutoToolTipPlacement="TopLeft" 
+                        AutoToolTipPrecision="0" />
+                    
+                    <TextBlock
+                        Text="{Binding CursorRadius}"
+                        FontSize="20" 
+                        HorizontalAlignment="Center" 
+                        Margin="10 0 0 0"/>
+                </StackPanel>
+            </StackPanel>
+
+            <StackPanel Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Center">
+                <TextBlock 
+                    HorizontalAlignment="Center"
+                    FontSize="20" 
+                    Text="{x:Static lang:SettingsLocalization.TargetRadius}"/>
+
+                <StackPanel Margin="10">
+                    <Slider 
+                        x:Name="TargetRadiusSlider"
+                        Minimum="3" 
+                        Maximum="17" 
+                        Value="{Binding TargetRadius}"
+                        TickFrequency="1" 
+                        IsSnapToTickEnabled="True" 
+                        FontSize="20" 
+                        HorizontalContentAlignment="Center" 
+                        AutoToolTipPlacement="TopLeft" AutoToolTipPrecision="0" />
+                    
+                    <TextBlock
+                        Text="{Binding TargetRadius}"
+                        FontSize="20" 
+                        HorizontalAlignment="Center" 
+                        Margin="10 0 0 0"/>
+                </StackPanel>
+            </StackPanel>
+        </Grid>
+
+        <StackPanel Grid.Row="4">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                <TextBlock 
+                    HorizontalAlignment="Center"
+                    FontSize="20" 
+                    Text="{x:Static lang:SettingsLocalization.CursorImagePath}"/>
+
+                <Button 
+                    Padding="0"
+                    Width="40" 
+                    Height="30" 
+                    Background="Transparent" 
+                    FontSize="20">
+                    <Button.ToolTip>
+                        <ToolTip FontSize="20" Foreground="DarkBlue">
+                            <TextBlock Text="{x:Static lang:SettingsLocalization.CursorImagePathTip}"/>
+                        </ToolTip>
+                    </Button.ToolTip>
+                    <Button.Content>
+                        <Grid>
+                            <Ellipse Width="20" Height="20" Fill="LightGray"/>
+                            <TextBlock 
+                                Text="?" 
+                                FontSize="20" 
+                                HorizontalAlignment="Center" 
+                                VerticalAlignment="Center" 
+                                Foreground="Black"/>
+                        </Grid>
+                    </Button.Content>
+                </Button>
+            </StackPanel>
+
+            <Grid Margin="50 0" HorizontalAlignment="Stretch" VerticalAlignment="Center">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="6*"/>
+                    <ColumnDefinition Width="1*"/>
+                </Grid.ColumnDefinitions>
+
+                <Button 
+                    Background="Red"
+                    MaxWidth="50"
+                    MaxHeight="50"
+                    Grid.Column="0"
+                    Content="🗑️" 
+                    Command="{Binding ClearCursorImageCommand}" 
+                    Margin="10 20"
+                    Padding="0"/>
+
+                <TextBox
+                    IsReadOnly="True"
+                    BorderThickness="0"
+                    x:Name="CursorFilePath"
+                    Text="{Binding CursorFilePath}"
+                    Grid.Column="1"
+                    FontSize="20" 
+                    TextAlignment="Center" 
+                    Margin="0 20">
+                    <TextBox.ToolTip>
+                        <Image Source="{Binding CursorFilePath}" MaxWidth="400" MaxHeight="400"/>
+                    </TextBox.ToolTip>
+                </TextBox>
+
+                <Button 
+                    MaxWidth="40"
+                    MaxHeight="40"
+                    Grid.Column="2"
+                    Content="..." 
+                    Command="{Binding PickCursorImageCommand}" 
+                    Margin="10 20"
+                    Padding="10 0"/>
+            </Grid>
+        </StackPanel>
+
+        <StackPanel Grid.Row="5">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                <TextBlock 
+                    HorizontalAlignment="Center"
+                    FontSize="20" 
+                    Text="{x:Static lang:SettingsLocalization.TargetImagePath}"/>
+
+                <Button 
+                    Padding="0"
+                    Width="40" 
+                    Height="30" 
+                    Background="Transparent" 
+                    FontSize="20">
+                    <Button.ToolTip>
+                        <ToolTip FontSize="20" Foreground="DarkBlue">
+                            <TextBlock Text="{x:Static lang:SettingsLocalization.TargetImagePathTip}"/>
+                        </ToolTip>
+                    </Button.ToolTip>
+                    <Button.Content>
+                        <Grid>
+                            <Ellipse Width="20" Height="20" Fill="LightGray"/>
+                            <TextBlock 
+                                Text="?" 
+                                FontSize="20" 
+                                HorizontalAlignment="Center" 
+                                VerticalAlignment="Center" 
+                                Foreground="Black"/>
+                        </Grid>
+                    </Button.Content>
+                </Button>
+            </StackPanel>
+
+            <Grid Margin="50 0" HorizontalAlignment="Stretch" VerticalAlignment="Center">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="6*"/>
+                    <ColumnDefinition Width="1*"/>
+                </Grid.ColumnDefinitions>
+
+                <Button 
+                    Background="Red"
+                    MaxWidth="50"
+                    MaxHeight="50"
+                    Grid.Column="0"
+                    Content="🗑️" 
+                    Command="{Binding ClearTargetImageCommand}" 
+                    Margin="10 20"
+                    Padding="0"/>
+
+                <TextBox
+                    IsReadOnly="True"
+                    BorderThickness="0"
+                    x:Name="TargetFilePath"
+                    Text="{Binding TargetFilePath}"
+                    Grid.Column="1"
+                    FontSize="20" 
+                    TextAlignment="Center" 
+                    Margin="0 20">
+                    <TextBox.ToolTip>
+                        <Image Source="{Binding TargetFilePath}" MaxWidth="400" MaxHeight="400"/>
+                    </TextBox.ToolTip>
+                </TextBox>
+
+                <Button 
+                    MaxWidth="40"
+                    MaxHeight="40"
+                    Grid.Column="2"
+                    Content="..." 
+                    Command="{Binding PickTargetImageCommand}" 
+                    Margin="10 20"
+                    Padding="10 0"/>
+            </Grid>
+        </StackPanel>
+
+        <Grid Grid.Row="6" x:Name="PaintGrid" Panel.ZIndex="100">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+        </Grid>
+
+        <DockPanel Grid.Row="7" LastChildFill="False">
+            <Button 
+                DockPanel.Dock="Left"
+                Content="{x:Static lang:SettingsLocalization.Save}" 
+                Margin="50 25" 
+                Padding="50 0"
+                Command="{Binding SaveCommand}"/>
+
+            <Button 
+                DockPanel.Dock="Right"
+                Content="{x:Static lang:SettingsLocalization.Cancel}" 
+                Margin="50 25"
+                Padding="50 0"
+                Command="{Binding CancelCommand}"/>
+        </DockPanel>
+
+        <styles:Popup 
+            Grid.Row="6"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
+            PopupMessage="{Binding PopupMessage}" 
+            IsPopupOpen="{Binding IsShowPopup}" 
+            PopupHeader="{Binding PopupHeader}"/>
+    </Grid>
+</UserControl>

@@ -5,10 +5,10 @@
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="/Style/DataGridStyle.xaml"/>
-                <ResourceDictionary Source="/Style/BtnStyles.xaml"/>
-                <ResourceDictionary Source="/Style/RadioButtonStyle.xaml"/>
-                <ResourceDictionary Source="/Style/ToolTipStyle.xaml"/>
+                <ResourceDictionary Source="/Styles/DataGridStyle.xaml"/>
+                <ResourceDictionary Source="/Styles/BtnStyles.xaml"/>
+                <ResourceDictionary Source="/Styles/RadioButtonStyle.xaml"/>
+                <ResourceDictionary Source="/Styles/ToolTipStyle.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>

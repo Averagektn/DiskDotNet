@@ -1,7 +1,7 @@
-﻿using Disk.Navigators.Interface;
-using Disk.Stores.Interface;
-using Disk.ViewModel;
-using Disk.ViewModel.Common.ViewModels;
+﻿using Disk.Navigators.Interfaces;
+using Disk.Stores.Interfaces;
+using Disk.ViewModels;
+using Disk.ViewModels.Common.ViewModels;
 
 namespace Disk.Navigators.Common;
 

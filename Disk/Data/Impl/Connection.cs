@@ -1,4 +1,4 @@
-﻿using Disk.Calculations.Impl.Converters;
+﻿using Disk.Calculations.Implementations.Converters;
 using Disk.Data.Interface;
 using System.Net;
 using System.Net.Sockets;

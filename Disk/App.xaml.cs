@@ -1,10 +1,10 @@
 ﻿using Disk.Db.Context;
 using Disk.Properties.Config;
-using Disk.Service.Implementation;
-using Disk.Service.Interface;
+using Disk.Services.Implementations;
+using Disk.Services.Interfaces;
 using Disk.Stores;
-using Disk.ViewModel;
-using Disk.ViewModel.Common.ViewModels;
+using Disk.ViewModels;
+using Disk.ViewModels.Common.ViewModels;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Serilog;

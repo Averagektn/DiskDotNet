@@ -1,5 +1,5 @@
 ﻿using Disk.Navigators.Common;
-using Disk.ViewModel;
+using Disk.ViewModels;
 
 namespace Disk.Navigators;
 

@@ -1,4 +1,4 @@
-﻿using Disk.ViewModel.Common.ViewModels;
+﻿using Disk.ViewModels.Common.ViewModels;
 using Serilog;
 using System.ComponentModel;
 using System.Windows;

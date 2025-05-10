@@ -1,5 +1,5 @@
-﻿using Disk.Stores.Interface;
-using Disk.ViewModel.Common.ViewModels;
+﻿using Disk.Stores.Interfaces;
+using Disk.ViewModels.Common.ViewModels;
 using Serilog;
 
 namespace Disk.Stores;
