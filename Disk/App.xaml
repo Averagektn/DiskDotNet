@@ -7,6 +7,8 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="/Style/DataGridStyle.xaml"/>
                 <ResourceDictionary Source="/Style/BtnStyles.xaml"/>
+                <ResourceDictionary Source="/Style/RadioButtonStyle.xaml"/>
+                <ResourceDictionary Source="/Style/ToolTipStyle.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>
