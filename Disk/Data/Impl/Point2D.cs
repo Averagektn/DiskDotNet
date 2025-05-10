@@ -1,4 +1,5 @@
-﻿using System.Drawing;
+﻿using Newtonsoft.Json;
+using System.Drawing;
 using Point = System.Windows.Point;
 
 namespace Disk.Data.Impl;
@@ -24,11 +25,13 @@ public class Point2D<CoordType> : IEquatable<Point2D<CoordType>> where CoordType
     /// <summary>
     ///     Gets the X coordinate of the point as a double value
     /// </summary>
+    [JsonIgnore]
     public double XDbl => X.ToDouble(FormatProvider);
 
     /// <summary>
     ///     Gets the Y coordinate of the point as a double value
     /// </summary>
+    [JsonIgnore]
     public double YDbl => Y.ToDouble(FormatProvider);
 
     /// <summary>
