@@ -186,7 +186,7 @@ public class NumberedTarget : Target
     {
         base.Move(center);
 
-        var point = _converter.ToAngle_FromWnd(center);
+        var point = _converter.ToAngle_FromWnd(Center);
 
         _coordX.Text = $"{point.X:f1}";
         _coordY.Text = $"{point.Y:f1}";
