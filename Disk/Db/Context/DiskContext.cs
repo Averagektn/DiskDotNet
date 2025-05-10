@@ -34,7 +34,8 @@ public partial class DiskContext : DbContext
         if (!File.Exists(AppConfig.DbPath))
         {
             Log.Fatal("Db file not found");
-            _ = Database.EnsureCreated();
+            //_ = Database.EnsureCreated();
+            Database.Migrate();
             Log.Information("Created new db file");
         }
     }
