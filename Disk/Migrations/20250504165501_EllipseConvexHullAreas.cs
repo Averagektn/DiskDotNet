@@ -10,42 +10,42 @@ namespace Disk.Migrations
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AddColumn<double>(
+            _ = migrationBuilder.AddColumn<double>(
                 name: "pit_convex_hull_area",
                 table: "path_to_target",
                 type: "REAL",
                 nullable: false,
                 defaultValue: 0.0);
 
-            migrationBuilder.AddColumn<double>(
+            _ = migrationBuilder.AddColumn<double>(
                 name: "pit_ellipse_area",
                 table: "path_to_target",
                 type: "REAL",
                 nullable: false,
                 defaultValue: 0.0);
 
-            migrationBuilder.AddColumn<double>(
+            _ = migrationBuilder.AddColumn<double>(
                 name: "pit_convex_hull_area",
                 table: "path_in_target",
                 type: "REAL",
                 nullable: false,
                 defaultValue: 0.0);
 
-            migrationBuilder.AddColumn<double>(
+            _ = migrationBuilder.AddColumn<double>(
                 name: "pit_ellipse_area",
                 table: "path_in_target",
                 type: "REAL",
                 nullable: false,
                 defaultValue: 0.0);
 
-            migrationBuilder.AddColumn<double>(
+            _ = migrationBuilder.AddColumn<double>(
                 name: "pit_full_path_convex_hull_area",
                 table: "path_in_target",
                 type: "REAL",
                 nullable: false,
                 defaultValue: 0.0);
 
-            migrationBuilder.AddColumn<double>(
+            _ = migrationBuilder.AddColumn<double>(
                 name: "pit_full_path_ellipse_area",
                 table: "path_in_target",
                 type: "REAL",
@@ -56,27 +56,27 @@ namespace Disk.Migrations
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropColumn(
+            _ = migrationBuilder.DropColumn(
                 name: "pit_convex_hull_area",
                 table: "path_to_target");
 
-            migrationBuilder.DropColumn(
+            _ = migrationBuilder.DropColumn(
                 name: "pit_ellipse_area",
                 table: "path_to_target");
 
-            migrationBuilder.DropColumn(
+            _ = migrationBuilder.DropColumn(
                 name: "pit_convex_hull_area",
                 table: "path_in_target");
 
-            migrationBuilder.DropColumn(
+            _ = migrationBuilder.DropColumn(
                 name: "pit_ellipse_area",
                 table: "path_in_target");
 
-            migrationBuilder.DropColumn(
+            _ = migrationBuilder.DropColumn(
                 name: "pit_full_path_convex_hull_area",
                 table: "path_in_target");
 
-            migrationBuilder.DropColumn(
+            _ = migrationBuilder.DropColumn(
                 name: "pit_full_path_ellipse_area",
                 table: "path_in_target");
         }
