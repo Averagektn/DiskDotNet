@@ -49,6 +49,8 @@ public partial class SessionsListView : UserControl
 
             _ = Dispatcher.BeginInvoke(() =>
             {
+                if (row is null || !row.IsVisible) return;
+
                 var rowScreenPos = row.PointToScreen(new Point(0, 0));
                 var screenHeight = SystemParameters.PrimaryScreenHeight;
                 var screenWidth = SystemParameters.PrimaryScreenWidth;
