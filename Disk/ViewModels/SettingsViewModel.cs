@@ -25,9 +25,9 @@ public class SettingsViewModel(ModalNavigationStore modalNavigationStore) : Popu
         get => _ip;
         set
         {
-            if (IPAddress.TryParse(value, out _))
+            if (IPAddress.TryParse(value, out var ip))
             {
-                _ = SetProperty(ref _ip, value);
+                _ = SetProperty(ref _ip, ip.ToString());
             }
             else
             {
