@@ -56,9 +56,9 @@
 
             
             <RadioButton Command="{Binding PathToTargetSelectedCommand}" HorizontalAlignment="Center" Grid.Column="1" 
-                         FontSize="25" Content="{x:Static lang:SessionLocalization.PathToTarget}" IsChecked="True"/>
+                         FontSize="25" Content="{x:Static lang:SessionLocalization.PathToTarget}" IsChecked="True" VerticalContentAlignment="Center"/>
             <RadioButton Command="{Binding PathInTargetSelectedCommand}" HorizontalAlignment="Center" Grid.Column="2" 
-                         FontSize="25" Content="{x:Static lang:SessionLocalization.PathInTarget}"/>
+                         FontSize="25" Content="{x:Static lang:SessionLocalization.PathInTarget}" VerticalContentAlignment="Center"/>
         </Grid>
 
         <DataGrid 
