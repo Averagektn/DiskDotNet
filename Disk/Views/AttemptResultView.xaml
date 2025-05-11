@@ -114,13 +114,14 @@
                     <TextBlock 
                         FontSize="25" 
                         Text="{Binding Message}" 
-                        TextAlignment="Left" 
+                        TextAlignment="Left"
                         Margin="10"/>
 
                     <CheckBox     
                         x:Name="DiagramCheckBox"
                         Content="{x:Static lang:AttemptResultLocalization.Diagram}"
                         FontSize="25"
+                        VerticalContentAlignment="Center"
                         Checked="DiagramCheckBox_Checked"
                         Unchecked="DiagramCheckBox_Unchecked"
                         Margin="10"
@@ -128,6 +129,7 @@
 
                     <CheckBox 
                         x:Name="PathToTargetCheckBox"
+                        VerticalContentAlignment="Center"
                         FontSize="25"
                         Margin="10"
                         Content="{x:Static lang:AttemptResultLocalization.PathToTarget}"
@@ -137,6 +139,7 @@
 
                     <CheckBox 
                         x:Name="PathInTargetCheckBox"
+                        VerticalContentAlignment="Center"
                         FontSize="25"
                         Margin="10"
                         Content="{x:Static lang:AttemptResultLocalization.PathInTarget}"
@@ -146,6 +149,7 @@
 
                     <CheckBox
                         x:Name="HideTargetCheckBox"
+                        VerticalContentAlignment="Center"
                         FontSize="25"
                         Margin="10"
                         Content="{x:Static lang:AttemptResultLocalization.HideTarget}"
@@ -155,6 +159,7 @@
 
                     <CheckBox
                         x:Name="HideCursorCheckBox"
+                        VerticalContentAlignment="Center"
                         FontSize="25"
                         Margin="10"
                         Content="{x:Static lang:AttemptResultLocalization.HideCursor}"
@@ -164,6 +169,7 @@
 
                     <CheckBox
                         x:Name="FullPathEllipseCheckBox"
+                        VerticalContentAlignment="Center"
                         FontSize="25"
                         Margin="10"
                         Content="{x:Static lang:AttemptResultLocalization.FullPathArea}"
@@ -173,6 +179,7 @@
 
                     <CheckBox
                         x:Name="PathToTargetEllipseCheckBox"
+                        VerticalContentAlignment="Center"
                         FontSize="25"
                         Margin="10"
                         Content="{x:Static lang:AttemptResultLocalization.PathToTargetArea}"
@@ -182,6 +189,7 @@
 
                     <CheckBox
                         x:Name="PathInTargetEllipseCheckBox"
+                        VerticalContentAlignment="Center"
                         FontSize="25"
                         Margin="10"
                         Content="{x:Static lang:AttemptResultLocalization.PathInTargetArea}"

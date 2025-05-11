@@ -257,20 +257,20 @@ public class AttemptResultViewModel(NavigationStore navigationStore, DiskContext
 
             Message =
                 $"""
-                    {Localization.Time}: {currentPathToTarget.Time:F2}
-                    {Localization.AverageSpeed}: {currentPathToTarget.AverageSpeed:F2}
-                    {Localization.ApproachSpeed}: {currentPathToTarget.ApproachSpeed:F2}
+                {Localization.Time}: {currentPathToTarget.Time:F2}
+                {Localization.AverageSpeed}: {currentPathToTarget.AverageSpeed:F2}
+                {Localization.ApproachSpeed}: {currentPathToTarget.ApproachSpeed:F2}
 
-                    {Localization.MathExp} X: {currentPathInTarget.MathExpX:F2}
-                    {Localization.MathExp} Y: {currentPathInTarget.MathExpY:F2}
+                {Localization.MathExp} X: {currentPathInTarget.MathExpX:F2}
+                {Localization.MathExp} Y: {currentPathInTarget.MathExpY:F2}
 
-                    {Localization.StandartDeviation} X: {currentPathInTarget.DeviationX:F2}
-                    {Localization.StandartDeviation} Y: {currentPathInTarget.DeviationY:F2}
+                {Localization.StandartDeviation} X: {currentPathInTarget.DeviationX:F2}
+                {Localization.StandartDeviation} Y: {currentPathInTarget.DeviationY:F2}
 
-                    {Localization.ConvexHullArea}: {currentPathInTarget.ConvexHullArea:F2}
-                    {Localization.EllipseArea}: {currentPathInTarget.EllipseArea:F2}
+                {Localization.ConvexHullArea}: {currentPathInTarget.ConvexHullArea:F2}
+                {Localization.EllipseArea}: {currentPathInTarget.EllipseArea:F2}
 
-                    {Localization.Accuracy}: {currentPathInTarget.Accuracy:F2}  
+                {Localization.Accuracy}: {currentPathInTarget.Accuracy:F2}  
                 """;
         }
     });
