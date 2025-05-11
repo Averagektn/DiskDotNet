@@ -187,7 +187,7 @@
     <value>Площадь пути в мишени</value>
   </data>
   <data name="ConvexHullArea" xml:space="preserve">
-    <value>Площадь замкнутой фигуры</value>
+    <value>Площадь выпуклой фигуры</value>
   </data>
   <data name="EllipseArea" xml:space="preserve">
     <value>Площадь эллипса</value>
