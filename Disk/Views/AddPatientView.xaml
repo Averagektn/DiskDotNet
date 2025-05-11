@@ -107,11 +107,14 @@
                 SelectedDate="{Binding DateOfBirth}"   
                 Margin="10 5"
                 BorderThickness="0 0 0 1"
-                HorizontalAlignment="Stretch" 
+                HorizontalAlignment="Stretch"
                 Background="{Binding BgDateOfBirth}">
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="GotFocus">
                         <i:InvokeCommandAction Command="{Binding DateOfBirthFocusCommand}" />
+                    </i:EventTrigger>
+                    <i:EventTrigger EventName="MouseEnter">
+                        <i:InvokeCommandAction Command="{Binding DateOfBirthFocusCommand}"/>
                     </i:EventTrigger>
                 </i:Interaction.Triggers>
             </DatePicker>
