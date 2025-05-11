@@ -192,12 +192,19 @@ public class PatientsViewModel : ObserverViewModel
     {
         base.Refresh();
 
-        _ = Application.Current.Dispatcher.InvokeAsync(GetPagedPatientsAsync).Task.ContinueWith(e =>
+        if (SearchText != string.Empty)
         {
-            if (e.Exception is not null)
+            SearchCommand.Execute(SearchText);
+        }
+        else
+        {
+            _ = Application.Current.Dispatcher.InvokeAsync(GetPagedPatientsAsync).Task.ContinueWith(e =>
             {
-                Log.Error($"{e.Exception.Message} \n {e.Exception.StackTrace}");
-            }
-        });
+                if (e.Exception is not null)
+                {
+                    Log.Error($"{e.Exception.Message} \n {e.Exception.StackTrace}");
+                }
+            });
+        }
     }
 }
