@@ -135,7 +135,7 @@ public partial class AttemptResultView : UserControl
             RecalculateEllipse(_pathInTargetEllipses, [.. ViewModel.CurrPathInTarget], Brushes.CadetBlue, Brushes.Blue);
             if (PathInTargetEllipseCheckBox.IsChecked ?? false)
             {
-                _fullPathEllipses.ForEach(e => e.Draw());
+                _pathInTargetEllipses.ForEach(e => e.Draw());
             }
         }
         if (ViewModel.CurrPathToTarget.Count > MinEllipsePointsCount)
@@ -143,7 +143,7 @@ public partial class AttemptResultView : UserControl
             RecalculateEllipse(_pathToTargetEllipses, [.. ViewModel.CurrPathToTarget], Brushes.LawnGreen, Brushes.Green);
             if (PathToTargetEllipseCheckBox.IsChecked ?? false)
             {
-                _fullPathEllipses.ForEach(e => e.Draw());
+                _pathToTargetEllipses.ForEach(e => e.Draw());
             }
         }
 
@@ -251,7 +251,11 @@ public partial class AttemptResultView : UserControl
     #region Path to target ellipse
     public void ShowPathToTargetEllipse(object sender, RoutedEventArgs e)
     {
-        _pathToTargetEllipses.ForEach(e => e.Draw());
+        _pathToTargetEllipses.ForEach(e =>
+        {
+            e.Draw();
+            e.Scale();
+        });
     }
     public void HidePathToTargetEllipse(object sender, RoutedEventArgs e)
     {
@@ -262,7 +266,11 @@ public partial class AttemptResultView : UserControl
     #region Path in target ellipse
     public void ShowPathInTargetEllipse(object sender, RoutedEventArgs e)
     {
-        _pathInTargetEllipses.ForEach(e => e.Draw());
+        _pathInTargetEllipses.ForEach(e =>
+        {
+            e.Draw();
+            e.Scale();
+        });
     }
     public void HidePathInTargetEllipse(object sender, RoutedEventArgs e)
     {
@@ -273,7 +281,11 @@ public partial class AttemptResultView : UserControl
     #region Full path ellipse
     public void ShowFullPathEllipse(object sender, RoutedEventArgs e)
     {
-        _fullPathEllipses.ForEach(e => e.Draw());
+        _fullPathEllipses.ForEach(e => 
+        { 
+            e.Draw(); 
+            e.Scale(); 
+        });
     }
     public void HideFullPathEllipse(object sender, RoutedEventArgs e)
     {
@@ -285,6 +297,7 @@ public partial class AttemptResultView : UserControl
     private void ShowCursor(object sender, RoutedEventArgs e)
     {
         _cursor?.Draw();
+        _cursor?.Scale();
     }
     private void HideCursor(object sender, RoutedEventArgs e)
     {
@@ -296,6 +309,7 @@ public partial class AttemptResultView : UserControl
     private void ShowTarget(object sender, RoutedEventArgs e)
     {
         _target?.Draw();
+        _target?.Scale();
     }
     private void HideTarget(object sender, RoutedEventArgs e)
     {
@@ -307,6 +321,7 @@ public partial class AttemptResultView : UserControl
     private void DiagramCheckBox_Checked(object sender, RoutedEventArgs e)
     {
         _diagram?.Draw();
+        _diagram?.Scale();
     }
     private void DiagramCheckBox_Unchecked(object sender, RoutedEventArgs e)
     {
@@ -318,6 +333,7 @@ public partial class AttemptResultView : UserControl
     private void PathToTargetCheckbox_Checked(object sender, RoutedEventArgs e)
     {
         _pathToTarget?.Draw();
+        _pathInTarget?.Scale();
     }
     private void PathToTargetCheckbox_Unchecked(object sender, RoutedEventArgs e)
     {
@@ -329,6 +345,7 @@ public partial class AttemptResultView : UserControl
     private void PathInTargetCheckbox_Checked(object sender, RoutedEventArgs e)
     {
         _pathInTarget?.Draw();
+        _pathInTarget?.Scale();
     }
     private void PathInTargetCheckbox_Unchecked(object sender, RoutedEventArgs e)
     {

@@ -45,8 +45,8 @@
                 VerticalAlignment="Center" />
 
             <Canvas Name="PathArea" Panel.ZIndex="2" />
-            <Canvas Name="PaintArea" Panel.ZIndex="1" />
-            <Canvas Name="EllipseArea" Panel.ZIndex="0" />
+            <Canvas Name="EllipseArea" Panel.ZIndex="1" />
+            <Canvas Name="PaintArea" Panel.ZIndex="0" />
             <Canvas Name="GraphArea" Panel.ZIndex="-2" />
 
             <TextBlock 
