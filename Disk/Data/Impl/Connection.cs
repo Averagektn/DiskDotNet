@@ -1,5 +1,6 @@
 ﻿using Disk.Calculations.Implementations.Converters;
 using Disk.Data.Interface;
+using System.Buffers.Binary;
 using System.Net;
 using System.Net.Sockets;
 
@@ -54,7 +55,8 @@ public class Connection : IDataSource<float>, IDisposable
 
         Socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp)
         {
-            ReceiveTimeout = receiveTimeout
+            ReceiveTimeout = receiveTimeout,
+            NoDelay = true,
         };
         Socket.Connect(new IPEndPoint(IP, Port));
 
@@ -127,11 +129,13 @@ public class Connection : IDataSource<float>, IDisposable
         if (_currPacket >= PacketsCount)
         {
             _ = Socket.Receive(_data, Size, SocketFlags.None);
+            var span = new ReadOnlySpan<byte>(_data);
+
             for (int i = 0, j = 0; i < Size; i += PacketSize, j++)
             {
-                var y = BitConverter.ToSingle(_data, i + 4);
-                var x = -BitConverter.ToSingle(_data, i + 8);
-                var z = BitConverter.ToSingle(_data, i + 12);
+                var y = BinaryPrimitives.ReadSingleLittleEndian(span[(i + 4)..]);
+                var x = -BinaryPrimitives.ReadSingleLittleEndian(span[(i + 8)..]);
+                var z = BinaryPrimitives.ReadSingleLittleEndian(span[(i + 12)..]);
 
                 _coords[j] = Converter.ToAngle_FromRadian(new Point3D<float>(x, y, z));
             }

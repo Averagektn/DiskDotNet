@@ -147,16 +147,23 @@ public class PaintViewModel : PopupViewModel
         _pathToTargetStopwatch = Stopwatch.StartNew();
     }
 
+    private Connection? _connection = null;
+    private readonly Lock _lock = new();
     private void ReceivePatientPosition()
     {
+        lock (_lock)
+        {
+            _connection?.Dispose();
+        }
+
         try
         {
-            using var con = Connection.GetConnection(IPAddress.Parse(Settings.IP), Settings.Port);
+            _connection = Connection.GetConnection(IPAddress.Parse(Settings.IP), Settings.Port);
 
             IsReceivingData = true;
             while (IsReceivingData)
             {
-                CurrentPos = con.GetXYZ();
+                CurrentPos = _connection.GetXYZ();
             }
         }
         catch (Exception ex)
@@ -197,6 +204,10 @@ public class PaintViewModel : PopupViewModel
                         }
                     });
                 });
+        }
+        finally
+        {
+            _connection?.Dispose();
         }
     }
     #endregion

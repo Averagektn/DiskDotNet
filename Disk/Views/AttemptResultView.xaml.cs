@@ -281,10 +281,10 @@ public partial class AttemptResultView : UserControl
     #region Full path ellipse
     public void ShowFullPathEllipse(object sender, RoutedEventArgs e)
     {
-        _fullPathEllipses.ForEach(e => 
-        { 
-            e.Draw(); 
-            e.Scale(); 
+        _fullPathEllipses.ForEach(e =>
+        {
+            e.Draw();
+            e.Scale();
         });
     }
     public void HideFullPathEllipse(object sender, RoutedEventArgs e)

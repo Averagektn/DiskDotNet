@@ -46,4 +46,13 @@ public class Cursor(Point2D<int> center, int radius, int speed, Brush color, Pan
 
         return Center;
     }
+
+    public virtual void MoveSmooth(Point2D<int> center)
+    {
+        const double alpha = 0.5;
+        var x = (alpha * center.X) + ((1 - alpha) * Center.X);
+        var y = (alpha * center.Y) + ((1 - alpha) * Center.Y);
+
+        Move(new Point2D<int>((int)x, (int)y));
+    }
 }

@@ -1,6 +1,7 @@
 ﻿using Disk.Calculations.Implementations.Converters;
 using Disk.Services.Implementations;
 using Disk.ViewModels;
+using Disk.Visual.Implementations;
 using Disk.Visual.Interfaces;
 using Serilog;
 using System.Windows;
@@ -19,7 +20,7 @@ public partial class PaintView : UserControl
 
     private Size PaintPanelSize => PaintRect.RenderSize;
 
-    private ICursor PaintCursor = null!;
+    private Cursor PaintCursor = null!;
     private IProgressTarget Target = null!;
 
     private Converter? Converter => ViewModel?.Converter;
@@ -70,7 +71,7 @@ public partial class PaintView : UserControl
         {
             if (AllowedArea.FillContains(ShiftedWndPos.ToPoint()))
             {
-                PaintCursor.Move(ShiftedWndPos);
+                PaintCursor.MoveSmooth(ShiftedWndPos);
             }
             else
             {
@@ -87,7 +88,7 @@ public partial class PaintView : UserControl
                 int nearestX = (int)(center.X + (normalizedX * radiusX * scale));
                 int nearestY = (int)(center.Y + (normalizedY * radiusY * scale));
 
-                PaintCursor.Move(new(nearestX, nearestY));
+                PaintCursor.MoveSmooth(new(nearestX, nearestY));
             }
         }
     }
