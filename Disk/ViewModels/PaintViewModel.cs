@@ -70,7 +70,7 @@ public class PaintViewModel : PopupViewModel
     #region Attempts datasets
     public List<Point2D<float>> TargetCenters { get; private set; } = [];
 
-    public readonly List<Point2D<float>> FullPath = [];
+    public readonly List<Point3D<float>> FullPath = new(100 * 5 * 60);
     public readonly List<List<Point2D<float>>> PathsToTargets = [[]];
     public readonly List<List<Point2D<float>>> PathsInTargets = [];
     #endregion
@@ -164,6 +164,10 @@ public class PaintViewModel : PopupViewModel
             while (IsReceivingData)
             {
                 CurrentPos = _connection.GetXYZ();
+                if (CurrentPos is not null)
+                {
+                    FullPath.Add(CurrentPos);
+                }
             }
         }
         catch (Exception ex)

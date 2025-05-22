@@ -159,7 +159,7 @@ public partial class PaintView : UserControl
         }
 
         PaintCursor = DrawableFabric.GetIniCursor(Settings.CursorFilePath, PaintArea);
-        PaintCursor.OnShot += (p) => ViewModel.FullPath.Add(Converter.ToAngle_FromWnd(p));
+        //PaintCursor.OnShot += (p) => ViewModel.FullPath.Add(Converter.ToAngle_FromWnd(p));
 
         Target = DrawableFabric.GetIniProgressTarget(Settings.TargetFilePath, new(-1000, -1000), PaintArea);
         Target.OnReceiveShot += shot =>
