@@ -56,7 +56,7 @@ public class Connection : IDataSource<float>, IDisposable
         Socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp)
         {
             ReceiveTimeout = receiveTimeout,
-            NoDelay = true,
+            //NoDelay = true,
         };
         Socket.Connect(new IPEndPoint(IP, Port));
 
@@ -118,13 +118,47 @@ public class Connection : IDataSource<float>, IDisposable
     }
 
     private const int PacketSize = 16;
-    private const int PacketsCount = 4;
+    private const int PacketsCount = 5;
     private const int Size = PacketSize * PacketsCount;
     private int _currPacket = PacketsCount;
     private readonly byte[] _data = new byte[Size];
-    private readonly List<Point3D<float>> _coords = [new(), new(), new(), new()];
+    private readonly float[] _coords = new float[PacketsCount * 2];
     /// <inheritdoc/>
     public Point3D<float>? GetXYZ()
+    {
+        if (_currPacket >= PacketsCount)
+        {
+            int received = 0;
+            while (received < Size)
+            {
+                received += Socket.Receive(_data, received, Size - received, SocketFlags.None);
+            }
+
+            for (int j = 0, offset = 0; j < PacketsCount; j++, offset += PacketSize)
+            {
+                float y = BinaryPrimitives.ReadSingleLittleEndian(_data.AsSpan(offset + 4, 4));
+                float x = -BinaryPrimitives.ReadSingleLittleEndian(_data.AsSpan(offset + 8, 4));
+
+                _coords[j * 2] = Converter.ToAngle_FromRadian(x);
+                _coords[(j * 2) + 1] = Converter.ToAngle_FromRadian(y);
+
+                //_coords[j] = new Point3D<float>(angleX, angleY, 0);
+            }
+            _currPacket = 0;
+        }
+        //else if (Socket.Available < Size * 2)
+        else
+        {
+            Task.Delay(1).Wait();
+        }
+
+        var res = new Point3D<float>(_coords[_currPacket * 2], _coords[(_currPacket * 2) + 1], 0);
+        _currPacket++;
+
+        return res;
+    }
+
+/*    public Point3D<float>? GetXYZ()
     {
         if (_currPacket >= PacketsCount)
         {
@@ -135,9 +169,11 @@ public class Connection : IDataSource<float>, IDisposable
             {
                 var y = BinaryPrimitives.ReadSingleLittleEndian(span[(i + 4)..]);
                 var x = -BinaryPrimitives.ReadSingleLittleEndian(span[(i + 8)..]);
-                var z = BinaryPrimitives.ReadSingleLittleEndian(span[(i + 12)..]);
 
-                _coords[j] = Converter.ToAngle_FromRadian(new Point3D<float>(x, y, z));
+                var angleX = Converter.ToAngle_FromRadian(x);
+                var angleY = Converter.ToAngle_FromRadian(y);
+
+                _coords[j] = new Point3D<float>(angleX, angleY, 0);
             }
             _currPacket = 0;
         }
@@ -147,7 +183,7 @@ public class Connection : IDataSource<float>, IDisposable
         }
 
         return _coords[_currPacket++];
-    }
+    }*/
 
     /// <inheritdoc/>
     public Point2D<float>? GetXY()

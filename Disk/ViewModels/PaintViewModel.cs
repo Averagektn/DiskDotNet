@@ -164,9 +164,18 @@ public class PaintViewModel : PopupViewModel
             while (IsReceivingData)
             {
                 CurrentPos = _connection.GetXYZ();
-                if (CurrentPos is not null)
+                if (IsGame)
                 {
                     FullPath.Add(CurrentPos);
+
+/*                    if (IsPathToTarget)
+                    {
+                        PathsToTargets[TargetId].Add(CurrentPos);
+                    }
+                    else
+                    {
+                        PathsInTargets[TargetId].Add(CurrentPos);
+                    }*/
                 }
             }
         }
