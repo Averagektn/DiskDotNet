@@ -60,13 +60,6 @@ public class SessionViewModel(DiskContext database, IExcelFiller excelFiller, Na
         set => SetProperty(ref _attempts, value);
     }
 
-    private ObservableCollection<MergedPaths> _paths = [];
-    public ObservableCollection<MergedPaths> Paths
-    {
-        get => _paths;
-        set => SetProperty(ref _paths, value);
-    }
-
     public ICommand StartAttemptCommand => new Command(_ =>
         QuestionNavigator.Navigate(this, modalNavigationStore,
             message:
@@ -144,7 +137,7 @@ public class SessionViewModel(DiskContext database, IExcelFiller excelFiller, Na
             return;
         }
 
-        Paths = [.. SelectedAttempt.PathToTargets.Zip(SelectedAttempt.PathInTargets, (ptt, pit) => new MergedPaths(ptt, pit))];
+        OnPropertyChanged(nameof(SelectedAttempt));
     });
 
     public ICommand ExportToExcelCommand => new Command(async _ =>
@@ -188,8 +181,9 @@ public class SessionViewModel(DiskContext database, IExcelFiller excelFiller, Na
         _ = database.Attempts.Remove(SelectedAttempt);
         _ = await database.SaveChangesAsync();
         _ = Attempts.Remove(SelectedAttempt);
+
         OnPropertyChanged(nameof(Attempts));
-        Paths.Clear();
+        OnPropertyChanged(nameof(SelectedAttempt));
 
         SelectedAttempt = null;
     });

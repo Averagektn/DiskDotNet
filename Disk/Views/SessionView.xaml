@@ -143,26 +143,26 @@
             SelectionMode="Single"
             IsReadOnly="True" 
             Grid.ColumnSpan="2"
-            ItemsSource="{Binding Paths}" 
+            ItemsSource="{Binding SelectedAttempt.PathInTargets}" 
             AutoGenerateColumns="False" 
             ScrollViewer.VerticalScrollBarVisibility="Auto">
             <DataGrid.Columns>
                 <DataGridTextColumn 
                     Width="2*" 
                     Header="{x:Static lang:SessionLocalization.TargetNum}" 
-                    Binding="{Binding PathInTarget.TargetIdInc}" />
+                    Binding="{Binding TargetIdInc}" />
                 <DataGridTextColumn 
                     Width="3*" 
                     Header="{x:Static lang:SessionLocalization.Accuracy}" 
-                    Binding="{Binding PathInTarget.Accuracy, StringFormat=N1}" />
+                    Binding="{Binding Accuracy, StringFormat=N1}" />
                 <DataGridTextColumn 
                     Width="3*" 
                     Header="{x:Static lang:SessionLocalization.EllipseArea}" 
-                    Binding="{Binding PathInTarget.EllipseArea, StringFormat=N1}" />
+                    Binding="{Binding EllipseArea, StringFormat=N1}" />
                 <DataGridTextColumn 
                     Width="3*" 
                     Header="{x:Static lang:SessionLocalization.ConvexHullArea}" 
-                    Binding="{Binding PathInTarget.ConvexHullArea, StringFormat=N1}" />
+                    Binding="{Binding ConvexHullArea, StringFormat=N1}" />
                 <DataGridTemplateColumn Width="3*" x:Name="DeviationCol">
                     <DataGridTemplateColumn.Header>
                         <Grid Width="{Binding ElementName=DeviationCol, Path=ActualWidth}" >
@@ -201,11 +201,11 @@
                                 </Grid.ColumnDefinitions>
                                 <TextBlock 
                                     TextAlignment="Center"
-                                    Text="{Binding PathInTarget.DeviationX, StringFormat=N1}" 
+                                    Text="{Binding DeviationX, StringFormat=N1}" 
                                     Grid.Column="0"/>
                                 <TextBlock 
                                     TextAlignment="Center"
-                                    Text="{Binding PathInTarget.DeviationY, StringFormat=N1}" 
+                                    Text="{Binding DeviationY, StringFormat=N1}" 
                                     Grid.Column="1"/>
                             </Grid>
                         </DataTemplate>
@@ -250,11 +250,11 @@
                                 </Grid.ColumnDefinitions>
                                 <TextBlock 
                                     TextAlignment="Center"
-                                    Text="{Binding PathInTarget.MathExpX, StringFormat=N1}" 
+                                    Text="{Binding MathExpX, StringFormat=N1}" 
                                     Grid.Column="0"/>
                                 <TextBlock 
                                     TextAlignment="Center"
-                                    Text="{Binding PathInTarget.MathExpY, StringFormat=N1}" 
+                                    Text="{Binding MathExpY, StringFormat=N1}" 
                                     Grid.Column="1"/>
                             </Grid>
                         </DataTemplate>
@@ -270,7 +270,7 @@
             SelectionMode="Single"
             IsReadOnly="True" 
             Grid.ColumnSpan="2"
-            ItemsSource="{Binding Paths}" 
+            ItemsSource="{Binding SelectedAttempt.PathToTargets}" 
             AutoGenerateColumns="False" 
             ScrollViewer.VerticalScrollBarVisibility="Auto">
 
@@ -278,23 +278,23 @@
                 <DataGridTextColumn 
                     Width="2*" 
                     Header="{x:Static lang:SessionLocalization.TargetNum}" 
-                    Binding="{Binding PathToTarget.TargetIdInc}" />
+                    Binding="{Binding TargetIdInc}" />
                 <DataGridTextColumn 
                     Width="2*" 
                     Header="{x:Static lang:SessionLocalization.AverageSpeed}" 
-                    Binding="{Binding PathToTarget.AverageSpeed, StringFormat=N1}" />
+                    Binding="{Binding AverageSpeed, StringFormat=N1}" />
                 <DataGridTextColumn 
                     Width="3*" 
                     Header="{x:Static lang:SessionLocalization.ApproachSpeed}" 
-                    Binding="{Binding PathToTarget.ApproachSpeed, StringFormat=N1}" />
+                    Binding="{Binding ApproachSpeed, StringFormat=N1}" />
                 <DataGridTextColumn 
                     Width="2*" 
                     Header="{x:Static lang:SessionLocalization.Time}" 
-                    Binding="{Binding PathToTarget.Time, StringFormat=N1}" />
+                    Binding="{Binding Time, StringFormat=N1}" />
                 <DataGridTextColumn 
                     Width="2*" 
                     Header="{x:Static lang:SessionLocalization.Distance}" 
-                    Binding="{Binding PathToTarget.Distance, StringFormat=N1}" />
+                    Binding="{Binding Distance, StringFormat=N1}" />
             </DataGrid.Columns>
         </DataGrid>
 
