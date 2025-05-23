@@ -209,18 +209,17 @@ public partial class AttemptResultView : UserControl
 
     private void OnRender(object? sender, EventArgs e)
     {
-        if (ViewModel is null || _cursor is null || _cursor.Center == ViewModel.CursorCenter)
+        if (ViewModel is null)
         {
             return;
         }
 
-        _cursor.Move(ViewModel.CursorCenter);
+        _cursor?.Move(ViewModel.CursorCenter);
     }
 
 
     private void StopReply(object sender, RoutedEventArgs e)
     {
-        CompositionTarget.Rendering -= OnRender;
         IsReply = false;
     }
 
@@ -239,9 +238,13 @@ public partial class AttemptResultView : UserControl
         };
         _coordTimer.Tick += (_, _) =>
         {
-            IsReply = _enumerator.MoveNext();
+            if (!_enumerator.MoveNext())
+            {
+                IsReply = false;
+            }
         };
 
+        IsReply = true;
         _coordTimer.Start();
     }
     #endregion
