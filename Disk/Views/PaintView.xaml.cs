@@ -54,6 +54,7 @@ public partial class PaintView : UserControl
 
         ShotTimer = new(DispatcherPriority.Normal)
         {
+            // 60HZ max
             Interval = TimeSpan.FromMilliseconds(Settings.ShotTime)
         };
         ShotTimer.Tick += ShotTimerElapsed;
@@ -125,7 +126,7 @@ public partial class PaintView : UserControl
             shotScore = Target.ReceiveShot(shots[i]);
         }
 
-        var angleShot = Converter.ToAngle_FromWnd(shot);
+        _ = Converter.ToAngle_FromWnd(shot);
 
         // pit
         bool isPathInTargetStarts = shotScore != 0 && ViewModel.IsPathToTarget;
@@ -134,14 +135,14 @@ public partial class PaintView : UserControl
             ViewModel.SwitchToPathInTarget();
         }
 
-        if (ViewModel.IsPathToTarget)
-        {
-            ViewModel.PathsToTargets[ViewModel.TargetId].Add(ViewModel.CurrentPos ?? angleShot);
-        }
-        else
-        {
-            ViewModel.PathsInTargets[ViewModel.TargetId].Add(ViewModel.CurrentPos ?? angleShot);
-        }
+        /*        if (ViewModel.IsPathToTarget)
+                {
+                    ViewModel.PathsToTargets[ViewModel.TargetId].Add(ViewModel.CurrentPos ?? angleShot);
+                }
+                else
+                {
+                    ViewModel.PathsInTargets[ViewModel.TargetId].Add(ViewModel.CurrentPos ?? angleShot);
+                }*/
 
         // ptt
         bool isPathToTargetStarts = Target.IsFull;

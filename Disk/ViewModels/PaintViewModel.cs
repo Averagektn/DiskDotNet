@@ -60,18 +60,19 @@ public class PaintViewModel : PopupViewModel
     public Point2D<int>? TargetCenter => TargetCenters.Count <= TargetId ? null : Converter.ToWndCoord(TargetCenters[TargetId]);
     private static Settings Settings => Settings.Default;
     private string UsrAngLog => $"{CurrentAttempt.LogFilePath}{FilePath.DirectorySeparatorChar}{Settings.UserLogFileName}";
-    public bool IsPathToTarget => _pathToTargetStopwatch?.IsRunning ?? false;
+    public bool IsPathToTarget => _pathToTargetStopwatch.IsRunning;
     #endregion
 
     #region Disposable
     private Thread _diskNetworkThread;
+    private Thread _savePathThread;
     #endregion
 
     #region Attempts datasets
     public List<Point2D<float>> TargetCenters { get; private set; } = [];
 
     public readonly List<Point3D<float>> FullPath = new(100 * 5 * 60);
-    public readonly List<List<Point2D<float>>> PathsToTargets = [[]];
+    public readonly List<List<Point2D<float>>> PathsToTargets = [new List<Point2D<float>>(100 * 60)];
     public readonly List<List<Point2D<float>>> PathsInTargets = [];
     #endregion
 
@@ -93,6 +94,15 @@ public class PaintViewModel : PopupViewModel
         {
             _ = SetProperty(ref _isGame, value);
             OnPropertyChanged(nameof(AdaptationButtonVisibility));
+
+            if (_isGame)
+            {
+                _pathToTargetStopwatch.Start();
+            }
+            else
+            {
+                _pathToTargetStopwatch.Stop();
+            }
         }
     }
 
@@ -107,11 +117,12 @@ public class PaintViewModel : PopupViewModel
         }
     }
 
-    private Stopwatch? _pathToTargetStopwatch;
+    private readonly Stopwatch _pathToTargetStopwatch = new();
     #endregion
 
     #region Binding
     public string ScoreString => $"{Localization.Score}: {Score}";
+
     private bool _isStopEnabled = true;
     public bool IsStopEnabled { get => _isStopEnabled; set => SetProperty(ref _isStopEnabled, value); }
     #endregion
@@ -123,12 +134,20 @@ public class PaintViewModel : PopupViewModel
     #endregion
 
     #region Commands
-    public ICommand AdaptationCommand => new Command(_ => IsGame = true);
+    public ICommand AdaptationCommand => new Command(_ =>
+    {
+        IsGame = true;
+        _savePathThread.Start();
+    });
     #endregion
 
     public PaintViewModel(NavigationStore navigationStore, DiskContext database, ModalNavigationStore modalNavigationStore)
     {
         _diskNetworkThread = new(ReceivePatientPosition)
+        {
+            Priority = ThreadPriority.Highest
+        };
+        _savePathThread = new(SavePath)
         {
             Priority = ThreadPriority.Highest
         };
@@ -140,11 +159,38 @@ public class PaintViewModel : PopupViewModel
         _database = database;
     }
 
+    private void SavePath()
+    {
+        int intervalMs = Settings.ShotTime;
+        var stopwatch = Stopwatch.StartNew();
+        long nextTick = stopwatch.ElapsedMilliseconds;
+
+        while (IsGame && TargetId < TargetCenters.Count)
+        {
+            long now = stopwatch.ElapsedMilliseconds;
+
+            if (now >= nextTick && CurrentPos is not null)
+            {
+                FullPath.Add(CurrentPos);
+
+                if (IsPathToTarget && !_isSavingPathToTarget)
+                {
+                    PathsToTargets[TargetId].Add(CurrentPos);
+                }
+                else if (!_isSavingPathInTarget)
+                {
+                    PathsInTargets[TargetId].Add(CurrentPos);
+                }
+
+                nextTick += intervalMs;
+            }
+        }
+    }
+
     #region Data receiveing
     public void StartReceiving()
     {
         _diskNetworkThread.Start();
-        _pathToTargetStopwatch = Stopwatch.StartNew();
     }
 
     private Connection? _connection = null;
@@ -164,19 +210,6 @@ public class PaintViewModel : PopupViewModel
             while (IsReceivingData)
             {
                 CurrentPos = _connection.GetXYZ();
-                if (IsGame)
-                {
-                    FullPath.Add(CurrentPos);
-
-/*                    if (IsPathToTarget)
-                    {
-                        PathsToTargets[TargetId].Add(CurrentPos);
-                    }
-                    else
-                    {
-                        PathsInTargets[TargetId].Add(CurrentPos);
-                    }*/
-                }
             }
         }
         catch (Exception ex)
@@ -196,7 +229,15 @@ public class PaintViewModel : PopupViewModel
                         {
                             _diskNetworkThread.Join();
                         }
+                        if (_savePathThread.IsAlive)
+                        {
+                            _savePathThread.Join();
+                        }
                         _diskNetworkThread = new(ReceivePatientPosition)
+                        {
+                            Priority = ThreadPriority.Highest
+                        };
+                        _savePathThread = new(SavePath)
                         {
                             Priority = ThreadPriority.Highest
                         };
@@ -261,6 +302,10 @@ public class PaintViewModel : PopupViewModel
         {
             _diskNetworkThread.Join();
         }
+        if (_savePathThread.IsAlive)
+        {
+            _savePathThread.Join();
+        }
     }
 
     public async Task ShowResultAsync()
@@ -278,16 +323,19 @@ public class PaintViewModel : PopupViewModel
     }
 
     #region Path to target
+    private bool _isSavingPathToTarget = false;
     public void SwitchToPathInTarget()
     {
-        PathsInTargets.Add([]);
+        _isSavingPathToTarget = true;
+        PathsInTargets.Add(new List<Point2D<float>>(100 * 60));
 
         SavePathToTarget();
+        _isSavingPathToTarget = false;
     }
 
     public void SavePathToTarget()
     {
-        if (_pathToTargetStopwatch is null || PathsToTargets[TargetId].Count == 0)
+        if (PathsToTargets[TargetId].Count == 0)
         {
             return;
         }
@@ -316,7 +364,7 @@ public class PaintViewModel : PopupViewModel
             Distance = distance,
             AverageSpeed = avgSpeed,
             ApproachSpeed = approachSpeed,
-            CoordinatesJson = JsonConvert.SerializeObject(PathsToTargets[TargetId]),
+            CoordinatesJson = JsonConvert.SerializeObject(pathToTarget),
             TargetId = TargetId,
             Attempt = CurrentAttempt.Id,
             Time = time
@@ -334,33 +382,34 @@ public class PaintViewModel : PopupViewModel
                 Log.Error($"{e.Exception.Message} \n {e.Exception.StackTrace}");
             }
         });
-        ;
     }
     #endregion
 
     #region Path in target
+    private bool _isSavingPathInTarget = false;
     public bool SwitchToPathToTarget(IProgressTarget target)
     {
-        if (_pathToTargetStopwatch is null)
-        {
-            return false;
-        }
-
+        _isSavingPathInTarget = true;
         SavePathInTarget();
 
-        PathsToTargets.Add([]);
+        PathsToTargets.Add(new List<Point2D<float>>(100 * 60));
 
         target.Reset();
 
         TargetId++;
+
         if (TargetCenter is not null)
         {
             target.Move(TargetCenter);
 
             _pathToTargetStopwatch.Restart();
 
+            _isSavingPathInTarget = false;
+
             return true;
         }
+
+        _isSavingPathInTarget = false;
         return false;
     }
 
@@ -418,7 +467,6 @@ public class PaintViewModel : PopupViewModel
                 Log.Error($"{e.Exception.Message} \n {e.Exception.StackTrace}");
             }
         });
-        ;
     }
     #endregion
 
@@ -429,13 +477,15 @@ public class PaintViewModel : PopupViewModel
         base.Dispose();
         GC.SuppressFinalize(this);
 
+        bool isPathToTarget = IsPathToTarget;
+
         StopRecord();
 
-        if (PttLastSavedId + 1 != TargetCenters.Count && PttLastSavedId < TargetId && IsPathToTarget)
+        if (PttLastSavedId + 1 != TargetCenters.Count && PttLastSavedId < TargetId && isPathToTarget)
         {
             SavePathToTarget();
         }
-        else if (PitLastSavedId + 1 != TargetCenters.Count && PitLastSavedId < TargetId && !IsPathToTarget)
+        else if (PitLastSavedId + 1 != TargetCenters.Count && PitLastSavedId < TargetId && !isPathToTarget && PttLastSavedId != -1)
         {
             SavePathInTarget();
         }
