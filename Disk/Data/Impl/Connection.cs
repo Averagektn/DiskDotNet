@@ -48,7 +48,7 @@ public class Connection : IDataSource<float>, IDisposable
     /// <param name="receiveTimeout">
     ///     The receive timeout in milliseconds
     /// </param>
-    private Connection(IPAddress ip, int port, int receiveTimeout = 5000)
+    private Connection(IPAddress ip, int port, int receiveTimeout = 2000)
     {
         IP = ip;
         Port = port;
@@ -124,7 +124,7 @@ public class Connection : IDataSource<float>, IDisposable
     private readonly byte[] _data = new byte[Size];
     private readonly float[] _coords = new float[PacketsCount * 2];
     /// <inheritdoc/>
-    public Point3D<float>? GetXYZ()
+    public Point3D<float> GetXYZ()
     {
         if (_currPacket >= PacketsCount)
         {
