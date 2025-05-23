@@ -136,11 +136,11 @@ public partial class PaintView : UserControl
 
         if (ViewModel.IsPathToTarget)
         {
-            ViewModel.PathsToTargets[ViewModel.TargetId].Add(angleShot);
+            ViewModel.PathsToTargets[ViewModel.TargetId].Add(ViewModel.CurrentPos ?? angleShot);
         }
         else
         {
-            ViewModel.PathsInTargets[ViewModel.TargetId].Add(angleShot);
+            ViewModel.PathsInTargets[ViewModel.TargetId].Add(ViewModel.CurrentPos ?? angleShot);
         }
 
         // ptt
