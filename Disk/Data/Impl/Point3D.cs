@@ -1,4 +1,5 @@
-﻿using System.Windows.Media.Media3D;
+﻿using Newtonsoft.Json;
+using System.Windows.Media.Media3D;
 
 namespace Disk.Data.Impl;
 
@@ -18,6 +19,7 @@ public class Point3D<CoordType> : Point2D<CoordType>, IEquatable<Point3D<CoordTy
     /// <summary>
     ///     Gets the Z coordinate of the point as a double value
     /// </summary>
+    [JsonIgnore]
     public double ZDbl => Z.ToDouble(FormatProvider);
 
     /// <summary>

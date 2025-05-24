@@ -175,11 +175,11 @@ public class PaintViewModel : PopupViewModel
 
                 if (IsPathToTarget && !_isSavingPathToTarget)
                 {
-                    PathsToTargets[TargetId].Add(CurrentPos);
+                    PathsToTargets[TargetId].Add(CurrentPos.To2D());
                 }
                 else if (!_isSavingPathInTarget)
                 {
-                    PathsInTargets[TargetId].Add(CurrentPos);
+                    PathsInTargets[TargetId].Add(CurrentPos.To2D());
                 }
 
                 nextTick += intervalMs;
