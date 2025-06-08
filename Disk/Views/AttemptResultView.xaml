@@ -62,7 +62,7 @@
                 Text="II" 
                 FontSize="55" />
 
-            <Grid VerticalAlignment="Bottom" Margin="0 0 20 0">
+            <Grid VerticalAlignment="Bottom" Panel.ZIndex="100" Margin="0 0 20 0">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="auto" />
                     <ColumnDefinition Width="*"/>

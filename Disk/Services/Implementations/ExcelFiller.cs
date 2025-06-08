@@ -107,7 +107,7 @@ public class ExcelFiller : IExcelFiller
                     worksheet.Range(firstCellRow: 8, firstCellColumn: 6, lastCellRow: 8, lastCellColumn: 11),
                     worksheet.Range(firstCellRow: 9, firstCellColumn: 1, lastCellRow: 9, lastCellColumn: 12),
                     worksheet.Range(firstCellRow: 1, firstCellColumn: pathCol, lastCellRow: 2,
-                        lastCellColumn: (ColsPerPath * (attempt.PathToTargets.Count + attempt.PathInTargets.Count + 1)) + 3),
+                        lastCellColumn: (ColsPerPath * (attempt.PathToTargets.Count + attempt.PathInTargets.Count + 1)) + 5),
                 }
             .ForEach(header =>
             {
@@ -115,10 +115,10 @@ public class ExcelFiller : IExcelFiller
                 header.Style.Fill.BackgroundColor = XLColor.LightGray;
             });
             worksheet.Range(firstCellRow: 3, firstCellColumn: pathCol, lastCellRow: 2,
-                lastCellColumn: (ColsPerPath * (attempt.PathToTargets.Count + attempt.PathInTargets.Count + 1)) + 3)
+                lastCellColumn: (ColsPerPath * (attempt.PathToTargets.Count + attempt.PathInTargets.Count + 1)) + 5)
                 .Style.Fill.BackgroundColor = XLColor.LightSlateGray;
             worksheet.Range(firstCellRow: 3, firstCellColumn: pathCol, lastCellRow: 2,
-                lastCellColumn: (ColsPerPath * (attempt.PathToTargets.Count + attempt.PathInTargets.Count + 1)) + 3)
+                lastCellColumn: (ColsPerPath * (attempt.PathToTargets.Count + attempt.PathInTargets.Count + 1)) + 5)
                 .Style.Font.Bold = true;
 
             _ = worksheet
