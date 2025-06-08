@@ -5,11 +5,11 @@ using Disk.ViewModels;
 using Disk.Visual.Implementations;
 using Disk.Visual.Interfaces;
 using System.Data;
+using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
-using System.Windows.Threading;
 using Settings = Disk.Properties.Config.Config;
 
 namespace Disk.Views;
@@ -35,7 +35,8 @@ public partial class AttemptResultView : UserControl
     private readonly Size _iniScreenSize = new(_settings.IniScreenWidth, _settings.IniScreenHeight);
 
     private static readonly Settings _settings = Settings.Default;
-    private DispatcherTimer? _coordTimer;
+    //private DispatcherTimer? _coordTimer;
+    private Thread? _coordThread;
 
     private bool _isReply;
     private bool IsReply
@@ -44,14 +45,10 @@ public partial class AttemptResultView : UserControl
         set
         {
             _isReply = value;
-            if (!value)
-            {
-                _coordTimer?.Stop();
-            }
-            FastForwardSlider.IsEnabled = !value;
+            FastForwardSlider.IsEnabled = !_isReply;
             if (ViewModel is not null)
             {
-                ViewModel.IsStopEnabled = value;
+                ViewModel.IsStopEnabled = _isReply;
             }
         }
     }
@@ -61,7 +58,7 @@ public partial class AttemptResultView : UserControl
         InitializeComponent();
 
         SizeChanged += (_, _) => Converter?.Scale(PaintPanelSize);
-
+        List<int> l = new();
         Loaded += AttemptResultView_Loaded;
         Loaded += (_, _) => SidebarTransform.X = Sidebar.ActualWidth + 100;
 
@@ -160,8 +157,8 @@ public partial class AttemptResultView : UserControl
         ellipseList.ForEach(e => e.Remove());
         ellipseList.Clear();
 
-        var convexHull = CreateConvexHull(points, bound, fill);
-        var boundingEllipse = CreateBoundingEllipse(points, bound);
+        IStaticFigure convexHull = CreateConvexHull(points, bound, fill);
+        IStaticFigure boundingEllipse = CreateBoundingEllipse(points, bound);
 
         ellipseList.AddRange([convexHull, boundingEllipse]);
     }
@@ -172,7 +169,7 @@ public partial class AttemptResultView : UserControl
 
         try
         {
-            var converter = DrawableFabric.GetIniConverter();
+            Converter converter = DrawableFabric.GetIniConverter();
             ch = new ConvexHull([.. points.Select(converter.ToWndCoord)], borderColor, fillColor, EllipseArea, _iniScreenSize);
             ch.Scale();
         }
@@ -186,7 +183,7 @@ public partial class AttemptResultView : UserControl
 
     private IStaticFigure CreateBoundingEllipse(List<Point2D<float>> points, Brush color)
     {
-        var converter = DrawableFabric.GetIniConverter();
+        Converter converter = DrawableFabric.GetIniConverter();
         BoundingEllipse ellipse;
 
         try
@@ -221,6 +218,7 @@ public partial class AttemptResultView : UserControl
     private void StopReply(object sender, RoutedEventArgs e)
     {
         IsReply = false;
+        _coordThread?.Join();
     }
 
     private void ReplyClick(object sender, RoutedEventArgs e)
@@ -231,21 +229,34 @@ public partial class AttemptResultView : UserControl
         }
 
         _enumerator = ViewModel.FullPath.GetEnumerator();
+        int intervalMs = ViewModel.CurrentAttempt.SamplingInterval;
 
-        _coordTimer = new(DispatcherPriority.Normal)
+        _coordThread?.Join();
+        _coordThread = new Thread(_ =>
         {
-            Interval = TimeSpan.FromMilliseconds(ViewModel.CurrentAttempt.SamplingInterval)
-        };
-        _coordTimer.Tick += (_, _) =>
-        {
-            if (!_enumerator.MoveNext())
+            Stopwatch stopwatch = Stopwatch.StartNew();
+            long nextTick = stopwatch.ElapsedMilliseconds;
+
+            while (IsReply)
             {
-                IsReply = false;
-            }
-        };
+                long now = stopwatch.ElapsedMilliseconds;
 
+                if (now >= nextTick)
+                {
+                    if (!_enumerator.MoveNext())
+                    {
+                        _ = Dispatcher.Invoke(() => IsReply = false);
+                    }
+
+                    nextTick += intervalMs;
+                }
+            }
+        })
+        {
+            Priority = ThreadPriority.Highest,
+        };
         IsReply = true;
-        _coordTimer.Start();
+        _coordThread.Start();
     }
     #endregion
 
@@ -366,7 +377,7 @@ public partial class AttemptResultView : UserControl
         _detectionAreaColor = MouseDetectionArea.Background;
         MouseDetectionArea.Background = Brushes.Transparent;
 
-        var animation = new DoubleAnimation
+        DoubleAnimation animation = new()
         {
             To = 0,
             Duration = TimeSpan.FromMilliseconds(300)
@@ -380,7 +391,7 @@ public partial class AttemptResultView : UserControl
     {
         MouseDetectionArea.Background = _detectionAreaColor;
 
-        var animation = new DoubleAnimation
+        DoubleAnimation animation = new()
         {
             To = Sidebar.ActualWidth + 100,
             Duration = TimeSpan.FromMilliseconds(300)
@@ -390,4 +401,6 @@ public partial class AttemptResultView : UserControl
         DimOverlay.Visibility = Visibility.Hidden;
     }
     #endregion
+
+
 }
