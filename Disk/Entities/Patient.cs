@@ -23,5 +23,8 @@ public partial class Patient
 
     public virtual ICollection<Session> Sessions { get; set; } = null!;
 
-    public override string ToString() => $"{Surname} {Name} {Patronymic}";
+    public override string ToString()
+    {
+        return $"{Surname} {Name} {Patronymic}";
+    }
 }

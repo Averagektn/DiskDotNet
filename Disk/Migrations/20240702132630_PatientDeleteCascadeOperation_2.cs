@@ -2,40 +2,39 @@
 
 #nullable disable
 
-namespace Disk.Migrations
+namespace Disk.Migrations;
+
+/// <inheritdoc />
+public partial class PatientDeleteCascadeOperation_2 : Migration
 {
     /// <inheritdoc />
-    public partial class PatientDeleteCascadeOperation_2 : Migration
+    protected override void Up(MigrationBuilder migrationBuilder)
     {
-        /// <inheritdoc />
-        protected override void Up(MigrationBuilder migrationBuilder)
-        {
-            _ = migrationBuilder.DropForeignKey(
-                name: "FK_session_appointment_ses_appointment",
-                table: "session");
+        _ = migrationBuilder.DropForeignKey(
+            name: "FK_session_appointment_ses_appointment",
+            table: "session");
 
-            _ = migrationBuilder.AddForeignKey(
-                name: "FK_session_appointment_ses_appointment",
-                table: "session",
-                column: "ses_appointment",
-                principalTable: "appointment",
-                principalColumn: "app_id",
-                onDelete: ReferentialAction.Cascade);
-        }
+        _ = migrationBuilder.AddForeignKey(
+            name: "FK_session_appointment_ses_appointment",
+            table: "session",
+            column: "ses_appointment",
+            principalTable: "appointment",
+            principalColumn: "app_id",
+            onDelete: ReferentialAction.Cascade);
+    }
 
-        /// <inheritdoc />
-        protected override void Down(MigrationBuilder migrationBuilder)
-        {
-            _ = migrationBuilder.DropForeignKey(
-                name: "FK_session_appointment_ses_appointment",
-                table: "session");
+    /// <inheritdoc />
+    protected override void Down(MigrationBuilder migrationBuilder)
+    {
+        _ = migrationBuilder.DropForeignKey(
+            name: "FK_session_appointment_ses_appointment",
+            table: "session");
 
-            _ = migrationBuilder.AddForeignKey(
-                name: "FK_session_appointment_ses_appointment",
-                table: "session",
-                column: "ses_appointment",
-                principalTable: "appointment",
-                principalColumn: "app_id");
-        }
+        _ = migrationBuilder.AddForeignKey(
+            name: "FK_session_appointment_ses_appointment",
+            table: "session",
+            column: "ses_appointment",
+            principalTable: "appointment",
+            principalColumn: "app_id");
     }
 }

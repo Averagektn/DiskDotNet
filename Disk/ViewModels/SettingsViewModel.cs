@@ -1,13 +1,17 @@
-﻿using Disk.Calculations.Implementations;
+﻿using System.Net;
+using System.Windows;
+using System.Windows.Input;
+
+using Disk.Calculations.Implementations;
 using Disk.Navigators;
 using Disk.Stores;
 using Disk.ViewModels.Common.Commands.Sync;
 using Disk.ViewModels.Common.ViewModels;
+
 using Microsoft.Win32;
+
 using Serilog;
-using System.Net;
-using System.Windows;
-using System.Windows.Input;
+
 using Localization = Disk.Properties.Langs.Settings.SettingsLocalization;
 using Settings = Disk.Properties.Config.Config;
 
@@ -25,7 +29,7 @@ public class SettingsViewModel(ModalNavigationStore modalNavigationStore) : Popu
         get => _ip;
         set
         {
-            if (IPAddress.TryParse(value, out var ip))
+            if (IPAddress.TryParse(value, out IPAddress? ip))
             {
                 _ = SetProperty(ref _ip, ip.ToString());
             }
@@ -50,7 +54,7 @@ public class SettingsViewModel(ModalNavigationStore modalNavigationStore) : Popu
         get => _shotTime.ToString();
         set
         {
-            if (int.TryParse(value, out var res) || _shotTime >= 1000 || _shotTime < 1)
+            if (int.TryParse(value, out int res) || _shotTime >= 1000 || _shotTime < 1)
             {
                 _ = SetProperty(ref _shotTime, res);
             }
@@ -74,7 +78,7 @@ public class SettingsViewModel(ModalNavigationStore modalNavigationStore) : Popu
         get => _cursorRadius.ToString();
         set
         {
-            if (int.TryParse(value, out var res) || res < 1 || res > 15)
+            if (int.TryParse(value, out int res) || res < 1 || res > 15)
             {
                 _ = SetProperty(ref _cursorRadius, res);
             }
@@ -98,7 +102,7 @@ public class SettingsViewModel(ModalNavigationStore modalNavigationStore) : Popu
         get => _targetRadius.ToString();
         set
         {
-            if (int.TryParse(value, out var res) || _targetRadius < 3 || _targetRadius > 17)
+            if (int.TryParse(value, out int res) || _targetRadius < 3 || _targetRadius > 17)
             {
                 _ = SetProperty(ref _targetRadius, res);
             }
@@ -145,7 +149,7 @@ public class SettingsViewModel(ModalNavigationStore modalNavigationStore) : Popu
         get => _targetTtl.ToString();
         set
         {
-            if (int.TryParse(value, out var res) || _targetTtl < 1)
+            if (int.TryParse(value, out int res) || _targetTtl < 1)
             {
                 _ = SetProperty(ref _targetTtl, res);
             }
@@ -169,7 +173,7 @@ public class SettingsViewModel(ModalNavigationStore modalNavigationStore) : Popu
     {
         if (parameter is not null)
         {
-            var selectedLanguage = parameter.ToString();
+            string? selectedLanguage = parameter.ToString();
 
             if (Settings.Language != selectedLanguage)
             {
@@ -232,7 +236,7 @@ public class SettingsViewModel(ModalNavigationStore modalNavigationStore) : Popu
 
     private static void RestartApplication()
     {
-        var appPath = Environment.ProcessPath;
+        string? appPath = Environment.ProcessPath;
 
         if (appPath is not null)
         {
@@ -263,13 +267,13 @@ public class SettingsViewModel(ModalNavigationStore modalNavigationStore) : Popu
     {
         base.AfterNavigation();
 
-        var ipChanged = Ip != Settings.IP;
-        var cursorPathChanged = CursorFilePath != Settings.CursorFilePath;
-        var targetPathChanged = TargetFilePath != Settings.TargetFilePath;
-        var shotTimeChanged = ShotTime != Calculator.RoundToNearest(value: 1000 / Settings.ShotTime, nearest: 5).ToString();
-        var targetRadiusChanged = TargetRadius != Settings.IniTargetRadius.ToString();
-        var cursorRadiusChanged = CursorRadius != Settings.IniCursorRadius.ToString();
-        var targetTtlChanged = TargetTtl != Calculator.RoundToNearest(value: 1000 * Settings.TargetHp / (1000 / Settings.ShotTime),
+        bool ipChanged = Ip != Settings.IP;
+        bool cursorPathChanged = CursorFilePath != Settings.CursorFilePath;
+        bool targetPathChanged = TargetFilePath != Settings.TargetFilePath;
+        bool shotTimeChanged = ShotTime != Calculator.RoundToNearest(value: 1000 / Settings.ShotTime, nearest: 5).ToString();
+        bool targetRadiusChanged = TargetRadius != Settings.IniTargetRadius.ToString();
+        bool cursorRadiusChanged = CursorRadius != Settings.IniCursorRadius.ToString();
+        bool targetTtlChanged = TargetTtl != Calculator.RoundToNearest(value: 1000 * Settings.TargetHp / (1000 / Settings.ShotTime),
             nearest: 100).ToString();
 
         if (ipChanged || cursorPathChanged || targetPathChanged || shotTimeChanged || targetRadiusChanged || cursorRadiusChanged

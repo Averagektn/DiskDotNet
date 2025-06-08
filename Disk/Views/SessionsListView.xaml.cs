@@ -1,10 +1,11 @@
-﻿using Disk.Entities;
-using Disk.ViewModels;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Threading;
+
+using Disk.Entities;
+using Disk.ViewModels;
 
 namespace Disk.Views;
 
@@ -54,29 +55,15 @@ public partial class SessionsListView : UserControl
                     return;
                 }
 
-                var rowScreenPos = row.PointToScreen(new Point(0, 0));
-                var screenHeight = SystemParameters.PrimaryScreenHeight;
-                var screenWidth = SystemParameters.PrimaryScreenWidth;
+                Point rowScreenPos = row.PointToScreen(new Point(0, 0));
+                double screenHeight = SystemParameters.PrimaryScreenHeight;
+                double screenWidth = SystemParameters.PrimaryScreenWidth;
                 double popupHeight = MapPopup.Height;
                 double popupWidth = MapPopup.Width;
 
-                if (screenWidth - rowScreenPos.X - row.ActualWidth > popupWidth)
-                {
-                    MapPopup.HorizontalOffset = rowScreenPos.X + row.ActualWidth;
-                }
-                else
-                {
-                    MapPopup.HorizontalOffset = screenWidth - popupWidth;
-                }
+                MapPopup.HorizontalOffset = screenWidth - rowScreenPos.X - row.ActualWidth > popupWidth ? rowScreenPos.X + row.ActualWidth : screenWidth - popupWidth;
 
-                if (screenHeight - rowScreenPos.Y - (row.ActualHeight * 2) > popupHeight)
-                {
-                    MapPopup.VerticalOffset = rowScreenPos.Y;
-                }
-                else
-                {
-                    MapPopup.VerticalOffset = rowScreenPos.Y - popupHeight;
-                }
+                MapPopup.VerticalOffset = screenHeight - rowScreenPos.Y - (row.ActualHeight * 2) > popupHeight ? rowScreenPos.Y : rowScreenPos.Y - popupHeight;
             }, DispatcherPriority.Loaded);
         }
     }

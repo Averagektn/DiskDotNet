@@ -1,5 +1,7 @@
-﻿using Newtonsoft.Json;
-using System.Drawing;
+﻿using System.Drawing;
+
+using Newtonsoft.Json;
+
 using Point = System.Windows.Point;
 
 namespace Disk.Data.Impl;

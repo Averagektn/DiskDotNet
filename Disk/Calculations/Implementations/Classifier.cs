@@ -27,7 +27,7 @@ public static class Classifier<CoordType> where CoordType : IConvertible, new()
     public static IEnumerable<IEnumerable<Point2D<CoordType>>> Classify(IEnumerable<Point2D<CoordType>> dataset, int classesCount)
     {
         var res = new List<List<Point2D<CoordType>>>(classesCount);
-        var centers = GetInitialCenters([.. dataset], classesCount);
+        List<Point2D<CoordType>> centers = GetInitialCenters([.. dataset], classesCount);
         bool isCounting = true;
 
         while (isCounting)
@@ -56,7 +56,7 @@ public static class Classifier<CoordType> where CoordType : IConvertible, new()
     {
         var dataList = dataset.ToList();
         var res = new List<List<Point3D<CoordType>>>(classesCount);
-        var centers = GetInitialCenters(dataList, classesCount);
+        List<Point3D<CoordType>> centers = GetInitialCenters(dataList, classesCount);
         bool isCounting = true;
 
         while (isCounting)
@@ -85,7 +85,7 @@ public static class Classifier<CoordType> where CoordType : IConvertible, new()
     {
         double fullAngle = 360.0;
         var res = new List<List<PolarPoint<CoordType>>>(classesCount);
-        var angleStep = fullAngle / classesCount;
+        double angleStep = fullAngle / classesCount;
 
         for (int i = 0; i < classesCount; i++)
         {
@@ -126,7 +126,7 @@ public static class Classifier<CoordType> where CoordType : IConvertible, new()
 
         for (int i = 0; i < classesCount; i++)
         {
-            var p = dataset[random.Next(classesCount)];
+            T? p = dataset[random.Next(classesCount)];
 
             if (!centers.Contains(p))
             {
@@ -256,11 +256,11 @@ public static class Classifier<CoordType> where CoordType : IConvertible, new()
         {
             int classId = 0;
 
-            var prevDistance = centers[classId].GetDistance(dataset[i]);
+            double prevDistance = centers[classId].GetDistance(dataset[i]);
 
             for (int j = 1; j < centers.Count; j++)
             {
-                var currDistance = centers[j].GetDistance(dataset[i]);
+                double currDistance = centers[j].GetDistance(dataset[i]);
 
                 if (currDistance < prevDistance)
                 {

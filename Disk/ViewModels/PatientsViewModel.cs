@@ -1,4 +1,8 @@
-﻿using Disk.Db.Context;
+﻿using System.Collections.ObjectModel;
+using System.Windows;
+using System.Windows.Input;
+
+using Disk.Db.Context;
 using Disk.Entities;
 using Disk.Navigators;
 using Disk.Properties.Langs.Patients;
@@ -6,11 +10,10 @@ using Disk.Stores;
 using Disk.ViewModels.Common.Commands.Async;
 using Disk.ViewModels.Common.Commands.Sync;
 using Disk.ViewModels.Common.ViewModels;
+
 using Microsoft.EntityFrameworkCore;
+
 using Serilog;
-using System.Collections.ObjectModel;
-using System.Windows;
-using System.Windows.Input;
 
 namespace Disk.ViewModels;
 
@@ -24,7 +27,7 @@ public class PatientsViewModel : ObserverViewModel
     {
         get
         {
-            var patientsCount = _database.Patients.Count();
+            int patientsCount = _database.Patients.Count();
 
             return (int)Math.Ceiling((double)patientsCount / PatientsPerPage);
         }
@@ -76,11 +79,11 @@ public class PatientsViewModel : ObserverViewModel
     {
         if (SearchText != string.Empty)
         {
-            var nsp = SearchText.Split(" ", StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries);
+            string[] nsp = SearchText.Split(" ", StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries);
 
-            var query = _database.Patients.AsQueryable();
+            IQueryable<Patient> query = _database.Patients.AsQueryable();
 
-            foreach (var word in nsp)
+            foreach (string word in nsp)
             {
                 query = query.Where(p =>
                     EF.Functions.Like(p.Name.ToLower(), $"%{word.ToLower()}%") ||
@@ -88,7 +91,7 @@ public class PatientsViewModel : ObserverViewModel
                     (p.Patronymic != null && EF.Functions.Like(p.Patronymic.ToLower(), $"%{word.ToLower()}%")));
             }
 
-            var patients = await query.OrderByDescending(p => p.Id).ToListAsync();
+            List<Patient> patients = await query.OrderByDescending(p => p.Id).ToListAsync();
             SortedPatients = [.. patients];
             Log.Information($"Patient search by: {string.Join(", ", nsp)}");
         }

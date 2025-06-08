@@ -1,5 +1,6 @@
 ﻿using Disk.Stores.Interfaces;
 using Disk.ViewModels.Common.ViewModels;
+
 using Serilog;
 
 namespace Disk.Stores;
@@ -24,7 +25,7 @@ public class NavigationStore(Func<Type, ObserverViewModel> getViewModel) : INavi
 
     public ObserverViewModel GetViewModel<TViewModel>(Action<TViewModel> parametrizeViewModel) where TViewModel : class
     {
-        var viewModel = getViewModel.Invoke(typeof(TViewModel));
+        ObserverViewModel viewModel = getViewModel.Invoke(typeof(TViewModel));
         parametrizeViewModel((viewModel as TViewModel)!);
 
         return viewModel;
@@ -32,12 +33,12 @@ public class NavigationStore(Func<Type, ObserverViewModel> getViewModel) : INavi
 
     public void SetViewModel<TViewModel>(Action<TViewModel> parametrizeViewModel) where TViewModel : class
     {
-        if (ViewModels.TryPeek(out var oldVm))
+        if (ViewModels.TryPeek(out ObserverViewModel? oldVm))
         {
             oldVm.BeforeNavigation();
         }
 
-        var viewModel = getViewModel.Invoke(typeof(TViewModel));
+        ObserverViewModel viewModel = getViewModel.Invoke(typeof(TViewModel));
         parametrizeViewModel((viewModel as TViewModel)!);
         viewModel.Refresh();
         ViewModels.Push(viewModel);
@@ -49,12 +50,12 @@ public class NavigationStore(Func<Type, ObserverViewModel> getViewModel) : INavi
 
     public void SetViewModel<TViewModel>()
     {
-        if (ViewModels.TryPeek(out var oldVm))
+        if (ViewModels.TryPeek(out ObserverViewModel? oldVm))
         {
             oldVm.BeforeNavigation();
         }
 
-        var viewModel = getViewModel.Invoke(typeof(TViewModel));
+        ObserverViewModel viewModel = getViewModel.Invoke(typeof(TViewModel));
         //viewModel.Refresh();
         ViewModels.Push(viewModel);
         Log.Information($"Created ViewModel {viewModel.GetType()}");
@@ -67,12 +68,12 @@ public class NavigationStore(Func<Type, ObserverViewModel> getViewModel) : INavi
     {
         if (ViewModels.Count > 0)
         {
-            var currVm = ViewModels.Peek();
+            ObserverViewModel currVm = ViewModels.Peek();
             Log.Information($"Closing {currVm.GetType()}");
 
             currVm.BeforeNavigation();
             _ = ViewModels.Pop();
-            if (ViewModels.TryPeek(out var vm))
+            if (ViewModels.TryPeek(out ObserverViewModel? vm))
             {
                 vm.Refresh();
             }

@@ -2,27 +2,26 @@
 
 #nullable disable
 
-namespace Disk.Migrations
+namespace Disk.Migrations;
+
+/// <inheritdoc />
+public partial class PathToTargetNamingFix : Migration
 {
     /// <inheritdoc />
-    public partial class PathToTargetNamingFix : Migration
+    protected override void Up(MigrationBuilder migrationBuilder)
     {
-        /// <inheritdoc />
-        protected override void Up(MigrationBuilder migrationBuilder)
-        {
-            _ = migrationBuilder.RenameColumn(
-                name: "ptt_target_num",
-                table: "path_to_target",
-                newName: "ptt_target_id");
-        }
+        _ = migrationBuilder.RenameColumn(
+            name: "ptt_target_num",
+            table: "path_to_target",
+            newName: "ptt_target_id");
+    }
 
-        /// <inheritdoc />
-        protected override void Down(MigrationBuilder migrationBuilder)
-        {
-            _ = migrationBuilder.RenameColumn(
-                name: "ptt_target_id",
-                table: "path_to_target",
-                newName: "ptt_target_num");
-        }
+    /// <inheritdoc />
+    protected override void Down(MigrationBuilder migrationBuilder)
+    {
+        _ = migrationBuilder.RenameColumn(
+            name: "ptt_target_id",
+            table: "path_to_target",
+            newName: "ptt_target_num");
     }
 }

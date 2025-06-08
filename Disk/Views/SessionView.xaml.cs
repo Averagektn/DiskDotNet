@@ -1,9 +1,10 @@
-﻿using Disk.Entities;
-using Disk.ViewModels;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
+
+using Disk.Entities;
+using Disk.ViewModels;
 
 namespace Disk.Views;
 
@@ -22,7 +23,7 @@ public partial class SessionView : UserControl
         {
             if (e.EditingElement is TextBox cell)
             {
-                var note = cell.Text;
+                string note = cell.Text;
 
                 if (e.Row.Item is Attempt attempt && attempt.AttemptResult is not null)
                 {
@@ -35,14 +36,14 @@ public partial class SessionView : UserControl
 
     private void SessionsDataGrid_MouseDoubleClick(object sender, MouseButtonEventArgs e)
     {
-        var point = e.GetPosition(SessionsDataGrid);
-        var hitTest = VisualTreeHelper.HitTest(SessionsDataGrid, point);
+        Point point = e.GetPosition(SessionsDataGrid);
+        HitTestResult? hitTest = VisualTreeHelper.HitTest(SessionsDataGrid, point);
         if (hitTest is null)
         {
             return;
         }
 
-        var cell = FindParent<DataGridCell>(hitTest.VisualHit);
+        DataGridCell? cell = FindParent<DataGridCell>(hitTest.VisualHit);
         if (cell is null)
         {
             return;

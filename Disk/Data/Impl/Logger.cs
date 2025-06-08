@@ -1,5 +1,6 @@
-﻿using Disk.Data.Interface;
-using System.IO;
+﻿using System.IO;
+
+using Disk.Data.Interface;
 
 namespace Disk.Data.Impl;
 
@@ -44,7 +45,7 @@ public class Logger : ILogger, IDisposable
     /// </returns>
     public static Logger GetLogger(string filename)
     {
-        var logger = Loggers.FirstOrDefault(s => s.Filename == filename);
+        Logger? logger = Loggers.FirstOrDefault(s => s.Filename == filename);
 
         if (logger is null)
         {
@@ -69,14 +70,26 @@ public class Logger : ILogger, IDisposable
     }
 
     /// <inheritdoc/>
-    public void Log(object? data) => Writer.Write(data?.ToString());
+    public void Log(object? data)
+    {
+        Writer.Write(data?.ToString());
+    }
 
     /// <inheritdoc/>
-    public async Task LogAsync(object? data) => await Writer.WriteAsync(data?.ToString());
+    public async Task LogAsync(object? data)
+    {
+        await Writer.WriteAsync(data?.ToString());
+    }
 
     /// <inheritdoc/>
-    public void LogLn(object? data) => Writer.WriteLine(data?.ToString());
+    public void LogLn(object? data)
+    {
+        Writer.WriteLine(data?.ToString());
+    }
 
     /// <inheritdoc/>
-    public async Task LogLnAsync(object? data) => await Writer.WriteLineAsync(data?.ToString());
+    public async Task LogLnAsync(object? data)
+    {
+        await Writer.WriteLineAsync(data?.ToString());
+    }
 }

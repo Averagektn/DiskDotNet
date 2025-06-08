@@ -1,16 +1,20 @@
-﻿using Disk.Db.Context;
+﻿using System.Collections.ObjectModel;
+using System.Globalization;
+using System.Windows;
+using System.Windows.Input;
+
+using Disk.Db.Context;
 using Disk.Entities;
 using Disk.Navigators;
 using Disk.Stores;
 using Disk.ViewModels.Common.Commands.Async;
 using Disk.ViewModels.Common.Commands.Sync;
 using Disk.ViewModels.Common.ViewModels;
+
 using Microsoft.EntityFrameworkCore;
+
 using Serilog;
-using System.Collections.ObjectModel;
-using System.Globalization;
-using System.Windows;
-using System.Windows.Input;
+
 using Localization = Disk.Properties.Langs.ConfigureSession.ConfigureSessionLocalization;
 
 namespace Disk.ViewModels;

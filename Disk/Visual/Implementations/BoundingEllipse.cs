@@ -1,10 +1,13 @@
-﻿using Disk.Data.Impl;
-using Disk.Visual.Interfaces;
-using Emgu.CV;
-using Emgu.CV.Util;
-using System.Drawing;
+﻿using System.Drawing;
 using System.Windows.Controls;
 using System.Windows.Media;
+
+using Disk.Data.Impl;
+using Disk.Visual.Interfaces;
+
+using Emgu.CV;
+using Emgu.CV.Util;
+
 using Brush = System.Windows.Media.Brush;
 using PathShape = System.Windows.Shapes.Path;
 using Size = System.Windows.Size;
@@ -25,7 +28,7 @@ public class BoundingEllipse : IStaticFigure
     /// <returns></returns>
     public static double GetArea<T>(List<Point2D<T>> points, float percent = 0.95f) where T : IConvertible, new()
     {
-        var (_, radiusX, radiusY, _) = GetFillEllipse(points, percent);
+        (PointF _, float radiusX, float radiusY, float _) = GetFillEllipse(points, percent);
 
         return Math.PI * radiusX * radiusY;
     }
@@ -40,8 +43,8 @@ public class BoundingEllipse : IStaticFigure
     public static (PointF Center, float RadiusX, float RadiusY, float Angle) GetFillEllipse<T>(List<Point2D<T>> points,
         float percent = 0.95f) where T : IConvertible, new()
     {
-        var centerX = points.Count > 10 ? points.Average(p => p.XDbl) : 0.0;
-        var centerY = points.Count > 10 ? points.Average(p => p.YDbl) : 0.0;
+        double centerX = points.Count > 10 ? points.Average(p => p.XDbl) : 0.0;
+        double centerY = points.Count > 10 ? points.Average(p => p.YDbl) : 0.0;
         var center = new Point2D<T>((T)Convert.ChangeType(centerX, typeof(T)), (T)Convert.ChangeType(centerY, typeof(T)));
 
         if (percent is > 1 or < 0)
@@ -49,13 +52,13 @@ public class BoundingEllipse : IStaticFigure
             percent = 0.95f;
         }
 
-        var dataset = points
+        IEnumerable<PointF> dataset = points
             .OrderBy(p => p.GetDistance(center))
             .Take((int)(points.Count * percent))
             .Select(p => p.ToPointF());
 
         using var pointVector = new VectorOfPointF([.. dataset]);
-        var ellipse = CvInvoke.MinAreaRect(pointVector);
+        Emgu.CV.Structure.RotatedRect ellipse = CvInvoke.MinAreaRect(pointVector);
 
         return (ellipse.Center, ellipse.Size.Width / 2, ellipse.Size.Height / 2, ellipse.Angle);
     }
@@ -137,7 +140,7 @@ public class BoundingEllipse : IStaticFigure
     /// <param name="iniSize">Initial size for scaling</param>
     public BoundingEllipse(List<Point2D<int>> points, Brush boundColor, Panel parent, Size iniSize)
     {
-        var (center, radiusX, radiusY, rotationAngle) = GetFillEllipse(points);
+        (PointF center, float radiusX, float radiusY, float rotationAngle) = GetFillEllipse(points);
         _points = [.. points];
 
         _center = new((int)center.X, (int)center.Y);
@@ -214,7 +217,7 @@ public class BoundingEllipse : IStaticFigure
         double coeffY = Parent.ActualHeight / IniSize.Height;
 
         var scaledPoints = _points.Select(p => new Point2D<int>((int)(p.X * coeffX), (int)(p.Y * coeffY))).ToList();
-        var (center, radiusX, radiusY, rotationAngle) = GetFillEllipse(scaledPoints);
+        (PointF center, float radiusX, float radiusY, float rotationAngle) = GetFillEllipse(scaledPoints);
 
         RadiusX = (int)radiusX;
         RadiusY = (int)radiusY;

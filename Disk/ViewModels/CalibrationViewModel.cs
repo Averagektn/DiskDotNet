@@ -1,13 +1,16 @@
-﻿using Disk.Data.Impl;
+﻿using System.Net;
+using System.Windows;
+using System.Windows.Input;
+using System.Windows.Threading;
+
+using Disk.Data.Impl;
 using Disk.Navigators;
 using Disk.Stores;
 using Disk.ViewModels.Common.Commands.Sync;
 using Disk.ViewModels.Common.ViewModels;
+
 using Serilog;
-using System.Net;
-using System.Windows;
-using System.Windows.Input;
-using System.Windows.Threading;
+
 using Localization = Disk.Properties.Langs.Calibration.CalibrationLocalization;
 using Settings = Disk.Properties.Config.Config;
 
@@ -145,7 +148,7 @@ public class CalibrationViewModel : PopupViewModel
 
             while (IsRunningThread)
             {
-                var data = con.GetXYZ();
+                Point3D<float>? data = con.GetXYZ();
 
                 if (data is not null)
                 {
@@ -204,10 +207,10 @@ public class CalibrationViewModel : PopupViewModel
         XAngle = Math.Abs(Convert.ToSingle(XCoord));
         YAngle = Math.Abs(Convert.ToSingle(YCoord));
 
-        var xAngleChanged = float.Abs(XAngle - Settings.XMaxAngle) >= 0.01;
-        var yAngleChanged = float.Abs(YAngle - Settings.YMaxAngle) >= 0.01;
-        var xShiftChanged = float.Abs(XShift - Settings.XAngleShift) >= 0.01;
-        var yShiftChanged = float.Abs(YShift - Settings.YAngleShift) >= 0.01;
+        bool xAngleChanged = float.Abs(XAngle - Settings.XMaxAngle) >= 0.01;
+        bool yAngleChanged = float.Abs(YAngle - Settings.YMaxAngle) >= 0.01;
+        bool xShiftChanged = float.Abs(XShift - Settings.XAngleShift) >= 0.01;
+        bool yShiftChanged = float.Abs(YShift - Settings.YAngleShift) >= 0.01;
 
         if (xAngleChanged || yAngleChanged || xShiftChanged || yShiftChanged)
         {

@@ -1,8 +1,10 @@
-﻿using Disk.Data.Impl;
-using Disk.Visual.Interfaces;
-using System.Windows.Controls;
+﻿using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Shapes;
+
+using Disk.Data.Impl;
+using Disk.Visual.Interfaces;
+
 using Size = System.Windows.Size;
 
 namespace Disk.Visual.Implementations;

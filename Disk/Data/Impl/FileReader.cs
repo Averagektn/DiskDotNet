@@ -1,5 +1,6 @@
-﻿using Disk.Data.Interface;
-using System.IO;
+﻿using System.IO;
+
+using Disk.Data.Interface;
 
 namespace Disk.Data.Impl;
 
@@ -68,7 +69,7 @@ public class FileReader<CoordType> : IDataSource<CoordType>, IDisposable where C
     /// </returns>
     public static FileReader<CoordType> Open(string filename, char separator = ';')
     {
-        var reader = Files.FirstOrDefault(f => f.Filename == filename);
+        FileReader<CoordType>? reader = Files.FirstOrDefault(f => f.Filename == filename);
 
         if (reader is null)
         {
@@ -95,17 +96,20 @@ public class FileReader<CoordType> : IDataSource<CoordType>, IDisposable where C
     /// <returns>
     ///     The read line as a string
     /// </returns>
-    public string? ReadLn() => Reader.ReadLine();
+    public string? ReadLn()
+    {
+        return Reader.ReadLine();
+    }
 
     /// <inheritdoc/>
     public Point3D<CoordType>? GetXYZ()
     {
-        var str = Reader.ReadLine();
+        string? str = Reader.ReadLine();
         Point3D<CoordType>? res = null;
 
         if (str is not null)
         {
-            var data = str.Split(Separator);
+            string[] data = str.Split(Separator);
 
             if (data.Length == 3)
             {
@@ -122,12 +126,12 @@ public class FileReader<CoordType> : IDataSource<CoordType>, IDisposable where C
     /// <inheritdoc/>
     public Point2D<CoordType>? GetXY()
     {
-        var str = Reader.ReadLine();
+        string? str = Reader.ReadLine();
         Point2D<CoordType>? res = null;
 
         if (str is not null)
         {
-            var data = str.Split(Separator);
+            string[] data = str.Split(Separator);
 
             if (data.Length == 2)
             {
@@ -143,7 +147,7 @@ public class FileReader<CoordType> : IDataSource<CoordType>, IDisposable where C
     /// <inheritdoc/>
     public Point2D<CoordType>? GetYZ()
     {
-        var point3D = GetXYZ();
+        Point3D<CoordType>? point3D = GetXYZ();
 
         Point2D<CoordType>? res = null;
 
@@ -158,7 +162,7 @@ public class FileReader<CoordType> : IDataSource<CoordType>, IDisposable where C
     /// <inheritdoc/>
     public Point2D<CoordType>? GetXZ()
     {
-        var point3D = GetXYZ();
+        Point3D<CoordType>? point3D = GetXYZ();
 
         Point2D<CoordType>? res = null;
 
@@ -173,7 +177,7 @@ public class FileReader<CoordType> : IDataSource<CoordType>, IDisposable where C
     /// <inheritdoc/>
     public Point2D<CoordType>? GetYX()
     {
-        var point2D = GetXY();
+        Point2D<CoordType>? point2D = GetXY();
 
         return point2D is null ? point2D : new Point2D<CoordType>(point2D.Y, point2D.X);
     }
@@ -181,7 +185,7 @@ public class FileReader<CoordType> : IDataSource<CoordType>, IDisposable where C
     /// <inheritdoc/>
     public Point2D<CoordType>? GetZY()
     {
-        var point3D = GetXYZ();
+        Point3D<CoordType>? point3D = GetXYZ();
 
         Point2D<CoordType>? res = null;
 
@@ -196,7 +200,7 @@ public class FileReader<CoordType> : IDataSource<CoordType>, IDisposable where C
     /// <inheritdoc/>
     public Point2D<CoordType>? GetZX()
     {
-        var point3D = GetXYZ();
+        Point3D<CoordType>? point3D = GetXYZ();
 
         Point2D<CoordType>? res = null;
 
@@ -286,7 +290,7 @@ public class FileReader<CoordType> : IDataSource<CoordType>, IDisposable where C
     {
         do
         {
-            var p = GetXYZ();
+            Point3D<CoordType>? p = GetXYZ();
 
             if (p is not null)
             {

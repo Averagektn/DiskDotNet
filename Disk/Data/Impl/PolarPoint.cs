@@ -20,7 +20,7 @@ public class PolarPoint<CoordType> : Point2D<CoordType> where CoordType : IConve
     {
         get
         {
-            var angleRad = Math.Atan2(YDbl, XDbl);
+            double angleRad = Math.Atan2(YDbl, XDbl);
 
             if (angleRad < 0)
             {

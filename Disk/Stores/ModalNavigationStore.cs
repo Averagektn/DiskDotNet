@@ -1,5 +1,6 @@
 ﻿using Disk.Stores.Interfaces;
 using Disk.ViewModels.Common.ViewModels;
+
 using Serilog;
 
 namespace Disk.Stores;
@@ -25,7 +26,7 @@ public class ModalNavigationStore(Func<Type, ObserverViewModel> getViewModel) : 
 
     public ObserverViewModel GetViewModel<TViewModel>(Action<TViewModel> parametrizeViewModel) where TViewModel : class
     {
-        var viewModel = getViewModel.Invoke(typeof(TViewModel));
+        ObserverViewModel viewModel = getViewModel.Invoke(typeof(TViewModel));
         parametrizeViewModel((viewModel as TViewModel)!);
 
         return viewModel;
@@ -36,16 +37,16 @@ public class ModalNavigationStore(Func<Type, ObserverViewModel> getViewModel) : 
     {
         if (CanClose)
         {
-            var currVm = ViewModels.Peek();
+            ObserverViewModel currVm = ViewModels.Peek();
             Log.Information($"Closing {currVm.GetType()}");
 
             currVm.BeforeNavigation();
             _ = ViewModels.Pop();
-            if (ViewModels.TryPeek(out var modalVm))
+            if (ViewModels.TryPeek(out ObserverViewModel? modalVm))
             {
                 modalVm.Refresh();
             }
-            else if (NavigationStore.ViewModels.TryPeek(out var vm))
+            else if (NavigationStore.ViewModels.TryPeek(out ObserverViewModel? vm))
             {
                 vm.Refresh();
             }
@@ -58,7 +59,7 @@ public class ModalNavigationStore(Func<Type, ObserverViewModel> getViewModel) : 
 
     public void SetViewModel<TViewModel>()
     {
-        var viewModel = getViewModel.Invoke(typeof(TViewModel));
+        ObserverViewModel viewModel = getViewModel.Invoke(typeof(TViewModel));
         viewModel.Refresh();
         ViewModels.Push(viewModel);
 
@@ -69,7 +70,7 @@ public class ModalNavigationStore(Func<Type, ObserverViewModel> getViewModel) : 
 
     public void SetViewModel<TViewModel>(Action<TViewModel> parametrizeViewModel) where TViewModel : class
     {
-        var viewModel = getViewModel.Invoke(typeof(TViewModel));
+        ObserverViewModel viewModel = getViewModel.Invoke(typeof(TViewModel));
         parametrizeViewModel((viewModel as TViewModel)!);
         viewModel.Refresh();
         ViewModels.Push(viewModel);

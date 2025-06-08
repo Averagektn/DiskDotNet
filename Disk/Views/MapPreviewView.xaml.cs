@@ -1,10 +1,13 @@
-﻿using Disk.Calculations.Implementations.Converters;
+﻿using System.Windows;
+using System.Windows.Controls;
+
+using Disk.Calculations.Implementations.Converters;
 using Disk.Data.Impl;
 using Disk.Entities;
 using Disk.Visual.Implementations;
+
 using Newtonsoft.Json;
-using System.Windows;
-using System.Windows.Controls;
+
 using Settings = Disk.Properties.Config.Config;
 
 namespace Disk.Views;
@@ -66,11 +69,11 @@ public partial class MapPreviewView : UserControl
 
         _targets.ForEach(target => target.Remove());
         _targets.Clear();
-        var coords = JsonConvert.DeserializeObject<List<Point2D<float>>>(Map.CoordinatesJson) ?? [];
+        List<Point2D<float>> coords = JsonConvert.DeserializeObject<List<Point2D<float>>>(Map.CoordinatesJson) ?? [];
         coords.ForEach(point =>
         {
-            var wnd = IniConverter.ToWndCoord(point);
-            var target = GetIniCoordTarget(wnd.X, wnd.Y);
+            Point2D<int> wnd = IniConverter.ToWndCoord(point);
+            NumberedTarget target = GetIniCoordTarget(wnd.X, wnd.Y);
             target.Draw();
             target.HideAngles();
             _targets.Add(target);

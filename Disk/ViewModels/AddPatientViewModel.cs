@@ -1,4 +1,8 @@
-﻿using Disk.Db.Context;
+﻿using System.Windows;
+using System.Windows.Input;
+using System.Windows.Media;
+
+using Disk.Db.Context;
 using Disk.Entities;
 using Disk.Navigators;
 using Disk.Properties.Langs.AddPatient;
@@ -8,10 +12,8 @@ using Disk.Stores;
 using Disk.ViewModels.Common.Commands.Async;
 using Disk.ViewModels.Common.Commands.Sync;
 using Disk.ViewModels.Common.ViewModels;
+
 using Serilog;
-using System.Windows;
-using System.Windows.Input;
-using System.Windows.Media;
 
 namespace Disk.ViewModels;
 

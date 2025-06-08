@@ -77,7 +77,7 @@ public partial class Converter
     /// </returns>
     public static Point2D<float> ToAngle(string str, char separator)
     {
-        var coords = str.Split(separator);
+        string[] coords = str.Split(separator);
 
         return new(float.Parse(coords[0]), float.Parse(coords[1]));
     }
@@ -96,7 +96,7 @@ public partial class Converter
     /// </returns>
     public static Point3D<float> ToAngle3D(string str, char separator)
     {
-        var coords = str.Split(separator);
+        string[] coords = str.Split(separator);
 
         return new(float.Parse(coords[0]), float.Parse(coords[1]), float.Parse(coords[2]));
     }

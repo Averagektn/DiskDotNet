@@ -14,5 +14,8 @@ public partial class Map
 
     public virtual ICollection<Session> Sessions { get; set; } = null!;
 
-    public override string ToString() => Name;
+    public override string ToString()
+    {
+        return Name;
+    }
 }

@@ -1,15 +1,17 @@
-﻿using Disk.Calculations.Implementations.Converters;
-using Disk.Data.Impl;
-using Disk.Services.Implementations;
-using Disk.ViewModels;
-using Disk.Visual.Implementations;
-using Disk.Visual.Interfaces;
-using System.Data;
+﻿using System.Data;
 using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
+
+using Disk.Calculations.Implementations.Converters;
+using Disk.Data.Impl;
+using Disk.Services.Implementations;
+using Disk.ViewModels;
+using Disk.Visual.Implementations;
+using Disk.Visual.Interfaces;
+
 using Settings = Disk.Properties.Config.Config;
 
 namespace Disk.Views;
@@ -20,7 +22,7 @@ public partial class AttemptResultView : UserControl
     private Size PaintPanelSize => PaintArea.RenderSize;
     private Converter? Converter => ViewModel?.Converter;
 
-    private ICursor? _cursor;
+    private Cursor? _cursor;
     private ITarget? _target;
     private int _currentIndex = -1;
 
@@ -58,7 +60,6 @@ public partial class AttemptResultView : UserControl
         InitializeComponent();
 
         SizeChanged += (_, _) => Converter?.Scale(PaintPanelSize);
-        List<int> l = new();
         Loaded += AttemptResultView_Loaded;
         Loaded += (_, _) => SidebarTransform.X = Sidebar.ActualWidth + 100;
 
@@ -211,7 +212,8 @@ public partial class AttemptResultView : UserControl
             return;
         }
 
-        _cursor?.Move(ViewModel.CursorCenter);
+        //_cursor?.Move(ViewModel.CursorCenter);
+        _cursor?.MoveSmooth(ViewModel.CursorCenter);
     }
 
 
@@ -234,7 +236,7 @@ public partial class AttemptResultView : UserControl
         _coordThread?.Join();
         _coordThread = new Thread(_ =>
         {
-            Stopwatch stopwatch = Stopwatch.StartNew();
+            var stopwatch = Stopwatch.StartNew();
             long nextTick = stopwatch.ElapsedMilliseconds;
 
             while (IsReply)
@@ -401,6 +403,4 @@ public partial class AttemptResultView : UserControl
         DimOverlay.Visibility = Visibility.Hidden;
     }
     #endregion
-
-
 }

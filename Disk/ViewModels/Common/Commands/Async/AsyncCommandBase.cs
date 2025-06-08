@@ -14,8 +14,7 @@ public abstract class AsyncCommandBase : IAsyncCommand
 
     public event EventHandler? CanExecuteChanged
     {
-        add { CommandManager.RequerySuggested += value; }
-        remove { CommandManager.RequerySuggested -= value; }
+        add => CommandManager.RequerySuggested += value; remove => CommandManager.RequerySuggested -= value;
     }
 
     protected static void RaiseCanExecuteChanged()

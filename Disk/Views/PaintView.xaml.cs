@@ -1,13 +1,16 @@
-﻿using Disk.Calculations.Implementations.Converters;
+﻿using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Media;
+using System.Windows.Threading;
+
+using Disk.Calculations.Implementations.Converters;
 using Disk.Services.Implementations;
 using Disk.ViewModels;
 using Disk.Visual.Implementations;
 using Disk.Visual.Interfaces;
+
 using Serilog;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Media;
-using System.Windows.Threading;
+
 using Point2DF = Disk.Data.Impl.Point2D<float>;
 using Point2DI = Disk.Data.Impl.Point2D<int>;
 using Settings = Disk.Properties.Config.Config;
@@ -77,8 +80,8 @@ public partial class PaintView : UserControl
             else
             {
                 var center = new Point2DI((int)AllowedArea.Bounds.Width / 2, (int)AllowedArea.Bounds.Height / 2);
-                var radiusX = AllowedArea.Bounds.Width / 2;
-                var radiusY = AllowedArea.Bounds.Height / 2;
+                double radiusX = AllowedArea.Bounds.Width / 2;
+                double radiusY = AllowedArea.Bounds.Height / 2;
 
                 double normalizedX = (ShiftedWndPos.X - center.X) / radiusX;
                 double normalizedY = (ShiftedWndPos.Y - center.Y) / radiusY;
@@ -96,7 +99,7 @@ public partial class PaintView : UserControl
 
     private List<Point2DI> GetMultipleShots()
     {
-        var shot = PaintCursor.Shot();
+        Point2DI shot = PaintCursor.Shot();
         /*        int x = shot.X;
                 int y = shot.Y;
                 int halfRadius = Cursor.Radius / 2;
@@ -117,9 +120,9 @@ public partial class PaintView : UserControl
             return;
         }
 
-        var shots = GetMultipleShots();
+        List<Point2DI> shots = GetMultipleShots();
 
-        var shot = PaintCursor.Center;
+        Point2DI shot = PaintCursor.Center;
         int shotScore = 0;
         for (int i = 0; i < shots.Count && shotScore == 0; i++)
         {
@@ -173,7 +176,7 @@ public partial class PaintView : UserControl
             }
         };
 
-        var center = ViewModel.TargetCenter ?? new(0, 0);
+        Point2DI center = ViewModel.TargetCenter ?? new(0, 0);
         Target.Move(center);
 
         ViewModel.StartReceiving();

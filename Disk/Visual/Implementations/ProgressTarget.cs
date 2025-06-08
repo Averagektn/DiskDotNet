@@ -1,8 +1,10 @@
-﻿using Disk.Data.Impl;
-using Disk.Visual.Interfaces;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
+
+using Disk.Data.Impl;
+using Disk.Visual.Interfaces;
+
 using XamlRadialProgressBar;
 
 namespace Disk.Visual.Implementations;
@@ -80,7 +82,7 @@ public class ProgressTarget : Target, IProgressTarget
     /// <inheritdoc/>
     public override int ReceiveShot(Point2D<int> shot)
     {
-        var res = base.ReceiveShot(shot);
+        int res = base.ReceiveShot(shot);
         Border.Value += res;
 
         return res;

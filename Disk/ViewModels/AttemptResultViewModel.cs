@@ -1,4 +1,11 @@
-﻿using Disk.Calculations.Implementations.Converters;
+﻿using System.Collections.ObjectModel;
+using System.Drawing;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Input;
+using System.Windows.Media;
+
+using Disk.Calculations.Implementations.Converters;
 using Disk.Data.Impl;
 using Disk.Db.Context;
 using Disk.Entities;
@@ -8,15 +15,13 @@ using Disk.ViewModels.Common.Commands.Sync;
 using Disk.ViewModels.Common.ViewModels;
 using Disk.Visual.Implementations;
 using Disk.Visual.Interfaces;
+
 using Emgu.CV;
+
 using Microsoft.EntityFrameworkCore;
+
 using Newtonsoft.Json;
-using System.Collections.ObjectModel;
-using System.Drawing;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Input;
-using System.Windows.Media;
+
 using Brushes = System.Windows.Media.Brushes;
 using Localization = Disk.Properties.Langs.AttemptResult.AttemptResultLocalization;
 using Settings = Disk.Properties.Config.Config;
@@ -111,14 +116,7 @@ public class AttemptResultViewModel(NavigationStore navigationStore, DiskContext
 
             IsPathToTarget = !isPathToTarget;
 
-            if (IsPathToTarget)
-            {
-                SelectedPathPointId = newPointId + PathsToTargets[newIndex].Count;
-            }
-            else
-            {
-                SelectedPathPointId = newPointId + PathsInTargets[newIndex].Count;
-            }
+            SelectedPathPointId = IsPathToTarget ? newPointId + PathsToTargets[newIndex].Count : newPointId + PathsInTargets[newIndex].Count;
 
             SelectedIndex = newIndex;
         }
@@ -127,65 +125,23 @@ public class AttemptResultViewModel(NavigationStore navigationStore, DiskContext
     private int _selectedPathPointId;
     public int SelectedPathPointId
     {
-        get => _selectedPathPointId;
-        set
-        {
-            _ = SetProperty(ref _selectedPathPointId, value);
-        }
+        get => _selectedPathPointId; set => _ = SetProperty(ref _selectedPathPointId, value);
     }
 
     private int _pointsCount;
     public int PointsCount { get => _pointsCount; set => SetProperty(ref _pointsCount, value); }
 
-    public Point2D<int> CursorCenter
-    {
-        get
-        {
-            if (IsPathToTarget)
-            {
-                return Converter.ToWndCoord(CurrPathToTarget[SelectedPathPointId]);
-            }
-            return Converter.ToWndCoord(CurrPathInTarget[SelectedPathPointId]);
-        }
-    }
-    public Point2D<int> TargetCenter
-    {
-        get
-        {
-            if (TargetCenters.Count == 0 || SelectedIndex < 0)
-            {
-                return new(0, 0);
-            }
-            return Converter.ToWndCoord(TargetCenters[SelectedIndex]);
-        }
-    }
+    public Point2D<int> CursorCenter => IsPathToTarget
+                ? Converter.ToWndCoord(CurrPathToTarget[SelectedPathPointId])
+                : Converter.ToWndCoord(CurrPathInTarget[SelectedPathPointId]);
+    public Point2D<int> TargetCenter => TargetCenters.Count == 0 || SelectedIndex < 0 ? new(0, 0) : Converter.ToWndCoord(TargetCenters[SelectedIndex]);
     public static Settings Settings => Settings.Default;
 
     private List<List<Point2D<float>>> PathsToTargets { get; set; } = [];
     private List<List<Point2D<float>>> PathsInTargets { get; set; } = [];
 
-    public List<Point2D<float>> CurrPathToTarget
-    {
-        get
-        {
-            if (SelectedIndex < 0 || SelectedIndex >= PathsToTargets.Count)
-            {
-                return [];
-            }
-            return PathsToTargets[SelectedIndex];
-        }
-    }
-    public List<Point2D<float>> CurrPathInTarget
-    {
-        get
-        {
-            if (SelectedIndex < 0 || SelectedIndex >= PathsInTargets.Count)
-            {
-                return [];
-            }
-            return PathsInTargets[SelectedIndex];
-        }
-    }
+    public List<Point2D<float>> CurrPathToTarget => SelectedIndex < 0 || SelectedIndex >= PathsToTargets.Count ? [] : PathsToTargets[SelectedIndex];
+    public List<Point2D<float>> CurrPathInTarget => SelectedIndex < 0 || SelectedIndex >= PathsInTargets.Count ? [] : PathsInTargets[SelectedIndex];
 
     public ObservableCollection<string> Indices { get; set; } = [];
     public Converter Converter { get; set; } = DrawableFabric.GetIniConverter();
@@ -199,14 +155,7 @@ public class AttemptResultViewModel(NavigationStore navigationStore, DiskContext
 
             while (!isLastPoint)
             {
-                if (IsPathToTarget)
-                {
-                    yield return CurrPathToTarget[SelectedPathPointId];
-                }
-                else
-                {
-                    yield return CurrPathInTarget[SelectedPathPointId];
-                }
+                yield return IsPathToTarget ? CurrPathToTarget[SelectedPathPointId] : CurrPathInTarget[SelectedPathPointId];
                 CurrentPointId++;
                 isLastPoint = CurrentPointId == PointsCount - 1;
             }
@@ -252,8 +201,8 @@ public class AttemptResultViewModel(NavigationStore navigationStore, DiskContext
             int pathInTargetPointsCount = PathsInTargets.Take(SelectedIndex).Sum(p => p.Count);
             CurrentPointId = pathToTargetPointsCount + pathInTargetPointsCount;
 
-            var currentPathToTarget = CurrentAttempt.PathToTargets.ElementAt(SelectedIndex);
-            var currentPathInTarget = CurrentAttempt.PathInTargets.ElementAt(SelectedIndex);
+            PathToTarget currentPathToTarget = CurrentAttempt.PathToTargets.ElementAt(SelectedIndex);
+            PathInTarget currentPathInTarget = CurrentAttempt.PathInTargets.ElementAt(SelectedIndex);
 
             Message =
                 $"""
@@ -298,7 +247,7 @@ public class AttemptResultViewModel(NavigationStore navigationStore, DiskContext
             return (null, null);
         }
 
-        var c = DrawableFabric.GetIniConverter();
+        Converter c = DrawableFabric.GetIniConverter();
         var iniSize = new Size(Settings.IniScreenWidth, Settings.IniScreenHeight);
 
         IStaticFigure pointsToTarget = new PointedPath(CurrPathToTarget.Select(c.ToWndCoord), Colors.Green, parent, iniSize);
@@ -334,9 +283,9 @@ public class AttemptResultViewModel(NavigationStore navigationStore, DiskContext
         );
         target.Scale();
 
-        var angRadius = (Converter.ToAngleX_FromWnd(target.Radius) + Converter.ToAngleY_FromWnd(target.Radius)) / 2;
+        float angRadius = (Converter.ToAngleX_FromWnd(target.Radius) + Converter.ToAngleY_FromWnd(target.Radius)) / 2;
 
-        var angCenter = Converter.ToAngle_FromWnd(Converter.ToWndCoord(TargetCenters[SelectedIndex]));
+        Point2D<float> angCenter = Converter.ToAngle_FromWnd(Converter.ToWndCoord(TargetCenters[SelectedIndex]));
         var dataset =
             PathsInTargets[SelectedIndex]
             .Select(p => new PolarPoint<float>(p.X - angCenter.X, p.Y - angCenter.Y))
@@ -358,9 +307,9 @@ public class AttemptResultViewModel(NavigationStore navigationStore, DiskContext
         var points = new List<PointF>(coords.Count);
         coords.ForEach(coord => points.Add(coord.ToPointF()));
 
-        var convexhull = CvInvoke.ConvexHull([.. points], true);
+        PointF[] convexhull = CvInvoke.ConvexHull([.. points], true);
         var result = new List<Point2D<float>>(convexhull.Length);
-        foreach (var item in convexhull)
+        foreach (PointF item in convexhull)
         {
             result.Add(new Point2D<float>(item.X, item.Y));
         }

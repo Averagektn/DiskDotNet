@@ -1,10 +1,11 @@
-﻿using Disk.Calculations.Implementations;
-using Disk.Data.Impl;
-using Disk.Visual.Interfaces;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Shapes;
+
+using Disk.Calculations.Implementations;
+using Disk.Data.Impl;
+using Disk.Visual.Interfaces;
 
 namespace Disk.Visual.Implementations;
 
@@ -107,14 +108,14 @@ public class Graph : IStaticFigure
     {
         Polygon.Points.Clear();
 
-        var angleStep = 360.0 / SegmentsNum;
-        var maxFrequency = Frequency.Max();
+        double angleStep = 360.0 / SegmentsNum;
+        int maxFrequency = Frequency.Max();
 
         int i = 0;
 
-        for (var angle = angleStep / 2; angle < 360.0; angle += angleStep, i++)
+        for (double angle = angleStep / 2; angle < 360.0; angle += angleStep, i++)
         {
-            var radius = Radius * Frequency.ElementAt(i) / (double)maxFrequency;
+            double radius = Radius * Frequency.ElementAt(i) / (double)maxFrequency;
 
             var polarPoint = new PolarPoint<float>(radius, Math.PI * angle / 180);
             var point = new Point((Parent.RenderSize.Width / 2) + polarPoint.X, (Parent.RenderSize.Height / 2) - polarPoint.Y);
@@ -136,7 +137,7 @@ public class Graph : IStaticFigure
     {
         var res = new List<int>(dataset.Count());
 
-        foreach (var points in dataset)
+        foreach (IEnumerable<PolarPoint<float>> points in dataset)
         {
             res.Add(points.Count());
         }

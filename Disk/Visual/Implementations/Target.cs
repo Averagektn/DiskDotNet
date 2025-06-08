@@ -1,8 +1,9 @@
-﻿using Disk.Data.Impl;
-using Disk.Visual.Interfaces;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
+
+using Disk.Data.Impl;
+using Disk.Visual.Interfaces;
 
 namespace Disk.Visual.Implementations;
 
@@ -110,7 +111,7 @@ public class Target : Cursor, ITarget
     {
         bool contains = false;
 
-        foreach (var circle in Circles)
+        foreach (Circle circle in Circles)
         {
             contains |= circle.Contains(shot);
         }

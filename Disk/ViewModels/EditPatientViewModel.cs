@@ -1,14 +1,16 @@
-﻿using Disk.Db.Context;
+﻿using System.Windows;
+using System.Windows.Input;
+using System.Windows.Media;
+
+using Disk.Db.Context;
 using Disk.Navigators;
 using Disk.Properties.Langs.EditPatient;
 using Disk.Services.Exceptions;
 using Disk.Services.Interfaces;
 using Disk.Stores;
 using Disk.ViewModels.Common.Commands.Async;
+
 using Serilog;
-using System.Windows;
-using System.Windows.Input;
-using System.Windows.Media;
 
 namespace Disk.ViewModels;
 

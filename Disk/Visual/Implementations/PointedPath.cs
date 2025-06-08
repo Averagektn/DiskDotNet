@@ -1,9 +1,10 @@
-﻿using Disk.Data.Impl;
-using Disk.Visual.Interfaces;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+
+using Disk.Data.Impl;
+using Disk.Visual.Interfaces;
 
 namespace Disk.Visual.Implementations;
 
@@ -95,7 +96,7 @@ public unsafe class PointedPath : IStaticFigure
         {
             uint colorValue = (uint)((Color.A << 24) | (Color.R << 16) | (Color.G << 8) | Color.B);
 
-            foreach (var center in _points)
+            foreach (Point2D<int> center in _points)
             {
                 int cx = center.X;
                 int cy = center.Y;
@@ -155,7 +156,7 @@ public unsafe class PointedPath : IStaticFigure
 
         try
         {
-            var pixels = (uint*)_backBuffer;
+            uint* pixels = (uint*)_backBuffer;
             const uint transparentColor = 0;
 
             for (int i = 0; i < _bitmap.PixelWidth * _bitmap.PixelHeight; i++)

@@ -1,8 +1,9 @@
-﻿using Disk.Data.Impl;
-using Disk.Visual.Interfaces;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
+
+using Disk.Data.Impl;
+using Disk.Visual.Interfaces;
 
 namespace Disk.Visual.Implementations;
 
@@ -50,8 +51,8 @@ public class Cursor(Point2D<int> center, int radius, int speed, Brush color, Pan
     public virtual void MoveSmooth(Point2D<int> center)
     {
         const double alpha = 0.2;
-        var x = (alpha * center.X) + ((1 - alpha) * Center.X);
-        var y = (alpha * center.Y) + ((1 - alpha) * Center.Y);
+        double x = (alpha * center.X) + ((1 - alpha) * Center.X);
+        double y = (alpha * center.Y) + ((1 - alpha) * Center.Y);
 
         Move(new Point2D<int>((int)x, (int)y));
     }

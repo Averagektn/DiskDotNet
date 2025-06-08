@@ -81,7 +81,7 @@ public partial class Converter
     /// </returns>
     public static Point2D<int> ToWndCoord(string str, char separator)
     {
-        var coords = str.Split(separator);
+        string[] coords = str.Split(separator);
 
         return new Point2D<int>(int.Parse(coords[0]), int.Parse(coords[1]));
     }
@@ -100,7 +100,7 @@ public partial class Converter
     /// </returns>
     public static Point3D<int> ToWndCoord3D(string str, char separator)
     {
-        var coords = str.Split(separator);
+        string[] coords = str.Split(separator);
 
         return new Point3D<int>(int.Parse(coords[0]), int.Parse(coords[1]), int.Parse(coords[2]));
     }

@@ -1,16 +1,19 @@
-﻿using Disk.Db.Context;
+﻿using System.Globalization;
+using System.Windows;
+using System.Windows.Threading;
+
+using Disk.Db.Context;
 using Disk.Properties.Config;
 using Disk.Services.Implementations;
 using Disk.Services.Interfaces;
 using Disk.Stores;
 using Disk.ViewModels;
 using Disk.ViewModels.Common.ViewModels;
+
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+
 using Serilog;
-using System.Globalization;
-using System.Windows;
-using System.Windows.Threading;
 
 namespace Disk;
 
@@ -88,12 +91,12 @@ public partial class App : Application
             Log.Fatal(args.Exception.TargetSite?.ToString() ?? "No method found");
             Log.Fatal("------------------------------------------------------");
 
-            var db = _serviceProvider.GetService<DiskContext>();
+            DiskContext? db = _serviceProvider.GetService<DiskContext>();
             _ = (db?.SaveChanges());
             Log.Information("Unhandled exception DB save");
         };
 
-        var db = _serviceProvider.GetService<DiskContext>();
+        DiskContext? db = _serviceProvider.GetService<DiskContext>();
         db?.EnsureDatabaseExists();
     }
 
@@ -112,7 +115,7 @@ public partial class App : Application
 
     private void App_Exit(object sender, ExitEventArgs e)
     {
-        var db = _serviceProvider.GetService<DiskContext>();
+        DiskContext? db = _serviceProvider.GetService<DiskContext>();
         _ = (db?.SaveChanges());
         Log.Information("App exit DB save");
         Log.Information("------------------------------------------------------");
@@ -126,7 +129,7 @@ public partial class App : Application
         Log.Fatal(e.Exception.TargetSite?.ToString() ?? "No method found");
         Log.Fatal("------------------------------------------------------");
 
-        var db = _serviceProvider.GetService<DiskContext>();
+        DiskContext? db = _serviceProvider.GetService<DiskContext>();
         _ = (db?.SaveChanges());
         Log.Information("Unhandled exception DB save");
     }

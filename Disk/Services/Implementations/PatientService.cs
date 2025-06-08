@@ -1,10 +1,12 @@
-﻿using Disk.Db.Context;
+﻿using System.Globalization;
+
+using Disk.Db.Context;
 using Disk.Entities;
 using Disk.Properties.Langs.ServiceException;
 using Disk.Services.Exceptions;
 using Disk.Services.Interfaces;
+
 using Microsoft.EntityFrameworkCore;
-using System.Globalization;
 
 namespace Disk.Services.Implementations;
 
@@ -17,7 +19,7 @@ public class PatientService(DiskContext database) : IPatientService
             return;
         }
 
-        var isExactDuplicate = database.Patients.Any(p =>
+        bool isExactDuplicate = database.Patients.Any(p =>
             p.Name == patient.Name &&
             p.Surname == patient.Surname &&
             p.Patronymic == patient.Patronymic &&
@@ -29,7 +31,7 @@ public class PatientService(DiskContext database) : IPatientService
             throw new DuplicateEntityException("Duplicate patient found");
         }
 
-        var isPossibleDuplicate = database.Patients.Any(p =>
+        bool isPossibleDuplicate = database.Patients.Any(p =>
             p.Name == patient.Name &&
             p.Surname == patient.Surname &&
             p.Patronymic == patient.Patronymic &&
@@ -51,7 +53,7 @@ public class PatientService(DiskContext database) : IPatientService
             return;
         }
 
-        var isExactDuplicate = await database.Patients.AnyAsync(p =>
+        bool isExactDuplicate = await database.Patients.AnyAsync(p =>
             p.Name == patient.Name &&
             p.Surname == patient.Surname &&
             p.Patronymic == patient.Patronymic &&
@@ -63,7 +65,7 @@ public class PatientService(DiskContext database) : IPatientService
             throw new DuplicateEntityException("Duplicate patient found");
         }
 
-        var isPossibleDuplicate = await database.Patients.AnyAsync(p =>
+        bool isPossibleDuplicate = await database.Patients.AnyAsync(p =>
             p.Name == patient.Name &&
             p.Surname == patient.Surname &&
             p.Patronymic == patient.Patronymic &&
@@ -85,7 +87,7 @@ public class PatientService(DiskContext database) : IPatientService
             return;
         }
 
-        var isExactDuplicate = database.Patients.Any(p =>
+        bool isExactDuplicate = database.Patients.Any(p =>
             p.Name == patient.Name &&
             p.Surname == patient.Surname &&
             p.Patronymic == patient.Patronymic &&
@@ -98,7 +100,7 @@ public class PatientService(DiskContext database) : IPatientService
             throw new DuplicateEntityException("Duplicate patient found");
         }
 
-        var isPossibleDuplicate = database.Patients.Any(p =>
+        bool isPossibleDuplicate = database.Patients.Any(p =>
             p.Name == patient.Name &&
             p.Surname == patient.Surname &&
             p.Patronymic == patient.Patronymic &&
@@ -121,7 +123,7 @@ public class PatientService(DiskContext database) : IPatientService
             return;
         }
 
-        var isExactDuplicate = await database.Patients.AnyAsync(p =>
+        bool isExactDuplicate = await database.Patients.AnyAsync(p =>
             p.Name == patient.Name &&
             p.Surname == patient.Surname &&
             p.Patronymic == patient.Patronymic &&
@@ -134,7 +136,7 @@ public class PatientService(DiskContext database) : IPatientService
             throw new DuplicateEntityException("Duplicate patient found");
         }
 
-        var isPossibleDuplicate = await database.Patients.AnyAsync(p =>
+        bool isPossibleDuplicate = await database.Patients.AnyAsync(p =>
             p.Name == patient.Name &&
             p.Surname == patient.Surname &&
             p.Patronymic == patient.Patronymic &&
@@ -169,11 +171,8 @@ public class PatientService(DiskContext database) : IPatientService
         }
 
         var date = DateTime.ParseExact(patient.DateOfBirth, "dd.MM.yyyy", CultureInfo.InvariantCulture);
-        if (date.Date >= DateTime.Now.Date)
-        {
-            throw new InvalidDateException("Patient add date exception", ServiceExceptionLocalization.DateFormatException);
-        }
-
-        return true;
+        return date.Date >= DateTime.Now.Date
+            ? throw new InvalidDateException("Patient add date exception", ServiceExceptionLocalization.DateFormatException)
+            : true;
     }
 }

@@ -1,10 +1,12 @@
-﻿using Disk.Calculations.Implementations.Converters;
+﻿using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Input;
+
+using Disk.Calculations.Implementations.Converters;
 using Disk.Data.Impl;
 using Disk.ViewModels;
 using Disk.Visual.Implementations;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Input;
+
 using Settings = Disk.Properties.Config.Config;
 
 namespace Disk.Views;
@@ -82,11 +84,11 @@ public partial class MapCreatorView : UserControl
     }
     private void OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
     {
-        var mousePos = e.GetPosition(sender as UIElement);
-        var x = (int)mousePos.X;
-        var y = (int)mousePos.Y;
+        Point mousePos = e.GetPosition(sender as UIElement);
+        int x = (int)mousePos.X;
+        int y = (int)mousePos.Y;
 
-        var prevTarget = _selectedTarget;
+        NumberedTarget? prevTarget = _selectedTarget;
         _selectedTarget = _targets.FindLast(target => target.Contains(new Point2D<int>(x, y)));
 
         prevTarget?.HideAngles();
@@ -99,9 +101,9 @@ public partial class MapCreatorView : UserControl
     {
         if (e.LeftButton == MouseButtonState.Pressed && _isMoveTriggered)
         {
-            var mousePos = e.GetPosition(sender as UIElement);
-            var x = (int)mousePos.X;
-            var y = (int)mousePos.Y;
+            Point mousePos = e.GetPosition(sender as UIElement);
+            int x = (int)mousePos.X;
+            int y = (int)mousePos.Y;
             if (FullRadiusEllipse.FillContains(mousePos))
             {
                 var clickPoint = new Point2D<int>(x, y);
@@ -110,8 +112,8 @@ public partial class MapCreatorView : UserControl
             else
             {
                 var center = new Point2D<int>((int)FullRadiusEllipse.Bounds.Width / 2, (int)FullRadiusEllipse.Bounds.Height / 2);
-                var radiusX = FullRadiusEllipse.Bounds.Width / 2;
-                var radiusY = FullRadiusEllipse.Bounds.Height / 2;
+                double radiusX = FullRadiusEllipse.Bounds.Width / 2;
+                double radiusY = FullRadiusEllipse.Bounds.Height / 2;
 
                 double normalizedX = (x - center.X) / radiusX;
                 double normalizedY = (y - center.Y) / radiusY;
@@ -129,11 +131,11 @@ public partial class MapCreatorView : UserControl
 
     private void OnMouseRightButtonDown(object sender, MouseButtonEventArgs e)
     {
-        var mousePos = e.GetPosition(sender as UIElement);
-        var x = (int)mousePos.X;
-        var y = (int)mousePos.Y;
+        Point mousePos = e.GetPosition(sender as UIElement);
+        int x = (int)mousePos.X;
+        int y = (int)mousePos.Y;
 
-        var target = _targets.FindLast(target => target.Contains(new(x, y)));
+        NumberedTarget? target = _targets.FindLast(target => target.Contains(new(x, y)));
         if (target is not null)
         {
             _ = _targets.Remove(target);
@@ -148,12 +150,12 @@ public partial class MapCreatorView : UserControl
 
     private void OnMouseDoubleClick(object sender, MouseButtonEventArgs e)
     {
-        var mousePos = e.GetPosition(sender as UIElement);
-        var fillContains = FullRadiusEllipse.FillContains(mousePos);
+        Point mousePos = e.GetPosition(sender as UIElement);
+        bool fillContains = FullRadiusEllipse.FillContains(mousePos);
 
         if (e.ChangedButton == MouseButton.Left && fillContains)
         {
-            var target = GetIniCoordTarget(mousePos.X, mousePos.Y);
+            NumberedTarget target = GetIniCoordTarget(mousePos.X, mousePos.Y);
             target.Draw();
             _targets.Add(target);
         }

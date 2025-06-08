@@ -1,6 +1,7 @@
-﻿using Disk.ViewModels.Common.Commands.Sync;
+﻿using System.Windows.Input;
+
+using Disk.ViewModels.Common.Commands.Sync;
 using Disk.ViewModels.Common.ViewModels;
-using System.Windows.Input;
 
 namespace Disk.ViewModels;
 

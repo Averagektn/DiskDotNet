@@ -105,7 +105,7 @@ public partial class Converter
     /// </returns>
     public static Point2D<int> ToLogCoord(string str, char separator)
     {
-        var coords = str.Split(separator);
+        string[] coords = str.Split(separator);
 
         return new(int.Parse(coords[0]), int.Parse(coords[1]));
     }
@@ -124,7 +124,7 @@ public partial class Converter
     /// </returns>
     public static Point3D<int> ToLogCoord3D(string str, char separator)
     {
-        var coords = str.Split(separator);
+        string[] coords = str.Split(separator);
 
         return new(int.Parse(coords[0]), int.Parse(coords[1]), int.Parse(coords[2]));
     }

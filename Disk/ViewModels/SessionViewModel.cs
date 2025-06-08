@@ -1,4 +1,9 @@
-﻿using Disk.Calculations.Implementations;
+﻿using System.Collections.ObjectModel;
+using System.IO;
+using System.Windows;
+using System.Windows.Input;
+
+using Disk.Calculations.Implementations;
 using Disk.Db.Context;
 using Disk.Entities;
 using Disk.Navigators;
@@ -7,12 +12,11 @@ using Disk.Stores;
 using Disk.ViewModels.Common.Commands.Async;
 using Disk.ViewModels.Common.Commands.Sync;
 using Disk.ViewModels.Common.ViewModels;
+
 using Microsoft.EntityFrameworkCore;
+
 using Serilog;
-using System.Collections.ObjectModel;
-using System.IO;
-using System.Windows;
-using System.Windows.Input;
+
 using Localization = Disk.Properties.Langs.Session.SessionLocalization;
 using Settings = Disk.Properties.Config.Config;
 
@@ -73,8 +77,8 @@ public class SessionViewModel(DiskContext database, IExcelFiller excelFiller, Na
                 """,
             afterConfirm: () =>
             {
-                var now = DateTime.Now;
-                var logPath = $"{Settings.MainDirPath}{Path.DirectorySeparatorChar}" +
+                DateTime now = DateTime.Now;
+                string logPath = $"{Settings.MainDirPath}{Path.DirectorySeparatorChar}" +
                               $"{Patient.Surname} {Patient.Name}{Path.DirectorySeparatorChar}" +
                               $"{now:dd.MM.yyyy HH-mm-ss}";
                 _ = Directory.CreateDirectory(logPath);

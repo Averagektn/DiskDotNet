@@ -1,11 +1,17 @@
-﻿using ClosedXML.Excel;
+﻿using System.Diagnostics;
+
+using ClosedXML.Excel;
+
 using Disk.Data.Impl;
 using Disk.Entities;
 using Disk.Services.Interfaces;
+
 using Microsoft.Win32;
+
 using Newtonsoft.Json;
+
 using Serilog;
-using System.Diagnostics;
+
 using Localization = Disk.Properties.Langs.ExcelFiller.ExcelFillerLocalization;
 
 namespace Disk.Services.Implementations;
@@ -45,9 +51,9 @@ public class ExcelFiller : IExcelFiller
 
     private static void FillExcel(XLWorkbook workbook, List<Attempt> attempts, Map map)
     {
-        foreach (var attempt in attempts)
+        foreach (Attempt attempt in attempts)
         {
-            var worksheet = workbook.Worksheets.Add();
+            IXLWorksheet worksheet = workbook.Worksheets.Add();
 
             worksheet.Cell(1, 1).Value = Localization.DateTime;
             worksheet.Cell(2, 1).Value = attempt.DateTime;
@@ -62,7 +68,7 @@ public class ExcelFiller : IExcelFiller
             worksheet.Cell(5, 4).Value = Localization.TargetRadius;
             worksheet.Cell(5, 5).Value = Localization.Note;
 
-            var sres = attempt.AttemptResult;
+            AttemptResult? sres = attempt.AttemptResult;
             if (sres is not null)
             {
                 SetFloatCell(worksheet, 6, 1, (float)attempt.MaxXAngle);
@@ -129,11 +135,11 @@ public class ExcelFiller : IExcelFiller
 
     private static void FillPtts(IXLWorksheet worksheet, Attempt attempt, int pathCol, Map map)
     {
-        var ptts = attempt.PathToTargets;
-        var mapCenters = JsonConvert.DeserializeObject<List<Point2D<float>>>(map.CoordinatesJson)!;
+        ICollection<PathToTarget> ptts = attempt.PathToTargets;
+        List<Point2D<float>> mapCenters = JsonConvert.DeserializeObject<List<Point2D<float>>>(map.CoordinatesJson)!;
 
         int pttRow = 10;
-        foreach (var ptt in ptts)
+        foreach (PathToTarget ptt in ptts)
         {
             worksheet.Cell(pttRow, 1).Value = ptt.TargetId + 1;
             SetFloatCell(worksheet, pttRow, 2, (float)ptt.Time);
@@ -142,7 +148,7 @@ public class ExcelFiller : IExcelFiller
             SetFloatCell(worksheet, pttRow, 5, (float)ptt.Distance);
             pttRow++;
 
-            var pathList = JsonConvert.DeserializeObject<List<Point2D<float>>>(ptt.CoordinatesJson)!;
+            List<Point2D<float>> pathList = JsonConvert.DeserializeObject<List<Point2D<float>>>(ptt.CoordinatesJson)!;
 
             worksheet.Cell(1, pathCol).Value = $"{Localization.PathToTarget}";
             pathCol++;
@@ -154,13 +160,13 @@ public class ExcelFiller : IExcelFiller
 
     private static void FillPits(IXLWorksheet worksheet, Attempt attempt, int pathCol, Map map)
     {
-        var pits = attempt.PathInTargets;
-        var mapCenters = JsonConvert.DeserializeObject<List<Point2D<float>>>(map.CoordinatesJson)!;
+        ICollection<PathInTarget> pits = attempt.PathInTargets;
+        List<Point2D<float>> mapCenters = JsonConvert.DeserializeObject<List<Point2D<float>>>(map.CoordinatesJson)!;
 
         int pitRow = 10;
-        foreach (var pit in pits)
+        foreach (PathInTarget pit in pits)
         {
-            var pathList = JsonConvert.DeserializeObject<List<Point2D<float>>>(pit.CoordinatesJson)!;
+            List<Point2D<float>> pathList = JsonConvert.DeserializeObject<List<Point2D<float>>>(pit.CoordinatesJson)!;
 
             SetFloatCell(worksheet, pitRow, 6, (float)pit.EllipseArea);
             SetFloatCell(worksheet, pitRow, 7, (float)pit.ConvexHullArea);
@@ -214,7 +220,7 @@ public class ExcelFiller : IExcelFiller
 
     private static void FillExcelWithPoints(IXLWorksheet worksheet, int pathCol, int pathRow, List<Point2D<float>> pathList)
     {
-        foreach (var point in pathList)
+        foreach (Point2D<float> point in pathList)
         {
             SetFloatCell(worksheet, pathRow, pathCol, point.X);
             SetFloatCell(worksheet, pathRow, pathCol + 1, point.Y);

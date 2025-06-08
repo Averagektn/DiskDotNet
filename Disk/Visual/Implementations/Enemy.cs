@@ -1,7 +1,8 @@
-﻿using Disk.Data.Impl;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
+
+using Disk.Data.Impl;
 
 namespace Disk.Visual.Implementations;
 
@@ -46,7 +47,7 @@ public class Enemy(Point2D<int> center, int radius, int speed, Brush color, Pane
     /// </param>
     public void Follow(Point2D<int> target)
     {
-        var direction = GetAngleDirection(target);
+        float direction = GetAngleDirection(target);
 
         if (!Contains(target))
         {
@@ -70,8 +71,8 @@ public class Enemy(Point2D<int> center, int radius, int speed, Brush color, Pane
     /// </returns>
     private float GetAngleDirection(Point2D<int> target)
     {
-        var deltaX = target.X - Center.X;
-        var deltaY = Center.Y - target.Y;
+        int deltaX = target.X - Center.X;
+        int deltaY = Center.Y - target.Y;
 
         return (float)new PolarPoint<double>(new Point2D<double>(deltaX, deltaY)).Angle;
     }

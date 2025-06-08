@@ -1,15 +1,18 @@
-﻿using Disk.Db.Context;
+﻿using System.Collections.ObjectModel;
+using System.Windows;
+using System.Windows.Input;
+
+using Disk.Db.Context;
 using Disk.Entities;
 using Disk.Navigators;
 using Disk.Stores;
 using Disk.ViewModels.Common.Commands.Async;
 using Disk.ViewModels.Common.Commands.Sync;
 using Disk.ViewModels.Common.ViewModels;
+
 using Microsoft.EntityFrameworkCore;
+
 using Serilog;
-using System.Collections.ObjectModel;
-using System.Windows;
-using System.Windows.Input;
 
 namespace Disk.ViewModels;
 
@@ -35,11 +38,7 @@ public class SessionsListViewModel(DiskContext database, NavigationStore navigat
     private Session? _selectedSession = null;
     public Session? SelectedSession
     {
-        get => _selectedSession;
-        set
-        {
-            _ = SetProperty(ref _selectedSession, value);
-        }
+        get => _selectedSession; set => _ = SetProperty(ref _selectedSession, value);
     }
 
     private Patient _patient = null!;
@@ -89,7 +88,7 @@ public class SessionsListViewModel(DiskContext database, NavigationStore navigat
     {
         get
         {
-            var sessionsCount = database.Sessions.Count();
+            int sessionsCount = database.Sessions.Count();
 
             return (int)Math.Ceiling((double)sessionsCount / SessionsPerPage);
         }
@@ -162,7 +161,7 @@ public class SessionsListViewModel(DiskContext database, NavigationStore navigat
 
     private async Task UpdateSessionsAsync()
     {
-        var query = database.Sessions
+        IQueryable<Session> query = database.Sessions
             .Where(a => a.Patient == Patient.Id)
             .Include(a => a.MapNavigation)
             .OrderByDescending(a => a.Id)

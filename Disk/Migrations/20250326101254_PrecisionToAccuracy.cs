@@ -2,27 +2,26 @@
 
 #nullable disable
 
-namespace Disk.Migrations
+namespace Disk.Migrations;
+
+/// <inheritdoc />
+public partial class PrecisionToAccuracy : Migration
 {
     /// <inheritdoc />
-    public partial class PrecisionToAccuracy : Migration
+    protected override void Up(MigrationBuilder migrationBuilder)
     {
-        /// <inheritdoc />
-        protected override void Up(MigrationBuilder migrationBuilder)
-        {
-            _ = migrationBuilder.RenameColumn(
-                name: "pit_precision",
-                table: "path_in_target",
-                newName: "pit_accuracy");
-        }
+        _ = migrationBuilder.RenameColumn(
+            name: "pit_precision",
+            table: "path_in_target",
+            newName: "pit_accuracy");
+    }
 
-        /// <inheritdoc />
-        protected override void Down(MigrationBuilder migrationBuilder)
-        {
-            _ = migrationBuilder.RenameColumn(
-                name: "pit_accuracy",
-                table: "path_in_target",
-                newName: "pit_precision");
-        }
+    /// <inheritdoc />
+    protected override void Down(MigrationBuilder migrationBuilder)
+    {
+        _ = migrationBuilder.RenameColumn(
+            name: "pit_accuracy",
+            table: "path_in_target",
+            newName: "pit_precision");
     }
 }

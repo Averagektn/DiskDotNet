@@ -1,5 +1,7 @@
-﻿using Disk.Calculations.Interfaces;
-using System.Drawing;
+﻿using System.Drawing;
+
+using Disk.Calculations.Interfaces;
+
 using Size = System.Windows.Size;
 
 namespace Disk.Calculations.Implementations.Converters;

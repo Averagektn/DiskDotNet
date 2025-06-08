@@ -1,8 +1,9 @@
-﻿using Disk.Calculations.Implementations.Converters;
-using Disk.Data.Impl;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
+
+using Disk.Calculations.Implementations.Converters;
+using Disk.Data.Impl;
 
 namespace Disk.Visual.Implementations;
 
@@ -71,16 +72,16 @@ public class NumberedTarget : Target
         : base(center, radius, parent, iniSize)
     {
         _converter = converter;
-        var point = converter.ToAngle_FromWnd(center);
+        Point2D<float> point = converter.ToAngle_FromWnd(center);
         _x = point.X;
         _y = point.Y;
 
         void OnLostKeyboardFocus(TextBox textBox, ref float coord)
         {
-            if (float.TryParse($"{textBox.Text:f1}", out var res))
+            if (float.TryParse($"{textBox.Text:f1}", out float res))
             {
                 coord = res;
-                var newCenter = converter.ToWndCoord(new Point2D<float>(_x, _y));
+                Point2D<int> newCenter = converter.ToWndCoord(new Point2D<float>(_x, _y));
                 Move(newCenter);
             }
             else
@@ -186,7 +187,7 @@ public class NumberedTarget : Target
     {
         base.Move(center);
 
-        var point = _converter.ToAngle_FromWnd(Center);
+        Point2D<float> point = _converter.ToAngle_FromWnd(Center);
 
         _coordX.Text = $"{point.X:f1}";
         _coordY.Text = $"{point.Y:f1}";
@@ -236,17 +237,10 @@ public class NumberedTarget : Target
     /// </summary>
     private void UpdateNumSize()
     {
-        var numSize = _numberText.Text.Length;
-        var fontSize = (double)((Radius * 2) - (SingleRadius * 2)) / numSize;
+        int numSize = _numberText.Text.Length;
+        double fontSize = (double)((Radius * 2) - (SingleRadius * 2)) / numSize;
 
-        if (fontSize < 1)
-        {
-            _numberText.FontSize = 1;
-        }
-        else
-        {
-            _numberText.FontSize = fontSize;
-        }
+        _numberText.FontSize = fontSize < 1 ? 1 : fontSize;
     }
 
     /// <inheritdoc/>

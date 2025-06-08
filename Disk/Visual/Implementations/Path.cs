@@ -1,9 +1,10 @@
-﻿using Disk.Data.Impl;
-using Disk.Visual.Interfaces;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Shapes;
+
+using Disk.Data.Impl;
+using Disk.Visual.Interfaces;
 
 namespace Disk.Visual.Implementations;
 
@@ -100,8 +101,8 @@ public class Path : IStaticFigure
     /// <inheritdoc/>
     public virtual void Scale()
     {
-        var xScale = Parent.ActualWidth / IniSize.Width;
-        var yScale = Parent.ActualHeight / IniSize.Height;
+        double xScale = Parent.ActualWidth / IniSize.Width;
+        double yScale = Parent.ActualHeight / IniSize.Height;
 
         _polyline.Points.Clear();
         _iniPoints.ForEach(point => _polyline.Points.Add(new Point(point.X * xScale, point.Y * yScale)));

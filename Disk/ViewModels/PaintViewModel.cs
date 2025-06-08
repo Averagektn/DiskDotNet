@@ -1,4 +1,9 @@
-﻿using Disk.Calculations.Implementations;
+﻿using System.Diagnostics;
+using System.Net;
+using System.Windows;
+using System.Windows.Input;
+
+using Disk.Calculations.Implementations;
 using Disk.Calculations.Implementations.Converters;
 using Disk.Data.Impl;
 using Disk.Db.Context;
@@ -10,13 +15,13 @@ using Disk.ViewModels.Common.Commands.Sync;
 using Disk.ViewModels.Common.ViewModels;
 using Disk.Visual.Implementations;
 using Disk.Visual.Interfaces;
+
 using Microsoft.EntityFrameworkCore;
+
 using Newtonsoft.Json;
+
 using Serilog;
-using System.Diagnostics;
-using System.Net;
-using System.Windows;
-using System.Windows.Input;
+
 using FilePath = System.IO.Path;
 using Localization = Disk.Properties.Langs.PaintWindow.PaintWindowLocalization;
 using Settings = Disk.Properties.Config.Config;
@@ -343,7 +348,7 @@ public class PaintViewModel : PopupViewModel
         _pathToTargetStopwatch.Stop();
 
         double distance = 0;
-        var pathToTarget = PathsToTargets[TargetId];
+        List<Point2D<float>> pathToTarget = PathsToTargets[TargetId];
         for (int i = 1; i < pathToTarget.Count; i++)
         {
             distance += pathToTarget[i - 1].GetDistance(pathToTarget[i]);
@@ -353,11 +358,11 @@ public class PaintViewModel : PopupViewModel
         {
             pathToTarget.Add(CurrentPos?.To2D() ?? new Point2D<float>());
         }
-        var touchPoint = pathToTarget[^1];
+        Point2D<float> touchPoint = pathToTarget[^1];
 
-        var time = _pathToTargetStopwatch.Elapsed.TotalSeconds;
-        var avgSpeed = distance / time;
-        var approachSpeed = pathToTarget[0].GetDistance(touchPoint) / time;
+        double time = _pathToTargetStopwatch.Elapsed.TotalSeconds;
+        double avgSpeed = distance / time;
+        double approachSpeed = pathToTarget[0].GetDistance(touchPoint) / time;
 
         var ptt = new PathToTarget()
         {
@@ -420,7 +425,7 @@ public class PaintViewModel : PopupViewModel
             return;
         }
 
-        var pathInTarget = PathsInTargets[TargetId];
+        List<Point2D<float>> pathInTarget = PathsInTargets[TargetId];
         float accuracy = 0;
 
         if (ShotsCount > 0)
@@ -438,8 +443,8 @@ public class PaintViewModel : PopupViewModel
             convexHullArea = ConvexHull.GetArea(pathInTarget);
         }
 
-        var mx = Calculator2D.MathExp(pathInTarget);
-        var deviation = Calculator2D.StandartDeviation(pathInTarget);
+        Point2D<float> mx = Calculator2D.MathExp(pathInTarget);
+        Point2D<float> deviation = Calculator2D.StandartDeviation(pathInTarget);
 
         var pit = new PathInTarget()
         {

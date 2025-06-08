@@ -1,8 +1,9 @@
-﻿using Disk.Calculations.Implementations.Converters;
-using Disk.Data.Interface;
-using System.Buffers.Binary;
+﻿using System.Buffers.Binary;
 using System.Net;
 using System.Net.Sockets;
+
+using Disk.Calculations.Implementations.Converters;
+using Disk.Data.Interface;
 
 namespace Disk.Data.Impl;
 
@@ -102,7 +103,7 @@ public class Connection : IDataSource<float>, IDisposable
     /// </returns>
     public static Connection GetConnection(IPAddress ip, int port, int receiveTimeout = 2000)
     {
-        var conn = Connections.FirstOrDefault(c => c.IP.Equals(ip) && c.Port == port);
+        Connection? conn = Connections.FirstOrDefault(c => c.IP.Equals(ip) && c.Port == port);
 
         lock (_lockObj)
         {
@@ -188,7 +189,7 @@ public class Connection : IDataSource<float>, IDisposable
     /// <inheritdoc/>
     public Point2D<float>? GetXY()
     {
-        var data = GetXYZ();
+        Point3D<float>? data = GetXYZ();
 
         return data is null ? null : new Point2D<float>((float)data.X, (float)data.Y);
     }
@@ -196,7 +197,7 @@ public class Connection : IDataSource<float>, IDisposable
     /// <inheritdoc/>
     public Point2D<float>? GetXZ()
     {
-        var data = GetXYZ();
+        Point3D<float>? data = GetXYZ();
 
         return data is null ? null : new Point2D<float>((float)data.X, (float)data.Z);
     }
@@ -204,7 +205,7 @@ public class Connection : IDataSource<float>, IDisposable
     /// <inheritdoc/>
     public Point2D<float>? GetYX()
     {
-        var data = GetXYZ();
+        Point3D<float>? data = GetXYZ();
 
         return data is null ? null : new Point2D<float>((float)data.Y, (float)data.X);
     }
@@ -212,7 +213,7 @@ public class Connection : IDataSource<float>, IDisposable
     /// <inheritdoc/>
     public Point2D<float>? GetYZ()
     {
-        var data = GetXYZ();
+        Point3D<float>? data = GetXYZ();
 
         return data is null ? null : new Point2D<float>((float)data.Y, (float)data.Z);
     }
@@ -220,7 +221,7 @@ public class Connection : IDataSource<float>, IDisposable
     /// <inheritdoc/>
     public Point2D<float>? GetZX()
     {
-        var data = GetXYZ();
+        Point3D<float>? data = GetXYZ();
 
         return data is null ? null : new Point2D<float>((float)data.Z, (float)data.X);
     }
@@ -228,7 +229,7 @@ public class Connection : IDataSource<float>, IDisposable
     /// <inheritdoc/>
     public Point2D<float>? GetZY()
     {
-        var data = GetXYZ();
+        Point3D<float>? data = GetXYZ();
 
         return data is null ? null : new Point2D<float>((float)data.Z, (float)data.Y);
     }

@@ -1,11 +1,13 @@
-﻿using Disk.Calculations.Implementations.Converters;
-using Disk.Data.Impl;
-using Disk.Visual.Implementations;
-using Disk.Visual.Interfaces;
-using System.IO;
+﻿using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
+
+using Disk.Calculations.Implementations.Converters;
+using Disk.Data.Impl;
+using Disk.Visual.Implementations;
+using Disk.Visual.Interfaces;
+
 using Settings = Disk.Properties.Config.Config;
 
 namespace Disk.Services.Implementations;
@@ -24,9 +26,8 @@ public static class DrawableFabric
 
     public static Cursor GetIniCursor(string cursorImagePath, Panel parent)
     {
-        if (File.Exists(cursorImagePath))
-        {
-            return new CursorPicture
+        return File.Exists(cursorImagePath)
+            ? new CursorPicture
             (
                 filePath: cursorImagePath,
                 center: new(ScreenIniCenterX, ScreenIniCenterY),
@@ -34,9 +35,8 @@ public static class DrawableFabric
                 imageSize: new(Settings.IniCursorRadius * 10, Settings.IniCursorRadius * 10),
                 parent,
                 iniSize: ScreenIniSize
-            );
-        }
-        return new Cursor
+            )
+            : new Cursor
         (
             center: new(ScreenIniCenterX, ScreenIniCenterY),
             radius: Settings.IniCursorRadius * 5,
@@ -49,9 +49,8 @@ public static class DrawableFabric
 
     public static IProgressTarget GetIniProgressTarget(string targetImagePath, Point2D<int> center, Panel parent)
     {
-        if (File.Exists(targetImagePath))
-        {
-            return new TargetPicture
+        return File.Exists(targetImagePath)
+            ? new TargetPicture
             (
                 imageFilePath: targetImagePath,
                 center,
@@ -59,9 +58,8 @@ public static class DrawableFabric
                 parent,
                 iniSize: ScreenIniSize,
                 hp: Settings.TargetHp
-            );
-        }
-        return new ProgressTarget(center, radius: Settings.IniTargetRadius * 6, parent, TargetHp, iniSize: ScreenIniSize);
+            )
+            : new ProgressTarget(center, radius: Settings.IniTargetRadius * 6, parent, TargetHp, iniSize: ScreenIniSize);
     }
 
     public static Converter GetIniConverter()
