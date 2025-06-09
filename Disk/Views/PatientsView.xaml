@@ -60,25 +60,29 @@
             </DataGrid.InputBindings>
             <DataGrid.Columns>
                 <DataGridTextColumn 
-                    Width="1*" 
+                    Width="2*" 
                     Header="{x:Static lang:PatientsLocalization.Surname}" 
                     Binding="{Binding Surname}" />
                 <DataGridTextColumn 
-                    Width="1*" 
+                    Width="2*" 
                     Header="{x:Static lang:PatientsLocalization.Name}" 
                     Binding="{Binding Name}" />
                 <DataGridTextColumn 
-                    Width="1*" 
+                    Width="2*" 
                     Header="{x:Static lang:PatientsLocalization.Patronymic}" 
                     Binding="{Binding Patronymic}" />
                 <DataGridTextColumn 
-                    Width="1*" 
+                    Width="2*" 
                     Header="{x:Static lang:PatientsLocalization.DateOfBirth}" 
                     Binding="{Binding DateOfBirth}" />
                 <DataGridTextColumn 
-                    Width="1*" 
+                    Width="3*" 
                     Header="{x:Static lang:PatientsLocalization.MobilePhone}" 
                     Binding="{Binding PhoneMobile}" />
+                <DataGridTextColumn 
+                    Width="3*" 
+                    Header="{x:Static lang:PatientsLocalization.HomePhone}" 
+                    Binding="{Binding PhoneHome}" />
             </DataGrid.Columns>
             <i:Interaction.Triggers>
                 <i:EventTrigger EventName="MouseDoubleClick">
