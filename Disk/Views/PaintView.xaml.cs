@@ -57,8 +57,7 @@ public partial class PaintView : UserControl
 
         ShotTimer = new(DispatcherPriority.Normal)
         {
-            // 60HZ max
-            Interval = TimeSpan.FromMilliseconds(Settings.ShotTime)
+            Interval = TimeSpan.FromMilliseconds(100)
         };
         ShotTimer.Tick += ShotTimerElapsed;
 

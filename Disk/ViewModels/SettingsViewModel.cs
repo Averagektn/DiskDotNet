@@ -143,7 +143,7 @@ public class SettingsViewModel(ModalNavigationStore modalNavigationStore) : Popu
     }
 
     // convert int hp to ms
-    private int _targetTtl = Calculator.RoundToNearest(value: 1000 * Settings.TargetHp / (1000 / Settings.ShotTime), nearest: 100);
+    private int _targetTtl = Calculator.RoundToNearest(value: 1000 * Settings.TargetHp / (1000 / 100), nearest: 100);
     public string TargetTtl
     {
         get => _targetTtl.ToString();
@@ -260,7 +260,7 @@ public class SettingsViewModel(ModalNavigationStore modalNavigationStore) : Popu
         TargetRadius = Settings.IniTargetRadius.ToString();
         CursorRadius = Settings.IniCursorRadius.ToString();
 
-        TargetTtl = Calculator.RoundToNearest(value: 1000 * Settings.TargetHp / (1000 / Settings.ShotTime), nearest: 100).ToString();
+        TargetTtl = Calculator.RoundToNearest(value: 1000 * Settings.TargetHp / (1000 / 100), nearest: 100).ToString();
     }
 
     public override void AfterNavigation()
@@ -273,7 +273,7 @@ public class SettingsViewModel(ModalNavigationStore modalNavigationStore) : Popu
         bool shotTimeChanged = ShotTime != Calculator.RoundToNearest(value: 1000 / Settings.ShotTime, nearest: 5).ToString();
         bool targetRadiusChanged = TargetRadius != Settings.IniTargetRadius.ToString();
         bool cursorRadiusChanged = CursorRadius != Settings.IniCursorRadius.ToString();
-        bool targetTtlChanged = TargetTtl != Calculator.RoundToNearest(value: 1000 * Settings.TargetHp / (1000 / Settings.ShotTime),
+        bool targetTtlChanged = TargetTtl != Calculator.RoundToNearest(value: 1000 * Settings.TargetHp / (1000 / 100),
             nearest: 100).ToString();
 
         if (ipChanged || cursorPathChanged || targetPathChanged || shotTimeChanged || targetRadiusChanged || cursorRadiusChanged
@@ -299,7 +299,7 @@ public class SettingsViewModel(ModalNavigationStore modalNavigationStore) : Popu
         Settings.IniTargetRadius = _targetRadius;
 
         // convert ms to int hp
-        Settings.TargetHp = _targetTtl * _shotTime / 1000;
+        Settings.TargetHp = _targetTtl * 10 / 1000;
 
         Settings.CursorFilePath = CursorFilePath;
         Settings.TargetFilePath = TargetFilePath;

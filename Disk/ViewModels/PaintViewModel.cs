@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System.Collections.Concurrent;
+using System.Diagnostics;
 using System.Net;
 using System.Windows;
 using System.Windows.Input;
@@ -150,11 +151,13 @@ public class PaintViewModel : PopupViewModel
     {
         _diskNetworkThread = new(ReceivePatientPosition)
         {
-            Priority = ThreadPriority.Highest
+            Priority = ThreadPriority.Highest,
+            IsBackground = true,
         };
         _savePathThread = new(SavePath)
         {
-            Priority = ThreadPriority.Highest
+            Priority = ThreadPriority.Highest,
+            IsBackground = true,
         };
 
         Converter = DrawableFabric.GetIniConverter();
@@ -164,27 +167,29 @@ public class PaintViewModel : PopupViewModel
         _database = database;
     }
 
+    private readonly ConcurrentQueue<Point3D<float>> _receivedCoords = new();
+
     private void SavePath()
     {
         int intervalMs = Settings.ShotTime;
         var stopwatch = Stopwatch.StartNew();
         long nextTick = stopwatch.ElapsedMilliseconds;
 
-        while (IsGame && TargetId < TargetCenters.Count)
+        while ((IsGame && TargetId < TargetCenters.Count) || !_receivedCoords.IsEmpty)
         {
             long now = stopwatch.ElapsedMilliseconds;
 
-            if (now >= nextTick && CurrentPos is not null)
+            if (_receivedCoords.TryDequeue(out Point3D<float>? coord) && now >= nextTick)
             {
-                FullPath.Add(CurrentPos);
+                FullPath.Add(coord);
 
                 if (IsPathToTarget && !_isSavingPathToTarget)
                 {
-                    PathsToTargets[TargetId].Add(CurrentPos.To2D());
+                    PathsToTargets[TargetId].Add(coord.To2D());
                 }
                 else if (!_isSavingPathInTarget)
                 {
-                    PathsInTargets[TargetId].Add(CurrentPos.To2D());
+                    PathsInTargets[TargetId].Add(coord.To2D());
                 }
 
                 nextTick += intervalMs;
@@ -215,6 +220,10 @@ public class PaintViewModel : PopupViewModel
             while (IsReceivingData)
             {
                 CurrentPos = _connection.GetXYZ();
+                if (IsGame)
+                {
+                    _receivedCoords.Enqueue(CurrentPos);
+                }
             }
         }
         catch (Exception ex)
@@ -240,11 +249,13 @@ public class PaintViewModel : PopupViewModel
                         }
                         _diskNetworkThread = new(ReceivePatientPosition)
                         {
-                            Priority = ThreadPriority.Highest
+                            Priority = ThreadPriority.Highest,
+                            IsBackground = true
                         };
                         _savePathThread = new(SavePath)
                         {
-                            Priority = ThreadPriority.Highest
+                            Priority = ThreadPriority.BelowNormal,
+                            IsBackground = true
                         };
                         _diskNetworkThread.Start();
                     });
@@ -495,6 +506,9 @@ public class PaintViewModel : PopupViewModel
             SavePathInTarget();
         }
 
-        SaveAttemptResultAsync().Wait();
+        _ = Application.Current.Dispatcher.InvokeAsync(async () =>
+        {
+            await SaveAttemptResultAsync();
+        });
     }
 }

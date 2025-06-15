@@ -127,6 +127,7 @@ public class Target : Cursor, ITarget
             return;
         }
 
+        OnReceiveShot = null;
         Circles.ForEach(circle => circle.Remove());
         Parent.SizeChanged -= Parent_SizeChanged;
 

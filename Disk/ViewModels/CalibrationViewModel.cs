@@ -73,7 +73,10 @@ public class CalibrationViewModel : PopupViewModel
         CalibrateXEnabled = true;
         CalibrateYEnabled = true;
 
-        DataThread = new(ReceiveFromDisk);
+        DataThread = new(ReceiveFromDisk)
+        {
+            IsBackground = true,
+        };
         DataThread.Start();
         TextBoxUpdateTimer.Start();
     });

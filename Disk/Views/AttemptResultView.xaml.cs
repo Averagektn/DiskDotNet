@@ -37,7 +37,6 @@ public partial class AttemptResultView : UserControl
     private readonly Size _iniScreenSize = new(_settings.IniScreenWidth, _settings.IniScreenHeight);
 
     private static readonly Settings _settings = Settings.Default;
-    //private DispatcherTimer? _coordTimer;
     private Thread? _coordThread;
 
     private bool _isReply;
@@ -256,6 +255,7 @@ public partial class AttemptResultView : UserControl
         })
         {
             Priority = ThreadPriority.Highest,
+            IsBackground = true,
         };
         IsReply = true;
         _coordThread.Start();
