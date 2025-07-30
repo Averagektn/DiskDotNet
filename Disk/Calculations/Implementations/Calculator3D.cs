@@ -26,7 +26,6 @@ public static class Calculator3D
         );
     }
 
-
     /// <summary>
     ///     Calculates standart deviation
     /// </summary>

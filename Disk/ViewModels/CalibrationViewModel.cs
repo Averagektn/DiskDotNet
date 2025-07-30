@@ -136,6 +136,7 @@ public class CalibrationViewModel : PopupViewModel
         {
             XCoord = $"{XAngleRes:F2}";
         }
+
         if (CalibrateYEnabled)
         {
             YCoord = $"{YAngleRes:F2}";

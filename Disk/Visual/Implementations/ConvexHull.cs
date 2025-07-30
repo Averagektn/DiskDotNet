@@ -31,6 +31,7 @@ public class ConvexHull : IStaticFigure
             convexHullArea += convexHullPoints[i].X * convexHullPoints[j].Y;
             convexHullArea -= convexHullPoints[i].Y * convexHullPoints[j].X;
         }
+
         convexHullArea /= 2.0;
 
         return convexHullArea;

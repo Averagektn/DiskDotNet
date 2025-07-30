@@ -102,7 +102,8 @@ public partial class MainWindow : Window
 
                                 if (handler.Connected)
                                 {
-                                    var data = numBytes.Concat(yBytes).Concat(xBytes).Concat(zBytes).ToArray();
+                                    var data = numBytes.Concat(yBytes).Concat(xBytes).Concat(zBytes)
+                                        .ToArray();
                                     _ = handler.Send(data);
 /*                                    _ = handler.Send(numBytes);
                                     _ = handler.Send(yBytes);

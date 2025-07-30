@@ -72,4 +72,9 @@ public class TargetPicture(string imageFilePath, Point2D<int> center, Size image
     {
         Progress = 0;
     }
+
+    public void UpdateProgress()
+    {
+
+    }
 }

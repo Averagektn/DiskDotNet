@@ -100,10 +100,12 @@ public partial class AttemptResultView : UserControl
         {
             _diagram?.Draw();
         }
+
         if (PathToTargetCheckBox.IsChecked ?? false)
         {
             _pathToTarget?.Draw();
         }
+
         if (PathInTargetCheckBox.IsChecked ?? false)
         {
             _pathInTarget?.Draw();
@@ -113,6 +115,7 @@ public partial class AttemptResultView : UserControl
         {
             return;
         }
+
         _currentIndex = ViewModel.SelectedIndex;
 
         _target?.Move(ViewModel.TargetCenter);
@@ -127,6 +130,7 @@ public partial class AttemptResultView : UserControl
                 _fullPathEllipses.ForEach(e => e.Draw());
             }
         }
+
         if (ViewModel.CurrPathInTarget.Count > MinEllipsePointsCount)
         {
             RecalculateEllipse(_pathInTargetEllipses, [.. ViewModel.CurrPathInTarget], Brushes.CadetBlue, Brushes.Blue);
@@ -135,6 +139,7 @@ public partial class AttemptResultView : UserControl
                 _pathInTargetEllipses.ForEach(e => e.Draw());
             }
         }
+
         if (ViewModel.CurrPathToTarget.Count > MinEllipsePointsCount)
         {
             RecalculateEllipse(_pathToTargetEllipses, [.. ViewModel.CurrPathToTarget], Brushes.LawnGreen, Brushes.Green);
@@ -214,7 +219,6 @@ public partial class AttemptResultView : UserControl
         //_cursor?.Move(ViewModel.CursorCenter);
         _cursor?.MoveSmooth(ViewModel.CursorCenter);
     }
-
 
     private void StopReply(object sender, RoutedEventArgs e)
     {

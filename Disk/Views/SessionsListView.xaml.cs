@@ -45,6 +45,7 @@ public partial class SessionsListView : UserControl
             {
                 SavedRow.Background = Brushes.White;
             }
+
             SavedRow = row;
             row.Background = Brushes.LightCyan;
 

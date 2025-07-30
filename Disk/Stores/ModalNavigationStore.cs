@@ -32,7 +32,6 @@ public class ModalNavigationStore(Func<Type, ObserverViewModel> getViewModel) : 
         return viewModel;
     }
 
-
     public void Close()
     {
         if (CanClose)
@@ -50,6 +49,7 @@ public class ModalNavigationStore(Func<Type, ObserverViewModel> getViewModel) : 
             {
                 vm.Refresh();
             }
+
             currVm.AfterNavigation();
             currVm.Dispose();
 

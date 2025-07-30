@@ -137,6 +137,7 @@ public class SessionsListViewModel(DiskContext database, NavigationStore navigat
         {
             _currPage--;
         }
+
         IsPreviousEnabled = _currPage > 0;
         IsNextEnabled = _currPage < TotalPages - 1;
         SelectedDate = null;

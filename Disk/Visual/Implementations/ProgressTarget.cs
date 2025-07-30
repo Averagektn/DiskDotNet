@@ -42,6 +42,8 @@ public class ProgressTarget : Target, IProgressTarget
     /// </summary>
     protected readonly RadialProgressBar Border;
 
+    private int _currentValue { get; set; }
+
     /// <summary>
     ///     Target with progress bar
     /// </summary>
@@ -76,6 +78,7 @@ public class ProgressTarget : Target, IProgressTarget
     /// <inheritdoc/>
     public void Reset()
     {
+        _currentValue = 0;
         Border.Value = 0;
     }
 
@@ -83,9 +86,14 @@ public class ProgressTarget : Target, IProgressTarget
     public override int ReceiveShot(Point2D<int> shot)
     {
         int res = base.ReceiveShot(shot);
-        Border.Value += res;
+        _currentValue += res;
 
         return res;
+    }
+
+    public void UpdateProgress()
+    {
+        Border.Value = _currentValue;
     }
 
     /// <inheritdoc/>

@@ -159,32 +159,32 @@ public class Connection : IDataSource<float>, IDisposable
         return res;
     }
 
-    /*    public Point3D<float>? GetXYZ()
+    /*public Point3D<float>? GetXYZ()
+    {
+        if (_currPacket >= PacketsCount)
         {
-            if (_currPacket >= PacketsCount)
+            _ = Socket.Receive(_data, Size, SocketFlags.None);
+            var span = new ReadOnlySpan<byte>(_data);
+
+            for (int i = 0, j = 0; i < Size; i += PacketSize, j++)
             {
-                _ = Socket.Receive(_data, Size, SocketFlags.None);
-                var span = new ReadOnlySpan<byte>(_data);
+                var y = BinaryPrimitives.ReadSingleLittleEndian(span[(i + 4)..]);
+                var x = -BinaryPrimitives.ReadSingleLittleEndian(span[(i + 8)..]);
 
-                for (int i = 0, j = 0; i < Size; i += PacketSize, j++)
-                {
-                    var y = BinaryPrimitives.ReadSingleLittleEndian(span[(i + 4)..]);
-                    var x = -BinaryPrimitives.ReadSingleLittleEndian(span[(i + 8)..]);
+                var angleX = Converter.ToAngle_FromRadian(x);
+                var angleY = Converter.ToAngle_FromRadian(y);
 
-                    var angleX = Converter.ToAngle_FromRadian(x);
-                    var angleY = Converter.ToAngle_FromRadian(y);
-
-                    _coords[j] = new Point3D<float>(angleX, angleY, 0);
-                }
-                _currPacket = 0;
+                _coords[j] = new Point3D<float>(angleX, angleY, 0);
             }
-            else if (Socket.Available < Size * 2)
-            {
-                Task.Delay(1).Wait();
-            }
+            _currPacket = 0;
+        }
+        else if (Socket.Available < Size * 2)
+        {
+            Task.Delay(1).Wait();
+        }
 
-            return _coords[_currPacket++];
-        }*/
+        return _coords[_currPacket++];
+    }*/
 
     /// <inheritdoc/>
     public Point2D<float>? GetXY()

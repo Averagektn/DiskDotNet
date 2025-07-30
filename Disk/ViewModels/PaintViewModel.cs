@@ -243,10 +243,12 @@ public class PaintViewModel : PopupViewModel
                         {
                             _diskNetworkThread.Join();
                         }
+
                         if (_savePathThread.IsAlive)
                         {
                             _savePathThread.Join();
                         }
+
                         _diskNetworkThread = new(ReceivePatientPosition)
                         {
                             Priority = ThreadPriority.Highest,
@@ -318,6 +320,7 @@ public class PaintViewModel : PopupViewModel
         {
             _diskNetworkThread.Join();
         }
+
         if (_savePathThread.IsAlive)
         {
             _savePathThread.Join();
@@ -369,6 +372,7 @@ public class PaintViewModel : PopupViewModel
         {
             pathToTarget.Add(CurrentPos?.To2D() ?? new Point2D<float>());
         }
+
         Point2D<float> touchPoint = pathToTarget[^1];
 
         double time = _pathToTargetStopwatch.Elapsed.TotalSeconds;

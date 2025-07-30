@@ -100,7 +100,7 @@
                         Minimum="10" 
                         Maximum="100" 
                         Value="{Binding ShotTime}"
-                        TickFrequency="5" 
+                        TickFrequency="10" 
                         Margin="200 10 200 0"
                         IsSnapToTickEnabled="True" 
                         FontSize="20" 

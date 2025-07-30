@@ -157,14 +157,17 @@ public class PatientService(DiskContext database) : IPatientService
         {
             throw new InvalidSurnameException("Surname is empty", ServiceExceptionLocalization.EmptySurname);
         }
+
         if (patient.Name == string.Empty)
         {
             throw new InvalidNameException("Name is empty", ServiceExceptionLocalization.EmptyName);
         }
+
         if (patient.DateOfBirth == string.Empty)
         {
             throw new InvalidDateException("Empty date", ServiceExceptionLocalization.EmptyDate);
         }
+
         if (patient.PhoneMobile == string.Empty)
         {
             throw new InvalidPhoneNumberException("Mobile phone is empty", ServiceExceptionLocalization.EmptyMobilePhone);

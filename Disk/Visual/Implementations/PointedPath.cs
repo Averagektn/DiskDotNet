@@ -222,6 +222,7 @@ public unsafe class PointedPath : IStaticFigure
             _points[i].X = (int)(_iniPoints[i].X * xScale);
             _points[i].Y = (int)(_iniPoints[i].Y * yScale);
         }
+
         PointRadius = (int)Math.Round(IniRadius * (xScale + yScale) / 2);
 
         _bitmap = new WriteableBitmap((int)Parent.ActualWidth, (int)Parent.ActualHeight, dpiX: 96, dpiY: 96, PixelFormats.Pbgra32,

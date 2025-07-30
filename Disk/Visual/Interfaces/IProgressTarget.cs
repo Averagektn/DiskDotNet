@@ -16,4 +16,6 @@ public interface IProgressTarget : ITarget
     ///     Set <see cref="Progress"/> value to 0
     /// </summary>
     void Reset();
+
+    void UpdateProgress();
 }

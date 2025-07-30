@@ -196,14 +196,17 @@ public class Circle : IDynamicFigure
         {
             ySpeed -= speed;
         }
+
         if (moveBottom)
         {
             ySpeed += speed;
         }
+
         if (moveLeft)
         {
             xSpeed -= speed;
         }
+
         if (moveRight)
         {
             xSpeed += speed;
@@ -213,14 +216,17 @@ public class Circle : IDynamicFigure
         {
             xSpeed = 0;
         }
+
         if (Right >= Parent.ActualWidth && xSpeed > 0)
         {
             xSpeed = 0;
         }
+
         if (Top <= 0 && ySpeed < 0)
         {
             ySpeed = 0;
         }
+
         if (Bottom >= Parent.ActualHeight && ySpeed > 0)
         {
             ySpeed = 0;

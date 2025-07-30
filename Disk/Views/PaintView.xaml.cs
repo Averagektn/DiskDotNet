@@ -34,7 +34,7 @@ public partial class PaintView : UserControl
 
     private static Settings Settings => Settings.Default;
 
-    private Point2DI? ShiftedWndPos
+    private Point2DI ShiftedWndPos
     {
         get
         {
@@ -44,9 +44,11 @@ public partial class PaintView : UserControl
             }
             else
             {
-                var angleShiftedPoint = new Point2DF(ViewModel.CurrentPos.X - Settings.XAngleShift, ViewModel.CurrentPos.Y - Settings.YAngleShift);
+                float x = ViewModel.CurrentPos.X - Settings.XAngleShift;
+                float y = ViewModel.CurrentPos.Y - Settings.YAngleShift;
+                var angleShiftedPoint = new Point2DF(x, y);
 
-                return Converter?.ToWndCoord(angleShiftedPoint);
+                return Converter?.ToWndCoord(angleShiftedPoint) ?? new();
             }
         }
     }
@@ -55,9 +57,9 @@ public partial class PaintView : UserControl
     {
         InitializeComponent();
 
-        ShotTimer = new(DispatcherPriority.Normal)
+        ShotTimer = new(DispatcherPriority.Send)
         {
-            Interval = TimeSpan.FromMilliseconds(100)
+            Interval = TimeSpan.FromMilliseconds(Settings.TargetRedrawMs)
         };
         ShotTimer.Tick += ShotTimerElapsed;
 
@@ -68,92 +70,6 @@ public partial class PaintView : UserControl
         CompositionTarget.Rendering += OnRender;
     }
 
-    private void OnRender(object? sender, EventArgs e)
-    {
-        if (ShiftedWndPos is not null)
-        {
-            if (AllowedArea.FillContains(ShiftedWndPos.ToPoint()))
-            {
-                PaintCursor.MoveSmooth(ShiftedWndPos);
-            }
-            else
-            {
-                var center = new Point2DI((int)AllowedArea.Bounds.Width / 2, (int)AllowedArea.Bounds.Height / 2);
-                double radiusX = AllowedArea.Bounds.Width / 2;
-                double radiusY = AllowedArea.Bounds.Height / 2;
-
-                double normalizedX = (ShiftedWndPos.X - center.X) / radiusX;
-                double normalizedY = (ShiftedWndPos.Y - center.Y) / radiusY;
-
-                double length = Math.Sqrt((normalizedX * normalizedX) + (normalizedY * normalizedY));
-
-                double scale = 1 / length;
-                int nearestX = (int)(center.X + (normalizedX * radiusX * scale));
-                int nearestY = (int)(center.Y + (normalizedY * radiusY * scale));
-
-                PaintCursor.MoveSmooth(new(nearestX, nearestY));
-            }
-        }
-    }
-
-    private List<Point2DI> GetMultipleShots()
-    {
-        Point2DI shot = PaintCursor.Shot();
-        /*        int x = shot.X;
-                int y = shot.Y;
-                int halfRadius = Cursor.Radius / 2;
-                double sqrt2 = Math.Sqrt(2);*/
-
-        return [shot];
-        /*        return [new(x - halfRadius, y), new(x + halfRadius, y), new(x, y - halfRadius), new(x, y + halfRadius),
-                                new((int)(x - (halfRadius / sqrt2)), (int)(y - (halfRadius / sqrt2))),
-                                new((int)(x + (halfRadius / sqrt2)), (int)(y - (halfRadius / sqrt2))),
-                                new((int)(x - (halfRadius / sqrt2)), (int)(y + (halfRadius / sqrt2))),
-                                new((int)(x + (halfRadius / sqrt2)), (int)(y + (halfRadius / sqrt2)))];*/
-    }
-
-    private void ShotTimerElapsed(object? sender, EventArgs e)
-    {
-        if (ViewModel is null || Converter is null || !ViewModel.IsGame)
-        {
-            return;
-        }
-
-        List<Point2DI> shots = GetMultipleShots();
-
-        Point2DI shot = PaintCursor.Center;
-        int shotScore = 0;
-        for (int i = 0; i < shots.Count && shotScore == 0; i++)
-        {
-            shotScore = Target.ReceiveShot(shots[i]);
-        }
-
-        _ = Converter.ToAngle_FromWnd(shot);
-
-        // pit
-        bool isPathInTargetStarts = shotScore != 0 && ViewModel.IsPathToTarget;
-        if (isPathInTargetStarts)
-        {
-            ViewModel.SwitchToPathInTarget();
-        }
-
-        /*        if (ViewModel.IsPathToTarget)
-                {
-                    ViewModel.PathsToTargets[ViewModel.TargetId].Add(ViewModel.CurrentPos ?? angleShot);
-                }
-                else
-                {
-                    ViewModel.PathsInTargets[ViewModel.TargetId].Add(ViewModel.CurrentPos ?? angleShot);
-                }*/
-
-        // ptt
-        bool isPathToTargetStarts = Target.IsFull;
-        if (isPathToTargetStarts && !ViewModel.SwitchToPathToTarget(Target))
-        {
-            OnStopClick(sender, e);
-        }
-    }
-
     private void OnLoaded(object sender, RoutedEventArgs e)
     {
         if (ViewModel is null || Converter is null)
@@ -162,7 +78,6 @@ public partial class PaintView : UserControl
         }
 
         PaintCursor = DrawableFabric.GetIniCursor(Settings.CursorFilePath, PaintArea);
-        //PaintCursor.OnShot += (p) => ViewModel.FullPath.Add(Converter.ToAngle_FromWnd(p));
 
         Target = DrawableFabric.GetIniProgressTarget(Settings.TargetFilePath, new(-1000, -1000), PaintArea);
         Target.OnReceiveShot += shot =>
@@ -186,6 +101,79 @@ public partial class PaintView : UserControl
         ShotTimer.Start();
     }
 
+    private void OnRender(object? sender, EventArgs e)
+    {
+        if (ShiftedWndPos is not null)
+        {
+            if (AllowedArea.FillContains(ShiftedWndPos.ToPoint()))
+            {
+                PaintCursor.MoveSmooth(ShiftedWndPos);
+            }
+            else
+            {
+                Point2DI neearestPoint = GetNearestPoint();
+                PaintCursor.MoveSmooth(neearestPoint);
+            }
+
+            Target.UpdateProgress();
+        }
+    }
+
+    private Point2DI GetNearestPoint()
+    {
+        var center = new Point2DI((int)AllowedArea.Bounds.Width / 2, (int)AllowedArea.Bounds.Height / 2);
+        double radiusX = AllowedArea.Bounds.Width / 2;
+        double radiusY = AllowedArea.Bounds.Height / 2;
+
+        double normalizedX = (ShiftedWndPos.X - center.X) / radiusX;
+        double normalizedY = (ShiftedWndPos.Y - center.Y) / radiusY;
+
+        double length = Math.Sqrt((normalizedX * normalizedX) + (normalizedY * normalizedY));
+
+        double scale = 1 / length;
+        int nearestX = (int)(center.X + (normalizedX * radiusX * scale));
+        int nearestY = (int)(center.Y + (normalizedY * radiusY * scale));
+
+        return new Point2DI(nearestX, nearestY);
+    }
+
+    private void ShotTimerElapsed(object? sender, EventArgs e)
+    {
+        if (ViewModel is null || Converter is null || !ViewModel.IsGame)
+        {
+            return;
+        }
+
+        List<Point2DI> shots = GetShots();
+
+        int shotScore = 0;
+        for (int i = 0; i < shots.Count && shotScore == 0; i++)
+        {
+            shotScore = Target.ReceiveShot(shots[i]);
+        }
+
+        // pit
+        bool isPathInTargetStarts = shotScore != 0 && ViewModel.IsPathToTarget;
+        if (isPathInTargetStarts)
+        {
+            ViewModel.SwitchToPathInTarget();
+        }
+
+        // ptt
+        bool isPathToTargetStarts = Target.IsFull;
+        if (isPathToTargetStarts && !ViewModel.SwitchToPathToTarget(Target))
+        {
+            OnStopClick(sender, e);
+        }
+    }
+
+    private List<Point2DI> GetShots()
+    {
+        Point2DI shot = PaintCursor.Shot();
+
+        return [shot];
+    }
+
     private void StopGame()
     {
         ShotTimer.Stop();
@@ -195,20 +183,6 @@ public partial class PaintView : UserControl
         PaintCursor.Remove();
 
         PaintCursor.ClearOnShot();
-    }
-
-    private void OnSizeChanged(object sender, RoutedEventArgs e)
-    {
-        if (Converter is null)
-        {
-            return;
-        }
-
-        AllowedArea.RadiusX = PaintPanelCenterX;
-        AllowedArea.RadiusY = PaintPanelCenterY;
-        AllowedArea.Center = new(PaintPanelCenterX, PaintPanelCenterY);
-
-        Converter.Scale(new((int)PaintArea.ActualWidth, (int)PaintArea.ActualHeight));
     }
 
     private void OnStopClick(object? sender, EventArgs e)
@@ -231,5 +205,19 @@ public partial class PaintView : UserControl
                 Log.Error($"{task.Exception.Message} \n {task.Exception.StackTrace}");
             }
         });
+    }
+
+    private void OnSizeChanged(object sender, RoutedEventArgs e)
+    {
+        if (Converter is null)
+        {
+            return;
+        }
+
+        AllowedArea.RadiusX = PaintPanelCenterX;
+        AllowedArea.RadiusY = PaintPanelCenterY;
+        AllowedArea.Center = new(PaintPanelCenterX, PaintPanelCenterY);
+
+        Converter.Scale(new((int)PaintArea.ActualWidth, (int)PaintArea.ActualHeight));
     }
 }

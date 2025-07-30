@@ -38,7 +38,7 @@ public class SessionViewModel(DiskContext database, IExcelFiller excelFiller, Na
     public static string TargetImageName => Path.GetFileName(TargetImagePath);
     public static string TargetImagePath => Settings.TargetFilePath;
     public static int ShotFrequency => 1000 / Settings.ShotTime;
-    public static int TargetLifespan => 1000 * Settings.TargetHp / ShotFrequency;
+    public static int TargetLifespan => Settings.TargetRedrawMs * Settings.TargetHp;
     private static Settings Settings => Settings.Default;
 
     public required Session Session
